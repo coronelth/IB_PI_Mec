@@ -1,0 +1,127 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \documentclass[12pt,papel,twoside]{ibtesis}
+%\documentclass[12pt,screen,oneside,pagebackref]{ibtesis}
+\documentclass[12pt,papel,oneside]{ibtesis}
+%\documentclass[12pt,papel,preprint,oneside]{ibtesis}
+
+
+%%%%%%%%%%%%%%%%%%%%% Paquetes extra %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Por conveniencia: aqu\'{\i} puede cargar todos los paquetes y definir los comandos 
+% que necesite
+\usepackage{ibextra}
+\usepackage[T1]{fontenc}
+
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{multicol}
+\usepackage{wrapfig}
+\usepackage{adjustbox}
+\usepackage{latexsym}
+\usepackage{tabulary,tabularx}
+\usepackage{units}
+\usepackage{fancyvrb}
+\usepackage{multirow}
+\usepackage{rotating}
+\usepackage{array}
+\usepackage{gensymb}
+\usepackage{float}
+\usepackage{enumitem}
+\usepackage{mathrsfs}
+
+%\usepackage{hyperref}
+%\hypersetup{
+%    colorlinks,
+%    citecolor=black,
+%    filecolor=black,
+%    linkcolor=black,
+%    urlcolor=black
+%}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%% Informacion sobre la tesis %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{Implementacióon de modelos lattice-Boltzmann para flujo multifásico con transferencia de calor en unidades de procesamiento gráfico}
+\author{Thomás Coronel}
+\director{Mgter. Ezequiel Fogliatto}
+\codirector{Ing. Pablo Argañaraz}
+\carrera{Proyecto Integrador de la Carrera de Ingeniería Mecánica}
+\grado{}
+\laboratorio{Mecánica Computacional\\
+%Departamento Física de Neutrones\\
+Centro Atómico Bariloche}
+\jurado{ Dr. René Cejas Bolecek (Instituto Balseiro - Centro Atómico Bariloche) \\ 
+Dr. Flavio Colavecchia (Instituto Balseiro - Centro Atómico Bariloche))\\ }
+\palabrasclave{lattice-Boltzman,transferencia de calor,LBM}%formato de Tesis, Lineamientos de escritura, Instituto Balseiro}
+\keywords{lattice-Boltzman,heat transfer, LBM}%Thesis format, Templates, Instituto Balseiro}
+% Si queremos poner la fecha manualmente:
+\date{Junio de 2020}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\titlepagefalse % Si no quiere compilar la portada descomente esta linea
+%\includeonly{resumen,cap1} % Compilar s\'{o}lo estos archivos 
+\graphicspath{{figs/}} % Lugar donde encontrar las figuras generales (se puede poner uno en cada cap{\'{\i}}tulo)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+
+% Dentro del environment 'preliminary' va:
+% la dedicatoria, resumen, abstract, indices
+
+\begin{preliminary}
+
+% Escriba su dedicatoria
+\dedicatoria{
+	Inserte su dedicatoria
+}
+
+%%% \'{I}ndices %%%%
+
+\include{resumen}
+
+\tableofcontents                %\'{I}ndice
+
+\begin{abreviaturas}
+	
+	Inserte aquí las abreviaturas de símbolos
+	
+\end{abreviaturas}
+
+\end{preliminary}
+
+
+% Podemos usar cualquiera de los dos comandos: \input o \include para incluir el texto
+\include{cap1}
+
+
+\appendix
+\include{apend}
+
+
+\begin{biblio}
+\bibliography{biblio}
+\end{biblio}
+
+
+\begin{postliminary}
+
+\listoffigures                  %Figuras
+
+\listoftables                   %Tablas
+
+\begin{seccion}{Agradecimientos}
+\begin{small}	
+
+Inserte aquí su agradecimiento.
+
+\end{small}
+
+
+\end{seccion}
+
+
+\end{postliminary}
+
+
+
+\end{document}
+
