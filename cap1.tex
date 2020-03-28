@@ -2,7 +2,34 @@
 \graphicspath{{figs/cap1/}}
 \label{cap1}
 
-Inserte aquí su introducción.
+
+En el estudio de la Mecánica de los Fluidos, es de importancia los problemas de transferencia de calor de flujos multi-fásicos con cambios de fase. 
+Para dichos problemas cuyas aplicaciones industriales entre otras son la transferencia de calor  que se produce en las barras de elementos combustibles del núcleo de un reactor nuclear.
+Se realizan mediciones de las variables físicas involucradas en el estudio de dicho problema, en base a las mediciones se realizan modelos para explicar la fenomenología.
+Lo que no se posee en la actualidad es un modelo que se pueda simular numéricamente y que a su vez posea un bajo costo computacional para realizarlo
+El estudio de las variables físicas  
+
+La mecánica de los fluidos se puede describir en tres niveles: macroscópica, mesoscópica y microscópica.
+En el nivel macroscópico, predominan las leyes físicas de conservación de la masa, momento y energía aplicada a un volumen de control establecidas por un conjunto de ecuaciones diferenciales (ecuaciones de masa, momento y energía) que gobiernan el comportamiento del fluido. La Mecánica de Fluidos Computacional (\textit{Computational Fluid Dynamics} o CFD) es utilizada para resolver esas ecuaciones que gobiernan el comportamiento físico utilizando distintos métodos numéricos. En contraste el método de lattice Boltzmann(LBM) es una aproximación del nivel mesoscópica. LBM estudia la micro-dinámica de partículas ficticias utilizando modelos cinéticos simplificados. La cual provee un camino alternativo de simular la mecánica de fluidos. La naturaleza de la cinética brinda distintas características de LBM tales que es claro el panorama de los procesos de advección y colisión de partículas de fluidos simuladas; la estructura simple del algoritmo, la fácil implementación de condiciones de contorno y el natural paralelismo. Todos éstos interesantes atributos hacen que LBM sea una potente herramienta numérica para la simulación de sistemas de fluidos envueltos en problemas físicos complejos.
+
+Los fluidos como el aire y el agua son frecuentemente conocidos en nuestra vida diaria. Físicamente todos los fluidos son compuestos de un gran conjunto de átomos o moléculas que chocan unas con otras moviéndose  aleatoriamente.
+Interacciones de moléculas en un fluido son usualmente más débiles que las mismas en un sólido y un fluido puede ser deformado continuamente bajo una pequeña aplicación de esfuerzo
+Usualmente la dinámica microscópica de las moléculas del fluido son muy complicadas y demuestran una fuerte inhomogeneidad y fluctuaciones.
+Por el otro lado la dinámica macroscópica del fluido el cual es el resultado medio del movimiento de las moléculas en un medio homogéneo y continuo.
+También puede ser explicado mediante modelos matemáticos de la dinámica de los fluidos una fuerte dependencia del largo y el tamaño de las escalas y cuál es el fluido observado.
+Generalmente el movimiento de un fluido puede ser descripto por tres tipos de modelos matemáticos acuerdo a lo que se observan en las distintas escalas, por ejemplo microscópico en modelos de escala molecular, teorías cinéticas en la escala mesoscópica y modelos continuos para escalas macroscópicas.
+
+Los modelos matemáticos de los flujos de fluidos, como también las ecuaciones de Newton para un basto número de moléculas, o las ecuaciones de Boltzman para la función de e distribución simple o las ecuaciones de Navier-Stokes para las variaciones de flujos macroscópicos, son extremadamente difíciles de resolver analíticamente de no ser imposibles.
+La precisión de los modelos numéricos sin embargo han provisto de manera satisfactoria soluciones aproximadas de dichas ecuaciones.
+Particularmente con la rapidez del desarrollo del software y hardware computacional y la tecnología, las simulaciones numéricas han comenzado a ser una importante metodología para la dinámica de fluidos.
+
+
+El más exitoso y popular método de simulación de fluidos es la tećnica CFD , el cual su principal diseño está basado en  para resolver ecuaciones hidrodinámicas basadas en supociones de continuidad.
+En CFD el dominio del flujo está compuesto en en conjunto de de sub-dominios con una malla computacional, , las ecuaciones matemáticas son discretizadas usando algunos esquemas de discretización numérica como elementos finitos, volúmenes finitos o diferencia finitas; los cuales resultan en un sistema algebraico de sistemas de ecuaciones para las variables discretas del fluido asociadas a la malla computacional. 
+Computacionalmente son llevados a cabo para encontrar una solución aproximada resolviendo el problema algebraico de sistemas de ecuaciones usando un algoritmo secuencial o paralelo.
+ 
+La Simulación de Dinámica Molecular (\textit{Molecular Dynamic Simulation} o MDS) es una técnica en la cual el movimiento individual de átomos o moléculas del fluido son registrados para resolver las ecuaciones de Newton mediante una computadora.
+La principal ventaja de MDS es el aspecto macroscópico del fluido puede ser directamente conectado con el comportamiento molecular, en donde la estructura molecular y las interacciones microscópicas pueden ser descriptas de una manera directa.
 
 
 
