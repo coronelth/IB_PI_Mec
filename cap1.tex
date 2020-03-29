@@ -4,10 +4,14 @@
 
 
 En el estudio de la Mecánica de los Fluidos, es de importancia los problemas de transferencia de calor de flujos multi-fásicos con cambios de fase. 
-Para dichos problemas cuyas aplicaciones industriales entre otras son la transferencia de calor  que se produce en las barras de elementos combustibles del núcleo de un reactor nuclear.
-Se realizan mediciones de las variables físicas involucradas en el estudio de dicho problema, en base a las mediciones se realizan modelos para explicar la fenomenología.
-Lo que no se posee en la actualidad es un modelo que se pueda simular numéricamente y que a su vez posea un bajo costo computacional para realizarlo
-El estudio de las variables físicas  
+Los problemas presentan la particularidad que se han realizado ensayos experimentales que estudian la fenomenología del mismo.
+Para los tipos de problemas mencionados no se posee actualmente algún método numérico que concuerde con los ensayos realizados y que el calcule en un bajo tiempo .
+
+Un ejemplo de aplicacion industrial del tipo de problema mencionado recide en el estudio de un reactor nuclear.
+La transferencia de calor producida en las barras de elementos combustibles del núcleo provoca ebullición nucleada a partir de una dada potencia.
+Se conoce bien cómo es la fenomenología a través del estudio realizado por la curva de \textit{Nukiyama}. 
+EL problema actual para realizarlo numéricamente es que debido a la escala del fluido (\textit{mesoscópica}) con las técnicas convencionales de resolución de Mecánica de Fluidos Computacional(\textit{Computational Fluid Dynamicso} CFD)
+no se obtienen resulados en un tiempo razonable.
 
 La mecánica de los fluidos se puede describir en tres niveles: macroscópica, mesoscópica y microscópica.
 En el nivel macroscópico, predominan las leyes físicas de conservación de la masa, momento y energía aplicada a un volumen de control establecidas por un conjunto de ecuaciones diferenciales (ecuaciones de masa, momento y energía) que gobiernan el comportamiento del fluido. La Mecánica de Fluidos Computacional (\textit{Computational Fluid Dynamics} o CFD) es utilizada para resolver esas ecuaciones que gobiernan el comportamiento físico utilizando distintos métodos numéricos. En contraste el método de lattice Boltzmann(LBM) es una aproximación del nivel mesoscópica. LBM estudia la micro-dinámica de partículas ficticias utilizando modelos cinéticos simplificados. La cual provee un camino alternativo de simular la mecánica de fluidos. La naturaleza de la cinética brinda distintas características de LBM tales que es claro el panorama de los procesos de advección y colisión de partículas de fluidos simuladas; la estructura simple del algoritmo, la fácil implementación de condiciones de contorno y el natural paralelismo. Todos éstos interesantes atributos hacen que LBM sea una potente herramienta numérica para la simulación de sistemas de fluidos envueltos en problemas físicos complejos.
