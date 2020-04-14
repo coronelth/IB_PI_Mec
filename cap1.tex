@@ -46,7 +46,60 @@ Computacionalmente son llevados a cabo para encontrar una solución aproximada r
 La Simulación de Dinámica Molecular (\textit{Molecular Dynamic Simulation} o MDS) es una técnica en la cual el movimiento individual de átomos o moléculas del fluido son registrados para resolver las ecuaciones de Newton.
 La principal ventaja de MDS es el aspecto macroscópico del fluido puede ser directamente conectado con el comportamiento molecular, en donde la estructura molecular y las interacciones microscópicas pueden ser descriptas de una manera directa.
 
-El método de lattice Boltzmann ( \textit{lattice Boltzman Method} o LBM) es una aproximación del nivel mesoscópica. LBM estudia la micro-dinámica de partículas ficticias utilizando modelos cinéticos simplificados. La cual provee un camino alternativo de simular la mecánica de fluidos. La naturaleza de la cinética brinda distintas características de LBM tales que es claro el panorama de los procesos de advección y colisión de partículas de fluidos simuladas. La estructura del algoritmo es simple y de fácil implementación en las condiciones de contorno, además presenta un paralelismo natural. Todos éstos interesantes atributos hacen que LBM sea una potente herramienta numérica para la simulación de sistemas de fluidos envueltos en problemas físicos complejos.
+El método de lattice Boltzmann ( \textit{lattice Boltzman Method} o LBM) es una aproximación del nivel mesoscópica. LBM estudia la micro-dinámica de partículas ficticias utilizando modelos cinéticos simplificados. La cual provee un camino alternativo de simular la mecánica de fluidos. La naturaleza de la cinética brinda distintas características de LBM tales que es claro el panorama de los procesos de advección y colisión de partículas de fluidos simuladas. La estructura del algoritmo es simple y de fácil implementación en las condiciones de contorno, además presenta un paralelismo natural. Todos éstos interesantes atributos hacen que LBM sea una potente herramienta numérica para la simulación de sistemas de fluidos envueltos en problemas físicos complejos. \cite{guo2013lattice}
+
+
+\section{Descripción de LBM}
+
+El modelo de lattice-Boltzmann, deriva de discretizar la ecuación de Boltzmann. La ecuación de Boltzmann es discretizada en el espacio de velocidades, espacio físico y espacio temporal.
+
+Los modelos generales de LB para flujos multifásicos son cuatro, siendo ellos:
+
+\begin{itemize}
+	\item color gradient
+	\item free energy
+	\item phase field
+	\item pseudopotential
+\end{itemize}
+
+El modelo que se uttilizará en el presente trabajo es el pseudopotencial. El cual  LBM dependerá de cuál es el tipo de modelo \textit{DdQq} (\textit{d}-dimensiones  \textit{q}-velocidades)
+El problema físico a resolver cuenta con una región, la cuál se le realizará un mallado para así discretizar el espacio. Cada nodo de la grilla poseerá su velocidad de grilla, la cual tiene \textit{q} componentes. El campo de distribución de probabilidades \textit{f} poseerá también \textit{q} componentes.
+
+A continuación se mostrará un ejemplo de un modelo \textit{D2Q9}. En la figura \ref{fig:grilla_D2Q9} se observa cómo son las velocidades de grilla y en qué direccion apuntan, como así también cómo es el proceso de \textit{streaming}.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=8cm]{grilla_stre_colli_intro.png}
+	\caption{Colisión y streaming de un modelo D2Q9 de LBM.}
+	\label{fig:grilla_D2Q9}
+\end{figure}
+
+
+\begin{align}
+	\mathbf{f}_{\alpha} (\mathbf{x} + \mathbf{e}_{\alpha} \mathbf{\delta}_{t}, t + \mathbf{\delta}_{t})  = \mathbf{f}_{\alpha} (\mathbf{x}, t) - \frac{1}{\tau} (\mathbf{f}_{\alpha} - {\mathbf{f}_{\alpha}}^{eq}) 
+\end{align}
+
+En donde $\alpha$ corresponde al  $\alpha$-ésimo componente de los \textit{q} que se encuentran. $f^{eq}$ es el campo en estado de equilibrio. $\tau$ es un parámetro de relajación. 
+
+Por medio de la \textit{colisión} y luego del \textit{streaming} se obtienen los parámetros macroscópicos el problema. Para éste ejemplo se obtiene $\rho$ y $\mathbf{u}$ de las ecuaciones \ref{eq: rho.1} y \ref{eq: u.1} respectivamente.
+
+\begin{align}
+	\rho = \sum_{\alpha} \mathbf{f}_{\alpha}
+	\label{eq: rho.1}
+\end{align}
+
+\begin{align}
+	\rho \mathbf{u}= \sum_{\alpha} \mathbf{e}_{\alpha} \mathbf{f}_{\alpha}
+	\label{eq: u.1}
+\end{align}
+
+El método numérico en éste caso tiene los siguiente forma de resolución:
+
+	 \textbf{Colisión}  \textbf{Streaming} \textbf{Calculo de parámetros $\rho$ , u} \textbf{Actualización de parámetros} \textbf{siguiente paso de tiempo} 
+
+Debido a que cada nodo de la grilla debe realizar la misma operación de colisión de manera independiente del resto, el modelo es altamente paralelizable. Y además las operaciones matemáticas que debe realizar el operador de colisión son sencillas, no implicando un gran costo de computacional.
+
+
 
 
 %%% Local Variables: 
