@@ -76,7 +76,8 @@ A continuación se mostrará un ejemplo de un modelo \textit{D2Q9}. En la figura
 
 
 \begin{align}
-	\mathbf{f}_{\alpha} (\mathbf{x} + \mathbf{e}_{\alpha} \mathbf{\delta}_{t}, t + \mathbf{\delta}_{t})  = \mathbf{f}_{\alpha} (\mathbf{x}, t) - \frac{1}{\tau} (\mathbf{f}_{\alpha} - {\mathbf{f}_{\alpha}}^{eq}) 
+	\mathbf{f}_{\alpha} (\mathbf{x} + \mathbf{e}_{\alpha} \mathbf{\delta}_{t}, t + \mathbf{\delta}_{t})  = \mathbf{f}_{\alpha} (\mathbf{x}, t) - \frac{1}{\tau} (\mathbf{f}_{\alpha} - {\mathbf{f}_{\alpha}}^{eq})
+	\label{eq:field_intro} 
 \end{align}
 
 En donde $\alpha$ corresponde al  $\alpha$-ésimo componente de los \textit{q} que se encuentran. $f^{eq}$ es el campo en estado de equilibrio. $\tau$ es un parámetro de relajación. 
@@ -99,6 +100,18 @@ El método numérico en éste caso tiene los siguiente forma de resolución:
 
 Debido a que cada nodo de la grilla debe realizar la misma operación de colisión de manera independiente del resto, el modelo es altamente paralelizable. Y además las operaciones matemáticas que debe realizar el operador de colisión son sencillas, no implicando un gran costo de computacional.
 
+\section{Descripción alcance del proyecto integrador}
+
+Mediante el método LBM desarrollado en \textbf{CITAR AL EZE}	se realizará la implementación de un código numérico para resolver problemas de transferencia de calor en flujos multifásicos con cambio de fase de la manera más robusta posible.
+La validación del código se realizará mediante los problemas: \textit{modelo e construcción de Maxwell}, \textit{estratificación de una pared} y \textit{inicialización de burbujas} las cuáles se encuentran explicadas en \ref{cap2}.
+
+El método numérico consiste en resolver dos ecuaciones, la primera es de conservación de masa y momento, la segunda es la ecuación de energía. Las ecuaciones resuelven campos de distribución de probabilidades cuando se realiza la colisión y streaming para el nuevo paso de tiempo, siendo del estilo de la ecuación \ref{eq:field_intro}. A partir de ellas dos se recuperan las variables macroscópicas $\rho$ , $\mathbf{u}$ y \textbf{T}. El método se encuentra descripto en el capítulo \ref{cap3}.
+
+La implementación del código se realizará en los lenguajes de programación de \textbf{C} y \textbf{CUDA}. Por medio de éstos lenguajes se realizaran bibliotecas las cuales serán usadas mediante el lenguaje \textbf{Python}. La utilización de \textbf{Python} es debida a la compatibilidad de aplicar  el código en las distintos sistemas operativos , como \textit{Linux} y \textit{Windows}.
+
+Al ser un proyecto complejo, mediante la herramienta multiplataforma \textbf{CMake} se realizó la compilación de las librerías. El proyecto se encuentra en \textbf{Git Hub} donde puede ser descargado en \url{ https://github.com/efogliatto/LBCUDA_Test}.
+
+Se realizará una comparación entre los resultados de \textit{simple} y \textit{doble} precisión. Y a su vez cuánto es el \textit{Speed Up} de los códigos en \textbf{C}, \textbf{CUDA} y \textbf{Python}. Para finalizar también  se hará un \textit{Speed Up} del código desarrollado por \textbf{CITAR AL EZE} en \textbf{C ++} que se encuentra en \url{https://github.com/efogliatto/phoenix}.
 
 
 
