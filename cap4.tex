@@ -122,24 +122,6 @@ Los procesos en el \textit{device} tienen almacenados los datos según una jerar
 	
 \end{itemize}
 
-\iffalse
-En el presente trabajo se utilizaron las siguientes placas \textbf{GEFORCE GTX 760} y \textbf{GEFORCE GTX970} cuyas características se encuentran en la tabla XXX\colorbox{green}{colocar tabla}
-
-\section{Uso de memoria en el código de LBM}
-
-Las variables del LBM descripto en \colorbox{green}{ref cap LBM sec 2 ec pseud} que deben ser visualizadas en un entorno gráfico para verificar el funcionamiento del código son $\mathbf{u}$, $\rho$ y $T$. Los parámetros mencionados deben poder escribirse en un archivo, y para ello tienen que estar necesariamente allocados en el \textit{host}. 
-
-Para obtener los resultados esperados en el código es preciso que el avance temporal en cada paso sea chico y que la cantidad de pasos de tiempo a simular sean grande. 
-
-La memoria necesaria (fija) para todas las variables del problema a resolver se encuentran detalladas en la tabla xxx. Allí se encuentra la totalidad de la memoria para ditintos tamaños de griila y el caso de que sean de \textit{simple} ó \textit{doble} precisión.
-
-
-Para el código que se implementará utilizando el LBM descripto en \colorbox{green}{ref cap LBM sec 2 ec pseud} es necesario realizar el transpaso de información del \textit{device} al \textit{host} para conocer el estado de las variables $\mathbf{u}$, $\rho$ y $T$; para así guardarlas y poder visualizarlas en un entorno gráfico para verificar bien la evolución de las mismas. 
-
-
-\fi
-
-
 %%% Local Variables: 
 %%% mode: latex
 %%% TeX-master: "template"
