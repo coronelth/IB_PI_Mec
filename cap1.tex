@@ -5,13 +5,13 @@
 
 En el estudio de la Mecánica de los Fluidos, es de importancia los problemas de transferencia de calor de flujos multi-fásicos con cambios de fase. 
 Los problemas presentan la particularidad que se han realizado ensayos experimentales que estudian la fenomenología del mismo.
-Para los tipos de problemas mencionados no se posee actualmente algún método numérico que concuerde con los ensayos realizados y que el calcule en un bajo tiempo .
+Para los tipos de problemas mencionados no se posee actualmente algún método numérico que concuerde con los ensayos realizados y sea producido en un tiempo aceptable.
 
-Un ejemplo de aplicacion industrial del tipo de problema mencionado recide en el estudio de un reactor nuclear.
-La transferencia de calor producida en las barras de elementos combustibles del núcleo provoca ebullición nucleada a partir de una dada potencia.
-Se conoce bien cómo es la fenomenología a través del estudio realizado por la curva de \textit{Nukiyama}. 
-EL problema actual para realizarlo numéricamente es que debido a la escala del fluido (\textit{mesoscópica}) con las técnicas convencionales de resolución de Mecánica de Fluidos Computacional(\textit{Computational Fluid Dynamicso} CFD)
-no se obtienen resulados en un tiempo razonable.
+Un ejemplo de aplicacion industrial del tipo de problema mencionado recide en el estudio de un reactor nuclear.La transferencia de calor producida en las barras de elementos combustibles del núcleo provoca ebullición nucleada a partir de una dada potencia.Se conoce bien cómo es la fenomenología en función de la potencia entregada, por haberse realizado numerosos ensayos y caracterizado distintos parámetros. 
+
+Actualmente el dilema para reproducir numéricamente los tipos de problemas mencionados es que debido a la escala del fluido (\textit{mesoscópica}) con las técnicas convencionales de resolución de Mecánica de Fluidos Computacional(\textit{Computational Fluid Dynamicso} CFD) no se obtienen resulados en un tiempo razonable y que también tenga en cuenta todos las interacciones físicas que ocurren.
+
+Uno de los métodos numéricos que se están desarrollando para que el costo computacional sea cada vez menor es el método de lattice-Boltzmann. Dicho método tiene la ventaja de ser paralelizable y así disminuir los tiempos de cálculo. 
 
 \section{Descripción de las escalas de los fluidos}
 
@@ -46,7 +46,7 @@ Computacionalmente son llevados a cabo para encontrar una solución aproximada r
 La Simulación de Dinámica Molecular (\textit{Molecular Dynamic Simulation} o MDS) es una técnica en la cual el movimiento individual de átomos o moléculas del fluido son registrados para resolver las ecuaciones de Newton.
 La principal ventaja de MDS es el aspecto macroscópico del fluido puede ser directamente conectado con el comportamiento molecular, en donde la estructura molecular y las interacciones microscópicas pueden ser descriptas de una manera directa.
 
-El método de lattice Boltzmann ( \textit{lattice Boltzman Method} o LBM) es una aproximación del nivel mesoscópica. LBM estudia la micro-dinámica de partículas ficticias utilizando modelos cinéticos simplificados. La cual provee un camino alternativo de simular la mecánica de fluidos. La naturaleza de la cinética brinda distintas características de LBM tales que es claro el panorama de los procesos de advección y colisión de partículas de fluidos simuladas. La estructura del algoritmo es simple y de fácil implementación en las condiciones de contorno, además presenta un paralelismo natural. Todos éstos interesantes atributos hacen que LBM sea una potente herramienta numérica para la simulación de sistemas de fluidos envueltos en problemas físicos complejos. \cite{guo2013lattice}
+El método de lattice Boltzmann ( \textit{lattice Boltzman Method} o LBM) es una aproximación del nivel mesoscópica. LBM estudia la micro-dinámica de partículas ficticias utilizando modelos cinéticos simplificados. La cual provee un camino alternativo de simular la mecánica de fluidos. La naturaleza de la cinética brinda distintas características de LBM tales que es claro el panorama de los procesos de advección y colisión de partículas de fluidos simuladas. La estructura del algoritmo es simple y de fácil implementación en las condiciones de contorno, además presenta un paralelismo natural. Todos éstos interesantes atributos hacen que LBM sea una potente herramienta numérica para la simulación de sistemas de fluidos envueltos en problemas físicos complejos\cite{guo2013lattice}. 
 
 
 \section{Descripción de LBM}
@@ -95,9 +95,14 @@ Por medio de la \textit{colisión} y luego del \textit{streaming} se obtienen lo
 \end{align}
 
 El método numérico en éste caso tiene los siguiente forma de resolución:
+\newline
+{\scriptsize
 
-	 \textbf{Colisión}  \textbf{Streaming} \textbf{Calculo de parámetros $\rho$ , u} \textbf{Actualización de parámetros} \textbf{siguiente paso de tiempo} 
-
+\xymatrix{\>\ar@{->}[r]&\textbf{Colisión}\ar@^{->}[r]&\textbf{Streaming}\ar@{->}[r]&\textbf{Cálculo de parámetros\ar@{->}[r]}&\textbf{Actualización de parámetros}\ar@{->}[r]&\> \ar@/^{7mm}/[lllll]_{SIGUIENTE \> PASO \> DE \> TIEMPO}}
+}
+.
+\newline 
+\newline 
 Debido a que cada nodo de la grilla debe realizar la misma operación de colisión de manera independiente del resto, el modelo es altamente paralelizable. Y además las operaciones matemáticas que deben ejecutarse en el operador de colisión son sencillas, no implicando un gran costo computacional.
 
 \newpage
@@ -113,7 +118,7 @@ El esquema de la figura \ref{fig:cpu_gpu_transis} muestra las cantidades de tran
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=10cm]{cpu_gpu.png}
-	\caption{Comparación del uso de transistores entre CPU y GPU.}
+	\caption{Comparación del uso de transistores entre CPU y GPU \cite{rinaldi2011modelos}.}
 	\label{fig:cpu_gpu_transis}
 \end{figure}
 
@@ -128,8 +133,15 @@ El lenguaje de programación que se utiliza en las placas gráficas es CUDA y fu
 
 \section{Descripción alcance del proyecto integrador}
 
-Mediante el método LBM desarrollado en \textbf{CITAR AL EZE}	se realizará la implementación de un código numérico para resolver problemas de transferencia de calor en flujos multifásicos con cambio de fase de la manera más robusta posible.
-La validación del código se procederá mediante los problemas: \textit{modelo e construcción de Maxwell}, \textit{estratificación de una pared} y \textit{inicialización de burbujas} las cuáles se encuentran explicadas en \ref{cap2}.
+Mediante el método LBM desarrollado por Fogliatto en \cite{fogliatto2018modelado}, \cite{fogliatto2019simulation} y \colorbox{green}{cita de ec energia} se realizará la implementación de un código numérico para resolver problemas de transferencia de calor en flujos multifásicos con cambio de fase de la manera más robusta posible.
+La validación del código se procederá mediante los siguientes tres problemas:
+\begin{itemize}
+	\item \textit{construcción de Maxwell}
+	\item \textit{estratificación de un fluido VdW con temperatura no uniforme}
+	\item \textit{generación de burbujas sobre una superficie horizontal calefaccionada}
+\end{itemize} 
+
+las cuáles se encuentran explicadas en \ref{cap2}.
 
 El método numérico consiste en resolver dos ecuaciones, la primera es de conservación de masa y momento, la segunda es la ecuación de energía. Las ecuaciones resuelven campos de distribución de probabilidades cuando se realiza la colisión y streaming para el nuevo paso de tiempo, siendo del estilo de la ecuación \ref{eq:field_intro}. A partir de ellas dos se recuperan las variables macroscópicas $\rho$ , $\mathbf{u}$ y \textbf{T}. El método se encuentra descripto en el capítulo \ref{cap3}.
 
@@ -137,7 +149,9 @@ La implementación del código se ejecutará en los lenguajes de programación d
 
 Al ser un proyecto complejo, mediante la herramienta multiplataforma \textbf{CMake} se realizó la compilación de las librerías. El proyecto se encuentra en \textbf{Git Hub} donde puede ser descargado en \url{ https://github.com/efogliatto/LBCUDA_Test}.
 
-Se realizará una comparación entre los resultados de \textit{simple} y \textit{doble} precisión. Y a su vez cuánto es el \textit{Speed Up} de los códigos en \textbf{C}, \textbf{CUDA} y \textbf{Python}. Para finalizar también  se hará un \textit{Speed Up} del código desarrollado por \textbf{CITAR AL EZE} en \textbf{C ++} que se encuentra en \url{https://github.com/efogliatto/phoenix}.
+Se realizará una comparación entre los resultados de \textit{simple} y \textit{doble} precisión. Y a su vez cuánto es el \textit{Speed Up} de los códigos en \textbf{C}, \textbf{CUDA} y \textbf{Python}. 
+
+Por último se hará un \textit{Speed Up} del código desarrollado \textbf{C ++} por Fogliatto utilizado en los mismos problemas ( \cite{fogliatto2018modelado}, \cite{fogliatto2019simulation} y \colorbox{green}{cita de los problemas}). Dicho código se encuentra en \url{https://github.com/efogliatto/phoenix}.
 
 
 
