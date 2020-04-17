@@ -2,24 +2,24 @@
 \graphicspath{{figs/cap4/}}
 \label{cap4}
 
-\section{Programación CUDA C}
-
 El procesador principal que tiene una PC es la CPU, por lo cual se denomina \textit{host}, la GPU es un coprocesador y se denomina \textit{device}. Las ejecuciones de los procesos en la CPU están diseñadas para que se efectúen de manera secuecnial, en cuánto las de la GPU en paralelo; las últimas realizándose en varios hilos de ejecución (\textit{threads}). Las operaciones en paralelo que son analizadas por la CPU y las refiere a la GPU son llevadas a cabo mediante funciones llamadas \textit{kernel}. \textit{Host} y \textit{device} poseen su propia memoria RAM, llamadas \textit{host memory} y \textit{device memory} respectivamente. \cite{rinaldi2011modelos}
 
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=0.4\textwidth]{figs/cap4/threads_block_grid.png}
+	\includegraphics[width=0.45\textwidth]{figs/cap4/threads_block_grid.png}
 	\caption{Bloques de threads organizados en una grilla de bloques \cite{rinaldi2011modelos}.}
 	\label{fig:block_grid_threads}
 \end{figure}
 
 Un bloque de \textit{threads} (\textit{thread block}) es un grupo de hilos de ejecución que pueden cooperar entre sí compartiendo eficientemente datos a través de la memoria compartida de acceso rápido y sincronizando sus ejecuciones, lo cual permite coordinar el acceso a los datos especificando puntos de sincronización en el \textit{kernel}. 
 
-Una grilla de bloques es una agrupación de (\textit{thread block}) que ejecutan el mismo \textit{kernel}. Ésto vence la limitación de hardware que hay un limitado número de \textit{threads} por bloque. Debido a que la ejecución del proceso en los bloques de \textit{threads} de una grilla pueden ser realizados en tiempos distintos, es necesario realizar un sincronización entre los mismos para que su comunicación sea segura y no haya conflictos.\label{prob:sync} \cite{tolke2010implementation}
+Una grilla de bloques es una agrupación de (\textit{thread block}) que ejecutan el mismo \textit{kernel}. Ésto vence la limitación de hardware que hay un finito número de \textit{threads} por bloque. Debido a que la ejecución del proceso en los bloques de \textit{threads} de una grilla pueden ser ejecutados en tiempos distintos, es necesario realizar un sincronización entre los mismos para que su comunicación sea segura y no haya conflictos.\cite{tolke2010implementation}
 
-La figura \ref{fig:block_grid_threads} muestra el concepto de grilla de bloques y (\textit{thread block}).
+La figura \ref{fig:block_grid_threads} muestra el concepto de grilla de bloques y \textit{thread block}.
 
-La programación de las GPU se realiza mediante el lenguaje CUDA, el cuál es una extención del lenguaje C debido su familiaridad y uso extendido, por lo que el lenguaje se denomina CUDA C. La realización de procesos en paralelos es llevada a cabo mediante funciones llamadas \textit{kernel} y son del tipo \textit{void}.
+\section{Programación CUDA C}
+
+La programación de las GPU se lleva a cabo mediante el lenguaje CUDA, el cuál es una extención del lenguaje C debido su familiaridad y uso extendido, por lo que el lenguaje se denomina CUDA C. La realización de procesos en paralelos ejecutada mediante funciones llamadas \textit{kernel} y son del tipo \textit{void}.
 
 Existen tres tipos de funciones que se pueden llevar a cabo y son:
 
@@ -87,7 +87,57 @@ cudaMemcpy(void *dst, void *src, size_t count, cudaMemcpyKind kind);
 	\label{tab:cudamemcy}
 \end{table}
 
-El lanzamiento de un \textit{kernel} en varios bloques tiene una particularidad en la ejecución de los procesos, los \textit{threads} de cada bloque llevan realizan los procesos en diferentes tiempos por ser independientes. Para evitar problemas en las operaciones que se realizan en la memoria pasada al \textit{kernel} ( surge en parte debido a que un \textit{kernel} es una función \textbf{void} ), se utiliza la función \textbf{cudaDeviceSynchronize($\>$)}. La función hace que los bloques realicen su ejecución y antes de proceder a la siguiente instrucción espera a que todos los bloques de \textit{threads} hallan terminado. Para sincronizar los \textit{threads} de un mismo bloque en un función \textit{device} se utiliza \textbf{syncthreads($\>$)}.
+El lanzamiento de un \textit{kernel} en varios bloques tiene una particularidad en la ejecución de los procesos, los \textit{threads} de cada bloque llevan realizan los procesos en diferentes tiempos por ser independientes. Para evitar problemas en las operaciones que se realizan en la memoria pasada al \textit{kernel} ( surge en parte debido a que un \textit{kernel} es una función \textbf{void} ), se utiliza la función \textbf{cudaDeviceSynchronize($\>$)}. Esta función hace que los bloques realicen su ejecución y antes de proceder a la siguiente instrucción espera a que todos los bloques de \textit{threads} hallan terminado. Para sincronizar los \textit{threads} de un mismo bloque en un función \textit{device} se utiliza \textbf{syncthreads($\>$)}.
+
+
+\section{Arquitectura de memoria}
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{figs/cap4/Schematization-of-CUDA-architecture-Schematic-representation-of-CUDA-threads-and-memory.png}
+	\caption{Esquematización de la arquitectura de CUDA. Izquierda: lanzamiento de un \textit{kernel} desde el \textit{host}. Derecha: jerarquía de memoria.  \cite{nobile2014cutauleaping}.}
+	\label{fig:schedule_architecture_cuda}
+\end{figure}
+
+Según la arquitectura que posea un procesador, son su respectiva jerarquía en memoria, accesos y latencias se piensa cómo llevar a cabo la implementación de un código. Por ello es de importancia conocer éstas características. 
+
+Se mencionó anteriormente que el \textit{host} y \textit{device} poseen su propia memoria. La transferencia de datos de una memoria a otra tiene una muy alta latencia en cualquiera de los dos sentidos. 
+
+%Por lo que al realizar la implementación de un código hay que minimizar la transferencia para que el tiempo de ejecución de los procesos sea mínimo.
+
+Cuando el \textit{host} efectúa su rutina de ejecución y se encuentra con un lanzamiento de \textit{kernel}, éste será llevado a cabo en múltiples \textit{threads} del \textit{device}. Una representación de ello se muestra en la figura \ref{fig:schedule_architecture_cuda}. 
+
+Los procesos en el \textit{device} tienen almacenados los datos según una jerarquía de memoria, con su respectiva limitación de acceso que se observa en la figura \ref{fig:schedule_architecture_cuda}. Los \textit{threads} pueden acceder a datos de muchas memorias diferentes en distintos procesos, dichas memorias son las siguientes:
+
+\begin{itemize}
+	\item  \textit{register memory} es visible para un único \textit{thread}
+	\item \textit{local memory} tiene las mismas caracteísticas que \textit{register memory} pero con una performance menor.
+	\item \textit{shared memory} es visible por todos los \textit{threads} de un mismo bloque, posee una baja latencia en su acceso.
+	\item \textit{global memory} es visible por todos los \textit{threads} de la grilla y también por el \textit{host}, posee una alta latencia de acceso.
+	
+	Las siguientes memorias poseen una alta latencia de acceso son asignadas y son aignadas para usos específicos y generalmente se almacenan en \textit{caché}:
+	
+	\item \textit{constant memory} es visible por todos los \textit{threads} de la grilla siendo únicamente de lectura. El uso de ésta memoria puede reducir el ancho de banda de memoria requerido en comparación con la {global memory}
+	\item \textit{texture memory} es otra memoria en la que sólo se puede leer y tienen acceso todos los \textit{threads} de la grilla. Al realizar lecturas de \textit{threads} ó \textit{threadblocks} adyacentes su performance en comparación con \textit{global memory} es mayor. 
+	
+\end{itemize}
+
+\iffalse
+En el presente trabajo se utilizaron las siguientes placas \textbf{GEFORCE GTX 760} y \textbf{GEFORCE GTX970} cuyas características se encuentran en la tabla XXX\colorbox{green}{colocar tabla}
+
+\section{Uso de memoria en el código de LBM}
+
+Las variables del LBM descripto en \colorbox{green}{ref cap LBM sec 2 ec pseud} que deben ser visualizadas en un entorno gráfico para verificar el funcionamiento del código son $\mathbf{u}$, $\rho$ y $T$. Los parámetros mencionados deben poder escribirse en un archivo, y para ello tienen que estar necesariamente allocados en el \textit{host}. 
+
+Para obtener los resultados esperados en el código es preciso que el avance temporal en cada paso sea chico y que la cantidad de pasos de tiempo a simular sean grande. 
+
+La memoria necesaria (fija) para todas las variables del problema a resolver se encuentran detalladas en la tabla xxx. Allí se encuentra la totalidad de la memoria para ditintos tamaños de griila y el caso de que sean de \textit{simple} ó \textit{doble} precisión.
+
+
+Para el código que se implementará utilizando el LBM descripto en \colorbox{green}{ref cap LBM sec 2 ec pseud} es necesario realizar el transpaso de información del \textit{device} al \textit{host} para conocer el estado de las variables $\mathbf{u}$, $\rho$ y $T$; para así guardarlas y poder visualizarlas en un entorno gráfico para verificar bien la evolución de las mismas. 
+
+
+\fi
 
 
 %%% Local Variables: 
