@@ -133,27 +133,28 @@ if __name__ == "__main__":
     # plt.ioff()
 #%%     Datos obtenidos de MaxwellConstruction para mesh = 100 x 100 tiempo 50000
 
-#rho_l  = np.array( [1.9e-1 ,1.9e-1 ,1.8e-1 ,1.7e-1, 1.6e-1, 1.5e-1, 1.4e-1, 1.2e-1])/vdw.rhoc()
-#rho_g  = np.array( [4.9e-3, 7.3e-3 ,1.1e-2 ,1.5e-2 ,2.0e-2, 2.7e-2, 3.6e-2, 4.8e-2])/vdw.rhoc()
-#T      = np.array ([ 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95])
-#
-#
-##%%
-#
-#plt.figure()
-#plt.plot(rho_l,T,'r.',ms=15)
-#plt.plot(rho_g,T,'r.',ms=15)
-#plt.plot(coex[0], coex[1], label='VdW',linewidth=2.5)
-#plt.ylabel(r'$T/T_c$',fontsize=14)
-#plt.xlabel(r'$\rho/\rho_c$',fontsize=14)
-#plt.xscale('log')
-#plt.legend(loc = 'best', framealpha=1)
-#plt.xticks(fontsize=14)
-#plt.yticks(fontsize=14)
-#plt.grid(True)
-#plt.show()
-##plt.savefig('TP_4_ej_7_loss_conv.png')
-#plt.close
+rho_l  = np.array( [1.9e-1 ,1.9e-1 ,1.8e-1 ,1.7e-1, 1.6e-1, 1.5e-1, 1.4e-1, 1.2e-1])/vdw.rhoc()
+rho_g  = np.array( [4.9e-3, 7.3e-3 ,1.1e-2 ,1.5e-2 ,2.0e-2, 2.7e-2, 3.6e-2, 4.8e-2])/vdw.rhoc()
+T      = np.array ([ 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95])
+
+
+#%%
+
+plt.figure()
+plt.plot(rho_l,T,'r.',ms=15)
+plt.plot(rho_g,T,'r.',ms=15)
+plt.plot(coex[0], coex[1], label='VdW',linewidth=2.5)
+plt.ylabel(r'$T/T_c$',fontsize=14)
+plt.xlabel(r'$\rho/\rho_c$',fontsize=14)
+plt.xscale('log')
+plt.legend(loc = 'best', framealpha=1)
+plt.xticks(fontsize=14)
+plt.yticks(fontsize=14)
+plt.grid(True)
+plt.savefig('Tr_vs_rhor_maxewllConstruction.png')
+plt.show()
+
+plt.close
     
         
     
@@ -188,6 +189,8 @@ if __name__ == "__main__":
 #T_l_65  = np.mean(Taux[0:10])
 #T_g_65  = np.mean(Taux[-10:])
 
+
+#%%
 import numpy as np
 
 rho_l  = []
