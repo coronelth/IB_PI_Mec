@@ -8,8 +8,8 @@ Created on Sat Apr 25 08:22:01 2020
 
 from time import time
 import numpy as np
-#import pycuda
-#from pycuda import gpuarray
+import pycuda
+from pycuda import gpuarray
 #import pycuda.autoinit
 import argparse
 import ctypes
@@ -215,7 +215,7 @@ if __name__ == '__main__':
 #%%# paso el chango de internet 
 from ctypes import *
 
-dll = ctypes.CDLL('/home/coronelth/Desktop/Tesis_Grado_Ing_Mec_IB/LBCUDA_Test/lib/libio.so')
+dll = ctypes.CDLL('/home/utnsistemas/Desktop/LBCUDA_Test/lib/libio.so')
 dll.updateCaseFile.argtypes = POINTER(c_char * 100),c_uint,POINTER(c_char * 100),c_uint,POINTER(c_uint),c_uint
 dll.updateCaseFile.restype = None
 

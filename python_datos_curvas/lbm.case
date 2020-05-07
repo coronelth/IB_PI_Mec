@@ -1,0 +1,25 @@
+#
+# EnSight 7.4.1 ((n))
+# Case File: lattice.case
+
+FORMAT
+
+type:  ensight gold
+
+GEOMETRY
+
+model:                     lattice.geo
+
+VARIABLE
+
+scalar per node:           Rho lattice.Rho_*
+scalar per node:           T lattice.T_*
+vector per node:           U lattice.U_*
+
+TIME
+time set:                  1
+number of steps:           2
+filename start number:     0
+filename increment:        1
+time values:               1
+                           2
