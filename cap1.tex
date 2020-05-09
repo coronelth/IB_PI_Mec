@@ -29,7 +29,7 @@ Generalmente el movimiento de un fluido puede ser descripto por tres tipos de mo
 Los modelos matemáticos de los flujos de fluidos son :
 
 \begin{itemize}
-	\item ecuación de Newton para un basto \textbf{coloquial} número de moléculas (escala microscópica)
+	\item ecuación de Newton para una cantidad elevada de moléculas (escala microscópica)
 	\item ecuación de Boltzman para la función de distribución simple (escala mesoscópica)
 	\item ecuación de Navier-Stokes para macro-variaciones de flujos (escala macroscópica). \textbf{en todo caso seria alguna aproximacion de continuo. NS es para un tipo de flujo}
 \end{itemize}
@@ -46,7 +46,7 @@ Computacionalmente son llevados a cabo para encontrar una solución aproximada r
 La Simulación de Dinámica Molecular (\textit{Molecular Dynamic Simulation} o MDS) es una técnica en la cual el movimiento individual de átomos o moléculas del fluido son registrados para resolver las ecuaciones de Newton.
 La principal ventaja de MDS es el aspecto macroscópico del fluido puede ser directamente conectado con el comportamiento molecular, en donde la estructura molecular y las interacciones microscópicas pueden ser descriptas de una manera directa.
 
-El método de lattice Boltzmann ( \textit{lattice Boltzman Method} o LBM) es una aproximación del nivel mesoscópica. LBM estudia la micro-dinámica de partículas ficticias utilizando modelos cinéticos simplificados,. Llalo cual provee un camino alternativo de simular la mecánica de fluidos. La naturaleza de la cinética brinda distintas características de LBM tales que es claro el panorama de los procesos de advección y colisión de partículas de fluidos simuladas. La estructura del algoritmo es simple y de fácil implementación en las condiciones de contorno, además presenta un paralelismo natural. Todos éstos interesantes atributos hacen que LBM sea una potente herramienta numérica para la simulación de sistemas de fluidos envueltos en problemas físicos complejos\cite{guo2013lattice}. 
+El método de lattice Boltzmann ( \textit{lattice Boltzman Method} o LBM) es una aproximación del nivel mesoscópica. LBM estudia la micro-dinámica de partículas ficticias utilizando modelos cinéticos simplificados, lo cual provee un camino alternativo de simular la mecánica de fluidos. La naturaleza de la cinética brinda distintas características de LBM tales que es claro el panorama de los procesos de advección y colisión de partículas de fluidos simuladas. La estructura del algoritmo es simple y de fácil implementación en las condiciones de contorno, además presenta un paralelismo natural. Todos éstos interesantes atributos hacen que LBM sea una potente herramienta numérica para la simulación de sistemas de fluidos envueltos en problemas físicos complejos\cite{guo2013lattice}. 
 
 
 \section{Descripción general de LBM}

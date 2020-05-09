@@ -32,28 +32,16 @@ Los mayoris de los modelos para resolver los flujos multifásicos son tresclasif
 
 \section{Modelo pseudopotencial}
 
-El modelo pseudopotencial es el adoptado en el presente trabajo para abordar los problemas descriptos en \ref{cap4} por lo cual se detalla en ésta sección. Este modelo multifásico tiene la particularidad de que la frontera entre las fases no es resuelta con exactitud. Dicha interfaz es representada de forma difusa con un cierto tamaño en la grilla, siendo una importante ventaja para el cálculo puesto que la interfaz no debe ser reconstruida.\cite{parrill2019reviews}.
+El modelo pseudopotencial es el adoptado en el presente trabajo para abordar los problemas descriptos en el Cap. \ref{cap4} por lo cual se detalla en ésta sección. Este modelo multifásico tiene la particularidad de que la frontera entre las fases no es resuelta con exactitud. Dicha interfaz es representada de forma difusa con un cierto tamaño en la grilla, siendo una importante ventaja para el cálculo puesto que la interfaz no debe ser reconstruida.\cite{parrill2019reviews}.
 
 
-La obtención de la ecuación de lattice Boltzmann (LBE) a través de la ecuación de Boltzmann se encuentra descripta en \cite{kruger2017lattice} (sec 3.4 y 3.5 ). Primero se explica la discretización en el espacio de velocidades, en el segundo la del espacio físico, temporal e integración de las características.
+La obtención de la ecuación de lattice Boltzmann (LBE) a través de la ecuación de Boltzmann se encuentra descripta en \cite{kruger2017lattice} (Sec 3.4 y 3.5 ). Primero se explica la discretización en el espacio de velocidades, en el segundo la del espacio físico, temporal e integración de las características.
 
-Para entender el LBM, hay que saber que el mismo deriva de discretizar la ecuación de Boltzmann en los espacios de velocidad, físico y temporal.  
-
-\textbf{Acordate que ya vas a decir algo de esto en la Introduccion}
-Un LBM es el \textit{DdQq} (\textit{d} - dimensional , \textit{q} velocidades). La figura \ref{fig:D1Q3_D2Q9} muestra como es el conjunto de velocidades del modelo D1Q3 y D2Q9.
-
-En el presente trabajo el LBM es $D2Q9$. 
-\iffalse
-\begin{figure}[h]
-	\centering
-    \includegraphics[width=.8\textwidth]{figs/cap2/D1Q3_D2Q9}
-	\caption{Conjunto de velocidades de los modelos D1Q3 y D2Q9. \cite{kruger2017lattice}}
-	\label{fig:D1Q3_D2Q9}	
-\end{figure}
-\fi 
 El problema físico a resolver cuenta con una región, la cuál se le realizará un mallado para discretizar el espacio. El nodo i - ésimo de la malla posee las coordenadas ${\bar{X}}_{i} = (x,y,z)$, a su vez densidad $\rho_{i}$ y temperatura $T_{i}$. La velocidad en el nodo tiene las componentes ${\bar{U}}_{i} = ({U}_{ix},{U}_{iy},{U}_{iz})$. El espacio de velocidades indica como es la propagación de las propiedades en la grilla. Dicha velocidad de grilla $\mathbf{e}_{i}$ posee $\alpha$ componentes donde $\alpha = q $. 
 
 Para el modelo D2Q9 la figura \ref{fig:D1Q3_D2Q9} muestra un esquema de las velocidades de grilla del nodo i - ésimo y la Ec. (\ref{eq:velgrilla}) el valor adoptado.
+
+En el presente trabajo el LBM es $D2Q9$. 
 
 
 \begin{equation}
@@ -73,7 +61,7 @@ Para el modelo D2Q9 la figura \ref{fig:D1Q3_D2Q9} muestra un esquema de las velo
 
 Cada nodo de la grilla contará con una distribución $f_{i}$, asociada al espacio de poblaciones. En el caso más simple se cuenta con una distribución y esa asociada a la densidad. La distribución $f_{i}$ posee $\alpha$ componentes. Mediante ésta funcion de distribución, pueden recuperarse variables macroscópicas del problema, como ser : $\rho$ , $U$,$T$ .
 
-En éste modelo la distribución $f$ se calcula a través de las fuerzas de interacción que poseen las partículas de cada nodo. Por lo que se debe proporcionar un potencial que describa a las fuerzas de interacción, dicho potencial estará dado por un Ecuación de estado.
+En éste modelo la distribución $f$ se calcula a través de las fuerzas de interacción que poseen las partículas de cada nodo. Por lo que se debe proporcionar un potencial que describa a las fuerzas de interacción, dicho potencial estará dado por una Ecuación de estado.
 
 
 
@@ -82,7 +70,7 @@ Separacion automatica de fases?}
 
 \section{Ecuación de estado y fluido de Van der Waals}
 
-Al ser multifásicos los problemas a desarrollar, es de importancia conocer las leyes que gobiernan las fases de los fluidos. La ley de gases ideales \ref{eq:gas_ideal} es una Ecuación de estado (\textit{Ecuation of state} o EOS), cabe destacar que la mayor supusición es que las partículas del gas son puntuales. Donde \textit{P} es la presión (atm), V es el volúmen (L), \textit{n} número de moles, R constante universal de los gases y \textit{T} temperatura. La Ley se  caracteriza el comportamiento para gases de baja densidad.
+Al ser multifásicos los problemas a desarrollar, es de importancia conocer las leyes que gobiernan las fases de los fluidos. La ley de gases ideales \ref{eq:gas_ideal} es una Ecuación de estado (\textit{Equation of state} o EOS), cabe destacar que la mayor supusición es que las partículas del gas son puntuales. Donde \textit{P} es la presión (atm), V es el volúmen (L), \textit{n} número de moles, R constante universal de los gases y \textit{T} temperatura. La Ley se  caracteriza el comportamiento para gases de baja densidad.
 
 \begin{align}
 P V = n R T
@@ -98,8 +86,7 @@ P = \frac{R T}{V_m - b} - a {(\frac{1}{V_m})}^2
 
 El parámetro \textit{a}  ($\frac{atm L^2}{mol^2}$) caracterizan la interacción que poseen las moléculas del gas entre sí, y \textit{b} ($\frac{L}{mol}$) da una idea del volumen molar mínimo que posee una partícula del fluído (éste parámetro define a la partícula del gas con un dado volúmen en vez de ser puntual como en la Ley de gases ideales).
 
-La EOS de VdW es utilizada en los LBM pseudopotenciales para describir un potencial de interacción entre las partículas.
-
+La EOS de VdW es utilizada en el presente trabajo para modelar el potencial del modelo LBM \textit{pseudopotential} de interacción entre las partículas.
 
 
 \section{Modelo pseudopotencial de dos ecuaciones con operador MRT}
