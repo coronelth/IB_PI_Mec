@@ -77,8 +77,13 @@ Otra particularidad que se presenta en la programación es el manejo de la memor
 
 \subsection{Programación de un \textit{kernel}}
 
-A modo de ejemplo para poder visualizar las diferencias de programación en una función de un kernel en CUDA , con una típica función de C, se muestra la siguiente: (la cual es de la obtencion de la densidad)
+Para visualizar las diferencias de programación de una función \textbf{CUDA C } (\textit{kernel}) , con una típica función de \textbf{C}, se muestra a continiación como ejemplo la programación para ambos lenguajes de la Ec. (\ref{eq:rho}): 
 
+\begin{align*}
+	\rho = \sum_{\alpha} f_{\alpha}
+\end{align*}
+
+donde se muestra primeramente su programación en \textbf{C}
 
 {\footnotesize
 	\begin{frame}{}
@@ -90,26 +95,100 @@ A modo de ejemplo para poder visualizar las diferencias de programación en una 
 			commentstyle=\color{green}\ttfamily,
 			morecomment=[l][\color{magenta}]{\#}
 		}
-		\begin{lstlisting}
-		#include <momentoDensity.h>
-		#include <stdio.h>
-		
-		void momentoDensity(scalar* rho, scalar* field, basicMesh* mesh) {
-		
-		// Suma de todas las componentes
-		
-		for( uint i = 0 ; i < mesh->nPoints ; i++ ) {
+		\begin{lstlisting}[frame=single]
+#include <momentoDensity.h>
+#include <stdio.h>
+
+void momentoDensity(scalar* rho, scalar* field, basicMesh* mesh) {
+	
+	// Suma de todas las componentes
+	
+	for( uint i = 0 ; i < mesh->nPoints ; i++ ) {
 		
 		rho[i] = 0;	    
 		for( uint j = 0 ; j < mesh->Q ; j++ ) {
-		rho[i] += field[ i*mesh->Q + j ];
+			rho[i] += field[ i*mesh->Q + j ];
 		}		
-		}
-		}
+	}
+}
 		\end{lstlisting}
 		
 	\end{frame}
 }
+
+Donde \textbf{basicMesh* mesh} es un puntero a una estructura, la cuál posee información del mallado que se realizó al dominio del problema a resolver ; como por ejemplo la cantidad de nodos que posee la malla (\textbf{nPoints}) y la cantidad de direcciones que posee el modelo en su espacio de velocidades \textbf{Q}. El vector  \textbf{scalar* rho} es de dimensión \textit{nPoints} y contiene los valores de $\rho$, por último \textbf{scalar* field} es un vector que posee las \textbf{Q} componentes de la función de distribución de poblaciones \textit{f} para cada uno de los  \textit{nPoints} nodos de la malla.
+
+Cabe destacarse que por los resultados obtenidos mientras se realizó la programación del código en \textbf{C}, se vio que el uso de la función \textbf{for} para éstos casos es más eficiente que el de \textbf{while}.
+
+La programación de la Ec.(\ref{eq:rho}) implementada en \textbf{CUDA C} es la siguiente :
+\newpage
+
+{\footnotesize
+	\begin{frame}{}
+		\lstset{language=C,
+			framesep=2mm,
+			basicstyle=\ttfamily,
+			keywordstyle=\color{blue}\ttfamily,
+			stringstyle=\color{red}\ttfamily,
+			commentstyle=\color{green}\ttfamily,
+			morecomment=[l][\color{magenta}]{\#}
+		}
+		\begin{lstlisting}[frame=single]
+#include <cudaMomentoDensity.h>
+#include <cuda_runtime.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+extern "C" __global__ void cudaMomentoDensity(cuscalar* field,
+				              cuscalar* rho,
+					      int np,
+					      int Q ) {
+							
+	int idx = threadIdx.x + blockIdx.x*blockDim.x;	
+	if( idx < np ) {	
+		int j= 0;		
+		cuscalar sum = 0;		
+		while ( j < Q ) {		
+			sum += field[ idx*Q + j ];			
+			j++;			
+		}				
+		rho[idx] = sum;	
+	}
+}		
+		\end{lstlisting}
+		
+	\end{frame}
+}
+
+En éste caso se pasa de forma distinta los valores de la cantidad de nodos (\textbf{np}) y de la cantidad de velocidades del modelo \textit{DdQq} (\textbf{Q}). La distinción en los argumentos que se pasan es debido a como es que \textbf{CUDA} permite el manejo de las estructuras y de las decisiones que se tomaron cuando se desarrollaba el código para uno u otro lenguaje.
+
+Es de importancia conocer explícitamente que es lo que realizan las siguientes líneas:
+
+{\footnotesize
+	\begin{frame}{}
+		\lstset{language=C,
+			framesep=2mm,
+			basicstyle=\ttfamily,
+			keywordstyle=\color{blue}\ttfamily,
+			stringstyle=\color{red}\ttfamily,
+			commentstyle=\color{green}\ttfamily,
+			morecomment=[l][\color{magenta}]{\#}
+		}
+		\begin{lstlisting}
+	int idx = threadIdx.x + blockIdx.x*blockDim.x;	
+	if( idx < np ) {	
+		\end{lstlisting}
+		
+	\end{frame}
+}
+
+las cuáles indican que se realizará de forma paralela las ejecuciones que se encuentran entre \textcolor{blue}{if} ( idx < np)\{...\}, donde es necesario identificar los \textit{threads} a dónde serán llevados a cabo las tareas. El identificador es \textit{idx} donde blockIdx.x  indica la cantidad de \textit{threads} por bloques y blockDim.x el numero de \textit{block's}.
+
+A modo de ejemplo si tenemos que $\quad np = 2048 \quad$ y que la cantidad de \textit{thread} por \textit{block} es 512 \cite{zone2020cuda}, con indicar que se utilizarán cuatro (4) \textit{block's} todo el cálculo se realiza simultáneamente, si la cantidad es menor se necesitará más tiempo para la tarea.
+
+Se colola \textcolor{blue}{extern} \textcolor{red}{''C''} para que el compilador sepa que es una función de \textbf{CUDA} y además para lo implemente en una biblioteca tipo \textit{ptx} para \textbf{Python}.
+
+Resta ver cómo es el llamado de las funciones realizadas en el \textit{main}, por lo que en \textbf{C} se tiene:
 
 
 {\footnotesize
@@ -123,43 +202,47 @@ A modo de ejemplo para poder visualizar las diferencias de programación en una 
 			morecomment=[l][\color{magenta}]{\#}
 		}
 		\begin{lstlisting}
-		#include <cudaMomentoDensity.h>
-		#include <cuda_runtime.h>
-		#include <stdio.h>
-		#include <stdlib.h>
-		
-		extern "C" __global__ void cudaMomentoDensity(cuscalar* field,
-		cuscalar* rho,
-		int np,
-		int Q ) {
-		
-		int idx = threadIdx.x + blockIdx.x*blockDim.x;	
-		if( idx < np ) {	
-		int j= 0;		
-		cuscalar sum = 0;		
-		while ( j < Q ) {		
-		sum += field[ idx*Q + j ];			
-		j++;			
-		}				
-		rho[idx] = sum;	
-		}
-		}
-		
+		momentoDensity( rho, field_f, &mesh);
 		\end{lstlisting}
 		
 	\end{frame}
 }
 
+la cuál no requiere de ninguna explicación. Mientras que en \textbf{CUDA C} se tiene:
 
 
+{\footnotesize
+	\begin{frame}{}
+		\lstset{language=C,
+			framesep=2mm,
+			basicstyle=\ttfamily,
+			keywordstyle=\color{blue}\ttfamily,
+			stringstyle=\color{red}\ttfamily,
+			commentstyle=\color{green}\ttfamily,
+			morecomment=[l][\color{magenta}]{\#}
+		}
+		\begin{lstlisting}
+cudaMomentoDensity<<<ceil(mesh.nPoints/xgrid)+1,xgrid>>>(
+ 		deviceField, deviceRho, cmesh.nPoints, cmesh.Q);  
+cudaDeviceSynchronize();
 
+		\end{lstlisting}
+		
+	\end{frame}
+}
 
+en donde < < <, > > > indica la cantidad de \textit{block} en que se realizará la tarea, como así también la cantidad de \textit{threads} en cada \textit{block}.
+
+\begin{align*}
+		<<<\quad \overbrace{ceil(mesh.nPoints/xgrid)+1}^{cantidad \>de\> \textit{threads}\> por\> \textit{block}}\quad,\quad \underbrace{xgrid}_{cantidad\>de\>block} \quad>>>
+\end{align*}
 
 
 
 \subsection{Utilización de la memoria de \textit{host} y \textit{device}}
 
 
+Las funciones que son realizadas en \textbf{C} pueden retornar alguna variable mientras que en \textbf{CUDA C} los \textit{kernel} son del tipo \textit{void}, lo cuál implica que es necesario almacenar memoria en el \textit{device} para una variable, y pasarla como argumento al \textit{kernel} para obtener lo pretendido. En la subsección siguiente se explicará con detalle cómo realizar la allocación.
 
 
 La allocación de memoria en el \textit{host} es la misma que se utiliza en C: \textbf{malloc($\>$)}, mientras que en el \textit{device} se realiza mediante: \textbf{cudaMalloc($\>$)}, la cual recibe los siguientes argumentos:
