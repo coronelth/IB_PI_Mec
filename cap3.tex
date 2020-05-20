@@ -5,7 +5,7 @@
 \textbf{Cuidado con las citas. Es muy de la tesis de Rinaldi}
 
 
-Una computadora (\textit{Personal Computer} o PC) posee como procesador principal la CPU, cuyo diseño se encuentra optimizado para realizar tareas secuenciales. Comercialmente vienen de una amplia variedad de núcleos, llendo de 8 a 64 núcleos en el caso de los Procesadores AMD Ryzen™ Threadripper, 4 a 8 núcleos en los Procesador AMD FX™, en el caso de Intel se encuentra el Procesador Intel® Core™ serie X con 18 núcleos y  Intel® Core™ i3-9100T de 4 núcleos entre otros. \cite{edp:2020:amd} \cite{icp:2020:intel}
+Una computadora (\textit{Personal Computer} o PC) posee como procesador principal la CPU, cuyo diseño se encuentra optimizado para realizar tareas secuenciales. Comercialmente vienen de una amplia variedad de núcleos, en el rango de 8 a 64 núcleos en el caso de los Procesadores AMD Ryzen™ Threadripper, 4 a 8 núcleos en los Procesador AMD FX™, en el caso de Intel se encuentra el Procesador Intel® Core™ serie X con 18 núcleos y  Intel® Core™ i3-9100T de 4 núcleos entre otros. \cite{edp:2020:amd} \cite{icp:2020:intel}
 
 Es posible realizar tareas y procesos en paralelo en la CPU proveyendo instrucciones a cada núcleo del procesador de forma independiente, siendo más eficiente en el tiempo de ejecución de los procesos realizados.
 
@@ -14,20 +14,19 @@ A su vez una PC opcionalmente puede contener un coprocesador siendo una GPU. Dic
 
 
 
-El procesador principal que tiene una PC es la CPU, por lo cual se denomina \textit{host}, la GPU es un coprocesador y se denomina \textit{device}. Las ejecuciones de los procesos en la CPU están diseñadas para que se efectúen de manera secuecncial, en cuánto las de la GPU en paralelo; las últimas realizándose en varios hilos de ejecución (\textit{threads}). Las operaciones en paralelo que son analizadas por la CPU y las que refiere a la GPU son llevadas a cabo mediante funciones llamadas \textit{kernel}. \textit{Host} y \textit{device} poseen su propia memoria RAM, llamadas \textit{host memory} y \textit{device memory} respectivamente. \cite{rinaldi2011modelos}
+El procesador principal que tiene una PC es la CPU, por lo cual se denomina \textit{host}, la GPU es un coprocesador y se denomina \textit{device}. Las ejecuciones de los procesos en la CPU están diseñadas para que se efectúen de manera secuecncial, en cuánto las de la GPU en paralelo; las últimas realizándose en varios hilos de ejecución (\textit{threads}). Las operaciones en paralelo que son analizadas por la CPU y las deriva a la GPU son llevadas a cabo mediante funciones llamadas \textit{kernel}. \textit{Host} y \textit{device} poseen su propia memoria RAM, llamadas \textit{host memory} y \textit{device memory} respectivamente. \cite{rinaldi2011modelos}
+
+Los \textit{threads} que posee una GPU se pueden agrupar de dos formas. Una de ellas es mediante bloques (\textit{thread block}) y el otro es de grilla de bloques (\textit{grid}). Todos los \textit{threads} del mismo \textit{thread block} poseen acceso a una memoria compartida que es de acceso rápido y permite sincronizar las ejecuciones que se les asigna. Debido a la posibilidad de sincronización de los mismos se evita el riesgo de que varios \textit{threads} acceden de manera simultánea al mismo lugar de memoria. Un \textit{grid} es un conjunto de \textit{thread block}, en dónde las instrucciones del \textit{kernel} son paralelizadas, ésto vence la limitación de hardware que hay un finito número de \textit{threads} por bloque. Debido a que la ejecución del proceso en los bloques de \textit{threads} de una grilla pueden ser ejecutados en tiempos distintos, es necesario realizar un sincronización entre los mismos para que su comunicación sea segura y no haya conflictos.\cite{tolke2010implementation}
+
+
+La figura \ref{fig:block_grid_threads} muestra el concepto de \textit{grid} y \textit{thread block}.
 
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=0.45\textwidth]{figs/cap3/threads_block_grid.png}
+	\includegraphics[width=0.45\textwidth]{figs/cap3/threads_block_grid.jpg}
 	\caption{Bloques de threads organizados en una grilla de bloques \cite{rinaldi2011modelos}.}
 	\label{fig:block_grid_threads}
 \end{figure}
-
-Un bloque de \textit{threads} (\textit{thread block}) es un grupo de hilos de ejecución que pueden cooperar entre sí compartiendo eficientemente datos a través de la memoria compartida de acceso rápido y sincronizando sus ejecuciones, lo cual permite coordinar el acceso a los datos especificando puntos de sincronización en el \textit{kernel}. 
-
-Una grilla de bloques es una agrupación de (\textit{thread block}) que ejecutan el mismo \textit{kernel}. Ésto vence la limitación de hardware que hay un finito número de \textit{threads} por bloque. Debido a que la ejecución del proceso en los bloques de \textit{threads} de una grilla pueden ser ejecutados en tiempos distintos, es necesario realizar un sincronización entre los mismos para que su comunicación sea segura y no haya conflictos.\cite{tolke2010implementation}
-
-La figura \ref{fig:block_grid_threads} muestra el concepto de grilla de bloques y \textit{thread block}.
 
 \section{Programación CUDA C}
 
