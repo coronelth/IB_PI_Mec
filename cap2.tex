@@ -269,11 +269,11 @@ Donde $\chi$ es la difusividad térmica, considerándose constante por simplicid
 
 \subsection{Condiciones de contorno}
 
-Al realizar la colisión en los nodos que se encuentran en la frontera de la región a resolver, no se poseen todos los valores de la función de distribución de poblaciones $\mathbf{f}$ y $\mathbf{g}$. Por lo que es necesario determinar cómo se obtienen los mismos. 
+Cuando se implementa la colisión en los nodos que se encuentran en la frontera de la región a resolver, no se poseen todos los valores de la función de distribución de poblaciones $\mathbf{f}$ y $\mathbf{g}$. Por lo que es necesario determinar cómo se obtienen los mismos. 
 
-Los problemas que se desarrollarán en el Cap. \ref{cap4} tienen una región rectangular o cuadrada, con la la particularidad que sus  condiciones de contorno en los bordes es periódica, ya sea en el eje \textit{X}, \textit{Y} o en ambos. Por lo que no existe la problemática de fijar los valores de $\mathbf{f}$ y $\mathbf{g}$ en nodos que se encuentran en las vértices de la región. Siendo los casos a desarrollar  el de los nodos que se encuentran en las aristas del cuadrado o rectángulo. Las cuatro (4) aristas de la región se resuelven de forma idéntica por lo que sólo se  desarrollará una.
+Los problemas que se desarrollarán en el Cap. \ref{cap4} tienen una región rectangular o cuadrada, con la la particularidad que sus  condiciones de contorno en los bordes es periódica, ya sea en el eje \textit{X}, \textit{Y} o en ambos. Por lo que no existe la dificultad de fijar los valores de $\mathbf{f}$ y $\mathbf{g}$ en nodos que se encuentran en las vértices de la región. Siendo los casos a desarrollar  el de los nodos que se encuentran en las aristas del cuadrado o rectángulo. Las cuatro (4) aristas de la región se resuelven de forma idéntica por lo que sólo se  desarrollará una.
 
-La Figura (\ref{fig:CC_hidro}) ilustra las direcciones de las componentes de $\mathbf{f}$ y $\mathbf{g}$ para un nodo que se encuentra en la frontera.    
+La Figura (\ref{fig:CC_hidro}) ilustra las direcciones de las componentes de $\mathbf{f}$ y $\mathbf{g}$ para un nodo que se encuentra en la frontera. La disposición observada es la que se evaluará para las condiciones de contorno hidrodinámica y de energía.  
 
 \begin{figure}[h!]
 	\centering
@@ -287,7 +287,7 @@ Por convención las direcciones que se conocen los valores de las funciones de d
 
 \subsubsection{Condición hidrodinámica}
 
-Se utiliza el desarrollo hecho por Zou \cite{zou1997pressure} para la ecuación hidrodinámica. Primeramente el método \textit{bounceback} es aplicado a la dirección \textit{3}, resultando $f_{3} = f_{1}$ como se observa en la Figura \ref{fig:CC_hidro}. Luego se analizan las Ec. (\ref{eq:rho}) y (\ref{eq:U}) que son puestas de la forma:
+El desarrollo de Zou \cite{zou1997pressure} es el utilizado para la ecuación hidrodinámica. Primeramente el método \textit{bounceback} es aplicado a la dirección \textit{3}, resultando $f_{3} = f_{1}$ como se observa en la Figura \ref{fig:CC_hidro}. Luego se analizan las Ec. (\ref{eq:rho}) y (\ref{eq:U}) que son puestas de la siguiente forma:
 
 \begin{equation}
 	\begin{array}{c}
@@ -307,73 +307,33 @@ f_{i6} = f_{i8} + 0,5 (f_{i4} - f_{i2}) - 0,25 (F_{ix} + F_{iy})\\
 \end{array}
 \end{equation}
 
-\iffalse
-en la Figura (\ref{fig:CC_hidro}), dónde los valores de $f_{3}$, $f_{6}$ y $f_{7}$ no se poseen y los de $f_{0}$, $f_{1}$, $f_{2}$, $f_{4}$, $f_{5}$ y $f_{8}$ si.
-
-
-En el caso de realizar la colisión de un nodo que se encuentre en la frontera, tenemos la dificultad de no contar con algunos de los valores de la función de distibución $\mathbf{f}$, por lo que es necesario determinar cuál es la obtención de los mismos.
-Los problemas que se desarrollarán en el Cap. \ref{cap4} son resueltos en una región rectangular o cuadrada. Los mismos presentan la particularidad de que tienen condiciones de contorno periódicas en el eje \textit{X}, \textit{Y} o en ambos, por lo tanto no existe el caso de tratar los nodos que se encuentran en las esquinas de la región. Los casos que si hay que tratar, son los que se hayan en el borde de la región a resolver. Existen cuatro (4) casos que se resuelven de idéntica manera, uno de ellos es el ilustrado en la Figura (\ref{fig:CC_hidro}), dónde los valores de $f_{3}$, $f_{6}$ y $f_{7}$ no se poseen y los de $f_{0}$, $f_{1}$, $f_{2}$, $f_{4}$, $f_{5}$ y $f_{8}$ si.
-
-\begin{figure}[h!]
-	\centering
-	\includegraphics[width=0.85\textwidth]{figs/cap2/CC_hidrodinamica.png}
-	\caption{Bloques de threads organizados en una grilla de bloques \cite{rinaldi2011modelos}.}
-	\label{fig:CC_hidro}
-\end{figure}
-
-Para determinar los valores de $f_{3}$, $f_{4}$ y $f_{7}$ se prosigue a utilizar el método \textit{bounceback}, dónde $f_{3} = f_{1}$ como se observa en la parte derecha de la Figura (\ref{fig:CC_hidro}). Para determinar los valores de $f_{6}$ y $f_{7}$ se analizan las Ec. (\ref{eq:rho}) y (\ref{eq:U}) que son puestas en la forma:
-
-\begin{equation}
-		f_{3} + f_{6} + f_{7} = \rho - \left( f_{0} + f_{1} + f_{2} + f_{4} + f_{5} + f_{8}	 \right)
-\end{equation}
-\begin{equation}
-	f_{6} - f_{7} = \rho u_{x} - \left( f_{1} - f_{3} - f_{7} + f_{8} 	 \right)
-\end{equation}
-\begin{equation}
-	f_{3} + f_{6} + f_{7} = \rho u_{y} + \left( f_{1} + f_{5} + f_{8} \right)
-\end{equation}
-
-prosiguiendo con el desarrollo de Zou \cite{zou1997pressure} se obtiene que las condiciones de contorno utilizadas son las siguientes:
-
-\begin{equation}
-	\begin{array}{c}
-	f_{i3} = f_{i1}\\
-	f_{i7} = f_{i5} - 0,5 (f_{i4} - f_{i2}) - 0,25 (F_{ix} + F_{iy})\\
-	f_{i6} = f_{i8} + 0,5 (f_{i4} - f_{i2}) - 0,25 (F_{ix} + F_{iy})\\
-	\end{array}
-\end{equation}
-\fi
-donde el índice \textit{i} indica que es el nodo \textit{i}-ésimo que se encuentra en la arista y $F_{ix}$, $F_{iy}$ es la fuerza del nodo. 
+donde el índice \textit{i} indica que es el nodo \textit{i}-ésimo que de la arista y $F_{ix}$, $F_{iy}$ es la fuerza del nodo. 
 
 
 \subsubsection{Condición de energía}
 
+La condición de contorno a realizar en la ecuación de energía, es mantener una temperatura fija en una de las aristas o en secciones de la misma. Por lo cual se utiliza el desarrollo de Inamuro \cite{inamuro2002lattice}.
 
-En la condición de contorno que debemos colocar en la ecuación de energía es fijar una dada temperatura T. Por lo cual se utiliza el desarrollo de Inamuro \cite{inamuro2002lattice}. Para los casos de periodicidad de \textit{X}, \textit{Y} o ambos como se menciono anteriormente, se elige para desarrrollar el mismo caso propuesto de la Figura (\ref{fig:CC_hidro}).
-
-Ésta vez se deben determinar $g_{3}$, $g_{6}$ y $g_{7}$ conociendo $g_{0}$, $g_{1}$, $g_{2}$, $g_{4}$, $g_{5}$ y $g_{8}$. Se calcula cuál es el valor de $\mathbf{g}_{eq}$ que debe poseer ése nodo y se le asigna a las componentes \textit{3}, \textit{6} y \textit{7} los correspondientes a $g_{eq 3}$, $g_{eq 6}$ y $g_{eq 7}$. Por convención, la direcciones que son conocidas se les asigna la pertenencia al grupo A y las no conocidas al grupo B.
-Una vez realizado lo anterior se prosigue a calcular el parámetro $\beta$ como:  se describe en Ec. (\ref{eq:beta}), siendo 
+Primeramente se calcula el valor de la distribución de equilibrio del nodo $i$-ésimo $\mathbf{g}_{eq\>i}$ utilizando Ec. (\ref{eq:n_eq}) y $\mathbf{M}$ de la forma $\mathbf{g_{eq}} = \mathbf{M}^{-1} \mathbf{n_{eq}}$. Se prosigue a calcular el parámetro $\beta$:
 
 \begin{equation}
-	\beta = \frac{Tcc - \sum_{A} g_{A}}{\sum_{B} g_{B}}
-	\label{eq:beta}
+\beta = \frac{T_{cc} - \sum_{A} g_{A}}{\sum_{B} g_{B}}
+\label{eq:beta}
 \end{equation}
 
-Para finalizar se corrige el valor de $\mathbf{g}_{eq}$ propuesto para la direcciones \textit{3}:
+donde $T_{cc}$ es la temperatura fijada como condición de contorno, $g_{A}$ adopta los valores conocidos de las direcciones pertenecientes al cpnjunto A ($0, 1, 2, 4, 5, 8 $), mientras que $g_{B}$ adopta los valores de la dirección de $\mathbf{g_{eq}}$ calculada recientemente para las direcciones de B ($3, 6, 7$).
+
+Por último en las direcciones del conjunto B, el valor de $g$ resulta:
+
+\begin{align}
+	g_{B} = \beta \> g_{eq \> B} 
+\end{align}
+
+A modo de ejemplo se detalla el valor que adoptará la dirección \textbf{3}:
 
 \begin{equation}
-	g_{3} = \beta g_{eq 3}
+	g_{3} = \frac{T_{cc} - \overbrace{\left( g_{0} + g_{1} +g_{2} + g_{4} + g_{5} + g_{8} \right)}^{\sum_{A} g_{A}} }{\underbrace{\left( g_{eq\>3} + g_{eq\>6} + g_{eq\>7} \right)}_{\sum_{B} g_{B} }} \quad g_{eq\>3}
 \end{equation}
-
-
-siendo igual para las direcciones \textit{6} y \textit{7}.
-
-
-%\textbf{Falta agregar las condiciones de contorno. Para la hidrodinamica usamos el esquema de Zuo-He, o bounce-back de componentes de no equilibrio, en las paredes
-%Zou, Q., He, X., 1997. On pressure and velocity boundary conditions for the lattice Boltzmann BGK model. Physics of Fluids 9, 1591. https://doi.org/10.1063/1.869307
-%y para la ecuacion de energia usamos el esquema de Inamuro para recuperar la temperatura en las paredes
-%Inamuro, T., Yoshino, M., Inoue, H., Mizuno, R., Ogino, F., 2002. A Lattice Boltzmann Method for a Binary Miscible Fluid Mixture and Its Application to a Heat-Transfer Problem. Journal of Computational Physics 179, 201–215. https://doi.org/10.1006/jcph.2002.7051
-%}
 
 %%% Local Variables: 
 %%% mode: latex
