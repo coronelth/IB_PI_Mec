@@ -83,7 +83,7 @@ e_{i6}\\ e_{i7}\\ e_{i8}\\
 
 
 
-En el presente trabajo se resolverán los problemas descriptos en \ref{cap4}, los cuáles son de 2 dimensiones y se adoptó el tipo de modelo D2Q9. 
+En el presente trabajo se resolverán los problemas descriptos en Cap. \ref{cap4}, los cuáles son de 2 dimensiones y se adoptó el tipo de modelo D2Q9. 
 
 
 
@@ -166,7 +166,7 @@ El esquema de la figura \ref{fig:cpu_gpu_transis} muestra las cantidades de tran
 	\label{fig:cpu_gpu_transis}
 \end{figure}
 
-Las GPUs estan acondicionadas para llevar a cabo los cálculos que presentan los métodos numéricos de LB. El LBM que se utilizará en el presente trabajo consiste en que en cada uno de los nodos de la grilla discretizada se le realicen operaciones elementales como los de la ecuación \ref{eq:field_intro}. \textbf{No es necesario, porque eso es en todos los LB.} Las GPU se encuentran optimizadas para ejecutar cálculos sobre los píxeles de un monitor, los cuales pueden considerarse como una grilla de nodos. A través de la paralelización la performance de las GPUs es alta, siendo capaces de procesar múltiples vértices y píxeles simultáneamente. Las simulaciones numéricas se producen en un menor tiempo en las GPU que sobre las CPU debido al alto paralelismo alcanzado por la GPU. \cite{rinaldi2011modelos}.
+Las GPUs estan acondicionadas para llevar a cabo los cálculos que presentan los métodos numéricos de LB. Los LBM consisten en que a cada uno de los nodos de la grilla discretizada se le realicen operaciones elementales como los de la ecuación \ref{eq:field_intro}. Las GPU se encuentran optimizadas para ejecutar cálculos sobre los píxeles de un monitor, los cuales pueden considerarse como una grilla de nodos. A través de la paralelización la performance de las GPUs es alta, siendo capaces de procesar múltiples vértices y píxeles simultáneamente. Las simulaciones numéricas se producen en un menor tiempo en las GPU que sobre las CPU debido al alto paralelismo alcanzado por la GPU. \cite{rinaldi2011modelos}.
 
 El lenguaje de programación que se utiliza en las placas gráficas es CUDA y fue desarrollado mediante la empresea NVIDIA. Se basa en el lenguaje de programación \textbf{C} con ciertas modificaciones para que los procesos sean en paralelo. Dichos procesos se especifican para que puedan ser lanzados en un número de \textit{blocks} y \textit{threads} de ejecución.
 
@@ -177,7 +177,12 @@ El lenguaje de programación que se utiliza en las placas gráficas es CUDA y fu
 
 \section{Descripción y alcance del proyecto integrador}
 
-Mediante el método LBM desarrollado por Fogliatto en \cite{fogliatto2018modelado}, \cite{fogliatto2019simulation} y \colorbox{green}{cita de ec energia} se realizará la implementación de un código numérico para resolver problemas de transferencia de calor en flujos multifásicos con cambio de fase \textbf{usando GPU, python, etc}de la manera más robusta posible. 
+Mediante el método LBM desarrollado por Fogliatto en \cite{fogliatto2018modelado}, \cite{fogliatto2019simulation} y \colorbox{green}{cita de ec energia} se realizará la implementación de un código numérico para resolver problemas de transferencia de calor en flujos multifásicos con cambio de fase, usando GPU y realizando el código en C, CUDA y Python , de la manera más robusta posible.
+
+La implementación del código se ejecutará en los lenguajes de programación de \textbf{C} y \textbf{CUDA}. Por medio de éstos lenguajes se construirán bibliotecas las cuales serán usadas mediante el lenguaje \textbf{Python}. La utilización de \textbf{Python} es debida a la compatibilidad de aplicar  el código en las distintos sistemas operativos , como \textit{Linux} y \textit{Windows}.
+
+Al ser un proyecto complejo, mediante la herramienta multiplataforma \textbf{CMake} se realizó la compilación de las librerías. El proyecto se encuentra en \textbf{Git Hub} donde puede ser descargado en \url{ https://github.com/efogliatto/LBCUDA_Test}.
+
 La validación del código se procederá mediante los siguientes tres problemas:
 \begin{itemize}
 	\item \textit{construcción de Maxwell}
@@ -185,18 +190,11 @@ La validación del código se procederá mediante los siguientes tres problemas:
 	\item \textit{generación de burbujas sobre una superficie horizontal calefaccionada}
 \end{itemize} 
 
-\textbf{Esto lo pondria a; final de la seccion, antes de la optimizacion y prueba de speedup}
-las cuáles se encuentran explicadas en \ref{cap2}.
+las cuáles se encuentran explicadas en \ref{cap4}.
 
-El método numérico consiste en resolver dos ecuaciones, la primera es de conservación de masa y momento, la segunda es la ecuación de energía. Las ecuaciones resuelven campos de distribución de probabilidades cuando se realiza la colisión y streaming para el nuevo paso de tiempo, siendo del estilo de la ecuación \ref{eq:field_intro}. A partir de ellas dos se recuperan las variables macroscópicas $\rho$ , $\mathbf{u}$ y \textbf{T}. El método se encuentra descripto en el capítulo \ref{cap3}. \textbf{Este parrafo no tiene conexion con la seccion}
 
-La implementación del código se ejecutará en los lenguajes de programación de \textbf{C} y \textbf{CUDA}. Por medio de éstos lenguajes se construirán bibliotecas las cuales serán usadas mediante el lenguaje \textbf{Python}. La utilización de \textbf{Python} es debida a la compatibilidad de aplicar  el código en las distintos sistemas operativos , como \textit{Linux} y \textit{Windows}.
-
-Al ser un proyecto complejo, mediante la herramienta multiplataforma \textbf{CMake} se realizó la compilación de las librerías. El proyecto se encuentra en \textbf{Git Hub} donde puede ser descargado en \url{ https://github.com/efogliatto/LBCUDA_Test}.
 
 Se realizará una comparación entre los resultados de \textit{simple} y \textit{doble} precisión. Y a su vez cuánto es el \textit{Speed Up} de los códigos en \textbf{C}, \textbf{CUDA} y \textbf{Python}. 
-
-Por último se hará un \textit{Speed Up} del código desarrollado \textbf{C ++} por Fogliatto utilizado en los mismos problemas ( \cite{fogliatto2018modelado}, \cite{fogliatto2019simulation} y \colorbox{green}{cita de los problemas}). Dicho código se encuentra en \url{https://github.com/efogliatto/phoenix}. \textbf{No lo vamos a hacer}
 
 
 

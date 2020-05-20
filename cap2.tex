@@ -8,10 +8,10 @@ En éste capítulo se presentara cuál es el modelo de LB para la resolución de
 
 Generalmente es difícil resolver las ecuaciones de la mecánica de los fluidos. Las soluciones analíticas de los problemas que pueden ser halladas son escasas, como el caso de flujos \textit{Couette} o \textit{Poisueuille}. Problemas que contengan una geometría más compleja u otras condiciones de contorno; poseen una gran dificultad para encontrar la solución de las ecuaciones de la mecánica de fluidos, si es que el problema la posee. Debido a ello las soluciónes se obtienen numéricamente \cite{kruger2017lattice}(sec 3.1). Es de importancia el desarrollo de métodos numéricos que resuelvan los problemas de forma paralela para así reducir el tiempo de cálculo.
 
-Debido a que los problemas que se plantean resolver en el presente trabajo esson de transferencia de calor en flujos multifásicos con cambio de fase, la escala de del fluido que se decide adoptar es la mesoscópica. Considerando la escala y siendo un problema multifásico, se opta por resolver numéricamente mediante LBM. 
+Los problemas que se plantean resolver en el presente trabajo son de transferencia de calor en flujos multifásicos con cambio de fase, la escala de fluido que se decide adoptar es la mesoscópica. Considerando la escala y siendo un problema multifásico, se opta por resolver numéricamente mediante LBM. 
 
 
-Los mayoris de los modelos para resolver los flujos multifásicos son tresclasificados en cuatro categorias generales : \textit{color gradient}, \textit{Shan Chen model} o \textit{pseudopotential} y \textit{Free-energy}. \textbf{Falta phase-field}. 
+Los mayoría de los modelos para resolver los flujos multifásicos son tres clasificados en cuatro categorias generales : \textit{color gradient}, \textit{Shan Chen model} o \textit{pseudopotential}, \textit{Free-energy} y \textbf{Falta phase-field}. 
 
 \begin{itemize}
 	
@@ -61,26 +61,23 @@ En el presente trabajo el LBM es $D2Q9$.
 
 Cada nodo de la grilla contará con una distribución $f_{i}$, asociada al espacio de poblaciones. En el caso más simple se cuenta con una distribución y esa asociada a la densidad. La distribución $f_{i}$ posee $\alpha$ componentes. Mediante ésta funcion de distribución, pueden recuperarse variables macroscópicas del problema, como ser : $\rho$ , $U$,$T$ .
 
-En éste modelo la distribución $f$ se calcula a través de las fuerzas de interacción que poseen las partículas de cada nodo. Por lo que se debe proporcionar un potencial que describa a las fuerzas de interacción, dicho potencial estará dado por una Ecuación de estado.
+En éste modelo la distribución $f$ se calcula a través de las fuerzas de interacción que poseen las partículas de cada nodo. Por lo que se debe proporcionar un potencial que describa a las fuerzas de interacción, dicho potencial estará dado por una Ecuación de estado (\textit{Equation of state} o EOS).
 
-
-
-\textbf{No decis nada de las ecuaciones de estado? Es algo clave de los pseudopotenciales. No digo una descripcion detallada, pero por lo menos decir que se basan en ecuaciones de estado para el calculo de fuerzas de interaccion, y que esta EOS determina el tensor de presion recuperado, las densidades de coexistencia y otras propiedades como calor latente. 
-Separacion automatica de fases?}
+Es de importancia la elección de la EOS a utilizar, puesto que según ella se recupera el tensor de presión, las variables $\rho$ , $U$ , $T$ ; a una dada presión y temperatura las densidades de coexistencia de líquido y gas, como el calor latenten entre otras propiedades intrínsecas del fluido.
 
 \section{Ecuación de estado y fluido de Van der Waals}
 
-Al ser multifásicos los problemas a desarrollar, es de importancia conocer las leyes que gobiernan las fases de los fluidos. La ley de gases ideales \ref{eq:gas_ideal} es una Ecuación de estado (\textit{Equation of state} o EOS), cabe destacar que la mayor supusición es que las partículas del gas son puntuales. Donde \textit{P} es la presión (atm), V es el volúmen (L), \textit{n} número de moles, R constante universal de los gases y \textit{T} temperatura. La Ley se  caracteriza el comportamiento para gases de baja densidad.
+Al ser multifásicos los problemas a desarrollar, es de importancia conocer las leyes que gobiernan las fases de los fluidos. La ley de gases ideales \ref{eq:gas_ideal} es una EOS , cabe destacar que la mayor supusición es que las partículas del gas son puntuales. Donde \textit{p} es la presión (atm), V es el volúmen (L), \textit{n} número de moles, R constante universal de los gases y \textit{T} temperatura. La Ley caracteriza el comportamiento para gases de baja densidad.
 
 \begin{align}
-P V = n R T
+p V = n R T
 \label{eq:gas_ideal}
 \end{align}
 
 La EOS de Van der Waals (VdW) \ref{eq:VdW_P} fue propuesta para caracterizar el comportamiento de los gases reales, siendo $V_m = \frac{V}{n}$ el volúmen molar. Las constantes \textit{a} y \textit{b} son características de cada fluido.
 
 \begin{align}
-P = \frac{R T}{V_m - b} - a {(\frac{1}{V_m})}^2
+p = \frac{R T}{V_m - b} - a {(\frac{1}{V_m})}^2
 \label{eq:VdW_P}
 \end{align}
 
@@ -91,58 +88,71 @@ La EOS de VdW es utilizada en el presente trabajo para modelar el potencial del 
 
 \section{Modelo pseudopotencial de dos ecuaciones con operador MRT}
 
-La denominación de éstos métodos, \textit{multiple relaxation times} o MRT, proviene por los parámetros que se deben ajustar y proponer para que el modelo concuerde con los valores esperados.
+En ésta sección se describirá cuál es el LBM que se utilizará para resolver los problemas descriptos en el Cap. \ref{cap4}. La denominación del tipo de operador, \textit{multiple relaxation times} o MRT, proviene por los parámetros que se deben ajustar y proponer para que el modelo concuerde con los valores esperados.
+
+Se deben resolver dos ecuaciones, la primera es la hidrodinámica que representa a la conservación de masa y momento; la segunda a la de energía, descriptas en \colorbox{green}{cita de ec energia}.
+
 
 \subsection{Ecuación hidrodinámica}
 
-
-La resolución de las ecuaciones hidrodinámicas pueden analizarse mediante la evolución de una función de distribución dada por \cite{li2013lattice}: 	
+Por medio de la función de distribución Ec. \ref{eq:fieldmom} \cite{li2013lattice} se realiza la resolución de la ecuación hidrodinámica,
 
 \begin{equation}
     \mathbf{f}(\mathbf{x} + \mathbf{e} \> \delta_{t} , t + \delta_{t}) = \mathbf{M}^{-1} \left[ \mathbf{m} - \mathbf{\Lambda}(\mathbf{m} - \mathbf{m}^{(eq)}) + \delta_{t} \left( \mathbf{I} - 0,5 \mathbf{\Lambda} \right) \mathbf{\bar{S}}  \right]_{(\mathbf{x},t)} 
     \label{eq:fieldmom}
 \end{equation}
 
-donde $\textit{f}_{\alpha}$ es la distribución de densidad en el espacio de poblaciones, t el tiempo, $\mathbf{x}$ la posición espacial, \textit{\textbf{e}} las velocidades discretas a lo largo de la direcciones $\alpha$ y $\delta_{t}$ el paso de tiempo. En este caso, la notación usada en la Ec. (\ref{eq:fieldmom}) implica que la compontente $\alpha$-ésima del miembro izquierdo está dada por $f_{\alpha}(x + e_{\alpha} \delta_{t}  , t + \delta_{t} )$ . El miembro derecho de la Ec. (\ref{eq:fieldmom}) corresponde a la etapa de post-colisión definida en el espacio de momentos, donde \textbf{M} es una matriz de transformación ortogonal, $\mathbf{m} = \mathbf{M} \cdot \mathbf{f}$ , $\mathbf{m}_{eq} = \mathbf{M} \cdot \mathbf{f}_{eq}$ , \textbf{I} el tensor identidad y $\mathbf{\bar{S}} = \mathbf{M} \mathbf{S}$ el término de fuente. Para una grilla D2Q9, $ \Lambda$ es una matriz diagonal:
+donde $\mathbf{x}$ es la posición espacial, \textit{t} el tiempo, $\delta_{t}$ el paso de tiempo , \textit{\textbf{e}} la velocidad de grilla en sus direcciones $\alpha$ y $\textit{f}$ es la distribución de densidad en el espacio de poblaciones. La notación utilizada implica que la componente $\alpha$-ésima del miembro izquiero de la Ec. (\ref{eq:fieldmom}) esté dado por $f_{\alpha}(x + e_{\alpha} \delta_{t}  , t + \delta_{t} )$. El miembro derecho de la Ec. (\ref{eq:fieldmom}) corresponde a la etapa de post-colisión definida en el espacio de momentos, donde \textbf{I} es el tensor identidad, \textbf{M} una matriz de transformación ortogonal, $\mathbf{m} = \mathbf{M} \cdot \mathbf{f}$ , $\mathbf{m}_{eq} = \mathbf{M} \cdot \mathbf{f}_{eq}$ , $\mathbf{\bar{S}} = \mathbf{M} \mathbf{S}$ el término de fuente y $ \Lambda$ es una matriz diagonal.
+
+Para el modelo de grilla D2Q9 utilizado en el presente trabajo $\mathbf{m}_{eq}$ y $ \Lambda$ están dados por Ec. \ref{eq:m} y \ref{eq:lambda} respectivamente.
+
+\begin{align}
+m_{eq} =  \rho  \left( 1, - 2 + 3 {|u|}^{2} , 1 - 3{|u|}^{2} , u_{x} , - u_{x} , u_{y} , - u_{y} , {u_{x}}^{2} - {u_{y}}^{2} , u_{x} u_{y} \right) 
+\label{eq:m}
+\end{align}
+
     
 \begin{align}
     \mathbf{\Lambda}  = diag ( {\tau_{\rho }}^{-1},{\tau_{e}}^{-1},{\tau_{\zeta }}^{-1},{\tau_{j}}^{-1},{\tau_{q}}^{-1},{\tau_{j}}^{-1},{\tau_{q}}^{-1},{\tau_{\nu }}^{-1},{\tau_{\nu}}^{-1}) 
     \label{eq:lambda}
 \end{align}
 
-mientras que la distribución de equilibrio está dada por:
-        
 
-\begin{align}
-    m_{eq} =  \rho  \left( 1, - 2 + 3 {|u|}^{2} , 1 - 3{|u|}^{2} , u_{x} , - u_{x} , u_{y} , - u_{y} , {u_{x}}^{2} - {u_{y}}^{2} , u_{x} u_{y} \right) 
-    \label{eq:m}
-\end{align}
-
-
-donde la densidad y velocidad macroscópica se obtienen mediante:
+La densidad macroscópica es obtenida mediante la Ec. (\ref{eq:rho}).
 
 \begin{equation}
         \rho = \sum_{\alpha} f_{\alpha}
+        \label{eq:rho}
 \end{equation}
+
+Por medio de la Ec. (\ref{eq:U}) se obtiene la velocidad.
 
 \begin{equation}
     \rho \> \mathbf{u} = \sum_{\alpha} {\mathbf{e}}_{\alpha} \> f_{\alpha} + 0,5 \> {\delta}{t} \> \mathbf{F}
+    \label{eq:U}
 \end{equation}
 
-En este caso, $ {\mathbf{F}} = (F_{x} , F_{y} ) = {\mathbf{F}}_{b} + {\mathbf{F}}_{int} $ es la fuerza total, ${\mathbf{F}}_{b}$ la fuerza volumétrica y ${\mathbf{F}}_{int}$ representa la fuerza de interacción que actúa sobre el sistema a través de un potencial $\psi(x)$:
-    
+Para el modelo D2Q9 la fuerza total $\mathbf{F}$ posee sólo dos componentes $F_{x} , F_{y}$. Donde $ {\mathbf{F}} = {\mathbf{F}}_{b} + {\mathbf{F}}_{int} $, siendo ${\mathbf{F}}_{b}$ la fuerza volumétrica y ${\mathbf{F}}_{int}$ la fuerza de interacción que hay en el sistema dadas por Ec.(\ref{eq:Fb}) y (\ref{eq:fint}) respectivamente.
+
 \begin{equation}
-    {\mathbf{F}}_{int} = - G \> \psi(\mathbf{x}) \sum_{\alpha=1}^{N} w({|{\mathbf{e}}_{\alpha}|}^{2}) \> \psi (\mathbf{x} + {\mathbf{e}}_{\alpha} \> \delta_{t}) \> {\mathbf{e}}_{\alpha} 
-    \label{eq:fint}
+	{\mathbf{F}}_{b} = \rho \> \mathbf{g}
+	\label{eq:Fb}
 \end{equation}
 
-En la Ec. \ref{eq:fint}, G corresponde a la intensidad de interacción, $w({|{\mathbf{e}}_{\alpha}|}^{2})$ son los pesos correspondientes a una grilla D2Q9 y $\psi$ está dado por:
+
+\begin{equation}
+{\mathbf{F}}_{int} = - G \> \psi(\mathbf{x}) \sum_{\alpha=1}^{N} w({|{\mathbf{e}}_{\alpha}|}^{2}) \> \psi (\mathbf{x} + {\mathbf{e}}_{\alpha} \> \delta_{t}) \> {\mathbf{e}}_{\alpha} 
+\label{eq:fint}
+\end{equation}
+
+Donde G corresponde a la intensidad de interacción, $w({|{\mathbf{e}}_{\alpha}|}^{2})$ son los pesos correspondientes a una grilla D2Q9 y $\psi$ es el potencial :
 
 \begin{equation} 
     \psi(\rho) = \sqrt{\frac{2 (p_{EOS} - \rho {c_{s}}^{2})}{G {c}^{2}}}
+    \label{eq:psi}
 \end{equation}
 
-En el presente trabajo se adopta una EOS de VdW :
+Donde $c_{s}$ es la velocidad del sonido en el medio, la EOS adoptada en el presente trabajo es la de VdW :
 
 \begin{equation}
     p_{EOS} = \frac{\rho R T}{1- \rho B} - A {\rho}^{2}
@@ -164,50 +174,74 @@ donde \textit{A} y \textit{B} son parámetros que determinan los valores crític
         (u_{x} F_{x} + u_{y} F_{y} )\\              
     \end{array}
     \right]    
+    \label{eq:termino_fuente_s}
 \end{equation}
+\\
+donde $\sigma$ es un parámetro libre del modelo MRT, al igual que $\Lambda$ , el cual se utiliza para ajustar las diferencias de fases obtenidas de la EOS y de la simulación realizada.
 
-donde $\sigma$ es un parámetro libre que es utilizado para ajustar el problema de inconsistencia termodinámica, es decir, la diferencia entre las densidades de cada fase obtenidas en la simulación y aquellas determinadas por la EOS correspondiente.
+Se puede recuperar la ecuación de Navier - Stokes utilizando Ec. [\ref{eq:rho} - \ref{eq:termino_fuente_s} ] mediante el análisas de Chapman-Enskog limitado para un número de Mach bajo \cite{li2013lattice}. Siendo las ecuaciones recuperadas \cite{fogliatto2019simulation} \cite{li2013lattice}:
 
-\textbf{Se podria agregar aca cual es la ecuacion macroscopica recuperada. Esta al final del paper del International Journal of… Solo para decir que despues de aplicar todo lo anterior, la densidad y velocidad van a seguir la descripcion dada por esas ecuaciones.}
+\begin{equation}
+	\frac{\partial \rho }{\partial t}  + \nabla \cdot \left( \rho \mathbf{u} \right) = 0
+\end{equation}
+\begin{equation}
+	\frac{\partial \left( \rho \mathbf{u}\right)}{\partial t} + \nabla \cdot \left( \rho \mathbf{u} \mathbf{u}\right) = - \nabla \left( \rho {c_{s}}^{2} \mathbf{I} \right) + \nabla \mathbf{\Pi} + \mathbf{F} - 2 G^{2} c^{4} \sigma \nabla \left( {|\nabla \psi	|}^{2} I	\right) + O (\partial^{5})
+\end{equation}
+\begin{equation}
+\mathbf{F} = - G c^{2} \left[	\psi \nabla \psi + \frac{1}{6} c^{2} \psi \nabla \left( \nabla^{2} \psi\right) + ...\right] + \mathbf{F}_{b} = \mathbf{F}_{int} + \mathbf{F}_{b}
+\end{equation}
+\\
+Donde $\mathbf{\Pi}$ es el tensor de viscosidad dado por :
+
+\begin{equation}
+	\mathbf{\Pi} = \rho \nu \left[	\nabla \mathbf{u} + {\left(\nabla \mathbf{u}\right)}^{T}\right] + \rho \left(\ \xi - \nu \right) \left( \nabla \mathbf{u}\right) \mathbf{I}
+\end{equation}
+\\
+siendo $\quad\nu = {c_{s}}^{2} (\tau_{\nu}- 0,5) \delta_{t}\quad$ la viscosidad cinemática y $\quad\xi = {c_{s}}^{2} (\tau_{\nu}- 0,5) \delta_{t}\quad$ la viscosidad volumétrica.
+
+
 
 \subsection{Ecuación energía}
 
-Se debe acoplar una segunda ecuación LB para poder incorporar transferencia de calor al modelo de \cite{li2013lattice}. En particular, puede adoptarse una segunda distribución de poblaciones \textit{g} bajo un operador de colisión MRT:
+Para tener en cuenta la transferencia de calor en el modelo, es necesario adicionar otra ecuación de LB acoplandola con la primera\cite{li2013lattice}. Para nuestro caso, se utiliza la distribución de poblagicones \textit{g} en la Ec. (\ref{eq:fieldenergy}), la cuál también posee un operador de colisión MRT. Donde $\mathbf{n} = \mathbf{M} \mathbf{g}$ es una distribución de momentos y $\hat{\Gamma}$ es una fuente en el espacio de momentos.
+
 
 \begin{equation}
-    \mathbf{g^*}(\mathbf{x} + \mathbf{e} \delta_{t} ,t + \delta_{t}) = \mathbf{M}^{-1} \left[ \mathbf{n} - \mathbf{Q}(\mathbf{n} - \mathbf{n}^{(eq)}) + \delta_{t} \left( I - 0,5 Q \right) \hat{\Gamma}  \right]_{(\mathbf{x},t)}
+    \mathbf{g}(\mathbf{x} + \mathbf{e} \delta_{t} ,t + \delta_{t}) = \mathbf{M}^{-1} \left[ \mathbf{n} - \mathbf{Q}(\mathbf{n} - \mathbf{n}^{(eq)}) + \delta_{t} \left( I - 0,5 Q \right) \hat{\Gamma}  \right]_{(\mathbf{x},t)}
     \label{eq:fieldenergy}
 \end{equation}
 
-donde $n = M g$ y $\hat{\Gamma}$es una fuente en el espacio de momentos. La temperatura macroscópica \textit{T} puede recuperarse mediante:
-
-\begin{equation}
-    T = \sum_{\alpha} g_{\alpha} + \frac{1}{2} \delta_{t} {\hat{\Gamma}}_{0}
-\end{equation}
-
-La matriz de coeficientes de relajación \textbf{Q} está compuesta por una parte diagonal
+En éste caso los parámetros libres del modelo MRT vienen dados en parte por la matriz de coeficientes de relajación \textbf{Q}, siendo compuesta por la diagonal que se indica en Ec.(\ref{eq:Q_matriz}) y además por los elementos no nulos $Q_{3,4}$ y $ Q_{5,6}$ que se indican en Ec. (\ref{eq:Q_34}) y (\ref{eq_Q_56})  respectivamente.
 
 \begin{equation}
     \textit{diag} (Q) = {( q_{0} , q_{1} , q_{2} , q_{3} , q_{4} , q_{5} , q_{6} , q_{7} , q_{8} )}^{T}
+    \label{eq:Q_matriz}
 \end{equation}
-
-pero, a diferencia de $\lambda$ , presenta elementos extra diagonales no nulos dados por:
-
 \begin{equation}
     Q_{3,4} = q_{4} \left( \frac{q_{3}}{2} - 1 \right)
+    \label{eq:Q_34}
 \end{equation}
-
 \begin{equation}
     Q_{5,6} = q_{6} \left( \frac{q_{5}}{2} - 1 \right)
+    \label{eq_Q_56}
 \end{equation}
 
-Si se define una distribución de equilibrio \textit{n} como:
+La distribución de equilibrio $\mathbf{n}_{eq}$ se encuentra definida en Ec.(\ref{eq:n_eq}), siendo $\alpha_{1}$ y $\alpha_{2}$ parámetros libres del modelo MRT.
 
 \begin{equation}
     {\mathbf{n}}_{eq} = T { \left( 1, \alpha_{1}, \alpha_{2}, u_{x}, -u_{x}, u_{y}, -u_{y}, 0, 0 \right) }^{T}
+    \label{eq:n_eq}
 \end{equation}
 
-y el término fuente mediante:
+La temperatura macroscópica \textit{T} puede recuperarse mediante:
+
+\begin{equation}
+T = \sum_{\alpha} g_{\alpha} + \frac{1}{2} \delta_{t} {\hat{\Gamma}}_{0}
+\end{equation}
+
+
+
+Siendo el término fuente :
 
 \begin{equation}
     \hat{\Gamma} = {( s, 0, 0, 0, 0, 0, 0, 0, 0 )}^{T}
@@ -216,27 +250,130 @@ y el término fuente mediante:
 con 
 
 \begin{equation}
-    s = \frac{\chi}{\rho} \bigtriangledown T \cdot \bigtriangledown \rho + T \left[ 1 - \frac{1}{\rho c_{\nu}} {\left( \frac{\delta p_{EOS}}{\delta T} \right)}_{\rho} \right] \bigtriangledown \cdot \mathbf{u}
+    s = \frac{\chi}{\rho} \nabla T \cdot \nabla \rho + T \left[ 1 - \frac{1}{\rho c_{\nu}} {\left( \frac{\partial p_{EOS}}{\partial T} \right)}_{\rho} \right] \nabla \cdot \mathbf{u}
+    \label{eq:s_chica}
 \end{equation}
 
-entonces la Ec. \ref{eq:fieldenergy} puede recuperar adecuadamente la ecuación macroscópica derivada por \cite{markus2011simulation}:
+La recuperación de la ecuación del calor por medio de Ec. [\ref{eq:fieldenergy} - \ref{eq:s_chica} ] resulta \cite{markus2011simulation}:
 
 \begin{equation}
-    \delta_{t} T + \bigtriangledown \cdot ( \mathbf{u} T ) = \chi {\bigtriangledown }^{2} T + s
+    \frac{\partial T}{\partial t} + \nabla \cdot ( \mathbf{u} T ) = \chi \> {\nabla }^{2} T + s
 \end{equation}
 
-Por simplicidad, en este trabajo se considera una difusivfidad térmica $\chi$ constante, la cual queda determinada mediante los factores de relajación de \textbf{Q} y los parámetros libres de ${\textbf{n}}_{eq}$ :
+Donde $\chi$ es la difusividad térmica, considerándose constante por simplicidad, obteniéndose mediante Ec. (\ref{eq:chi}). La difusividad térmica queda determinada por los coeficientes de relajación $\mathbf{Q}$ y los parámetros libres $\alpha_{1}$ y $\alpha_{2}$ de ${\textbf{n}}_{eq}$.
 
 \begin{equation}
     \chi = \delta_{t} \left( \frac{1}{q_{3}} - \frac{1}{2} \right) \left( \frac{ 4 + 3 \alpha_{1} + 2 \alpha_{2}}{6} \right)
+    \label{eq:chi}
+\end{equation}
+
+\subsection{Condiciones de contorno}
+
+Al realizar la colisión en los nodos que se encuentran en la frontera de la región a resolver, no se poseen todos los valores de la función de distribución de poblaciones $\mathbf{f}$ y $\mathbf{g}$. Por lo que es necesario determinar cómo se obtienen los mismos. 
+
+Los problemas que se desarrollarán en el Cap. \ref{cap4} tienen una región rectangular o cuadrada, con la la particularidad que sus  condiciones de contorno en los bordes es periódica, ya sea en el eje \textit{X}, \textit{Y} o en ambos. Por lo que no existe la problemática de fijar los valores de $\mathbf{f}$ y $\mathbf{g}$ en nodos que se encuentran en las vértices de la región. Siendo los casos a desarrollar  el de los nodos que se encuentran en las aristas del cuadrado o rectángulo. Las cuatro (4) aristas de la región se resuelven de forma idéntica por lo que sólo se  desarrollará una.
+
+La Figura (\ref{fig:CC_hidro}) ilustra las direcciones de las componentes de $\mathbf{f}$ y $\mathbf{g}$ para un nodo que se encuentra en la frontera.    
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.85\textwidth]{figs/cap2/CC_hidrodinamica.png}
+	\caption{Bloques de threads organizados en una grilla de bloques \cite{rinaldi2011modelos}.}
+	\label{fig:CC_hidro}
+\end{figure}
+
+Por convención las direcciones que se conocen los valores de las funciones de distribución pertenecen al conjunto A y las que no se conocen al conjunto B. Por lo que $ 0, 1, 2, 4, 5, 8 \in A$ y $ 3, 6, 7 \in B$ 
+
+
+\subsubsection{Condición hidrodinámica}
+
+Se utiliza el desarrollo hecho por Zou \cite{zou1997pressure} para la ecuación hidrodinámica. Primeramente el método \textit{bounceback} es aplicado a la dirección \textit{3}, resultando $f_{3} = f_{1}$ como se observa en la Figura \ref{fig:CC_hidro}. Luego se analizan las Ec. (\ref{eq:rho}) y (\ref{eq:U}) que son puestas de la forma:
+
+\begin{equation}
+	\begin{array}{c}
+	f_{3} + f_{6} + f_{7} = \rho - \left( f_{0} + f_{1} + f_{2} + f_{4} + f_{5} + f_{8}	 \right)\\
+	f_{6} - f_{7} = \rho u_{x} - \left( f_{1} - f_{3} - f_{7} + f_{8} 	 \right)\\
+	f_{3} + f_{6} + f_{7} = \rho u_{y} + \left( f_{1} + f_{5} + f_{8} \right)
+	\end{array}
+\end{equation}
+
+Para finalizar se aplican las condiciones de no deslizamiento, para éste caso $\> u_{y} = 0\quad$ y $\quad\mu \frac{\partial u}{\partial x} = \tau_{wall}\quad$, siendo $\tau_{wall}$ el esfuerzo de corte realizado en la arista analizada. Se obtenienen las siguientes condiciones de contorno a la distribución de poblaciones $\mathbf{f}$:
+
+\begin{equation}
+\begin{array}{c}
+f_{i3} = f_{i1}\\
+f_{i7} = f_{i5} - 0,5 (f_{i4} - f_{i2}) - 0,25 (F_{ix} + F_{iy})\\
+f_{i6} = f_{i8} + 0,5 (f_{i4} - f_{i2}) - 0,25 (F_{ix} + F_{iy})\\
+\end{array}
+\end{equation}
+
+\iffalse
+en la Figura (\ref{fig:CC_hidro}), dónde los valores de $f_{3}$, $f_{6}$ y $f_{7}$ no se poseen y los de $f_{0}$, $f_{1}$, $f_{2}$, $f_{4}$, $f_{5}$ y $f_{8}$ si.
+
+
+En el caso de realizar la colisión de un nodo que se encuentre en la frontera, tenemos la dificultad de no contar con algunos de los valores de la función de distibución $\mathbf{f}$, por lo que es necesario determinar cuál es la obtención de los mismos.
+Los problemas que se desarrollarán en el Cap. \ref{cap4} son resueltos en una región rectangular o cuadrada. Los mismos presentan la particularidad de que tienen condiciones de contorno periódicas en el eje \textit{X}, \textit{Y} o en ambos, por lo tanto no existe el caso de tratar los nodos que se encuentran en las esquinas de la región. Los casos que si hay que tratar, son los que se hayan en el borde de la región a resolver. Existen cuatro (4) casos que se resuelven de idéntica manera, uno de ellos es el ilustrado en la Figura (\ref{fig:CC_hidro}), dónde los valores de $f_{3}$, $f_{6}$ y $f_{7}$ no se poseen y los de $f_{0}$, $f_{1}$, $f_{2}$, $f_{4}$, $f_{5}$ y $f_{8}$ si.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.85\textwidth]{figs/cap2/CC_hidrodinamica.png}
+	\caption{Bloques de threads organizados en una grilla de bloques \cite{rinaldi2011modelos}.}
+	\label{fig:CC_hidro}
+\end{figure}
+
+Para determinar los valores de $f_{3}$, $f_{4}$ y $f_{7}$ se prosigue a utilizar el método \textit{bounceback}, dónde $f_{3} = f_{1}$ como se observa en la parte derecha de la Figura (\ref{fig:CC_hidro}). Para determinar los valores de $f_{6}$ y $f_{7}$ se analizan las Ec. (\ref{eq:rho}) y (\ref{eq:U}) que son puestas en la forma:
+
+\begin{equation}
+		f_{3} + f_{6} + f_{7} = \rho - \left( f_{0} + f_{1} + f_{2} + f_{4} + f_{5} + f_{8}	 \right)
+\end{equation}
+\begin{equation}
+	f_{6} - f_{7} = \rho u_{x} - \left( f_{1} - f_{3} - f_{7} + f_{8} 	 \right)
+\end{equation}
+\begin{equation}
+	f_{3} + f_{6} + f_{7} = \rho u_{y} + \left( f_{1} + f_{5} + f_{8} \right)
+\end{equation}
+
+prosiguiendo con el desarrollo de Zou \cite{zou1997pressure} se obtiene que las condiciones de contorno utilizadas son las siguientes:
+
+\begin{equation}
+	\begin{array}{c}
+	f_{i3} = f_{i1}\\
+	f_{i7} = f_{i5} - 0,5 (f_{i4} - f_{i2}) - 0,25 (F_{ix} + F_{iy})\\
+	f_{i6} = f_{i8} + 0,5 (f_{i4} - f_{i2}) - 0,25 (F_{ix} + F_{iy})\\
+	\end{array}
+\end{equation}
+\fi
+donde el índice \textit{i} indica que es el nodo \textit{i}-ésimo que se encuentra en la arista y $F_{ix}$, $F_{iy}$ es la fuerza del nodo. 
+
+
+\subsubsection{Condición de energía}
+
+
+En la condición de contorno que debemos colocar en la ecuación de energía es fijar una dada temperatura T. Por lo cual se utiliza el desarrollo de Inamuro \cite{inamuro2002lattice}. Para los casos de periodicidad de \textit{X}, \textit{Y} o ambos como se menciono anteriormente, se elige para desarrrollar el mismo caso propuesto de la Figura (\ref{fig:CC_hidro}).
+
+Ésta vez se deben determinar $g_{3}$, $g_{6}$ y $g_{7}$ conociendo $g_{0}$, $g_{1}$, $g_{2}$, $g_{4}$, $g_{5}$ y $g_{8}$. Se calcula cuál es el valor de $\mathbf{g}_{eq}$ que debe poseer ése nodo y se le asigna a las componentes \textit{3}, \textit{6} y \textit{7} los correspondientes a $g_{eq 3}$, $g_{eq 6}$ y $g_{eq 7}$. Por convención, la direcciones que son conocidas se les asigna la pertenencia al grupo A y las no conocidas al grupo B.
+Una vez realizado lo anterior se prosigue a calcular el parámetro $\beta$ como:  se describe en Ec. (\ref{eq:beta}), siendo 
+
+\begin{equation}
+	\beta = \frac{Tcc - \sum_{A} g_{A}}{\sum_{B} g_{B}}
+	\label{eq:beta}
+\end{equation}
+
+Para finalizar se corrige el valor de $\mathbf{g}_{eq}$ propuesto para la direcciones \textit{3}:
+
+\begin{equation}
+	g_{3} = \beta g_{eq 3}
 \end{equation}
 
 
-\textbf{Falta agregar las condiciones de contorno. Para la hidrodinamica usamos el esquema de Zuo-He, o bounce-back de componentes de no equilibrio, en las paredes
-Zou, Q., He, X., 1997. On pressure and velocity boundary conditions for the lattice Boltzmann BGK model. Physics of Fluids 9, 1591. https://doi.org/10.1063/1.869307
-y para la ecuacion de energia usamos el esquema de Inamuro para recuperar la temperatura en las paredes
-Inamuro, T., Yoshino, M., Inoue, H., Mizuno, R., Ogino, F., 2002. A Lattice Boltzmann Method for a Binary Miscible Fluid Mixture and Its Application to a Heat-Transfer Problem. Journal of Computational Physics 179, 201–215. https://doi.org/10.1006/jcph.2002.7051
-}
+siendo igual para las direcciones \textit{6} y \textit{7}.
+
+
+%\textbf{Falta agregar las condiciones de contorno. Para la hidrodinamica usamos el esquema de Zuo-He, o bounce-back de componentes de no equilibrio, en las paredes
+%Zou, Q., He, X., 1997. On pressure and velocity boundary conditions for the lattice Boltzmann BGK model. Physics of Fluids 9, 1591. https://doi.org/10.1063/1.869307
+%y para la ecuacion de energia usamos el esquema de Inamuro para recuperar la temperatura en las paredes
+%Inamuro, T., Yoshino, M., Inoue, H., Mizuno, R., Ogino, F., 2002. A Lattice Boltzmann Method for a Binary Miscible Fluid Mixture and Its Application to a Heat-Transfer Problem. Journal of Computational Physics 179, 201–215. https://doi.org/10.1006/jcph.2002.7051
+%}
 
 %%% Local Variables: 
 %%% mode: latex
