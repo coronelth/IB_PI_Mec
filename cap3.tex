@@ -37,25 +37,60 @@ A su vez una PC opcionalmente puede contener un coprocesador siendo una GPU. Dic
 
 El procesador principal que tiene una PC es la CPU, por lo cual se denomina \textit{host}, la GPU es un coprocesador y se denomina \textit{device}. Las ejecuciones de los procesos en la CPU están diseñadas para que se efectúen de manera secuecncial, en cuánto las de la GPU en paralelo; las últimas realizándose en varios hilos de ejecución (\textit{threads}). Las operaciones en paralelo que son analizadas por la CPU y las deriva a la GPU son llevadas a cabo mediante funciones llamadas \textit{kernel}. \textit{Host} y \textit{device} poseen su propia memoria RAM, llamadas \textit{host memory} y \textit{device memory} respectivamente. \cite{rinaldi2011modelos}
 
-Los \textit{threads} que posee una GPU se pueden agrupar de dos formas. Una de ellas es mediante bloques (\textit{thread block}) y el otro es de grilla de bloques (\textit{grid}). Todos los \textit{threads} del mismo \textit{thread block} poseen acceso a una memoria compartida que es de acceso rápido y permite sincronizar las ejecuciones que se les asigna. Debido a la posibilidad de sincronización de los mismos se evita el riesgo de que varios \textit{threads} acceden de manera simultánea al mismo lugar de memoria. Un \textit{grid} es un conjunto de \textit{thread block}, en dónde las instrucciones del \textit{kernel} son paralelizadas, ésto vence la limitación de hardware del finito número de \textit{threads} por bloque. Debido a que la ejecución del proceso en los bloques de \textit{threads} de una grilla pueden ser ejecutados en tiempos distintos, es necesario realizar un sincronización entre los mismos para que su comunicación sea segura y no haya conflictos\cite{tolke2010implementation}. La figura \ref{fig:block_grid_threads} muestra el concepto de \textit{grid} y \textit{thread block}.
+Los \textit{threads} que posee una GPU se pueden agrupar de dos formas, una de ellas es por bloques (\textit{thread block}) y la otra mediante grilla de bloques (\textit{grid}). Todos los \textit{threads} del mismo \textit{thread block} poseen un acceso rápido a una memoria compartida y permite sincronizar las ejecuciones que se les asigna. Debido a la posibilidad de sincronización de los mismos, se evita el riesgo de que varios \textit{threads} accedan de manera simultánea al mismo lugar de memoria. Un \textit{grid} es un conjunto de \textit{thread block}, en dónde las instrucciones del \textit{kernel} son paralelizadas, ésto vence la limitación de hardware del finito número de \textit{threads} por bloque. Puesto que la ejecución del proceso en los \textit{thread blocks} de un \textit{grid} pueden ser ejecutados en tiempos distintos, es necesario realizar un sincronización entre los mismos para que su comunicación sea segura y no haya conflictos\cite{tolke2010implementation}. La figura \ref{fig:block_grid_threads} muestra el concepto de \textit{grid} y \textit{thread block}.
 
 \newpage
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=0.45\textwidth]{figs/cap3/threads_block_grid.jpg}
-	\caption{Bloques de threads organizados en una grilla de bloques \cite{rinaldi2011modelos}.}
+	\includegraphics[width=0.4\textwidth]{figs/cap3/threads_block_grid.jpg}
+	\caption{\textit{Thread blocks} organizados en un \textit{grid} \cite{rinaldi2011modelos}.}
 	\label{fig:block_grid_threads}
 \end{figure}
 
+
+
+\section{Arquitectura de memoria}
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{figs/cap3/Schematization-of-CUDA-architecture-Schematic-representation-of-CUDA-threads-and-memory.png}
+	\caption{Esquematización de la arquitectura de CUDA. Izquierda: lanzamiento de un \textit{kernel} desde el \textit{host}. Derecha: jerarquía de memoria.  \cite{nobile2014cutauleaping}.}
+	\label{fig:schedule_architecture_cuda}
+\end{figure}
+
+Según la arquitectura que posea un procesador, con su respectiva jerarquía en memoria, accesos y latencias, se planifica cómo llevar a cabo la implementación de un código, por ello es de importancia conocer dichas características. 
+
+Anteriormente se mencionó que el \textit{host} y \textit{device} poseen su propia memoria. La transferencia de datos de una memoria a otra tiene una muy alta latencia en cualquiera de los dos sentidos; por lo que al diseñar un código, hay que minimizar la transferencia de datos entre los dos tipos de memoria, y así obtener el menor tiempo de ejecución de los procesos.
+
+Cuando el \textit{host} efectúa su rutina de ejecución y se encuentra con un lanzamiento de \textit{kernel}, éste será llevado a cabo en múltiples \textit{threads} del \textit{device}. Una representación de ello se muestra en la figura \ref{fig:schedule_architecture_cuda}. 
+
+Los procesos en el \textit{device} tienen almacenados los datos según una jerarquía de memoria, con su respectiva limitación de acceso que se observa en la figura \ref{fig:schedule_architecture_cuda}. Los \textit{threads} pueden acceder a datos de muchas memorias diferentes en distintos procesos, dichas memorias son las siguientes:
+
+\begin{itemize}
+	\item  \textit{register memory} es visible para un único \textit{thread}
+	\item \textit{local memory} tiene las mismas caracteísticas que \textit{register memory} pero con una performance menor.
+	\item \textit{shared memory} es visible por todos los \textit{threads} de un mismo bloque, posee una baja latencia en su acceso.
+	\item \textit{global memory} es visible por todos los \textit{threads} de la grilla y también por el \textit{host}, posee una alta latencia de acceso.
+	
+	Las siguientes memorias poseen una alta latencia de acceso son asignadas y son aignadas para usos específicos y generalmente se almacenan en \textit{caché}:
+	
+	\item \textit{constant memory} es visible por todos los \textit{threads} de la grilla siendo únicamente de lectura. El uso de ésta memoria puede reducir el ancho de banda de memoria requerido en comparación con la {global memory}
+	\item \textit{texture memory} es otra memoria en la que sólo se puede leer y tienen acceso todos los \textit{threads} de la grilla. Al realizar lecturas de \textit{threads} ó \textit{threadblocks} adyacentes su performance en comparación con \textit{global memory} es mayor. 
+	
+\end{itemize}
+
+\newpage
+
 \section{Programación en CUDA C}
 
-La programación de las GPU se lleva a cabo mediante el lenguaje \textbf{CUDA}, el cuál es una extención del lenguaje \textbf{C} debido su familiaridad y uso extendido, por lo que el lenguaje se denomina \textbf{CUDA C}. La realización de procesos en paralelos es ejecutada mediante funciones llamadas \textit{kernel} y son del tipo \textit{void}.
+La programación de las GPU se lleva a cabo mediante el lenguaje \textbf{CUDA}, el cuál es una extención del lenguaje \textbf{C} debido su familiaridad y uso extendido; por lo que el lenguaje se denomina \textbf{CUDA C}. La realización de procesos en paralelos es ejecutada mediante funciones llamadas \textit{kernel} y son del tipo \textit{void}.
+\\
 
-Existen tres tipos de funciones que se pueden llevarse a cabo en \textbf{CUDA C} y son:
+Existen tres tipos de funciones que se pueden efectuar en \textbf{CUDA C} y son:
 
 \begin{itemize}
 	
-	\item \textbf{host} función clásica de C que se ejecuta en la CPU, siendo invocable únicamente por funciones que se ejecuten en la CPU. 
+	\item \textbf{host} función clásica de C que se ejecuta en la CPU, siendo invocable únicamente por funciones que se realicen en la CPU. 
 
 	\item \textbf{global} es una función \textit{kernel} invocada desde la CPU para ejecutarse en la GPU. 
 %	Debe especificar la cantidad de bloques y de \textit{threads} por bloque a lanzar la función.
@@ -64,10 +99,10 @@ Existen tres tipos de funciones que se pueden llevarse a cabo en \textbf{CUDA C}
 	
 \end{itemize}
 
-En el presente trabajo sólo se utilizaran funciones de tipo \textbf{host} y \textbf{global}, pudiéndose realizar en un futuro el  \textit{profiling} mediante el uso de las funciones \textbf{device}.
+En el presente trabajo sólo se utilizaran funciones de tipo \textbf{host} y \textbf{global}, pudiéndose realizar en un futuro el  \textit{profiling} mediante el uso de las funciones tipo \textbf{device}.
 
-Otra particularidad que se presenta en la programación es el manejo de la memoria; por parte del \textit{host} como del \textit{device}, siendo abordado posteriormente.
-\newpage
+Otra particularidad que se presenta en la programación es el manejo de la memoria por parte del \textit{host} como del \textit{device}, siendo abordado posteriormente.
+
 
 \subsection{Programación de un \textit{kernel}}
 
@@ -77,7 +112,29 @@ Para visualizar las diferencias de programación de una función \textbf{CUDA C 
 	\rho = \sum_{\alpha} f_{\alpha}
 \end{align*}
 
-donde se detalla primeramente en el lenguaje \textbf{C} :
+Primeramente se detalla el código realizado en el lenguaje \textbf{C}, siendo la función :
+
+{\footnotesize
+	\begin{frame}{}
+		\lstset{language=C,
+			framesep=2mm,
+			basicstyle=\ttfamily,
+			keywordstyle=\color{blue}\ttfamily,
+			stringstyle=\color{red}\ttfamily,
+			commentstyle=\color{green}\ttfamily,
+			morecomment=[l][\color{magenta}]{\#}
+		}
+		\begin{lstlisting}
+void momentoDensity(scalar* rho, scalar* field, basicMesh* mesh);
+		\end{lstlisting}
+		
+	\end{frame}
+}.
+\\
+donde el argumento \textbf{basicMesh* mesh} es un puntero a una estructura, la cuál posee información del mallado que se realizó al dominio del problema a resolver ; como por ejemplo la cantidad de nodos que posee la malla (\textbf{nPoints}) y la cantidad de direcciones que posee el modelo en su espacio de velocidades \textbf{Q}. El vector  \textbf{scalar* rho} es de dimensión \textit{nPoints} y contiene los valores de $\rho$, por último \textbf{scalar* field} es un vector que posee las \textit{Q} componentes de la función de distribución de poblaciones \textit{f} para cada uno de los  \textit{nPoints} nodos de la malla.
+
+Cabe destacar que los resultados obtenidos durante la programación del código en \textbf{C}, se concluyó que el uso de la función \textcolor{blue}{\textbf{for}} para éstos casos es más eficiente que el de \textcolor{blue}{\textbf{while}}.
+
 
 {\footnotesize
 	\begin{frame}{}
@@ -108,15 +165,33 @@ void momentoDensity(scalar* rho, scalar* field, basicMesh* mesh) {
 		\end{lstlisting}
 		
 	\end{frame}
-}
+}.
+\\
 
-El argumento \textbf{basicMesh* mesh} es un puntero a una estructura, la cuál posee información del mallado que se realizó al dominio del problema a resolver ; como por ejemplo la cantidad de nodos que posee la malla (\textbf{nPoints}) y la cantidad de direcciones que posee el modelo en su espacio de velocidades \textbf{Q}. El vector  \textbf{scalar* rho} es de dimensión \textit{nPoints} y contiene los valores de $\rho$, por último \textbf{scalar* field} es un vector que posee las \textit{Q} componentes de la función de distribución de poblaciones \textit{f} para cada uno de los  \textit{nPoints} nodos de la malla.
+La programación de la Ec.(\ref{eq:rho}) implementada en \textbf{CUDA C} es con la función:
 
-Cabe destacar que los resultados obtenidos durante la programación del código en \textbf{C}, se concluyó que el uso de la función \textcolor{blue}{\textbf{for}} para éstos casos es más eficiente que el de \textcolor{blue}{\textbf{while}}.
+{\scriptsize
+	\begin{frame}{}
+		\lstset{language=C,
+			framesep=2mm,
+			basicstyle=\ttfamily,
+			keywordstyle=\color{blue}\ttfamily,
+			stringstyle=\color{red}\ttfamily,
+			commentstyle=\color{green}\ttfamily,
+			morecomment=[l][\color{magenta}]{\#}
+		}
+		\begin{lstlisting}
+extern "C" __global__ void cudaMomentoDensity(cuscalar* field,
+					      cuscalar* rho, int np, int Q ) ; 
+		\end{lstlisting}
+		
+	\end{frame}
+}.
+\\
+en éste caso se pasa de forma distinta los valores de la cantidad de nodos (\textbf{np}) y de la cantidad de velocidades del modelo \textit{DdQq} (\textbf{Q}). La distinción en los argumentos que se pasan en ambos códigos, es debido a la forma que \textbf{CUDA} permite el manejo de las estructuras y también de las decisiones que se tomaron cuando se desarrollaba el código para uno u otro lenguaje.
 
-La programación de la Ec.(\ref{eq:rho}) implementada en \textbf{CUDA C} es la siguiente :
+Se colola \textcolor{blue}{extern} \textcolor{red}{''C''} para que el compilador sepa que es una función de \textbf{CUDA} y además para que lo implemente en una biblioteca tipo \textit{ptx} para \textbf{Python}.
 \newpage
-
 {\footnotesize
 	\begin{frame}{}
 		\lstset{language=C,
@@ -152,9 +227,9 @@ extern "C" __global__ void cudaMomentoDensity(cuscalar* field,
 		\end{lstlisting}
 		
 	\end{frame}
-}
-
-En éste caso se pasa de forma distinta los valores de la cantidad de nodos (\textbf{np}) y de la cantidad de velocidades del modelo \textit{DdQq} (\textbf{Q}). En éste leguaje, se observó que es más eficiente el uso de la función \textcolor{blue}{\textbf{while}} que \textcolor{blue}{\textbf{for}}. La distinción en los argumentos que se pasan en ambos códigos, es debido a la forma que \textbf{CUDA} permite el manejo de las estructuras y también de las decisiones que se tomaron cuando se desarrollaba el código para uno u otro lenguaje.
+}.
+\\
+en éste leguaje, se observó que es más eficiente el uso de la función \textcolor{blue}{\textbf{while}} que \textcolor{blue}{\textbf{for}} en el tiempo de ejecución del código.
 
 Es de importancia conocer explícitamente la función que cumplen las siguientes líneas:
 
@@ -174,17 +249,16 @@ Es de importancia conocer explícitamente la función que cumplen las siguientes
 		\end{lstlisting}
 		
 	\end{frame}
-}
+}.
+\\
+donde las tareas que se hallen en \textcolor{blue}{if} ( idx < np)\{...\} se realizarán de forma paralela y es necesario identificar los \textit{threads} en dónde se llevaran a cabo los procesos. El identificador de los \textit{threads} es \textit{idx} donde blockIdx.x  indica la cantidad de \textit{threads} por \textit{block} y blockDim.x el numero de \textit{block's}.
 
-Las tareas que se hallen en \textcolor{blue}{if} ( idx < np)\{...\} se realizarán de forma paralela y es necesario identificar los \textit{threads} en dónde se llevaran a cabo los procesos. El identificador de los \textit{threads} es \textit{idx} donde blockIdx.x  indica la cantidad de \textit{threads} por \textit{block} y blockDim.x el numero de \textit{block's}.
 
 \iffalse
 A modo de ejemplo si tenemos que $\quad np = 2048 \quad$ y que la cantidad de \textit{thread} por \textit{block} es 512 \cite{zone2020cuda}, con indicar que se utilizarán cuatro (4) \textit{block's} todo el cálculo se realiza simultáneamente, si la cantidad es menor se necesitará más tiempo para la tarea.
 \fi
 
-Se colola \textcolor{blue}{extern} \textcolor{red}{''C''} para que el compilador sepa que es una función de \textbf{CUDA} y además para que lo implemente en una biblioteca tipo \textit{ptx} para \textbf{Python}.
-
-Resta ver cómo es el llamado de las funciones realizadas en el \textit{main}, por lo que en \textbf{C} se tiene:
+Resta ver cómo es el llamado de las funciones realizadas en el \textit{main}, por lo que en \textbf{C} se observa:
 
 
 {\footnotesize
@@ -204,7 +278,7 @@ Resta ver cómo es el llamado de las funciones realizadas en el \textit{main}, p
 	\end{frame}
 }
 
-la cuál no requiere de ninguna explicación. Mientras que en \textbf{CUDA C} se tiene:
+la cuál no requiere de ninguna explicación, mientras que en \textbf{CUDA C} se tiene:
 
 
 {\footnotesize
@@ -233,8 +307,11 @@ en donde < < <, > > > indica la cantidad de \textit{block} en que se realizará 
 		<<<\quad \overbrace{ceil(mesh.nPoints/xgrid)+1}^{cantidad \>de\> \textit{threads}\> por\> \textit{block}}\quad,\quad \underbrace{xgrid}_{cantidad\>de\>block} \quad>>>
 \end{align*}
 
-\subsection{Sincronización de un kernel}
+\subsection{Sincronización}
 
+Debido a que varios \textit{threads} comparten el mismo espacio de memoria por pertenecer a un \textit{block}, puede presentarse la problemática de que varios \textit{threads} intenten acceder al mismo tiempo una memoria ó también de que deban esperar la ejecución de un proceso en otro \textit{thread} para disponer de algún dato almacenado en la memoria.
+
+Las tareas que lanza un \textit{kernel} para ser realziados en una GPU son instruidas a cada uno de los \textit{threadas}. Los procesos que se realizan en cada uno, no necesariamente son ejecutados y finalizados al mismo tiempo, existiendo la posibilidad de que el \textit{thread} que terminó el proceso continúe realizando otro y así sucesivamente. 
 Los \textit{threads} que posee una GPU, no siempre realizan la misma tarea asignada de  El lanzamiento de un \textit{kernel} se realizará en los \textit{threads} de distintos \textit{block's}. 
 
 
@@ -318,38 +395,6 @@ siendo \textit{dst} un puntero con la dirección de destino de los datos, \texti
 \end{table}
 
 
-\section{Arquitectura de memoria}
-
-\begin{figure}[h!]
-	\centering
-	\includegraphics[width=\textwidth]{figs/cap3/Schematization-of-CUDA-architecture-Schematic-representation-of-CUDA-threads-and-memory.png}
-	\caption{Esquematización de la arquitectura de CUDA. Izquierda: lanzamiento de un \textit{kernel} desde el \textit{host}. Derecha: jerarquía de memoria.  \cite{nobile2014cutauleaping}.}
-	\label{fig:schedule_architecture_cuda}
-\end{figure}
-
-Según la arquitectura que posea un procesador, son su respectiva jerarquía en memoria, accesos y latencias se piensa cómo llevar a cabo la implementación de un código. Por ello es de importancia conocer éstas características. 
-
-Se mencionó anteriormente que el \textit{host} y \textit{device} poseen su propia memoria. La transferencia de datos de una memoria a otra tiene una muy alta latencia en cualquiera de los dos sentidos. 
-
-%Por lo que al realizar la implementación de un código hay que minimizar la transferencia para que el tiempo de ejecución de los procesos sea mínimo.
-
-Cuando el \textit{host} efectúa su rutina de ejecución y se encuentra con un lanzamiento de \textit{kernel}, éste será llevado a cabo en múltiples \textit{threads} del \textit{device}. Una representación de ello se muestra en la figura \ref{fig:schedule_architecture_cuda}. 
-
-
-Los procesos en el \textit{device} tienen almacenados los datos según una jerarquía de memoria, con su respectiva limitación de acceso que se observa en la figura \ref{fig:schedule_architecture_cuda}. Los \textit{threads} pueden acceder a datos de muchas memorias diferentes en distintos procesos, dichas memorias son las siguientes:
-
-\begin{itemize}
-	\item  \textit{register memory} es visible para un único \textit{thread}
-	\item \textit{local memory} tiene las mismas caracteísticas que \textit{register memory} pero con una performance menor.
-	\item \textit{shared memory} es visible por todos los \textit{threads} de un mismo bloque, posee una baja latencia en su acceso.
-	\item \textit{global memory} es visible por todos los \textit{threads} de la grilla y también por el \textit{host}, posee una alta latencia de acceso.
-	
-	Las siguientes memorias poseen una alta latencia de acceso son asignadas y son aignadas para usos específicos y generalmente se almacenan en \textit{caché}:
-	
-	\item \textit{constant memory} es visible por todos los \textit{threads} de la grilla siendo únicamente de lectura. El uso de ésta memoria puede reducir el ancho de banda de memoria requerido en comparación con la {global memory}
-	\item \textit{texture memory} es otra memoria en la que sólo se puede leer y tienen acceso todos los \textit{threads} de la grilla. Al realizar lecturas de \textit{threads} ó \textit{threadblocks} adyacentes su performance en comparación con \textit{global memory} es mayor. 
-	
-\end{itemize}
 
 \section{Programación en Python}
 
