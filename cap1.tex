@@ -3,8 +3,10 @@
 \label{cap1}
 
 
-En el estudio de la Mecánica de los Fluidos, son de importancia los problemas de transferencia de calor de flujos multi-fásicos con cambios de fase. 
-Los problemas presentan la particularidad que se han realizado ensayos experimentales que estudian la fenomenología del mismo. \textbf{que queres decir con esto?}
+
+En el estudio de la Mecánica de los Fluidos, esson de importancia los problemas de transferencia de calor de flujos multi-fásicos con cambios de fase. 
+Los problemas presentan la particularidad que se han realizado ensayos experimentales que estudian la fenomenología del mismo. \textbf{que queres decir con esto?}s
+
 Para los tipos de problemas mencionados no se posee actualmente algún método numérico que concuerde con los ensayos realizados y sea producido en un tiempo aceptable. \textbf{Es una idea vaga}
 
 Un ejemplo de aplicacion industrial del tipo de problema mencionado rescide en el estudio de un reactor nuclear. La transferencia de calor producida en las barras de elementos combustibles del núcleo provoca ebullición nucleada a partir de una dada potencia. Se conoce bien cómo es la fenomenología en función de la potencia entregada, por haberse realizado numerosos ensayos y caracterizado distintos parámetros. 
@@ -29,7 +31,7 @@ Generalmente el movimiento de un fluido puede ser descripto por tres tipos de mo
 Los modelos matemáticos de los flujos de fluidos son :
 
 \begin{itemize}
-	\item ecuación de Newton para un basto \textbf{coloquial} número de moléculas (escala microscópica)
+	\item ecuación de Newton para una cantidad elevada de moléculas (escala microscópica)
 	\item ecuación de Boltzman para la función de distribución simple (escala mesoscópica)
 	\item ecuación de Navier-Stokes para macro-variaciones de flujos (escala macroscópica). \textbf{en todo caso seria alguna aproximacion de continuo. NS es para un tipo de flujo}
 \end{itemize}
@@ -46,28 +48,57 @@ Computacionalmente son llevados a cabo para encontrar una solución aproximada r
 La Simulación de Dinámica Molecular (\textit{Molecular Dynamic Simulation} o MDS) es una técnica en la cual el movimiento individual de átomos o moléculas del fluido son registrados para resolver las ecuaciones de Newton.
 La principal ventaja de MDS es el aspecto macroscópico del fluido puede ser directamente conectado con el comportamiento molecular, en donde la estructura molecular y las interacciones microscópicas pueden ser descriptas de una manera directa.
 
-El método de lattice Boltzmann ( \textit{lattice Boltzman Method} o LBM) es una aproximación del nivel mesoscópica. LBM estudia la micro-dinámica de partículas ficticias utilizando modelos cinéticos simplificados,. Llalo cual provee un camino alternativo de simular la mecánica de fluidos. La naturaleza de la cinética brinda distintas características de LBM tales que es claro el panorama de los procesos de advección y colisión de partículas de fluidos simuladas. La estructura del algoritmo es simple y de fácil implementación en las condiciones de contorno, además presenta un paralelismo natural. Todos éstos interesantes atributos hacen que LBM sea una potente herramienta numérica para la simulación de sistemas de fluidos envueltos en problemas físicos complejos\cite{guo2013lattice}. 
+El método de lattice Boltzmann ( \textit{lattice Boltzman Method} o LBM) es una aproximación del nivel mesoscópica. LBM estudia la micro-dinámica de partículas ficticias utilizando modelos cinéticos simplificados, lo cual provee un camino alternativo de simular la mecánica de fluidos. La naturaleza de la cinética brinda distintas características de LBM tales que es claro el panorama de los procesos de advección y colisión de partículas de fluidos simuladas. La estructura del algoritmo es simple y de fácil implementación en las condiciones de contorno, además presenta un paralelismo natural. Todos éstos interesantes atributos hacen que LBM sea una potente herramienta numérica para la simulación de sistemas de fluidos envueltos en problemas físicos complejos\cite{guo2013lattice}. 
 
 
 \section{Descripción general de LBM}
 
-El modelo de lattice -Boltzmann, deriva de discretizar la ecuación de Boltzmann. La ecuación de Boltzmann es discretizada en el espacio de velocidades, espacio físico y espacio temporal.
+Los modelos de lattice -Boltzmann provienen de la ecuación de Boltzmann, ésta se encuentra discretizada en espacios para resolver los problemas según: espacio físico, espacio de velocidades y espacio temporal. 
 
-Los modelos generales de LB para flujos multifásicos son cuatro, siendo ellos:
+La discretización espacial surge de realizar un mallado a la región donde se plantea resolver un dado problema físico, y, cada nodo de la malla tiene asignado un espacio de velocidades. Todos los modelos se encuentran clasificados según el tipo \textit{DdQq} (\textit{d}-dimensiones  \textit{q}-velocidades), siendo \textit{q} la discretización realizada en el espacio de velocidades. La figura \ref{fig:D1Q3_D2Q9} muestra como es el conjunto de velocidades para el modelo D1Q3 y D2Q9.
 
-\begin{itemize}
-	\item color gradient
-	\item free energy
-	\item phase field
-	\item pseudopotential
-\end{itemize}
+El espacio de velocidades indica cómo es la propagación de las propiedades que poseen los nodos de la grilla. La velocidad de grilla del nodo i-ésimo se denota $\mathbf{e}_{i}$ y posee \textit{q} componentes. Para el modelo D2Q9 la figura \ref{fig:D1Q3_D2Q9} muestra un esquema de las velocidades de grilla del nodo i - ésimo y la Ec. (\ref{eq:velgrilla}) el valor adoptado.
 
-El modelo que se uttilizará en el presente trabajo es el pseudopotencial. El cual  LBM dependerá de cuál es el tipo de modelo \textit{DdQq} (\textit{d}-dimensiones  \textit{q}-velocidades)
-El problema físico a resolver cuenta con una región, la cuál se le realizará un mallado para así discretizar el espacio. Cada nodo de la grilla poseerá su velocidad de grilla, la cual tiene \textit{q} componentes. El campo de distribución de probabilidades \textit{f} poseerá también \textit{q} componentes. \textbf{Esta parte de multifasico queda descolgado del resto}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=.8\textwidth]{figs/cap1/D1Q3_D2Q9}
+	\caption{Conjunto de velocidades de los modelos D1Q3 y D2Q9. \cite{kruger2017lattice}}
+	\label{fig:D1Q3_D2Q9}	
+\end{figure}
 
-\textbf{Tal vez sea una buena idea describir aca que es DdQq y no en otro capitulo}
 
-A continuación se mostrará un ejemplo de un modelo \textit{D2Q9}. En la figura \ref{fig:grilla_D2Q9} se observa cómo son las velocidades de grilla y en qué direccion apuntan \textbf{es muuuy coliquial. Son direcciones}, como así también cómo es el proceso de \textit{streaming}. \textbf{que es streaming}
+\begin{equation}
+{\mathbf{e}}_{i} =  
+\left( \begin{array}{c} 
+e_{i0} \\ e_{i1}\\ e_{i2}\\ e_{i3}\\ e_{i4}\\ e_{i5}\\
+e_{i6}\\ e_{i7}\\ e_{i8}\\
+\end{array}
+\right) =
+\left( \begin{array}{c} 
+(0,0,0) \\ (1,0,0) \\ (0,1,0) \\(-1,0,0) \\ (0,-1,0) \\ (1,1,0) \\
+(-1,1,0) \\ (-1,-1,0) \\ (1,-1,0)\\ 
+\end{array}
+\right) 
+\label{eq:velgrilla}
+\end{equation}
+
+
+
+
+En el presente trabajo se resolverán los problemas descriptos en Cap. \ref{cap4}, los cuáles son de 2 dimensiones y se adoptó el tipo de modelo D2Q9. 
+
+
+
+Para los problemas de flujos multifásicos existen cuatro modelos generales de LB , siendo ellos:
+
+\qquad \qquad color gradient, free energy, phase field y pseudopotential.
+
+El modelo que se utilizará en el presente trabajo es el pseudopotencial, el cuál está basado en proponer un potencial de interacción entre las partículas del fluido. El potencial se utiliza para calcular la fuerza de interacción entre las partículas del fluido y está dado según una Ecuación de estado. 
+
+El modelo posee un campo de distribución de probabilidades \textit{f} que tiene asociado \textit{q} componentes, siendo dependiente de la fuerza de interacción. Por medio de \textit{f} se pueden recuperar las variables macroscópicas asociadas del problema a resolver.
+
+A continuación se datallará un ejemplo sencillo de un modelo \textit{D2Q9}. La figura \ref{fig:grilla_D2Q9} muestra un esquema de las direcciones de las velocidades de grilla de un nodo i-ésimo. En la misma figura se esquematiza como  es el proceso de colisión y advección (\textit{streaming}) que se realiza para actualizar los estados de los nodos cuando transcurre un paso de tiempo de la discretización temporal del problema. 
+
 
 \begin{figure}[h!]
 	\centering
@@ -82,9 +113,9 @@ A continuación se mostrará un ejemplo de un modelo \textit{D2Q9}. En la figura
 	\label{eq:field_intro} 
 \end{align}
 
-En donde $\alpha$ corresponde al  $\alpha$-ésimo componente de los \textit{q} que se encuentran. $f^{eq}$ es el campo en estado de equilibrio. $\tau$ es un parámetro de relajación. 
+El término derecho de la ecuación \ref{eq:field_intro} contiene el proceso de \textit{colisión} y el izquierdo al \textit{streaming}. $\alpha$ corresponde al  $\alpha$-ésimo componente de los \textit{q}, en éste ejemplo $\alpha = 1, 2, ...,9$. $f^{eq}$ es la función de distribución en estado de equilibrio. $\tau$ es un parámetro de relajación del modelo. 
 
-Por medio de la \textit{colisión} y luego del \textit{streaming} se obtienen los parámetros macroscópicos el problema. Para éste ejemplo se obtiene $\rho$ y $\mathbf{u}$ de las ecuaciones \ref{eq: rho.1} y \ref{eq: u.1} respectivamente.
+Por medio de la \textit{colisión} y luego del \textit{streaming} se obtienen los parámetros macroscópicos el problema. Para éste caso sencillo se obtiene $\rho$ y $\mathbf{u}$ de las ecuaciones \ref{eq: rho.1} y \ref{eq: u.1} respectivamente.
 
 \begin{align}
 	\rho = \sum_{\alpha} \mathbf{f}_{\alpha}
@@ -100,7 +131,7 @@ El método numérico en éste caso tiene los siguiente forma de resolución:
 \newline
 {\scriptsize
 
-\xymatrix{\>\ar@{->}[r]&\textbf{Colisión}\ar@^{->}[r]&\textbf{Streaming}\ar@{->}[r]&\textbf{Cálculo de parámetros\ar@{->}[r]}&\textbf{Actualización de parámetros}\ar@{->}[r]&\> \ar@/^{7mm}/[lllll]_{SIGUIENTE \> PASO \> DE \> TIEMPO}}
+\xymatrix{\>\ar@{->}[r]&\textbf{Colisión}\ar@^{->}[r]&\textbf{Streaming}\ar@{->}[r]&\textbf{C. de Contorno}\ar@{->}[r]&\textbf{Cálculo $\rho$, \textit{F} y \textit{U}\ar@{->}[r]}&\textbf{Actualización$\rho$, \textit{F} y \textit{U}}\ar@{->}[r]&\> \ar@/^{7mm}/[llllll]_{SIGUIENTE \> PASO \> DE \> TIEMPO}}
 }
 .
 \newline 
@@ -109,7 +140,8 @@ El método numérico en éste caso tiene los siguiente forma de resolución:
 \textbf{Falta condiciones de contorno en el esquema}
 
 
-\textbf{Que son parametros?}
+\textbf{Qu’e son parametros?}
+
 
 \textbf{Llegado a este punto no se entiende bien que es LB. Para que se usa, y por que sirve? Es una manera de obtener la solucion de una ecuacion diferencial, pero resolviendo otra que en principio es mas sencilla computacionalmente. Hay que trabajar un poco esta seccion.}
 
@@ -134,7 +166,8 @@ El esquema de la figura \ref{fig:cpu_gpu_transis} muestra las cantidades de tran
 	\label{fig:cpu_gpu_transis}
 \end{figure}
 
-Las GPUs estan acondicionadas para llevar a cabo los cálculos que presentan los métodos numéricos de LB. El LBM que se utilizará en el presente trabajo consiste en que en cada uno de los nodos de la grilla discretizada se le realicen operaciones elementales como los de la ecuación \ref{eq:field_intro}. \textbf{No es necesario, porque eso es en todos los LB.} Las GPU se encuentran optimizadas para ejecutar cálculos sobre los píxeles de un monitor, los cuales pueden considerarse como una grilla de nodos. A través de la paralelización la performance de las GPUs es alta, siendo capaces de procesar múltiples vértices y píxeles simultáneamente. Las simulaciones numéricas se producen en un menor tiempo en las GPU que sobre las CPU debido al alto paralelismo alcanzado por la GPU. \cite{rinaldi2011modelos}.
+Las GPUs estan acondicionadas para llevar a cabo los cálculos que presentan los métodos numéricos de LB. Los LBM consisten en que a cada uno de los nodos de la grilla discretizada se le realicen operaciones elementales como los de la ecuación \ref{eq:field_intro}. Las GPU se encuentran optimizadas para ejecutar cálculos sobre los píxeles de un monitor, los cuales pueden considerarse como una grilla de nodos. A través de la paralelización la performance de las GPUs es alta, siendo capaces de procesar múltiples vértices y píxeles simultáneamente. Las simulaciones numéricas se producen en un menor tiempo en las GPU que sobre las CPU debido al alto paralelismo alcanzado por la GPU. \cite{rinaldi2011modelos}.
+
 
 El lenguaje de programación que se utiliza en las placas gráficas es CUDA y fue desarrollado mediante la empresea NVIDIA. Se basa en el lenguaje de programación \textbf{C} con ciertas modificaciones para que los procesos sean en paralelo. Dichos procesos se especifican para que puedan ser lanzados en un número de \textit{blocks} y \textit{threads} de ejecución.
 
@@ -145,7 +178,13 @@ El lenguaje de programación que se utiliza en las placas gráficas es CUDA y fu
 
 \section{Descripción y alcance del proyecto integrador}
 
-Mediante el método LBM desarrollado por Fogliatto en \cite{fogliatto2018modelado}, \cite{fogliatto2019simulation} y \colorbox{green}{cita de ec energia} se realizará la implementación de un código numérico para resolver problemas de transferencia de calor en flujos multifásicos con cambio de fase \textbf{usando GPU, python, etc}de la manera más robusta posible. 
+Mediante el método LBM desarrollado por Fogliatto en \cite{fogliatto2018modelado}, \cite{fogliatto2019simulation} y \colorbox{green}{cita de ec energia} se realizará la implementación de un código numérico para resolver problemas de transferencia de calor en flujos multifásicos con cambio de fase, usando GPU y realizando el código en C, CUDA y Python , de la manera más robusta posible.
+
+La implementación del código se ejecutará en los lenguajes de programación de \textbf{C} y \textbf{CUDA}. Por medio de éstos lenguajes se construirán bibliotecas las cuales serán usadas mediante el lenguaje \textbf{Python}. La utilización de \textbf{Python} es debida a la compatibilidad de aplicar  el código en las distintos sistemas operativos , como \textit{Linux} y \textit{Windows}.
+
+Al ser un proyecto complejo, mediante la herramienta multiplataforma \textbf{CMake} se realizó la compilación de las librerías. El proyecto se encuentra en \textbf{Git Hub} donde puede ser descargado en \url{ https://github.com/efogliatto/LBCUDA_Test}.
+
+
 La validación del código se procederá mediante los siguientes tres problemas:
 \begin{itemize}
 	\item \textit{construcción de Maxwell}
@@ -153,19 +192,12 @@ La validación del código se procederá mediante los siguientes tres problemas:
 	\item \textit{generación de burbujas sobre una superficie horizontal calefaccionada}
 \end{itemize} 
 
-\textbf{Esto lo pondria a; final de la seccion, antes de la optimizacion y prueba de speedup}
 las cuáles se encuentran explicadas en \ref{cap4}.
 
-El método numérico consiste en resolver dos ecuaciones, la primera es de conservación de masa y momento, la segunda es la ecuación de energía. Las ecuaciones resuelven campos de distribución de probabilidades cuando se realiza la colisión y streaming para el nuevo paso de tiempo, siendo del estilo de la ecuación \ref{eq:field_intro}. A partir de ellas dos se recuperan las variables macroscópicas $\rho$ , $\mathbf{u}$ y \textbf{T}. El método se encuentra descripto en el capítulo \ref{cap3}. \textbf{Este parrafo no tiene conexion con la seccion}
 
-La implementación del código se ejecutará en los lenguajes de programación de \textbf{C} y \textbf{CUDA}. Por medio de éstos lenguajes se construirán bibliotecas las cuales serán usadas mediante el lenguaje \textbf{Python}. La utilización de \textbf{Python} es debida a la compatibilidad de aplicar  el código en las distintos sistemas operativos , como \textit{Linux} y \textit{Windows}.
 
-Al ser un proyecto complejo, mediante la herramienta multiplataforma \textbf{CMake} se realizó la compilación de las librerías. El proyecto se encuentra en \textbf{Git Hub} donde puede ser descargado en \url{ https://github.com/efogliatto/LBCUDA_Test}.
 
 Se realizará una comparación entre los resultados de \textit{simple} y \textit{doble} precisión. Y a su vez cuánto es el \textit{Speed Up} de los códigos en \textbf{C}, \textbf{CUDA} y \textbf{Python}. 
-
-Por último se hará un \textit{Speed Up} del código desarrollado \textbf{C ++} por Fogliatto utilizado en los mismos problemas ( \cite{fogliatto2018modelado}, \cite{fogliatto2019simulation} y \colorbox{green}{cita de los problemas}). Dicho código se encuentra en \url{https://github.com/efogliatto/phoenix}. \textbf{No lo vamos a hacer}
-
 
 
 %%% Local Variables: 

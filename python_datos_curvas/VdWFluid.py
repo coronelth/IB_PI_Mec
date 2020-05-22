@@ -66,7 +66,7 @@ if __name__ == "__main__":
     
     E_r = Sol[0] / Sol[0][-1]
     
-    plt.plot( E_r,rho_semi_empirico ,'.')
+#    plt.plot( E_r,rho_semi_empirico ,'.')
     
 #%% Obtención de densidad y temperaturas reducidadas calculadas de forma semi-empíricas
     
