@@ -5,26 +5,26 @@ Created on Sat Apr 25 08:22:01 2020
 
 @author: coronelth
 """
-# %%
+
 from time import time
 import numpy as np
 import pycuda
 from pycuda import gpuarray
-import pycuda.autoinit
+#import pycuda.autoinit
 import argparse
 import ctypes
 import random
 
 random.seed(0)
-# %%
-# cuEColl_mod         = pycuda.driver.module_from_file('/home/utnsistemas/Downloads/ptx/objects-Release/cudalbequationPTX/cudaEnergiaEcu/cudaEnergyCollision.ptx')
-# cuEEqDistNode_mod   = pycuda.driver.module_from_file('/home/utnsistemas/Downloads/ptx/objects-Release/cudalbequationPTX/cudaEnergiaEcu/cudaEnergyEqDistNode.ptx')
-# #cuESource_mod       = pycuda.driver.module_from_file('/home/utnsistemas/Downloads/ptx/objects-Release/cudalbequationPTX/cudaEnergiaEcu/cudaEnergySource.ptx')
-# cuETemo_mod         = pycuda.driver.module_from_file('/home/utnsistemas/Downloads/ptx/objects-Release/cudalbequationPTX/cudaEnergiaEcu/cudaEnergyTemp.ptx')
-# #cuEFixedTBound_mod  = pycuda.driver.module_from_file('/home/utnsistemas/Downloads/ptx/objects-Release/cudalbequationPTX/cudaEnergiaEcu/cudaFixedTBoundary.ptx')
 
-# cuF_ker         = cuEColl_mod.get_function('cudaEnergyCollision')
-# cuFEqDistNode_ker   = cuEEqDistNode_mod.get_function('cudaEnergyEqDistNode')
+#cuEColl_mod         = pycuda.driver.module_from_file('../../../ptx/objects-Release/cudalbequationPTX/cudaEnergiaEcu/cudaEnergyCollision.ptx')
+#cuEEqDistNode_mod   = pycuda.driver.module_from_file('../../../ptx/objects-Release/cudalbequationPTX/cudaEnergiaEcu/cudaEnergyEqDistNode.ptx')
+#cuESource_mod       = pycuda.driver.module_from_file('../../../ptx/objects-Release/cudalbequationPTX/cudaEnergiaEcu/cudaEnergySource.ptx')
+#cuETemo_mod         = pycuda.driver.module_from_file('../../../ptx/objects-Release/cudalbequationPTX/cudaEnergiaEcu/cudaEnergyTemp.ptx')
+#cuEFixedTBound_mod  = pycuda.driver.module_from_file('../../../ptx/objects-Release/cudalbequationPTX/cudaEnergiaEcu/cudaFixedTBoundary.ptx')
+
+#cuF_ker         = zm_mod.get_function('cudaEnergyCollision')
+#cuFEqDistNode_ker   = zm_mod.get_function('cudaEnergyEqDistNode')
 #cuFSource_ker       = zm_mod.get_function('cudaEnergySource')
 #cuETemo_ker         = zm_mod.get_function('cudaEnergyTemp')
 #cuEFixedTBound_ker  = zm_mod.get_function('cudaFixedTBoundary')
@@ -45,23 +45,21 @@ basicMesh()
 #%%
 # Inclusión de librerias de CUDA y extracción de funciones
 #
-#cuFFint_mod     = pycuda.driver.module_from_file('/home/utnsistemas/Downloads/ptx/objects-Release/cudalbequationPTX/cudaFuerza/cudaFuerzaFuerzaint.ptx')
-cuFFtotal_mod   = pycuda.driver.module_from_file('/home/utnsistemas/Downloads/ptx/objects-Release/cudalbequationPTX/cudaFuerza/cudaFuerzaFuerzatotal.ptx')
+#cuFFint_mod     = pycuda.driver.module_from_file('../../../ptx/objects-Release/cudalbequationPTX/cudaFuerza/cudaFuerzaFuerzaint.ptx')
+#cuFFtotal_mod   = pycuda.driver.module_from_file('../../../ptx/objects-Release/cudalbequationPTX/cudaFuerza/cudaFuerzaFuerzatotal.ptx')
 #
 #cudaFuerzaFuerzaint     = zm_mod.get_function('cudaFuerzaFuerzaint')
-cudaFuerzaFuerzatotal   = cuFFtotal_mod.get_function('cudaFuerzaFuerzatotal')
+#cudaFuerzaFuerzatotal   += zm_mod.get_function('cudaFuerzaFuerzatotal')
 #
-#cuMColl_mod     = pycuda.driver.module_from_file('/home/utnsistemas/Downloads/ptx/objects-Release/cudalbequationPTX/cudaMomentoFunciondist/cudaMomentoCollision.ptx')
-cuMDensity_mod  = pycuda.driver.module_from_file('/home/utnsistemas/Downloads/ptx/objects-Release/cudalbequationPTX/cudaMomentoFunciondist/cudaMomentoDensity.ptx')
-cuMVelosity_mod = pycuda.driver.module_from_file('/home/utnsistemas/Downloads/ptx/objects-Release/cudalbequationPTX/cudaMomentoFunciondist/cudaMomentoVelocity.ptx')
-cuSStre_mod     = pycuda.driver.module_from_file('/home/utnsistemas/Downloads/ptx/objects-Release/cudalbequationPTX/cudaStreaming/cudaStream.ptx')
-cuSSwap_mod     = pycuda.driver.module_from_file('/home/utnsistemas/Downloads/ptx/objects-Release/cudalbequationPTX/cudaStreaming/cudaSwap.ptx')
+#cuMColl_mod     = pycuda.driver.module_from_file('../../../ptx/objects-Release/cudalbequationPTX/cudaMomentoFunciondist/cudaMomentoDensity.ptx')
+#cuMDensity_mod  = pycuda.driver.module_from_file('../../../ptx/objects-Release/cudalbequationPTX/cudaMomentoFunciondist/cudaMomentoDensity.ptx')
+#cuMVelosity_mod = pycuda.driver.module_from_file('../../../ptx/objects-Release/cudalbequationPTX/cudaMomentoFunciondist/cudaMomentoVelocity.ptx')
+#cuMStre_mod     = pycuda.driver.module_from_file('../../../ptx/objects-Release/cudalbequationPTX/cudaMomentoFunciondist/cudaStreaming.ptx')
 #
-#cudaMomentoCollision      = cuMColl_mod.get_function('cudaMomentoCollision')
-cudaMomentoDensity        = cuMDensity_mod.get_function('cudaMomentoDensity')
-cudaMomentoVelocity       = cuMVelosity_mod.get_function('cudaMomentoVelocity')
-cudaStream                = cuSStre_mod.get_function('cudaStream')
-cudaSwap                  = cuSSwap_mod.get_function('cudaSwap')
+#cudaMomentoCollision      = zm_mod.get_function('cudaMomentoCollision')
+#cudaMomentoDensity        = zm_mod.get_function('cudaMomentoDensity')
+#cudaMomentoVelocity       = zm_mod.get_function('cudaMomentoVelocity')
+#cudaStreaming             = zm_mod.get_function('cudaStreaming')
 
 #%%
 
@@ -214,10 +212,10 @@ if __name__ == '__main__':
     vfields = ('U')
 #
     updateCaseFile(scfields, 2, vfields, 1, timeList, nwrite);
-#%%# 
+#%%# paso el chango de internet 
 from ctypes import *
 
-dll = ctypes.CDLL('/home/coronelth/Desktop/Tesis_Grado_Ing_Mec_IB/LBCUDA_Test/lib/libio.so')
+dll = ctypes.CDLL('/home/utnsistemas/Desktop/LBCUDA_Test/lib/libio.so')
 dll.updateCaseFile.argtypes = POINTER(c_char * 100),c_uint,POINTER(c_char * 100),c_uint,POINTER(c_uint),c_uint
 dll.updateCaseFile.restype = None
 

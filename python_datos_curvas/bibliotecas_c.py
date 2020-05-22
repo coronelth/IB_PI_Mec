@@ -13,13 +13,13 @@ import ctypes
 
 #def load_lib_c():
 
-libbasic        = ctypes.CDLL('/home/utnsistemas/Downloads/lib/libbasic.so')
-libd2q9         = ctypes.CDLL('/home/utnsistemas/Downloads/lib/libd2q9.so')
-libbio          = ctypes.CDLL('/home/utnsistemas/Downloads/lib/libio.so')
-libfdoperations = ctypes.CDLL('/home/utnsistemas/Downloads/lib/libfdoperations.so')
-liblatticemesh  = ctypes.CDLL('/home/utnsistemas/Downloads/lib/liblatticemesh.so')
-liblatticemodel = ctypes.CDLL('/home/utnsistemas/Downloads/lib/liblatticemodel.so')
-liblbequation   = ctypes.CDLL('/home/utnsistemas/Downloads/lib/liblbequation.so')
+libbasic        = ctypes.CDLL('/home/coronelth/Desktop/Tesis_Grado_Ing_Mec_IB/LBCUDA_Test/lib/libbasic.so')
+libd2q9         = ctypes.CDLL('/home/coronelth/Desktop/Tesis_Grado_Ing_Mec_IB/LBCUDA_Test/lib/libd2q9.so')
+libbio          = ctypes.CDLL('/home/coronelth/Desktop/Tesis_Grado_Ing_Mec_IB/LBCUDA_Test/lib/libio.so')
+libfdoperations = ctypes.CDLL('/home/coronelth/Desktop/Tesis_Grado_Ing_Mec_IB/LBCUDA_Test/lib/libfdoperations.so')
+liblatticemesh  = ctypes.CDLL('/home/coronelth/Desktop/Tesis_Grado_Ing_Mec_IB/LBCUDA_Test/lib/liblatticemesh.so')
+liblatticemodel = ctypes.CDLL('/home/coronelth/Desktop/Tesis_Grado_Ing_Mec_IB/LBCUDA_Test/lib/liblatticemodel.so')
+liblbequation   = ctypes.CDLL('/home/coronelth/Desktop/Tesis_Grado_Ing_Mec_IB/LBCUDA_Test/lib/liblbequation.so')
 
 readInitialParameters = libbasic.readInitialParameters
 writeMeshToEnsigh     = libbio.writeMeshToEnsight
