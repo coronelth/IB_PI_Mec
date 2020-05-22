@@ -49,7 +49,7 @@ Los \textit{threads} que posee una GPU se pueden agrupar de dos formas, una de e
 
 
 
-\section{Arquitectura de memoria}
+\section{Arquitectura de la memoria de una GPU}
 
 \begin{figure}[h!]
 	\centering
@@ -133,7 +133,7 @@ void momentoDensity(scalar* rho, scalar* field, basicMesh* mesh);
 \\
 donde el argumento \textbf{basicMesh* mesh} es un puntero a una estructura, la cuál posee información del mallado que se realizó al dominio del problema a resolver ; como por ejemplo la cantidad de nodos que posee la malla (\textbf{nPoints}) y la cantidad de direcciones que posee el modelo en su espacio de velocidades \textbf{Q}. El vector  \textbf{scalar* rho} es de dimensión \textit{nPoints} y contiene los valores de $\rho$, por último \textbf{scalar* field} es un vector que posee las \textit{Q} componentes de la función de distribución de poblaciones \textit{f} para cada uno de los  \textit{nPoints} nodos de la malla.
 
-Cabe destacar que los resultados obtenidos durante la programación del código en \textbf{C}, se concluyó que el uso de la función \textcolor{blue}{\textbf{for}} para éstos casos es más eficiente que el de \textcolor{blue}{\textbf{while}}.
+Cabe destacar que los resultados obtenidos durante la programación del código en \textbf{C}, se concluyó que es más eficiente el uso de la función \textcolor{blue}{\textbf{for}} que \textcolor{blue}{\textbf{while}}.
 
 
 {\footnotesize
@@ -157,10 +157,15 @@ void momentoDensity(scalar* rho, scalar* field, basicMesh* mesh) {
 	for( uint i = 0 ; i < mesh->nPoints ; i++ ) {
 		
 		rho[i] = 0;	    
+		
 		for( uint j = 0 ; j < mesh->Q ; j++ ) {
+		
 			rho[i] += field[ i*mesh->Q + j ];
-		}		
+		
+		}	
+			
 	}
+	
 }
 		\end{lstlisting}
 		
@@ -214,15 +219,25 @@ extern "C" __global__ void cudaMomentoDensity(cuscalar* field,
 					      int Q ) {
 							
 	int idx = threadIdx.x + blockIdx.x*blockDim.x;	
+	
 	if( idx < np ) {	
+	
 		int j= 0;		
+	
 		cuscalar sum = 0;		
+	
 		while ( j < Q ) {		
+	
 			sum += field[ idx*Q + j ];			
+	
 			j++;			
+	
 		}				
+	
 		rho[idx] = sum;	
+	
 	}
+	
 }		
 		\end{lstlisting}
 		
@@ -231,8 +246,7 @@ extern "C" __global__ void cudaMomentoDensity(cuscalar* field,
 \\
 en éste leguaje, se observó que es más eficiente el uso de la función \textcolor{blue}{\textbf{while}} que \textcolor{blue}{\textbf{for}} en el tiempo de ejecución del código.
 
-Es de importancia conocer explícitamente la función que cumplen las siguientes líneas:
-
+Es de importancia conocer la función que cumplen las siguientes líneas:
 {\footnotesize
 	\begin{frame}{}
 		\lstset{language=C,
@@ -253,11 +267,6 @@ Es de importancia conocer explícitamente la función que cumplen las siguientes
 \\
 donde las tareas que se hallen en \textcolor{blue}{if} ( idx < np)\{...\} se realizarán de forma paralela y es necesario identificar los \textit{threads} en dónde se llevaran a cabo los procesos. El identificador de los \textit{threads} es \textit{idx} donde blockIdx.x  indica la cantidad de \textit{threads} por \textit{block} y blockDim.x el numero de \textit{block's}.
 
-
-\iffalse
-A modo de ejemplo si tenemos que $\quad np = 2048 \quad$ y que la cantidad de \textit{thread} por \textit{block} es 512 \cite{zone2020cuda}, con indicar que se utilizarán cuatro (4) \textit{block's} todo el cálculo se realiza simultáneamente, si la cantidad es menor se necesitará más tiempo para la tarea.
-\fi
-
 Resta ver cómo es el llamado de las funciones realizadas en el \textit{main}, por lo que en \textbf{C} se observa:
 
 
@@ -276,10 +285,9 @@ Resta ver cómo es el llamado de las funciones realizadas en el \textit{main}, p
 		\end{lstlisting}
 		
 	\end{frame}
-}
-
+}.
+\\
 la cuál no requiere de ninguna explicación, mientras que en \textbf{CUDA C} se tiene:
-
 
 {\footnotesize
 	\begin{frame}{}
@@ -299,9 +307,9 @@ cudaDeviceSynchronize();
 		\end{lstlisting}
 		
 	\end{frame}
-}
-
-en donde < < <, > > > indica la cantidad de \textit{block} en que se realizará la tarea, como así también la cantidad de \textit{threads} en cada \textit{block}.
+}.
+\\
+en donde < < <, > > > indica la cantidad de \textit{thread blocks} en que se realizará la tarea, como así también la cantidad de \textit{threads} en cada \textit{block}.
 
 \begin{align*}
 		<<<\quad \overbrace{ceil(mesh.nPoints/xgrid)+1}^{cantidad \>de\> \textit{threads}\> por\> \textit{block}}\quad,\quad \underbrace{xgrid}_{cantidad\>de\>block} \quad>>>
@@ -309,21 +317,19 @@ en donde < < <, > > > indica la cantidad de \textit{block} en que se realizará 
 
 \subsection{Sincronización}
 
-Debido a que varios \textit{threads} comparten el mismo espacio de memoria por pertenecer a un \textit{block}, puede presentarse la problemática de que varios \textit{threads} intenten acceder al mismo tiempo una memoria ó también de que deban esperar la ejecución de un proceso en otro \textit{thread} para disponer de algún dato almacenado en la memoria.
+Debido a que los procesos en la GPU son realizados de una forma no determinística, es necesario que exista un procedimiento para sincronizar los \textit{threads}. Por ejemplo, un conflicto puede ser que el \textbf{Thread idx = 1} quiera acceder a un lugar de la memoria al mismo tiempo que el \textbf{Thread idx = 2}. Otro caso es que el \textbf{Thread idx = 1} escriba un valor en la \textit{shared memory} y se requiera que el \textbf{Thread idx = 2} realice alguna operación con dicho valor. Un tercer caso puede ser similar al del segundo, con la diferencia de que el valor esté en \textit{global memory}. Los métodos que se utilizan para resolver éstos problemas son los siguientes:
 
-Las tareas que lanza un \textit{kernel} para ser realziados en una GPU son instruidas a cada uno de los \textit{threadas}. Los procesos que se realizan en cada uno, no necesariamente son ejecutados y finalizados al mismo tiempo, existiendo la posibilidad de que el \textit{thread} que terminó el proceso continúe realizando otro y así sucesivamente. 
-Los \textit{threads} que posee una GPU, no siempre realizan la misma tarea asignada de  El lanzamiento de un \textit{kernel} se realizará en los \textit{threads} de distintos \textit{block's}. 
-
-
-El lanzamiento de un \textit{kernel} en varios bloques tiene una particularidad en la ejecución de los procesos, los \textit{threads} de cada bloque llevan realizan los procesos en diferentes tiempos por ser independientes. \textbf{Que quiere decir esta oracion. Parece no estarbien escrita} Para evitar problemas en las operaciones que se realizan en la memoria pasada al \textit{kernel} ( surge en parte debido a que un \textit{kernel} es una función \textbf{void} ), se utiliza la función \textbf{cudaDeviceSynchronize($\>$)}. Esta función hace que los bloques realicen su ejecución y antes de proceder a la siguiente instrucción espera a que todos los bloques de \textit{threads} hallan terminado. Para sincronizar los \textit{threads} de un mismo bloque en un función \textit{device} se utiliza \textbf{syncthreads($\>$)}.
-
+\begin{itemize}
+	\item \textbf{syncthreads()} para sincronizar los \textit{threads} de un mismo \textit{thread block}
+	\item \textbf{cudaDeviceSynchronize()} para sincronizar los \textit{thread blocks} de una \textit{grid}
+\end{itemize}
 
 \subsection{Utilización de la memoria de \textit{host} y \textit{device}}
 
 
-Las funciones que son realizadas en \textbf{C} permiten retornar alguna variable mientras que en \textbf{CUDA C} los \textit{kernel} son del tipo \textit{void}. Lo cuál implica que es necesario almacenar memoria en el \textit{device} para una variable, y pasarla como argumento al \textit{kernel} para que éste la modifique y así obtener lo requerido. 
+Las funciones que son realizadas en \textbf{C} permiten retornar alguna variable mientras que en \textbf{CUDA C} los \textit{kernel} son del tipo \textit{void}. Por lo cuál es necesario almacenar memoria en el \textit{device} para una variable, y pasarla como argumento al \textit{kernel} para que éste la modifique y así obtener lo requerido. 
 
-La allocación de memoria en el \textit{host} es la misma que se utiliza en \textbf{C}  \textbf{malloc($\>$)};
+La allocación de memoria en el \textit{host} es la misma que se utiliza en \textbf{C}  \textbf{malloc($\>$)} :
 {\footnotesize
 	\begin{frame}{}
 		\lstset{language=C,
@@ -339,9 +345,10 @@ La allocación de memoria en el \textit{host} es la misma que se utiliza en \tex
 		\end{lstlisting}
 		
 	\end{frame}
-}
-
+}.
+\\
 siendo \textit{size\_t} la memoria en bytes a reservar. Mientras que en el \textit{device} se realiza por medio de \textbf{cudaMalloc($\>$)} :
+\\
 {\footnotesize
 \begin{frame}{}
 	\lstset{language=C,
@@ -357,7 +364,8 @@ siendo \textit{size\_t} la memoria en bytes a reservar. Mientras que en el \text
 	\end{lstlisting}
 
 \end{frame}
-}
+}.
+\\
 donde \textit{devPtr} es un puntero para allocar la memoria del \textit{device} , \textit{size\_t} memoria en bytes a reservar. Se debe tener en cuenta que la memoria se reserva linealmente.
 
 La transferencia de datos entre los dos tipos de memoria se efectua mediante la función \textbf{cudaMemcpy($\>$)} :
@@ -377,18 +385,20 @@ cudaMemcpy(void *dst, void *src, size_t count, cudaMemcpyKind kind);
 	\end{lstlisting}
 	
 \end{frame}
-}
+}.
+\\
 siendo \textit{dst} un puntero con la dirección de destino de los datos, \textit{src} un puntero con la dirección de origen de los datos, \textit{count} es la cantidad de bytes a transferir y \textit{kind} es el tipo de transferencia a realizar\cite{zone2020cuda}. La tabla \ref{tab:cudamemcy} contiene los cuatro tipos posibles de transferencia.
+
 
 \begin{table}[h!]
 	\centering
 	\begin{tabular}{|c|c|}
 		\hline
 		\multicolumn{1}{|l|}{TIPO DE TRANSFEREMCIA} & \multicolumn{1}{l|}{SENTIDO DE TRANSFERENCIA} \\ \hline
-		\textbf{cudaMemcpyHostToHost}               & host host                                     \\ \hline
-		\textbf{cudaMemcpyHostToDevice}             & host device                                   \\ \hline
-		\textbf{cudaMemcpyDeviceToHost}             & device host                                   \\ \hline
-		\textbf{cudaMemcpyDeviceToDevice}           & device device                                 \\ \hline
+		\textbf{cudaMemcpyHostToHost}               & \xymatrix{host\ar@^{->}[r]&host}              \\ \hline
+		\textbf{cudaMemcpyHostToDevice}             & \xymatrix{host\ar@^{->}[r]&device}            \\ \hline
+		\textbf{cudaMemcpyDeviceToHost}             & \xymatrix{device\ar@^{->}[r]&host}            \\ \hline
+		\textbf{cudaMemcpyDeviceToDevice}           & \xymatrix{device\ar@^{->}[r]&device}          \\ \hline
 	\end{tabular}
 	\caption{Tipos de transferencias de datos en CUDA \cite{represa2016introduccion}.}
 	\label{tab:cudamemcy}
@@ -397,9 +407,6 @@ siendo \textit{dst} un puntero con la dirección de destino de los datos, \texti
 
 
 \section{Programación en Python}
-
-Habiéndose desarrollado el código en \textbf{CUDA C} y compilado en una biblioteca tipo \textit{ptx}, puede utilizarse dicha biblioteca en el lenguaje \textit{Python}. A continuación se muestra la implementación de la Ec. (\ref{eq:rho}) :
-
 {\footnotesize
 	\begin{frame}{}
 		\lstset{language=python,
@@ -417,21 +424,21 @@ from pycuda import gpuarray
 import pycuda.autoinit
 		
 cudaMomentoVelocity = pycuda.driver.module_from_file(
-			'/PATH/ptx/.../cudaMomentoDensity.ptx')		
+				'/PATH/cudaMomentoDensity.ptx')		
 			
-cudaMomentoVelocity(deviceField,
+cudaMomentoVelocity(	deviceField,
 			deviceRho,
 			mesh.nPoints,
 			mesh.Q,
 			block=( args.xgrid, 1, 1 ),
-			grid=( gs, 1, 1) )          
+			grid=( gs, 1, 1) )     			    
 pycuda.driver.Context.synchronize()
 		\end{lstlisting}
 		
 	\end{frame}
 }
 
-
+Habiéndose desarrollado el código en \textbf{CUDA C} y compilado en una biblioteca tipo \textit{ptx}; puede utilizarse dicha biblioteca en el lenguaje \textit{Python}, mediante la biblioteca \textit{PyCUDA}. El código que se muestra arriba es el implementado para la Ec. (\ref{eq:rho}).
 
 \textbf{yo agregaria aca que este codigo compilado puede usarse en Python, y decir algo general de como hay que compilarso e importarlo con PyCUDA}
 
