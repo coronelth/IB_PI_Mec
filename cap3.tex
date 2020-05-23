@@ -175,7 +175,7 @@ void momentoDensity(scalar* rho, scalar* field, basicMesh* mesh) {
 
 La programación de la Ec.(\ref{eq:rho}) implementada en \textbf{CUDA C} es con la función:
 
-{\scriptsize
+{\footnotesize
 	\begin{frame}{}
 		\lstset{language=C,
 			framesep=2mm,
@@ -186,8 +186,8 @@ La programación de la Ec.(\ref{eq:rho}) implementada en \textbf{CUDA C} es con 
 			morecomment=[l][\color{magenta}]{\#}
 		}
 		\begin{lstlisting}
-extern "C" __global__ void cudaMomentoDensity(cuscalar* field,
-					      cuscalar* rho, int np, int Q ) ; 
+extern "C" __global__ void cudaMomentoDensity(
+	cuscalar* field,cuscalar* rho, int np, int Q ) ; 
 		\end{lstlisting}
 		
 	\end{frame}
@@ -312,7 +312,7 @@ cudaDeviceSynchronize();
 en donde < < <, > > > indica la cantidad de \textit{thread blocks} en que se realizará la tarea, como así también la cantidad de \textit{threads} en cada \textit{block}.
 
 \begin{align*}
-		<<<\quad \overbrace{ceil(mesh.nPoints/xgrid)+1}^{cantidad \>de\> \textit{threads}\> por\> \textit{block}}\quad,\quad \underbrace{xgrid}_{cantidad\>de\>block} \quad>>>
+		<<<\quad \overbrace{ceil(mesh.nPoints/xgrid)+1}^{cantidad \>de\> \textit{threads}\> por\> \textit{block}}\quad,\quad \underbrace{xgrid}_{cantidad\>de\>thread\>block} \quad>>>
 \end{align*}
 
 \subsection{Sincronización}
@@ -440,7 +440,62 @@ pycuda.driver.Context.synchronize()
 
 Habiéndose desarrollado el código en \textbf{CUDA C} y compilado en una biblioteca tipo \textit{ptx}; puede utilizarse dicha biblioteca en el lenguaje \textit{Python}, mediante la biblioteca \textit{PyCUDA}. El código que se muestra arriba es el implementado para la Ec. (\ref{eq:rho}).
 
-\textbf{yo agregaria aca que este codigo compilado puede usarse en Python, y decir algo general de como hay que compilarso e importarlo con PyCUDA}
+Donde la función \textit{pycuda.driver.module\_from\_file()} nos permite importar el \textit{kernel} compilado previamente en CUDA, siendo \textcolor{red}{\textbf{/PATH/}} la dirección del directorio dónde se encuentra el archivo \textit{.ptx} compilado. Las variables \textbf{deviceField} y \textbf{deviceRho} son las respectivas a la función de distribución de poblaciones \textit{f} y la densidad $\rho$. Previamente se deben haber inicializado las variables en el \textit{host}, como por ejemplo:
+{\footnotesize
+	\begin{frame}{}
+		\lstset{language=python,
+			framesep=2mm,
+			%		baselinestretch=1.2,
+			basicstyle=\ttfamily,
+			keywordstyle=\color{blue}\ttfamily,
+			stringstyle=\color{red}\ttfamily,
+			commentstyle=\color{green}\ttfamily,
+			morecomment=[l][\color{magenta}]{\#}
+		}
+		\begin{lstlisting}
+	hostField = numpy.zeros( nPoints*meshQ, dtype=np.float32 ) 
+		\end{lstlisting}
+		
+	\end{frame}
+}.
+\\
+y luego ser copiadas y allocadas en el  \textit{device} con la función \textit{gpuarray.to\_gpu()} :
+{\footnotesize
+	\begin{frame}{}
+		\lstset{language=python,
+			framesep=2mm,
+			%		baselinestretch=1.2,
+			basicstyle=\ttfamily,
+			keywordstyle=\color{blue}\ttfamily,
+			stringstyle=\color{red}\ttfamily,
+			commentstyle=\color{green}\ttfamily,
+			morecomment=[l][\color{magenta}]{\#}
+		}
+		\begin{lstlisting}
+		deviceField = gpuarray.to_gpu( hostField )
+		\end{lstlisting}
+		
+	\end{frame}
+}.
+\\
+Además de los argumentos que tenía originalmente el \textit{kernel}; hay que pasarle a la función obtenida por \textit{PyCUDA} el número de \textit{blocks} \textbf{block=( args.xgrid, 1, 1 )} y la cantidad de \textit{thread por block} \textbf{grid=( gs, 1, 1)} donde será ejecutada. 
+
+Por último la sincronización de los \textit{threads} es proporcionada mediante el método \\
+\textit{pycuda.driver.Context.synchronize()}.
+	   
+
+\section{Arquitectura del código numérico y compilación}
+
+El código numérico fue desarrollado en el repositorio de la página web \textbf{Git Hub}, la cual permite realizar un control de versiones. El proyecto se encuentra disponible para ser descargado en \url{https://github.com/efogliatto/LBCUDA_Test}. Al momento de haber terminado este trabajo la última versión estable de la rama \textit{master} se encontraba en el \textit{commit} \textcolor{green}{xxxxxxxxxxxxxxxxxxxx}.
+
+Se utilizó la herramienta de software \textbf{CMake} para compilar el código. Donde el CMakeList.txt principal tiene la siguiente estructura: 
+
+
+donde quedan fijados los directorios de \textit{build} (binarios), \textit{bin} (ejecutables), \textit{lib} (librerías de salida), \textit{include} (headers de las funciones) y \textit{src} (códigos fuente), así también las opciones de compilación sobre el código realizado en C y CUDA; si el proyecto resuelve en simple precisión o doble precisión.
+
+
+
+
 
 %%% Local Variables: 
 %%% mode: latex
