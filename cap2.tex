@@ -12,7 +12,7 @@ Generalmente es difícil resolver las ecuaciones de la mecánica de los fluidos.
 Los problemas que se plantean resolver en el presente trabajo son de transferencia de calor en flujos multifásicos con cambio de fase, la escala de fluido que se decide adoptar es la mesoscópica. Considerando la escala y siendo un problema multifásico, se opta por resolver numéricamente mediante LBM. 
 
 
-Los mayoría de los modelos para resolver los flujos multifásicos son tres clasificados en cuatro categorias generales : \textit{color gradient}, \textit{Shan Chen model} o \textit{pseudopotential}, \textit{Free-energy} y \textbf{Falta phase-field}. 
+Los mayoría de los modelos para resolver los flujos multifásicos son tres clasificados en cuatro categorias generales : \textit{color gradient}, \textit{Shan Chen model} o \textit{pseudopotential}, \textit{Free-energy} y  \textit{phase-field}. 
 
 
 \begin{itemize}
@@ -22,6 +22,8 @@ Los mayoría de los modelos para resolver los flujos multifásicos son tres clas
 	\item \textit{Shan Chen model} o \textit{pseudopotential} surge de representar la fenomenología de \textit{color gradient} por medio de una redistribución de las particulas del fluido. La fuerza de interacción proviene de la diferencia entre las fuerzas promedio del modelo molecular  entre ambos lados de la interfaz. Shan and Chen \cite{shan1993lattice} presentaron un modelo de LBE (referenciado como modelo SC) que podría representar la interacción entre partículas fluidas de forma más precisa y directa introduciendo un pseudo potencial. 
 	
 	\item \textit{Free-energy} es un tipo de modelo alternativo de LBE desarrollado por Swift \cite{swift1995lattice} para modelos multifásicos/multicomponentes basado en la teoría de energía libre (\textit{free-energy}). La idea básica del nuevo método es realizar una función de distribución de equilibrio basada en funciones de energía libre, en las cuales se incorpora el tensor de presión termodinámico.\cite{guo2013lattice}(sec 7).
+	
+	\item \textit{Phase-field} utiliza en su modelo un parámetro gobernado por una ecuación de tipo convección-difusión para realizar un seguimiento de la interfaz. Presenta una gran estabilidad numérica y precisión para problemas con grandes relaciones de densidad y viscosidad \cite{wang2019brief}.
 	
 	\iffalse
 	Debido a que la fenomenología representada en los modelos de LBE de color y pseudo potenciales son la misma. \textbf{se corta la oracion}
