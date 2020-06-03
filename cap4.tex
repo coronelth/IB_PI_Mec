@@ -2,19 +2,19 @@
 \graphicspath{{figs/cap4/}}
 \label{cap4}
 
-En el presente capíulo se realiza la descripción de los problemas con transferencia de calor para fluidos multifásicos con cambio de fase llevados a cabo para validar los códigos numéricos desarrollados, siendo éstos la \textit{Construcción de Maxwell} y la \textit{Estratificación de un fluido Van Der Waals}
+En el presente capíulo se realiza la descripción de los problemas con transferencia de calor para fluidos multifásicos con cambio de fase llevados a cabo para validar los códigos numéricos desarrollados, siendo éstos la \textit{Construcción de Maxwell}, la \textit{Estratificación de un fluido Van Der Waals con temperatura no uniforme} y la \textit{Generación de burbujas en una superficie horizontal calefaccionada}.
 
 \section{Construcción de Maxwell}
 
 Como se desarrollo en el Cap. \ref{cap2} la Ec. (\ref{eq:VdW_P}) es una EOS que modela el comportamiento de un gas real.
 
 \begin{align*}
-	P = \frac{R T}{V_m - b} - a {(\frac{1}{V_m})}^2
+	p = \frac{R T}{V_m - B} - A {(\frac{1}{V_m})}^2
 \end{align*}
 
-La ecuación \ref{eq:VdW_P} puede ser representada gráficamente en un diagrama $P - V_m$. La figura \ref{fig:P_V_CO2} muestra el diagrama mencionado para el dióxido de carbono ($CO_2$) a distintas temperaturas: 373 (K), 304 (K) y 270 (K). Para $T = 270 \> K$ se vislumbra que en $p = 44,08 atm$ la gráfica se intersecta en tres valores de $V_m$, siendo dos de ellos estables. Por lo que se observa que hay dos volúmenes molares de coexistencia, indicando las fases líquido y gaseosa.
+La ecuación \ref{eq:VdW_P} puede ser representada gráficamente en un diagrama $P - V_m$. \\ La Figura \ref{fig:P_V_CO2} muestra el diagrama mencionado para el dióxido de carbono ($CO_2$) a distintas temperaturas: 373 (K), 304 (K) y 270 (K). Para $T = 270 \> K$ se vislumbra que en $p = 44,08 atm$ la gráfica se intersecta en tres valores de $V_m$, siendo dos de ellos estables; por lo que se observa que hay dos volúmenes molares de coexistencia, indicando las fases líquido y gaseosa.
 
-La construcción de Maxwell, también llamada regla de igualdad de áreas, indicada en la ecuación \ref{eq:maxwell_Construction}, es un procedimiento analítico para encontrar las densidades de coexistencia del líquido y gas. Donde $P$ es la presión de la EOS y $p_0$ es una presión constante. Al realizar la integral propuesta surge que las áreas A y B de la figura \ref{fig:P_V_CO2} deben ser iguales.
+La construcción de Maxwell, también llamada regla de igualdad de áreas, indicada en Ec. (\ref{eq:maxwell_Construction}), es un procedimiento analítico para encontrar las densidades de coexistencia del líquido y gas. Donde $P$ es la presión de la EOS y $p_0$ es una presión constante. Al realizar la integral propuesta surge que las áreas \textbf{A1} y \textbf{A2} de la Figura \ref{fig:P_V_CO2} deben ser iguales.
 
 \begin{equation}
 \int_{V_{m,l}}^{V_{m,g}} P d V_m = p_0 (V_{m,l} -  V_{m,g})
@@ -23,21 +23,99 @@ La construcción de Maxwell, también llamada regla de igualdad de áreas, indic
 
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=.8\textwidth]{figs/cap2/Diagrama_P_V_del_CO2_Multiphase_LBM}
+	\includegraphics[width=.8\textwidth]{figs/cap4/Diagrama_P_V_del_CO2_Multiphase_LBM}
 	\caption{Diagrama $P - V_m$ de la EOS de VdW del $CO_2$ con las constantes $a = 3,592$ y $b = 0,04267$, representando par a $T = 270 \> K$ los volúmenes molares del líquido y gas. \cite{huang2015multiphase}}
 	\label{fig:P_V_CO2}	
 \end{figure}
 
 
-La EOS \ref{eq:VdW_P} se puede re-estructurar como \ref{eq:VdW_rho} puesto que $\rho = \frac{1}{v}$, siendo $v$ el volúmen másico y relacionando $V_m$ con $v$. Donde para un dado valor de temperatura tendremos la coexistencia de fases con su densidad $\rho_l$ para la fase líquida y $\rho_g$ para la gaseosa.
+La Ec. (\ref{eq:VdW_P}) se puede re-estructurar como Ec. (\ref{eq:rho_eos}) puesto que $\rho = \frac{1}{v}$, siendo $v$ el volúmen másico y relacionando $V_m$ con $v$ según cada fluido. Donde para un dado valor de temperatura tendremos la coexistencia de fases con su densidad $\rho_l$ para la fase líquida y $\rho_g$ para la gaseosa.
+
+\begin{equation*}
+p_{EOS} = \frac{\rho R T}{1- \rho b} - a {\rho}^{2} \nonumber 
+%\label{eq:VdW_rho}
+\end{equation*}
+
+Para un dado valor de temperatura, llamado temperatura crítica (\textit{$T_c$}) comienzan a coexistir las dos fases. En el ejemplo mostrado de la Figura \ref{fig:P_V_CO2} $T_c = 304 \> K$. Analíticamente $T_c$ surge de aplicar el criterio de la primera y segunda derivada a la Ec.(\ref{eq:rho}) como se indica en Ec.(\ref{eq:criterio_1_2_deriv}) y se deben conocer los parámetros \textit{a} y \textit{b}.
 
 \begin{equation}
-p = \frac{\rho R T}{1- \rho B} - A {\rho}^{2}
-\label{eq:VdW_rho}
+	\frac{\partial\> p}{\partial\> V_{m}} = 0 \qquad \qquad \frac{\partial^{2} \> p}{\partial\> {V_{m}}^{2}} = 0
+	\label{eq:criterio_1_2_deriv}
 \end{equation}
+
+Realizando adecuadamente la adimensionalización  de la Ec.(\ref{eq:rho_eos}) se puede graficar una curva de coexistencia $T_r - \rho_r$  como se observa en la Figura \ref{fig:T_r_rho_r_analitico}, siendo $T_r = \frac{T}{T_c}$ y $\rho_r = \frac{\rho}{\rho_c}$.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=.8\textwidth]{figs/cap4/Diagrama_T_r_vs_rho_r_analitico}
+	\caption{Curva de coexistencia de fases para un fluido de VdW con los parámetros $a = 0,5 $ y $b = 4,0 $.}
+	\label{fig:T_r_rho_r_analitico}	
+\end{figure}
+
+\newpage
+Es de importancia destacar que las curvas de coexistencia dependen de la EOS que se esté utilizando para describir el comportamiento del fluido, en éste caso de estudio, la EOS es de VdW y posee  cómo parámetros \textit{a} y \textit{b} para describir los distintos fluidos .
+
+\subsection{Validación}
+
+Los valores que se utilizaron de $\Lambda$ y $\mathbf{M}$ para el modelo de LBM realizado se encuentran en el Apéndice (xxxx).
+
+La validación de éste problema se hizo utilizando los parámetros $a =0,5$ y $b = 4,0$; para un tamaño de malla de 201 x 201 nodos y $T_r$ variando con un paso de $0,025$ en el rango de $[0,6 - 0,975]$. La descripción de cómo se realizó la curva de coexistencia analítica se encuentra en el Apéndice (xxxx).
+
+La Figura(xxx) muestra la validación del código realizado en \textbf{C} para simple precisión; con distintos parámetros $\sigma$ del modelo MRT, donde se observa que el valor de $\sigma = 0,125$ es el que mejor ajusta a la curva de coexistencia.
+\\
+\\
+\\
+\\
+xxxxxx insertar la figura de C
+\\
+\\
+\\
+\\
+
+La Figura (xxx) muestra el resultados obtenidos del código realizado en \textbf{CUDA C}.
+\\
+\\
+\\
+\\
+xxxxxx insertar la figura de CUDA
+\\
+\\
+\\
+\\
+Ambos resultados mostrados en las Figuras (xxx) y (xxx) fueron realizados para xxx pasos de tiempo en cada uno de los valores de $T_r$.
+
+
+\subsection{Comparación de precisión}
+
+Uno de los objetivos de éste trabajo era ver también la diferencia entre las precisiones del código, cuánto difieren la simple precisión como la doble precisión y a su vez saber si es que hay una diferencia entre los tiempos que se tardan en ejecutar.
+
+\subsection{Speed Up}
+
+En la presente sección se muestra cuánto es la mejora en el tiempo de cálculo realizado para el código de \textbf{C} y \textbf{CUDA C}. Se tomó una $T_r$ fija y se varió el tamaño de la grilla, de manera que ésta siempre fuese cuadrada.
+
+La Figura (xxx) muestra los resultados obtenidos para un tamaño de grilla que va de 16 x 16 hasta 2048 x 2048, para diferentes número de bloques utilizados en la GPU, encontrándose el rango de 1 a 512, variando siempre de forma que el valor evaluado sea el doble que el anterior.
+\\
+\\
+\\
+xxxxxx insertar la figura de speed\_Up
+
+
+
+
+
 
 
 \section{Estratificación de un fluido VdW con temperatura no uniforme}
+
+Se quiere resolver el problema de, tener una cavidad unidimensional en presencia de un fluido cuya EOS es la de Van der Waals; con temperatura  no uniforme y fuerza de gravedad no nula. Éste problema fue desarrollado por Berberan-Santos \cite{berberan2002liquid} y que Fogliatto \cite{fogliatto2019simulation} extendió. 
+
+Se toma como coordenada del problema \textit{y}, teniéndose una temperatura fija $T_{0}$ en $y = 0$ y $T_{1}$ en $y = H$ como se observa en la Figura (xxxx) que se muestra en presencia de la gravedad.
+
+
+
+
+
+Se toma el problema de tener una cavidad unidimensional ocupada por un fluido cuya EOS es de Van der Waals, para temperatura no uniforme y fuerza de gravedad no nula.
 
 
 

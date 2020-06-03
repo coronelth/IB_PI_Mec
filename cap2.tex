@@ -83,11 +83,11 @@ p V = n R T
 La EOS de Van der Waals (VdW) \ref{eq:VdW_P} fue propuesta para caracterizar el comportamiento de los gases reales, siendo $V_m = \frac{V}{n}$ el volúmen molar. Las constantes \textit{a} y \textit{b} son características de cada fluido.
 
 \begin{align}
-p = \frac{R T}{V_m - b} - a {(\frac{1}{V_m})}^2
+p = \frac{R T}{V_m - B} - A {(\frac{1}{V_m})}^2
 \label{eq:VdW_P}
 \end{align}
 
-El parámetro \textit{a}  ($\frac{atm L^2}{mol^2}$) caracterizan la interacción que poseen las moléculas del gas entre sí, y \textit{b} ($\frac{L}{mol}$) da una idea del volumen molar mínimo que posee una partícula del fluído (éste parámetro define a la partícula del gas con un dado volúmen en vez de ser puntual como en la Ley de gases ideales).
+El parámetro \textit{A}  ($\frac{atm L^2}{mol^2}$) caracterizan la interacción que poseen las moléculas del gas entre sí, y \textit{B} ($\frac{L}{mol}$) da una idea del volumen molar mínimo que posee una partícula del fluído (éste parámetro define a la partícula del gas con un dado volúmen en vez de ser puntual como en la Ley de gases ideales).
 
 La EOS de VdW es utilizada en el presente trabajo para modelar el potencial del modelo LBM \textit{pseudopotential} de interacción entre las partículas.
 
@@ -108,8 +108,7 @@ Por medio de la función de distribución Ec. \ref{eq:fieldmom} \cite{li2013latt
 \begin{equation}
     \mathbf{f}(\mathbf{x} + \mathbf{e} \> \delta_{t} , t + \delta_{t}) = \mathbf{M}^{-1} \left[ \mathbf{m} - \mathbf{\Lambda}(\mathbf{m} - \mathbf{m}^{(eq)}) + \delta_{t} \left( \mathbf{I} - 0,5 \mathbf{\Lambda} \right) \mathbf{\bar{S}}  \right]_{(\mathbf{x},t)} 
     \label{eq:fieldmom}
-\end{equation}
-
+\end{equation}\\
 donde $\mathbf{x}$ es la posición espacial, \textit{t} el tiempo, $\delta_{t}$ el paso de tiempo , \textit{\textbf{e}} la velocidad de grilla en sus direcciones $\alpha$ y $\textit{f}$ es la distribución de densidad en el espacio de poblaciones. La notación utilizada implica que la componente $\alpha$-ésima del miembro izquiero de la Ec. (\ref{eq:fieldmom}) esté dado por $f_{\alpha}(x + e_{\alpha} \delta_{t}  , t + \delta_{t} )$. El miembro derecho de la Ec. (\ref{eq:fieldmom}) corresponde a la etapa de post-colisión definida en el espacio de momentos, donde \textbf{I} es el tensor identidad, \textbf{M} una matriz de transformación ortogonal, $\mathbf{m} = \mathbf{M} \cdot \mathbf{f}$ , $\mathbf{m}_{eq} = \mathbf{M} \cdot \mathbf{f}_{eq}$ , $\mathbf{\bar{S}} = \mathbf{M} \mathbf{S}$ el término de fuente y $ \Lambda$ es una matriz diagonal.
 
 Para el modelo de grilla D2Q9 utilizado en el presente trabajo $\mathbf{m}_{eq}$ y $ \Lambda$ están dados por Ec. \ref{eq:m} y \ref{eq:lambda} respectivamente.
@@ -156,17 +155,18 @@ Para el modelo D2Q9 la fuerza total $\mathbf{F}$ posee sólo dos componentes $F_
 Donde G corresponde a la intensidad de interacción, $w({|{\mathbf{e}}_{\alpha}|}^{2})$ son los pesos correspondientes a una grilla D2Q9 y $\psi$ es el potencial :
 
 \begin{equation} 
-    \psi(\rho) = \sqrt{\frac{2 (p_{EOS} - \rho {c_{s}}^{2})}{G {c}^{2}}}
+    \psi(\rho) = \sqrt{\frac{2 (p_{EOS} - \rho \> {c_{s}}^{2})}{G {c}^{2}}}
     \label{eq:psi}
 \end{equation}
 
 Donde $c_{s}$ es la velocidad del sonido en el medio, la EOS adoptada en el presente trabajo es la de VdW :
 
 \begin{equation}
-    p_{EOS} = \frac{\rho R T}{1- \rho B} - A {\rho}^{2}
+    p_{EOS} = \frac{\rho R T}{1- \rho \> b} - a {\rho}^{2}
+    \label{eq:rho_eos}
 \end{equation}
 
-donde \textit{A} y \textit{B} son parámetros que determinan los valores críticos de temperatura, presión y densidad. Finalmente, la fuerza de interacción se incorpora en la etapa de colisión mediante un término de fuente apropiado:
+donde \textit{a} y \textit{b} son parámetros que determinan los valores críticos de temperatura, presión y densidad. Finalmente, la fuerza de interacción se incorpora en la etapa de colisión mediante un término de fuente apropiado:
 
 
 \begin{equation}

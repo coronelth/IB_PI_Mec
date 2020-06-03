@@ -1,10 +1,10 @@
-﻿﻿\chapter{Introducción}
+﻿\chapter{Introducción}
 \graphicspath{{figs/cap1/}}
 \label{cap1}
 
 
 
-En el estudio de la Mecánica de los Fluidos, esson de importancia los problemas de transferencia de calor de flujos multi-fásicos con cambios de fase. 
+En el estudio de la Mecánica de los Fluidos, son de importancia los problemas de transferencia de calor de flujos multi-fásicos con cambios de fase. 
 Los problemas presentan la particularidad que se han realizado ensayos experimentales que estudian la fenomenología del mismo. \textbf{que queres decir con esto?}s
 
 Para los tipos de problemas mencionados no se posee actualmente algún método numérico que concuerde con los ensayos realizados y sea producido en un tiempo aceptable. \textbf{Es una idea vaga}
@@ -97,7 +97,7 @@ El modelo que se utilizará en el presente trabajo es el pseudopotencial, el cu�
 
 El modelo posee un campo de distribución de probabilidades \textit{f} que tiene asociado \textit{q} componentes, siendo dependiente de la fuerza de interacción. Por medio de \textit{f} se pueden recuperar las variables macroscópicas asociadas del problema a resolver.
 
-A continuación se datallará un ejemplo sencillo de un modelo \textit{D2Q9}. La figura \ref{fig:grilla_D2Q9} muestra un esquema de las direcciones de las velocidades de grilla de un nodo i-ésimo. En la misma figura se esquematiza como  es el proceso de colisión y advección (\textit{streaming}) que se realiza para actualizar los estados de los nodos cuando transcurre un paso de tiempo de la discretización temporal del problema. 
+A continuación se datallará un ejemplo sencillo de un modelo \textit{D2Q9}. La Figura \ref{fig:grilla_D2Q9} muestra un esquema de las direcciones de las velocidades de grilla del nodo i-ésimo. En la misma figura se esquematiza como  es el proceso de colisión y advección (\textit{streaming}) que se realiza para actualizar los estados de los nodos cuando transcurre un paso de tiempo de la discretización temporal del problema. 
 
 
 \begin{figure}[h!]
@@ -113,9 +113,9 @@ A continuación se datallará un ejemplo sencillo de un modelo \textit{D2Q9}. La
 	\label{eq:field_intro} 
 \end{align}
 
-El término derecho de la ecuación \ref{eq:field_intro} contiene el proceso de \textit{colisión} y el izquierdo al \textit{streaming}. $\alpha$ corresponde al  $\alpha$-ésimo componente de los \textit{q}, en éste ejemplo $\alpha = 1, 2, ...,9$. $f^{eq}$ es la función de distribución en estado de equilibrio. $\tau$ es un parámetro de relajación del modelo. 
+El término derecho de la Ec. (\ref{eq:field_intro}) contiene el proceso de \textit{colisión} y el izquierdo al \textit{streaming}; $\alpha$ corresponde al  $\alpha$-ésimo componente de los \textit{q} componentes del modelo, en éste ejemplo $\alpha = 1, 2, ...,9$. $f^{eq}$ es la función de distribución en estado de equilibrio. $\tau$ es un parámetro de relajación del modelo. 
 
-Por medio de la \textit{colisión} y luego del \textit{streaming} se obtienen los parámetros macroscópicos el problema. Para éste caso sencillo se obtiene $\rho$ y $\mathbf{u}$ de las ecuaciones \ref{eq: rho.1} y \ref{eq: u.1} respectivamente.
+Por medio de la \textit{colisión} y luego del \textit{streaming} se obtienen los parámetros macroscópicos el problema. Para éste caso sencillo se obtiene $\rho$ y $\mathbf{u}$ de las Ec. (\ref{eq: rho.1}) y (\ref{eq: u.1}) respectivamente.
 
 \begin{align}
 	\rho = \sum_{\alpha} \mathbf{f}_{\alpha}
@@ -192,7 +192,7 @@ La validación del código se procederá mediante los siguientes tres problemas:
 	\item \textit{generación de burbujas sobre una superficie horizontal calefaccionada}
 \end{itemize} 
 
-las cuáles se encuentran explicadas en \ref{cap4}.
+las cuáles se encuentran explicadas en el Capítulo \ref{cap4}.
 
 
 
