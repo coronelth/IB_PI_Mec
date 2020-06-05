@@ -57,12 +57,10 @@ Es de importancia destacar que las curvas de coexistencia dependen de la EOS que
 
 \subsection{Validación}
 
-Los valores que se utilizaron de $\Lambda$ y $\mathbf{M}$ para el modelo de LBM realizado se encuentran en el Apéndice (xxxx).
-
-La validación de éste problema se hizo utilizando los parámetros $a =0,5$ y $b = 4,0$; para un tamaño de malla de 201 x 201 nodos y $T_r$ variando con un paso de $0,025$ en el rango de $[0,6 - 0,975]$. 
+La validación de éste problema se hizo utilizando los parámetros $a =0,5$ y $b = 4,0$; para un tamaño de malla de 201 x 201 nodos y $T_r$ variando con un paso de $0,025$ en el rango de $[0,6 - 0,975]$.  Los valores que se utilizaron de $\Lambda$ y $\mathbf{M}$ para el modelo de LBM realizado se encuentran en el Apéndice (xxxx).
 %La descripción de cómo se realizó la curva de coexistencia analítica se encuentra en el Apéndice (xxxx).
 
-La Figura(\ref{fig:v_760_MxC_c_simple}) muestra la validación del código realizado en \textbf{C} para simple precisión; con distintos parámetros $\sigma$ del modelo MRT, donde se observa que el valor de $\sigma = 0,125$ es el que mejor ajusta a la curva de coexistencia. La Figura (\ref{fig:v_760_MxC_cuda_simple}) muestra el resultados obtenidos del código realizado en \textbf{CUDA C} en simple precisión.
+La Figura(\ref{fig:v_760_MxC_c_simple}) muestra la validación del código realizado en \textbf{C} para simple precisión en una GPU NVIDIA Geforce GTX 760; con distintos parámetros $\sigma$ del modelo MRT, donde se observa que el valor de $\sigma = 0,125$ es el que mejor ajusta a la curva de coexistencia. La Figura (\ref{fig:v_760_MxC_cuda_simple}) muestra el resultados obtenidos del código realizado en \textbf{CUDA C} en simple precisión en la misma GPU.
 
 \begin{figure}[h!]
 	\centering
@@ -83,10 +81,11 @@ Ambos resultados mostrados en las Figuras (\ref{fig:v_760_MxC_c_simple}) y (\ref
 El resultado que se obtuvo de realizar la validación en doble precisión es que los dos códigos desarrollados obtienen el mismo valor en las densidades de fase.
 
 \newpage
-\subsection{Comparación de precisión}
-Se realizó la comparación de la precisión en cuánto diferian del resultado analícico esperado. Sabiendo que los código de \textbf{C} y de \textbf{CUDA C} brindan un resultado idéntico para simple precisión y doble precisión, solamente se muestra los resultados obtenidos en el código de \textbf{C}.
+\subsection{Comparación de precisiones}
 
-En cuanto a el resultado comparativo de las precisiones, la Figura (\ref{fig:v_760_MxC_c_comparacion}) muestra los resultados obtenidos en \textbf{C} para simple y doble precisión, siendo no apreciable a simple vista la diferencia.
+En el análisis de la comparación de las precisiones, sólo se presentan los resultados obtenidos mediante el código de \textbf{C}; debido a que los resultados de \textbf{CUDA C} son idénticos.
+
+La Figura (\ref{fig:v_760_MxC_c_comparacion}) muestra los resultados de las densidades de coexistencia de fases para simple y doble precisión, no siendo apreciable la diferencia.
 
 \begin{figure}[h!]
 	\centering
@@ -96,39 +95,116 @@ En cuanto a el resultado comparativo de las precisiones, la Figura (\ref{fig:v_7
 \end{figure}
 
 
-La tabla \ref{tab:comp_MxC_precisiones_10} contiene los valores obtenidos para simple precisión y doble precisión. Se diferenció según el resultado obtenido de la densidad, si pertenece a la fase líquida o gaseosa, para realizar una comparación más detallada. Puesto que la fase líquida se ajusta mejor al valor analítico que la fase gaseosa.
+La Tabla (\ref{tab:comp_MxC_precisiones_10}) contiene los valores de las densidades de coexistencia: analítico, y los obtenidos mediante el código en simple precisión y doble precisión. De la Figura (\ref{fig:v_760_MxC_c_comparacion}) se observa que se ajusta mejor al resultado analítico la fase líquida que la fase gaseosa, por ello la Tabla (\ref{tab:comp_MxC_precisiones_10}) presenta esta diferenciación.
 
-Para realizar la comparación entre los resultados, se optó por hacerlo mediante comparación entre la norma euclídea (ver Ec.()) de los vectores de densidad analítica como el del resultado.
+Para dar una idea de proximidad a la solución analítica se adoptó como parámetro la distancia entre los vectores de densidad de fase obtenido y el analítico. La distancia se calculó por medio de la Norma Euclídea, siendo calculada la distancia entre dos vectores \textbf{\textit{A}} y \textbf{\textit{B}} con \textit{i} elementos como indica la Ec.(\ref{eq:norma_euclidea}):
 
 \begin{align}
-	||a,b|| = \sqrt{\sum_i {\left( a_i - b_i \right)}^2  }
+dist(\mathbf{A},\mathbf{B}) = \sqrt{\sum_i {\left( a_i - b_i \right)}^2  }
+\label{eq:norma_euclidea}
 \end{align}
 
-De
+Los resultados que muestra la Tabla (\ref{tab:comp_MxC_precisiones_10}) en cuanto a la distancia de los vectores se observa que en doble precisión los resultados se aproximan mejor en la densidad de coexistencia de la fases, en la fase gaseosa; mientras que para la densidad de coexistencia de fase, de la fase líquida, se aproxima mejor mediante simple precisión. 
+
+Porcentualmente para la fase gaseosa, la distancia calculada en simple precisión es 0,0034 \% mayor que en doble precisión; para la fase líquida la distancia en doble precisión es 0,0491 \% mayor que en simple precisión.
 
 
 \input{tablas/tab_comparacion_val_MxC_760_c.tex}
-
-
-
-
-
-Uno de los objetivos de éste trabajo era ver también la diferencia entre las precisiones del código, cuánto difieren la simple precisión como la doble precisión y a su vez saber si es que hay una diferencia entre los tiempos que se tardan en ejecutar.
 
 \newpage
 
 \subsection{Speed Up}
 
-En la presente sección se muestra cuánto es la mejora en el tiempo de cálculo realizado para el código de \textbf{C} y \textbf{CUDA C}. Se tomó una $T_r$ fija y se varió el tamaño de la grilla, de manera que ésta siempre fuese cuadrada.
+En la presente sección se muestran las mejora en el tiempo de cálculo realizados para el código de \textbf{C} y \textbf{CUDA C}. La comparación se realizó en simple y doble precisión; en dos GPU, siendo las mismas NVIDIA Geforce GTX 760 y NVIDIA Geforce GTX 970. Se tomó una $T_r$ fija y se varió el tamaño de la grilla, de manera que ésta siempre fuese cuadrada, respetando un número de nodos de potencia de 2 en los lados del cuadrado. La cantidad de \textit{thread blocks} que se utilizó para realizar la comnparación en el código de \textbf{CUDA} fueron de potencia de 2.
 
-La Figura (xxx) muestra los resultados obtenidos para un tamaño de grilla que va de 16 x 16 hasta 2048 x 2048, para diferentes número de bloques utilizados en la GPU, encontrándose el rango de 1 a 512, variando siempre de forma que el valor evaluado sea el doble que el anterior.
-\\
-\\
-\\
-xxxxxx insertar la figura de speed\_Up
+\subsubsection{NVIDIA Geforce GTX 760}
+
+Los tamaños de grilla que se utilizaron para realizar las pruebas de tiempo de ésta placa, tienen el rango de grilla de 16x16 nodos hasta 2048x2048 nodos. La cantidad de \textit{thread blocks} que se utilizó fueron de 1 a 512.
+
+Las Figuras (\ref{fig:s_760_MxC_simple_1.0}) y (\ref{fig:s_760_MxC_double_1.0}) muestran el \textit{Speed Up} obtenido comparando los códigos de \textbf{C} y \textbf{CUDA C}, donde la Figura (\ref{fig:s_760_MxC_simple_1.0}) está obtenida con simple precisión y la Figura (\ref{fig:s_760_MxC_double_1.0}) en doble precisión. El mejor resultado en ambos casos se obtuvo para un número de \textit{thread block} igual a 64, donde la mejora fue de 18.67 y 11.40 en simple y doble precisión respectivamente, para el mayor número de elementos de malla.
 
 
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{figs/cap4/s_760_MxC_simple_10}
+	\caption{Speed Up realizado para el problema de la Construcción de Maxwell con la GPU NVIDIA Geforce GTX 760 en simple precisión, comparando los códigos de \textbf{C} y \textbf{CUDA C}.} 
+	\label{fig:s_760_MxC_simple_1.0}	
+\end{figure}
 
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{figs/cap4/s_760_MxC_double_10}
+	\caption{Speed Up realizado para el problema de la Construcción de Maxwell con la GPU NVIDIA Geforce GTX 760 en doble precisión, comparando los códigos de \textbf{C} y \textbf{CUDA C}.} 
+	\label{fig:s_760_MxC_double_1.0}	
+\end{figure}
+
+\newpage
+
+Las Figuras (\ref{fig:c_760_MxC_c_10}) y (\ref{fig:c_760_MxC_cuda_10}) muestran el \textit{Speed Up} obtenido comparando simple precisión y doble precisión, donde la Figura (\ref{fig:c_760_MxC_c_10}) está obtenida el código de \textbf{C} y la Figura (\ref{fig:c_760_MxC_cuda_10}) en el código de \textbf{CUDA C}. 
+
+En el código de \textbf{C} para el mayor número de elementos de la malla, el resultado de tiempos de cálculo en doble precisión es apenas 1,026 veces mayor que en  simple precisión. En contraste, al fijarse el resultado para un número de \textit{thread block} igual a 64 (el que mayor ganancia obtuvo), el tiempo de cálculo en doble precisión es 1,68 veces mayor que en simple precisión; para el mayor número de elementos de malla calculado.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{figs/cap4/c_760_MxC_c_10}
+	\caption{Speed Up realizado para el problema de la Construcción de Maxwell con la GPU NVIDIA Geforce GTX 760 en en el código de \textbf{C}, comparando simple precisión y doble precisión.} 
+	\label{fig:c_760_MxC_c_10}	
+\end{figure}
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{figs/cap4/c_760_MxC_cuda_10}
+	\caption{Speed Up realizado para el problema de la Construcción de Maxwell con la GPU NVIDIA Geforce GTX 760 en en el código de \textbf{CUDA C}, comparando simple precisión y doble precisión.} 
+	\label{fig:c_760_MxC_cuda_10}	
+\end{figure}
+
+Los valores que se obtuvieron en las Figuras (\ref{fig:s_760_MxC_simple_1.0}), (\ref{fig:s_760_MxC_double_1.0}), (\ref{fig:c_760_MxC_c_10}) y (\ref{fig:c_760_MxC_cuda_10}) se encuentran en el Apéndice \ref{apend_MxC_760}
+
+\newpage
+
+\subsubsection{NVIDIA Geforce GTX 970}
+
+Los tamaños de grilla que se utilizaron para realizar las pruebas de tiempo de ésta placa, tienen el rango de grilla de 16x16 nodos hasta 4096x4096 nodos en simple precisión y de 16x16 nodos hasta 2048x2048 nodos en doble precisión . La cantidad de \textit{thread blocks} que se utilizó fueron de 1 a 512.
+
+Las Figuras (\ref{fig:s_970_MxC_simple_10}) y (\ref{fig:s_970_MxC_double_10}) muestran el \textit{Speed Up} obtenido comparando los códigos de \textbf{C} y \textbf{CUDA C}, donde la Figura (\ref{fig:s_970_MxC_simple_10}) está obtenida con simple precisión y la Figura (\ref{fig:s_970_MxC_double_10}) en doble precisión. El mejor resultado en ambos casos se obtuvo para un número de \textit{thread block} igual a 32, donde la mejora fue de 23.39 y 10.96 en simple y doble precisión respectivamente, para el mayor número de elementos de malla.
+
+Las Figuras (\ref{fig:c_970_MxC_c_10}) y (\ref{fig:c_970_MxC_cuda_10}) muestran el \textit{Speed Up} obtenido comparando simple precisión y doble precisión, donde la Figura (\ref{fig:c_970_MxC_c_10}) está obtenida el código de \textbf{C} y la Figura (\ref{fig:c_970_MxC_cuda_10}) en el código de \textbf{CUDA C}.
+
+En el código de \textbf{C} para el mayor número de elementos de la malla, el resultado de tiempos de cálculo en doble precisión es apenas 1,035 veces mayor que en  simple precisión. En contraste, al fijarse el resultado para un número de \textit{thread block} igual a 32 (el que mayor ganancia obtuvo), el tiempo de cálculo en doble precisión es 1,29 veces mayor que en simple precisión; para el mayor número de elementos de malla calculado.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{figs/cap4/s_970_MxC_simple_10}
+	\caption{Speed Up realizado para el problema de la Construcción de Maxwell con la GPU NVIDIA Geforce GTX 970 en simple precisión, comparando los códigos de \textbf{C} y \textbf{CUDA C}.} 
+	\label{fig:s_970_MxC_simple_10}	
+\end{figure}
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{figs/cap4/s_970_MxC_double_10}
+	\caption{Speed Up realizado para el problema de la Construcción de Maxwell con la GPU NVIDIA Geforce GTX 970 en doble precisión, comparando los códigos de \textbf{C} y \textbf{CUDA C}.} 
+	\label{fig:s_970_MxC_double_10}	
+\end{figure}
+
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{figs/cap4/c_970_MxC_c_10}
+	\caption{Speed Up realizado para el problema de la Construcción de Maxwell con la GPU NVIDIA Geforce GTX 970 en en el código de \textbf{C}, comparando simple precisión y doble precisión.} 
+	\label{fig:c_970_MxC_c_10}	
+\end{figure}
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{figs/cap4/c_970_MxC_cuda_10}
+	\caption{Speed Up realizado para el problema de la Construcción de Maxwell con la GPU NVIDIA Geforce GTX 970 en en el código de \textbf{CUDA C}, comparando simple precisión y doble precisión.} 
+	\label{fig:c_970_MxC_cuda_10}	
+\end{figure}
+
+Los valores que se obtuvieron en las Figuras (\ref{fig:s_970_MxC_simple_10}), (\ref{fig:s_970_MxC_double_10}), (\ref{fig:c_970_MxC_c_10}) y (\ref{fig:c_970_MxC_cuda_10}) se encuentran en el Apéndice \ref{apend_MxC_970}
+
+
+\subsection{Análisis}
 
 
 
