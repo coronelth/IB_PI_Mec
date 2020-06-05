@@ -9,10 +9,10 @@ En el presente capíulo se realiza la descripción de los problemas con transfer
 Como se desarrollo en el Cap. \ref{cap2} la Ec. (\ref{eq:VdW_P}) es una EOS que modela el comportamiento de un gas real.
 
 \begin{align*}
-	p = \frac{R T}{V_m - B} - A {(\frac{1}{V_m})}^2
+	p = \frac{R T}{V_m - B} - A {\left(\frac{1}{V_m}\right)}^2
 \end{align*}
 
-La ecuación \ref{eq:VdW_P} puede ser representada gráficamente en un diagrama $P - V_m$. \\ La Figura \ref{fig:P_V_CO2} muestra el diagrama mencionado para el dióxido de carbono ($CO_2$) a distintas temperaturas: 373 (K), 304 (K) y 270 (K). Para $T = 270 \> K$ se vislumbra que en $p = 44,08 atm$ la gráfica se intersecta en tres valores de $V_m$, siendo dos de ellos estables; por lo que se observa que hay dos volúmenes molares de coexistencia, indicando las fases líquido y gaseosa.
+La Ec. (\ref{eq:VdW_P}) puede ser representada gráficamente en un diagrama $P - V_m$. \\ La Figura \ref{fig:P_V_CO2} muestra el diagrama mencionado para el dióxido de carbono ($CO_2$) a distintas temperaturas: 373 (K), 304 (K) y 270 (K). Para $T = 270 \> K$ se vislumbra que en $p = 44,08 \> atm$ la gráfica se intersecta en tres valores de $V_m$, siendo dos de ellos estables; por lo que se observa que hay dos volúmenes molares de coexistencia, indicando las fases líquido y gaseosa.
 
 La construcción de Maxwell, también llamada regla de igualdad de áreas, indicada en Ec. (\ref{eq:maxwell_Construction}), es un procedimiento analítico para encontrar las densidades de coexistencia del líquido y gas. Donde $P$ es la presión de la EOS y $p_0$ es una presión constante. Al realizar la integral propuesta surge que las áreas \textbf{A1} y \textbf{A2} de la Figura \ref{fig:P_V_CO2} deben ser iguales.
 
@@ -59,7 +59,8 @@ Es de importancia destacar que las curvas de coexistencia dependen de la EOS que
 
 Los valores que se utilizaron de $\Lambda$ y $\mathbf{M}$ para el modelo de LBM realizado se encuentran en el Apéndice (xxxx).
 
-La validación de éste problema se hizo utilizando los parámetros $a =0,5$ y $b = 4,0$; para un tamaño de malla de 201 x 201 nodos y $T_r$ variando con un paso de $0,025$ en el rango de $[0,6 - 0,975]$. La descripción de cómo se realizó la curva de coexistencia analítica se encuentra en el Apéndice (xxxx).
+La validación de éste problema se hizo utilizando los parámetros $a =0,5$ y $b = 4,0$; para un tamaño de malla de 201 x 201 nodos y $T_r$ variando con un paso de $0,025$ en el rango de $[0,6 - 0,975]$. 
+%La descripción de cómo se realizó la curva de coexistencia analítica se encuentra en el Apéndice (xxxx).
 
 La Figura(xxx) muestra la validación del código realizado en \textbf{C} para simple precisión; con distintos parámetros $\sigma$ del modelo MRT, donde se observa que el valor de $\sigma = 0,125$ es el que mejor ajusta a la curva de coexistencia.
 \\
@@ -82,7 +83,7 @@ xxxxxx insertar la figura de CUDA
 \\
 \\
 \\
-Ambos resultados mostrados en las Figuras (xxx) y (xxx) fueron realizados para xxx pasos de tiempo en cada uno de los valores de $T_r$.
+Ambos resultados mostrados en las Figuras (xxx) y (xxx) fueron realizados para 50000 pasos de tiempo en cada uno de los valores de $T_r$.
 
 
 \subsection{Comparación de precisión}

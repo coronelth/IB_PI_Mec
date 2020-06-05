@@ -423,10 +423,10 @@ import pycuda
 from pycuda import gpuarray
 import pycuda.autoinit
 		
-cudaMomentoVelocity = pycuda.driver.module_from_file(
-				'/PATH/cudaMomentoDensity.ptx')		
-			
-cudaMomentoVelocity(	deviceField,
+cudaMomentoDensity = pycuda.driver.module_from_file(
+			'/PATH/cudaMomentoDensity.ptx').get_function(
+			'cudaMomentoDensity')					
+cudaMomentoDensity(	deviceField,
 			deviceRho,
 			mesh.nPoints,
 			mesh.Q,
