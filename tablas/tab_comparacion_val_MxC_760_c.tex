@@ -1,0 +1,16 @@
+% Please add the following required packages to your document preamble:
+% \usepackage{multirow}
+\begin{table}[]
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+    \hline
+                             & \textbf{Tr} & 0.600     & 0.625     & 0.650     & 0.675    & 0.700    & 0.725    & 0.750    & 0.775    & 0.800    & 0.825    & 0.850    & 0.875    & 0.900    & 0.925    & 0.950    & 0.975    & Norma   \\ \hline
+    \multirow{3}{*}{Gaseoso} & rho anali   & 0.0599097 & 0.0733723 & 0.0897449 & 0.107606 & 0.128332 & 0.150966 & 0.177353 & 0.206739 & 0.23938  & 0.277393 & 0.319677 & 0.368925 & 0.425549 & 0.493618 & 0.493618 & 0.578746 & -       \\ \cline{2-19} 
+                             & rho simple  & 0.0653772 & 0.0848112 & 0.0951336 & 0.113153 & 0.13353  & 0.15182  & 0.177323 & 0.206086 & 0.244229 & 0.281299 & 0.323471 & 0.371915 & 0.428416 & 0.495973 & 0.580402 & 0.690126 & 2.05233 \\ \cline{2-19} 
+                             & eho doble   & 0.0653724 & 0.0847656 & 0.095124  & 0.113147 & 0.133511 & 0.151811 & 0.177319 & 0.206075 & 0.244223 & 0.281284 & 0.323456 & 0.371891 & 0.428335 & 0.495947 & 0.580368 & 0.690247 & 2.05226 \\ \hline
+    \multirow{3}{*}{Liquido} & rho anali   & 1.32424   & 1.46149   & 1.56762   & 1.56762  & 1.6572   & 1.73595  & 1.80706  & 1.87233  & 1.93243  & 1.98899  & 2.0423   & 2.09234  & 2.14012  & 2.18563  & 2.22933  & 2.27117  & -       \\ \cline{2-19} 
+                             & rho simple  & 1.31956   & 1.46239   & 1.56858   & 1.65819  & 1.73703  & 1.80812  & 1.87326  & 1.93364  & 1.98754  & 2.04083  & 2.09124  & 2.14114  & 2.18665  & 2.23017  & 2.27407  & 2.31200  & 0.14234 \\ \cline{2-19} 
+                             & eho doble   & 1.31975   & 1.4624    & 1.56859   & 1.65821  & 1.73704  & 1.80813  & 1.87328  & 1.93364  & 1.98759  & 2.04085  & 2.09124  & 2.14117  & 2.18665  & 2.23019  & 2.27411  & 2.31200  & 0.14241 \\ \hline
+    \end{tabular}
+    \caption{Comparación de las precisiones con respecto a cuánto se acercan al valor analitico, tanto para doble, como simple precision, la norma utilizada para medir la distancia de los vectores es la norma  euclídeapara el problema de la Construcción de Maxwell con la GPU NVIDIA Geforce GTX 760.}
+    \label{tab:comp_MxC_precisiones_10}
+    \end{table}
