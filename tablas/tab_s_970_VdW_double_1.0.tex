@@ -1,8 +1,9 @@
-\begin{table}[]
+\begin{table}[h!]
+\centering
+\resizebox{17cm}{!}{
     \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
     \hline
                    & \multicolumn{14}{c|}{\textbf{NUMERO DE ELEMENTOS DE LA MALLA}}                                                    \\ \hline
-    \textbf{BLOCK} & 900  & 1200 & 2400 & 4800 & 9600 & 19200 & 38400 & 76800 & 153600 & 307200 & 614400 & 1228800 & 2457600 & 4915200 \\ \hline
     \textbf{BLOCK} & 900  & 1200 & 2400 & 4800 & 9600 & 19200 & 38400 & 76800 & 153600 & 307200 & 614400 & 1228800 & 2457600 & 4915200 \\ \hline
     1              & 0.27 & 0.34 & 0.48 & 0.59 & 0.66 & 0.67  & 0.75  & 0.5   & 0.43   & 0.44   & 0.45   & 0.45    & 0.56    & 0.7     \\ \hline
     2              & 0.32 & 0.41 & 0.56 & 0.96 & 1.12 & 1.29  & 1.45  & 0.73  & 0.8    & 0.82   & 0.84   & 0.94    & 1.91    & 1.82    \\ \hline
@@ -13,6 +14,9 @@
     64             & 0.47 & 0.57 & 0.93 & 2.01 & 1.33 & 4.21  & 5.72  & 2.64  & 4.66   & 3.61   & 3.96   & 10.98   & 12.09   & 11.72   \\ \hline
     128            & 0.47 & 0.56 & 0.94 & 2    & 1.67 & 4.19  & 5.71  & 2.78  & 4.08   & 3.61   & 3.95   & 4.06    & 12.05   & 11.67   \\ \hline
     256            & 0.46 & 0.54 & 1.01 & 1.95 & 1.8  & 4.22  & 4.45  & 2.73  & 4.06   & 3.6    & 3.95   & 5.51    & 11.45   & 11.09   \\ \hline
-    512            & 0.42 & 0.5  & 0.96 & 1.89 & 1.99 & 4.16  & 2.45  & 2.61  & 4.04   & 4.61   & 3.94   & 5.01    & 11.22   & 10.78   \\ \hline    \caption{Speed Up realizado para el problema de la Estratificación de Van der Waals con la GPU NVIDIA Geforce GTX 970 en doble precisión.}
+    512            & 0.42 & 0.5  & 0.96 & 1.89 & 1.99 & 4.16  & 2.45  & 2.61  & 4.04   & 4.61   & 3.94   & 5.01    & 11.22   & 10.78   \\     
+	\hline
+\end{tabular}}
+    \caption{Speed Up realizado para el problema de la Estratificación de Van der Waals con la GPU NVIDIA Geforce GTX 970 en doble precisión.}
     \label{tab:s_970_VdW_double_10}
     \end{table}
