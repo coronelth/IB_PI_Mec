@@ -62,33 +62,60 @@ Los valores que se utilizaron de $\Lambda$ y $\mathbf{M}$ para el modelo de LBM 
 La validación de éste problema se hizo utilizando los parámetros $a =0,5$ y $b = 4,0$; para un tamaño de malla de 201 x 201 nodos y $T_r$ variando con un paso de $0,025$ en el rango de $[0,6 - 0,975]$. 
 %La descripción de cómo se realizó la curva de coexistencia analítica se encuentra en el Apéndice (xxxx).
 
-La Figura(xxx) muestra la validación del código realizado en \textbf{C} para simple precisión; con distintos parámetros $\sigma$ del modelo MRT, donde se observa que el valor de $\sigma = 0,125$ es el que mejor ajusta a la curva de coexistencia.
-\\
-\\
-\\
-\\
-xxxxxx insertar la figura de C
-\\
-\\
-\\
-\\
+La Figura(\ref{fig:v_760_MxC_c_simple}) muestra la validación del código realizado en \textbf{C} para simple precisión; con distintos parámetros $\sigma$ del modelo MRT, donde se observa que el valor de $\sigma = 0,125$ es el que mejor ajusta a la curva de coexistencia. La Figura (\ref{fig:v_760_MxC_cuda_simple}) muestra el resultados obtenidos del código realizado en \textbf{CUDA C} en simple precisión.
 
-La Figura (xxx) muestra el resultados obtenidos del código realizado en \textbf{CUDA C}.
-\\
-\\
-\\
-\\
-xxxxxx insertar la figura de CUDA
-\\
-\\
-\\
-\\
-Ambos resultados mostrados en las Figuras (xxx) y (xxx) fueron realizados para 50000 pasos de tiempo en cada uno de los valores de $T_r$.
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{figs/cap4/v_760_MxC_c_simple}
+	\caption{Curva de coexistencia de fases para un fluido de VdW con los parámetros $a = 0,5 $ y $b = 4,0 $, obtenida en simple precisión en la GPU NVIDIA Geforce GTX 760 en el código desarrollado en \textbf{C}. $\sigma = 0.075[\bigtriangleup]$	 $\sigma = 0.125[\bigcirc]$ y $\sigma = 0.200[\diamondsuit]$ }
+ 	\label{fig:v_760_MxC_c_simple}	
+\end{figure}
 
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{figs/cap4/v_760_MxC_cuda_simple}
+	\caption{Curva de coexistencia de fases para un fluido de VdW con los parámetros $a = 0,5 $ y $b = 4,0 $, obtenida en simple precisión en la GPU NVIDIA Geforce GTX 760 en el código desarrollado en \textbf{CUDA C}. $\sigma = 0.075[\bigtriangleup]$	 $\sigma = 0.125[\bigcirc]$ y $\sigma = 0.200[\diamondsuit]$ }
+	\label{fig:v_760_MxC_cuda_simple}	
+\end{figure}
 
+Ambos resultados mostrados en las Figuras (\ref{fig:v_760_MxC_c_simple}) y (\ref{fig:v_760_MxC_cuda_simple}) fueron realizados para 50000 pasos de tiempo en cada uno de los valores de $T_r$. El valor obtenido de las densidades de coexistencia de fases entre los códigos de \textbf{C} y \textbf{CUDA C} resultan exactamente iguales. 
+
+El resultado que se obtuvo de realizar la validación en doble precisión es que los dos códigos desarrollados obtienen el mismo valor en las densidades de fase.
+
+\newpage
 \subsection{Comparación de precisión}
+Se realizó la comparación de la precisión en cuánto diferian del resultado analícico esperado. Sabiendo que los código de \textbf{C} y de \textbf{CUDA C} brindan un resultado idéntico para simple precisión y doble precisión, solamente se muestra los resultados obtenidos en el código de \textbf{C}.
+
+En cuanto a el resultado comparativo de las precisiones, la Figura (\ref{fig:v_760_MxC_c_comparacion}) muestra los resultados obtenidos en \textbf{C} para simple y doble precisión, siendo no apreciable a simple vista la diferencia.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{figs/cap4/v_760_MxC_c_comparacion}
+	\caption{Curva de coexistencia de fases para un fluido de VdW con los parámetros $a = 0,5 $ y $b = 4,0 $, obtenida en simple precisión[$\bigcirc$] y doble precisión [$\diamondsuit$] en la GPU NVIDIA Geforce GTX 760 en el código desarrollado en \textbf{C}.} 
+	\label{fig:v_760_MxC_c_comparacion}	
+\end{figure}
+
+
+La tabla \ref{tab:comp_MxC_precisiones_10} contiene los valores obtenidos para simple precisión y doble precisión. Se diferenció según el resultado obtenido de la densidad, si pertenece a la fase líquida o gaseosa, para realizar una comparación más detallada. Puesto que la fase líquida se ajusta mejor al valor analítico que la fase gaseosa.
+
+Para realizar la comparación entre los resultados, se optó por hacerlo mediante comparación entre la norma euclídea (ver Ec.()) de los vectores de densidad analítica como el del resultado.
+
+\begin{align}
+	||a,b|| = \sqrt{\sum_i {\left( a_i - b_i \right)}^2  }
+\end{align}
+
+De
+
+
+\input{tablas/tab_comparacion_val_MxC_760_c.tex}
+
+
+
+
 
 Uno de los objetivos de éste trabajo era ver también la diferencia entre las precisiones del código, cuánto difieren la simple precisión como la doble precisión y a su vez saber si es que hay una diferencia entre los tiempos que se tardan en ejecutar.
+
+\newpage
 
 \subsection{Speed Up}
 

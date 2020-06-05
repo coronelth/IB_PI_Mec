@@ -1,0 +1,29 @@
+\chapter{Conclusiones}
+\graphicspath{{figs/cap4/}}
+\label{cap5}
+
+En el presente trabajo se realizó un código numérico desarrollado mediante los lenguajes de programación C y CUDA C, para resolver problemas de transferencia de calor en flujos multifásicos con cambio de fase.
+El modelo utilizado es el modelo de lattice Boltzmann de dos (2) ecuaciones pseudopotenciales con operador MRT, siédno el mismo del tipo D2Q9.
+La validación del código se realizó en dos (2) GPU diferentes, siendo NVIDIA Geforce GTX 760 y  NVIDIA Geforce GTX 970; para simple precisión y doble precisión.
+La validación se realizó por medio de tres (3) problemas físicos, siendo ellos:
+
+\begin{itemize}
+    
+    \item la Construcción de Maxwell, el cuál obtiene las densidades de coexistencia de fases de un fluido 
+
+    \item la estratificación de un fluido Van der Waals con temperatura no uniforme; siéndo el problema unidimensional con campo gravitatorio y temperaturas fijas en los extremos.
+
+    \item la generación de burbujas en una placa horizontal calefaccionada.
+
+\end{itemize}
+
+\section{Construcción de Maxwell}
+
+Para el problema de la Construcción de Maxwell, se reprodució el resultado que obtuvo Fogliatto en [], para el cuál el valor del parámetro $\sigma = 0,125$ del operador MRT es el que ajusta mejor la curva de coexistencia de fases para un fluido con la Ecuación de estado de Van der Waals de parámetros $ a = 0,5 $ y $ b = 4,0 $. 
+
+Para la GPU NVIDIA Geforce GTX 760 en simple precisión se obtuvo una ganancia del código realizado en \textbf{CUDA C} es de xx veces con respecto al código de \textbf{C} para un tamaño de xx bloques y la cantidad de xxx node de malla. Por el comportamiento que se observó, si sigue aumentando el número de nodos que posee la malla, la tendencia de 
+
+
+\section{Trabajo futuro}
+
+La siguiente línea de desarrollo para éste trabajo son la mejora contínua de las funciones que posee el código realizado, por lo que se puede seguir haciendo \textit{profiling} del mismo ya sea en la utilización de las memorias que posee cada uno de los \textit{threads} 
