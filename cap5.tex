@@ -19,9 +19,18 @@ La validación se realizó por medio de tres (3) problemas físicos, siendo ello
 
 \section{Construcción de Maxwell}
 
-Para el problema de la Construcción de Maxwell, se reprodució el resultado que obtuvo Fogliatto en [], para el cuál el valor del parámetro $\sigma = 0,125$ del operador MRT es el que ajusta mejor la curva de coexistencia de fases para un fluido con la Ecuación de estado de Van der Waals de parámetros $ a = 0,5 $ y $ b = 4,0 $. 
+Para el problema de la Construcción de Maxwell, se reprodució el resultado que obtuvo Fogliatto en \cite{fogliatto2019simulation}, para el cuál el valor del parámetro $\sigma = 0,125$ del operador MRT es el que ajusta mejor la curva de coexistencia de fases para un fluido con la Ecuación de estado de Van der Waals de parámetros $ a = 0,5 $ y $ b = 4,0 $. 
 
-Para la GPU NVIDIA Geforce GTX 760 en simple precisión se obtuvo una ganancia del código realizado en \textbf{CUDA C} es de xx veces con respecto al código de \textbf{C} para un tamaño de xx bloques y la cantidad de xxx node de malla. Por el comportamiento que se observó, si sigue aumentando el número de nodos que posee la malla, la tendencia de 
+Para la GPU NVIDIA Geforce GTX 760 en simple precisión se obtuvo una ganancia del código realizado en \textbf{CUDA C} de 18.67 veces con respecto al código de \textbf{C} para un número de 64 \textit{thread block} y la cantidad de 4194304 elementos de malla. Mientras que en la  GPU NVIDIA Geforce GTX 970 en las mismas condiciones se obtuvo una ganancia de 23.39 utilizando 32 \textit{thread block} 
+
+En doble precisión la ganancia de la GPU NVIDIA Geforce GTX 760 con 64 \textit{thread block} fue de 11.40 mientras que en GPU NVIDIA Geforce GTX 970 con 32 \textit{thread block} fue de 10.96 .
+
+Por el comportamiento que se observó en los resultados, la GPU NVIDIA Geforce GTX 760 llegó a una ganancia máxima, mientras que la GPU NVIDIA Geforce GTX 970 posee la tendencia de aumentar su ganancia a un número de elementos de malla mayor.
+
+Se comparó los resultados obtenidos en simple precisión y doble precisión en la validación de las curvas de coexistencia. La comparación se hizo mediante la distancia de los vectores obtenidos de densidad con el vector de densidad analítico, calculándose la distancia como la norma euclídea. Se obtuvo que la diferencia entre la distancia en simple precisión es de 0,003 \% mayor que doble precisión.
+
+Debido a que no existe un gran beneficio en la mejora que se obtiene utilizando doble precisión, y puesto que el tiempo que se demora en doble precesión con respecto a simple precisión es de 1.68 y 1.29 según se utilice GPU NVIDIA Geforce GTX 760/970 respectivamente. Se recomienda la utilización en simple precisión del código realizado.
+
 
 
 \section{Trabajo futuro}
