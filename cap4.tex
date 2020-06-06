@@ -206,21 +206,174 @@ Los valores que se obtuvieron en las Figuras (\ref{fig:s_970_MxC_simple_10}), (\
 
 \subsection{Análisis}
 
+La utilización de simple precisión en el código de \textbf{CUDA C} es más conveniente que doble precisión. Una de las razones es que no hay demasiada diferencia entre los valores que se pueden obtener, según los resultados obtenidos no difirieren más del 0,003 \%. Otra de las razones es que debido a las mejoras obtenidas en los tiempos de cálculo en las placas NVIDIA Geforce GTX 760 y NVIDIA Geforce GTX 970 en el código de \textbf{CUDA C} de 18.67 y 23.39 respectivamente en simple precisión que el código de \textbf{C}. Las mejoras en doble precisión de las ganancias son de 11.40 y 10.96 respectivamente en las placas mencionadas. Por lo que el resultado obtenido en simple precisión difiere apenas un 0.003 \% que en doble precisión, además siendo 1.68 y 1.29 veces más rapido según la GPU utilizada.
 
 
 
 \section{Estratificación de un fluido VdW con temperatura no uniforme}
 
-Se quiere resolver el problema de, tener una cavidad unidimensional en presencia de un fluido cuya EOS es la de Van der Waals; con temperatura  no uniforme y fuerza de gravedad no nula. Éste problema fue desarrollado por Berberan-Santos \cite{berberan2002liquid} y que Fogliatto \cite{fogliatto2019simulation} extendió. 
+Se quiere resolver el problema de tener una cavidad unidimensional en presencia de un fluido cuya EOS es la de Van der Waals; con temperatura  no uniforme y fuerza de gravedad no nula. Éste problema fue desarrollado por Berberan-Santos \cite{berberan2002liquid} y que Fogliatto \cite{fogliatto2019simulation} extendió. 
 
-Se toma como coordenada del problema \textit{y}, teniéndose una temperatura fija $T_{0}$ en $y = 0$ y $T_{1}$ en $y = H$ como se observa en la Figura (xxxx) que se muestra en presencia de la gravedad.
+Se toma como coordenada del problema \textit{y}, teniéndose una temperatura fija $T_{0}$ en $y = 0$ y $T_{1}$ en $y = H$ como se observa en la Figura (xxxx) en presencia de la gravedad.
+
+El gradiente de presión surge de realizar el balance de momento en un volumen de control, obteniéndose:
+
+\begin{align}
+	\frac{d P}{d y} = - g M C(y)
+\end{align}
+
+siendo \textit{g} la gravedad, \textit{M} el peso molecular, $C = \frac{1}{v}$ la fracción molar, \textit{v} el volumen molar y \textit{P} la presión.
+
+Realizando la adimensionalisación de $ P_r = \frac{P}{P_c}$ , $ T_r = \frac{T}{T_c}$, $c = C v_c$ y $E_r = \frac{M g y}{R T_c}$; siendo \textit{c} el punto crítico en el cuál comienza la coexistencia de las dos fases, se pueden reemplazar en el gradiente de presión y una Ecuación de estado para obtener una ecuación adimensional con la concentración molar distribuida \cite{fogliatto2019simulation}.
+
+Si se elije la EOS de VdW de la Ec.(\ref{eq:VdW_P}), se obtiene la siguiente ecuación adimensional diferencial:
+
+\begin{align}
+	\frac{d c}{d E_r} = - \left[ c + \frac{d T_r}{d E_r} \left( \frac{c}{1 - \frac{c}{3}}\right) \right] \left[	\frac{1}{\frac{T_r}{{\left(1- \frac{c}{3}\right)}^2} - \frac{9}{4} c}  \right] 
+	\label{eq:adim_dif}
+\end{align} 
+
+Si se resuelve iterativamente la Ec. (\ref{eq:adim_dif}) se puede obtener dos curvas adimensionales correspondientes al perfil de temperatura y al de concentraciones.
+
+En la Figura xx se muestra la curva adimensional $ \rho_r - Y_r $ , siendo $\rho_r = \frac{\rho}{\rho_c}$ y  $Y_r = \frac{y}{H}$  y la Figura xx muestra la curva adimensional $ T_r - Y_r $. Ambas para distintos valores de $T_0$, mientras que en la otra pared $T_1 = cte = 0.99 \> T_r$.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{figs/cap4/VdW_val_rho_y}
+	\caption{Perfil de densidad adimensional a lo largo de la longitud de la pared,para distintos valores de condición de temperatura fija en $y = 0$, para un fluido de VdW con los parámetros $a = 0,5 $ y $b = 4,0 $, obtenida en simple precisión en la GPU NVIDIA Geforce GTX 760 en el código desarrollado en \textbf{C}.} 
+	\label{fig:VdW_val_rho_y}	
+\end{figure}
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{figs/cap4/VdW_val_T_y}
+	\caption{Perfil de temperatura adimensional a lo largo de la longitud de la pared, para distintos valores de condición de temperatura fija en $y = 0$,para un fluido de VdW con los parámetros $a = 0,5 $ y $b = 4,0 $, obtenida en simple precisión en la GPU NVIDIA Geforce GTX 760 en el código desarrollado en \textbf{C}.} 
+	\label{fig:VdW_val_T_y}	
+\end{figure}
+
+\newpage
+
+\subsection{Validación}
+
+La validación de éste problema se hizo utilizando los parámetros $a =0,5$ y $b = 4,0$; para un tamaño de malla de 3 x 300 nodos y $T_0 = T_r$, variando $T_r$ con un paso de $0,025$ en el rango de $[0,6 - 0,975]$. Mostrándose en los gráficos únicamente los valores de $T_r = 0,6 ; 0,7 ; 0,8 y 0,9$   El valor de $\mathbf{M}$ utilizado es el mismo que es de la Construcción de Maxwell, mientras que el valor de $\Lambda$ se encuentran en el Apéndice (xxxx).
+
+La Figura(\ref{fig:v_760_VdW_c_simple_rho_y}) y (\ref{fig:v_760_VdW_c_simple_T_y})  muestran la validación del código realizado en \textbf{C} para simple precisión en una GPU NVIDIA Geforce GTX 760; con distintos valores de $T_0$. 
+
+El quiebre abrupto y discontínuo de la densidad a lo largo de la pared en la Figura (\ref{fig:v_760_VdW_c_simple_rho_y}) muestra la coexistencia de las dos fases, para la solución analítica. Debido a que se tiene una solución contínua y un poco difusa porque el modelo toma una cierta cantidad de nodos como separación entre ambas fases, se presenta una mayor diferencia en el ajuste de la curva obtenida con la analítica en el cambio de fase. Lo mismo sucede en la Figura (\ref{fig:v_760_VdW_c_simple_T_y}).
+
+El tiempo de vuelo utilizado en cada uno de los nodos de la malla fue de 750000. 
+El resultado obtenido para ambas curvas validades es exactamente igual en el código de \textbf{C} y \textbf{CUDA C}.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{figs/cap4/v_760_VdW_c_simple_rho_y}
+	\caption{Perfil de densidad adimensional a lo largo de la longitud de la pared, para valores de $T_0 = T_r$ , siendo $T_r = 0,6 ; 0,7 ; 0,8 y 0,9$, para un fluido de VdW con los parámetros $a = 0,5 $ y $b = 4,0 $, obtenida en simple precisión en la GPU NVIDIA Geforce GTX 760 en el código desarrollado en \textbf{C}.}
+	\label{fig:v_760_VdW_c_simple_rho_y}	
+\end{figure}
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{figs/cap4/v_760_VdW_c_simple_T_y}
+	\caption{Perfil de temperatura adimensional a lo largo de la longitud de la pared, para valores de $T_0 = T_r$ , siendo $T_r = 0,6 ; 0,7 ; 0,8 \>y\> 0,9$, para un fluido de VdW con los parámetros $a = 0,5 $ y $b = 4,0 $, obtenida en simple precisión en la GPU NVIDIA Geforce GTX 760 en el código desarrollado en \textbf{C}.}
+	\label{fig:v_760_VdW_c_simple_T_y}	
+\end{figure}
+
+\newpage
+
+\subsection{Speed Up}
+
+En la presente sección se muestran las mejora en el tiempo de cálculo realizados para el código de \textbf{C} y \textbf{CUDA C}. La comparación se realizó en simple y doble precisión; en las GPU NVIDIA Geforce GTX 760 y NVIDIA Geforce GTX 970. Se tomó una $T_r$ fija y se varió el tamaño de la grilla, de manera que ésta siempre tuviese un ancho constante de 300 nodos y variando la dimensión en el eje \textsc{Y} respetando un número de nodos de potencia de 2 (exceptuando el primer valor que es 3) . La cantidad de \textit{thread blocks} que se utilizó para realizar la comnparación en el código de \textbf{CUDA} fueron de potencia de 2.
+
+\subsubsection{NVIDIA Geforce GTX 760}
+
+Los tamaños de grilla que se utilizaron para realizar las pruebas de tiempo de ésta placa, tienen el rango de grilla de 3x300 nodos hasta 1638400x300 nodos. La cantidad de \textit{thread blocks} que se utilizó fueron de 1 a 512.
+
+Las Figuras (\ref{fig:s_760_VdW_simple_10}) y (\ref{fig:s_760_VdW_double_10}) muestran el \textit{Speed Up} obtenido comparando los códigos de \textbf{C} y \textbf{CUDA C}, donde la Figura (\ref{fig:s_760_VdW_simple_10}) está obtenida con simple precisión y la Figura (\ref{fig:s_760_VdW_double_10}) en doble precisión. El mejor resultado en ambos casos se obtuvo para un número de \textit{thread block} igual a 64, donde la mejora fue de 13.26 y 7.88 en simple y doble precisión respectivamente, para el mayor número de elementos de malla.
 
 
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{figs/cap4/s_760_VdW_simple_10}
+	\caption{Speed Up realizado para el problema de la Estratificación de un fluido Van der Waals con la GPU NVIDIA Geforce GTX 760 en simple precisión, comparando los códigos de \textbf{C} y \textbf{CUDA C}.} 
+	\label{fig:s_760_VdW_simple_10}	
+\end{figure}
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{figs/cap4/s_760_VdW_double_10}
+	\caption{Speed Up realizado para el problema de la Estratificación de un fluido Van der Waals con la GPU NVIDIA Geforce GTX 760 en doble precisión, comparando los códigos de \textbf{C} y \textbf{CUDA C}.} 
+	\label{fig:s_760_VdW_double_10}	
+\end{figure}
+
+\newpage
+
+Las Figuras (\ref{fig:c_760_VdW_c_10}) y (\ref{fig:c_760_VdW_cuda_10}) muestran el \textit{Speed Up} obtenido comparando simple precisión y doble precisión, donde la Figura (\ref{fig:c_760_VdW_c_10}) está obtenida el código de \textbf{C} y la Figura (\ref{fig:c_760_VdW_cuda_10}) en el código de \textbf{CUDA C}. 
+
+En el código de \textbf{C} para el mayor número de elementos de la malla, el resultado de tiempos de cálculo en doble precisión es apenas 1,052 veces mayor que en  simple precisión. En contraste, al fijarse el resultado para un número de \textit{thread block} igual a 64 (el que mayor ganancia obtuvo), el tiempo de cálculo en doble precisión es 1,77 veces mayor que en simple precisión; para el mayor número de elementos de malla calculado.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{figs/cap4/c_760_VdW_c_10}
+	\caption{Speed Up realizado para el problema de la Estratificación de un fluido Van der Waals con la GPU NVIDIA Geforce GTX 760 en en el código de \textbf{C}, comparando simple precisión y doble precisión.} 
+	\label{fig:c_760_VdW_c_10}	
+\end{figure}
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{figs/cap4/c_760_MxC_cuda_10}
+	\caption{Speed Up realizado para el problema de la Estratificación de un fluido Van der Waals con la GPU NVIDIA Geforce GTX 760 en en el código de \textbf{CUDA C}, comparando simple precisión y doble precisión.} 
+	\label{fig:c_760_VdW_cuda_10}	
+\end{figure}
+
+Los valores que se obtuvieron en las Figuras (\ref{fig:s_760_VdW_simple_10}), (\ref{fig:s_760_VdW_double_10}), (\ref{fig:c_760_VdW_c_10}) y (\ref{fig:c_760_VdW_cuda_10}) se encuentran en el Apéndice \ref{apend_VdW_760}
+
+\newpage
+
+\subsubsection{NVIDIA Geforce GTX 970}
+
+Los tamaños de grilla que se utilizaron para realizar las pruebas de tiempo de ésta placa, tienen el rango de grilla de 3x300 nodos hasta 1638400x300 nodos. La cantidad de \textit{thread blocks} que se utilizó fueron de 1 a 512.
+
+Las Figuras (\ref{fig:s_970_VdW_simple_10}) y (\ref{fig:s_970_VdW_double_10}) muestran el \textit{Speed Up} obtenido comparando los códigos de \textbf{C} y \textbf{CUDA C}, donde la Figura (\ref{fig:s_970_VdW_simple_10}) está obtenida con simple precisión y la Figura (\ref{fig:s_970_VdW_double_10}) en doble precisión. El mejor resultado en ambos casos se obtuvo para un número de \textit{thread block} igual a 32, donde la mejora fue de 15.95 y 13.29 en simple y doble precisión respectivamente, para el mayor número de elementos de malla.
 
 
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{figs/cap4/s_970_VdW_simple_10}
+	\caption{Speed Up realizado para el problema de la Estratificación de un fluido Van der Waals con la GPU NVIDIA Geforce GTX 970 en simple precisión, comparando los códigos de \textbf{C} y \textbf{CUDA C}.} 
+	\label{fig:s_970_VdW_simple_10}	
+\end{figure}
 
-Se toma el problema de tener una cavidad unidimensional ocupada por un fluido cuya EOS es de Van der Waals, para temperatura no uniforme y fuerza de gravedad no nula.
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{figs/cap4/s_970_VdW_double_10}
+	\caption{Speed Up realizado para el problema de la Estratificación de un fluido Van der Waals con la GPU NVIDIA Geforce GTX 970 en doble precisión, comparando los códigos de \textbf{C} y \textbf{CUDA C}.} 
+	\label{fig:s_970_VdW_double_10}	
+\end{figure}
 
+\newpage
+
+Las Figuras (\ref{fig:c_970_VdW_c_10}) y (\ref{fig:c_970_VdW_cuda_10}) muestran el \textit{Speed Up} obtenido comparando simple precisión y doble precisión, donde la Figura (\ref{fig:c_970_VdW_c_10}) está obtenida el código de \textbf{C} y la Figura (\ref{fig:c_970_VdW_cuda_10}) en el código de \textbf{CUDA C}. 
+
+En el código de \textbf{C} para el mayor número de elementos de la malla, el resultado de tiempos de cálculo en doble precisión es apenas 1,045 veces mayor que en  simple precisión. En contraste, al fijarse el resultado para un número de \textit{thread block} igual a 32 (el que mayor ganancia obtuvo), el tiempo de cálculo en doble precisión es 1,25 veces mayor que en simple precisión; para el mayor número de elementos de malla calculado.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{figs/cap4/c_970_VdW_c_10}
+	\caption{Speed Up realizado para el problema de la Estratificación de un fluido Van der Waals con la GPU NVIDIA Geforce GTX 970 en en el código de \textbf{C}, comparando simple precisión y doble precisión.} 
+	\label{fig:c_970_VdW_c_10}	
+\end{figure}
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{figs/cap4/c_970_VdW_cuda_10}
+	\caption{Speed Up realizado para el problema de la Estratificación de un fluido Van der Waals con la GPU NVIDIA Geforce GTX 970 en en el código de \textbf{CUDA C}, comparando simple precisión y doble precisión.} 
+	\label{fig:c_970_VdW_cuda_10}	
+\end{figure}
+
+Los valores que se obtuvieron en las Figuras (\ref{fig:s_970_VdW_simple_10}), (\ref{fig:s_970_VdW_double_10}), (\ref{fig:c_970_VdW_c_10}) y (\ref{fig:c_970_VdW_cuda_10}) se encuentran en el Apéndice \ref{apend_VdW_970}
+
+
+\newpage
 
 
 \section{Generación de burbujas sobre una superficie horizontal calefaccionada}
