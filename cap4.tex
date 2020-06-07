@@ -2,7 +2,7 @@
 \graphicspath{{figs/cap4/}}
 \label{cap4}
 
-En el presente capíulo se realiza la descripción de los problemas con transferencia de calor para fluidos multifásicos con cambio de fase llevados a cabo para validar los códigos numéricos desarrollados, siendo éstos la \textit{Construcción de Maxwell}, la \textit{Estratificación de un fluido Van Der Waals con temperatura no uniforme} y la \textit{Generación de burbujas en una superficie horizontal calefaccionada}.
+En el presente capíulo se realiza la descripción de los problemas con transferencia de calor para fluidos multifásicos con cambio de fase llevados a cabo para validar los códigos numéricos desarrollados, siendo éstos la \textit{Construcción de Maxwell}, la \textit{Estratificación de un fluido Van Der Waals con temperatura no uniforme} y la \textit{Generación de bubbles en una superficie horizontal calefaccionada}.
 
 \section{Construcción de Maxwell}
 
@@ -386,30 +386,72 @@ Los valores que se obtuvieron en las Figuras (\ref{fig:s_970_VdW_simple_10}), (\
 \newpage
 
 
+\begin{figure}[h!]
+	\centering % <-- added
+	\begin{subfigure}{0.25\textwidth}
+		\includegraphics[width=\linewidth]{figs/cap4/bubble_5}
+		\caption{t = 5000}
+		\label{fig:1}
+	\end{subfigure}\hfil % <-- added
+	\begin{subfigure}{0.25\textwidth}
+		\includegraphics[width=\linewidth]{figs/cap4/bubble_10}
+		\caption{t = 10000}
+		\label{fig:2}
+	\end{subfigure}\hfil % <-- added
+	\begin{subfigure}{0.25\textwidth}
+		\includegraphics[width=\linewidth]{figs/cap4/bubble_20}
+		\caption{t = 20000}
+		\label{fig:3}
+	\end{subfigure}
+	
+	\medskip
+	\begin{subfigure}{0.25\textwidth}
+		\includegraphics[width=\linewidth]{figs/cap4/bubble_25}
+		\caption{t = 25000}
+		\label{fig:4}
+	\end{subfigure}\hfil % <-- added
+	\begin{subfigure}{0.25\textwidth}
+		\includegraphics[width=\linewidth]{figs/cap4/bubble_30}
+		\caption{t = 30000}
+		\label{fig:5}
+	\end{subfigure}\hfil % <-- added
+	\begin{subfigure}{0.25\textwidth}
+		\includegraphics[width=\linewidth]{figs/cap4/bubble_35}
+		\caption{t = 35000}
+		\label{fig:6}
+	\end{subfigure}
+	
+	\medskip
+	\begin{subfigure}{0.25\textwidth}
+		\includegraphics[width=\linewidth]{figs/cap4/bubble_40}
+		\caption{t = 40000}
+		\label{fig:7}
+	\end{subfigure}\hfil % <-- added
+	\begin{subfigure}{0.25\textwidth}
+		\includegraphics[width=\linewidth]{figs/cap4/bubble_45}
+		\caption{t = 45000}
+		\label{fig:8}
+	\end{subfigure}\hfil % <-- added
+	\begin{subfigure}{0.25\textwidth}
+		\includegraphics[width=\linewidth]{figs/cap4/bubble_50}
+		\caption{t = 50000}
+		\label{fig:9}
+	\end{subfigure}
+	\caption{Creación y desarrollo de una burbuja a partir de una superficie horizontal calefaccionada.}
+	\label{fig:secuencia_burbujas}
+\end{figure}
+
 \section{Generación de burbujas sobre una superficie horizontal calefaccionada}
 
-Mediante éste problema se quiere reproducir el fenómeno de ebullición nucleada. El trabajo en los dos problemas anteriores constituyen pasos para validar por partes el código. Ésto se debe a que el problema de la Construcción de Maxwell utiliza solamente una ecuación pseudopotencial, mientras que el problema de la estratificación deun fluido VdW utiliza las dos operaciones pseudopotenciales planteadas.
+Mediante éste problema se quiere reproducir el fenómeno de ebullición nucleada. El trabajo en los dos problemas anteriores constituyen pasos para validar por partes el código. Ésto se debe a que el problema de la Construcción de Maxwell utiliza solamente una ecuación pseudopotencial, mientras que el problema de la estratificación de un fluido VdW utiliza las dos operaciones pseudopotenciales planteadas.
 
-La diferencia del problema de la estratificación de VdW con el de la generación de burbujas, radica en que el primero es unidimensional, el segundo es bidimensional. A su vez en la aplicación del código cambia únicamente en realizar una función que imponga como condición una superficie calefaccionada.
+La diferencia del problema de la estratificación de VdW con el de la generación de burbujas, radica en que el primero es unidimensional, el segundo es bidimensional. A su vez, la aplicación del código cambia únicamente en realizar una función que imponga como condición de contorno un área de la superficie calefaccionada.
 
 El valor de $\mathbf{M}$ utilizado es el mismo que los probelmas anteriores, el resto de los parámetros se encuentran en el Apéndice (\ref{parametros_bub}).
 
-Los resultados que se obtuvieron se encuentran en las Figuras ()()()()(, las cuáles son de los tiempos de vuelo 10000, 15000, 20000, 25000 y 30000 respectivamente. El tamaño de grilla utilizado fue de L = 300 y H = 500, si se toma como esquema el mostrado en la Figura(\ref{fig:esquema_VdW}).
+Los resultados que se obtuvieron se encuentra en las Figura (\ref{fig:secuencia_burbujas}), donde los tiempos de vuelo mostrados son de 5000, 10000, 20000, 25000, 30000, 35000, 40000, 45000 y 5000 pasos. El tamaño de grilla utilizado fue de L = 300 y H = 500, si se toma como esquema el mostrado en la Figura(\ref{fig:esquema_VdW}). La superficie calefaccionada se encuentra en el centro del lado L y posee un tamaño de 24 elementos de malla, siendo la temperatura de calefacción $T_{heat} = T_c$. El resto de la superficie se encuentra a $T = 0.8 T_c$ y la parte superior de la cavidad está a $T = 0.99 T_c$.
 
-
-\iffalse
-
-
-\begin{figure}[htbp]
-	\centering
-	\subfigure[burb_1]{\includegraphics[width=40mm]{figs/cap4/burbuja_10000}}\hspace{10mm}
-	\subfigure[burb_2]{\includegraphics[width=40mm]{figs/cap4/burbuja_15000}}\vspace{10mm}
-	\subfigure[burb_3]{\includegraphics[width=40mm]{figs/cap4/burbuja_20000}}\hspace{10mm}
-	\subfigure[burb_4]{\includegraphics[width=40mm]{figs/cap4/burbuja_25000}}\vspace{10mm}
-	\caption{Legos.} \label{fig:lego}
-\end{figure}
-
-\fi
+\newpage
 
 \section{Resultados con \textsc{Python}}
 
@@ -424,28 +466,28 @@ de uno de las \textit{kernel} del código, el cual resuelve la Ec.(\ref{eq:rho})
 
 Para éste análisis se inicializó a $f$ con valores aleatorios, haciendo una repetición de la ejecución de la función 100000 veces para realizar la toma de tiempo. Se varió el tamaño de la grilla, de manera que ésta siempre fuese cuadrada, respetando un número de nodos de potencia de 2 en los lados del cuadrado. La cantidad de \textit{thread blocks} que se utilizó para realizar la comparación en el código fue de potencia de 2. El tamaño de la grilla varió de 16x16 hasta 4096x4906 y la cantidad de \textit{thread blocks} utilizado es de 1 a 512.
 
-\newpage
+
 \title{\textbf{NVIDIA Geforce GTX 760}}
 
 La Figura (\ref{fig:s_cuda_760_test_simple_10}) muestra la ganancia obtenida en el código de \textsc{Cuda C} sobre \textsc{C}. Para 64 \textit{thread blocks} se obtuvo la mayor ganancia, siendo de 3.198. La Figura (\ref{fig:s_py_c_760_test_simple_10}) muestra la ganancia obtenida en el código de \textsc{PyCuda} sobre \textsc{C}. Para 128 \textit{thread blocks} se obtuvo la mayor ganancia, siendo de 2.867. La Figura (\ref{fig:s_py_760_test_simple_10}) muestra cuanto más se demora el código de \textsc{PyCuda} con respecto al de \textsc{Cuda C}. Para 128 y 512  \textit{thread blocks} se obtuvo el menor incremento de tiempos de cálculo, siendo de 1.144. 
 %Coincide que la mayor ganancia con respecto al código de \textsc{C} por parte de \textsc{Python}, sea la menor en incrementar su tiempo de cálculo en comparación del código de \textsc{Cuda C}.
 
-\begin{figure}[htbp]
+\begin{figure}[h!]
 	\centering
 	\includegraphics[width=\textwidth]{figs/cap4/s_cuda_760_test_simple_10}
 	\caption{Speed Up realizado entre CUDA y C para la función de obtensión de la densidad con la GPU NVIDIA Geforce GTX 760 en simple precisión.} 
 	\label{fig:s_cuda_760_test_simple_10}	
 \end{figure}
 
-\begin{figure}[htbp]
+\begin{figure}[h!]
 	\centering
 	\includegraphics[width=\textwidth]{figs/cap4/s_py_c_760_test_simple_10}
 	\caption{Speed Up realizado entre PyCUDA y C para la función de obtensión de la densidad con la GPU NVIDIA Geforce GTX 760 en simple precisión.} 
 	\label{fig:s_py_c_760_test_simple_10}	
 \end{figure}
-\newpage
 
-\begin{figure}[htbp]
+
+\begin{figure}[h!]
 	\centering
 	\includegraphics[width=\textwidth]{figs/cap4/s_py_760_test_simple_10}
 	\caption{Speed Up realizado entre PyCUDA y CUDA para la función de obtensión de la densidad con la GPU NVIDIA Geforce GTX 760 en simple precisión.} 
@@ -454,7 +496,7 @@ La Figura (\ref{fig:s_cuda_760_test_simple_10}) muestra la ganancia obtenida en 
 
 
 
-%\newpage
+%
 \title{\textbf{NVIDIA Geforce GTX 970}}
 
 La Figura (\ref{fig:s_cuda_970_test_simple_10}) muestra la ganancia obtenida en el código de \textsc{Cuda C} sobre \textsc{C}. Para 64 \textit{thread blocks} se obtuvo la mayor ganancia, siendo de 4.815. La Figura (\ref{fig:s_py_c_970_test_simple_10}) muestra la ganancia obtenida en el código de \textsc{PyCuda} sobre \textsc{C}. Para 256 \textit{thread blocks} se obtuvo la mayor ganancia, siendo de 4.242. La Figura (\ref{fig:s_py_970_test_simple_10}) muestra cuanto más se demora el código de \textsc{PyCuda} con respecto al de \textsc{Cuda C}. Para 512  \textit{thread blocks} se obtuvo el menor incremento de tiempos de cálculo, siendo de 1.087; y para 256 \textit{thread blocks} es de 1.104 veces.
@@ -465,7 +507,7 @@ La Figura (\ref{fig:s_cuda_970_test_simple_10}) muestra la ganancia obtenida en 
 	\caption{Speed Up realizado entre CUDA y C para la función de obtensión de la densidad con la GPU NVIDIA Geforce GTX 970 en simple precisión.} 
 	\label{fig:s_cuda_970_test_simple_10}	
 \end{figure}
-\newpage
+
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[width=\textwidth]{figs/cap4/s_py_c_970_test_simple_10}
