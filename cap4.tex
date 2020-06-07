@@ -21,7 +21,7 @@ La construcción de Maxwell, también llamada regla de igualdad de áreas, indic
 \label{eq:maxwell_Construction}
 \end{equation}
 
-\begin{figure}[h!]
+\begin{figure}[htbp]
 	\centering
 	\includegraphics[width=.8\textwidth]{figs/cap4/Diagrama_P_V_del_CO2_Multiphase_LBM}
 	\caption{Diagrama $P - V_m$ de la EOS de VdW del $CO_2$ con las constantes $a = 3,592$ y $b = 0,04267$, representando par a $T = 270 \> K$ los volúmenes molares del líquido y gas. \cite{huang2015multiphase}}
@@ -45,7 +45,7 @@ Para un dado valor de temperatura, llamado temperatura crítica (\textit{$T_c$})
 
 Realizando adecuadamente la adimensionalización  de la Ec.(\ref{eq:rho_eos}) se puede graficar una curva de coexistencia $T_r - \rho_r$  como se observa en la Figura \ref{fig:T_r_rho_r_analitico}, siendo $T_r = \frac{T}{T_c}$ y $\rho_r = \frac{\rho}{\rho_c}$.
 
-\begin{figure}[h!]
+\begin{figure}[htbp]
 	\centering
 	\includegraphics[width=.8\textwidth]{figs/cap4/Diagrama_T_r_vs_rho_r_analitico}
 	\caption{Curva de coexistencia de fases para un fluido de VdW con los parámetros $a = 0,5 $ y $b = 4,0 $.}
@@ -57,40 +57,40 @@ Es de importancia destacar que las curvas de coexistencia dependen de la EOS que
 
 \subsection{Validación}
 
-La validación de éste problema se hizo utilizando los parámetros $a =0,5$ y $b = 4,0$; para un tamaño de malla de 201 x 201 nodos y $T_r$ variando con un paso de $0,025$ en el rango de $[0,6 - 0,975]$.  Los valores que se utilizaron de $\Lambda$ y $\mathbf{M}$ para el modelo de LBM realizado se encuentran en el Apéndice (xxxx).
+La validación de éste problema se hizo utilizando los parámetros $a =0,5$ y $b = 4,0$; para un tamaño de malla de 201 x 201 nodos y $T_r$ variando con un paso de $0,025$ en el rango de $[0,6 - 0,975]$.  Los valores que se utilizaron de $\Lambda$ y $\mathbf{M}$ para el modelo de LBM realizado  con el resto de los parámetros se encuentran en el Apéndice (\ref{parametros_MxC}).
 %La descripción de cómo se realizó la curva de coexistencia analítica se encuentra en el Apéndice (xxxx).
 
-La Figura(\ref{fig:v_760_MxC_c_simple}) muestra la validación del código realizado en \textbf{C} para simple precisión en una GPU NVIDIA Geforce GTX 760; con distintos parámetros $\sigma$ del modelo MRT, donde se observa que el valor de $\sigma = 0,125$ es el que mejor ajusta a la curva de coexistencia. La Figura (\ref{fig:v_760_MxC_cuda_simple}) muestra el resultados obtenidos del código realizado en \textbf{CUDA C} en simple precisión en la misma GPU.
+La Figura(\ref{fig:v_760_MxC_c_simple}) muestra la validación del código realizado en \textsc{C} para simple precisión en una GPU NVIDIA Geforce GTX 760; con distintos parámetros $\sigma$ del modelo MRT, donde se observa que el valor de $\sigma = 0,125$ es el que mejor ajusta a la curva de coexistencia. La Figura (\ref{fig:v_760_MxC_cuda_simple}) muestra el resultados obtenidos del código realizado en \textsc{Cuda C} en simple precisión en la misma GPU.
 
-\begin{figure}[h!]
+\begin{figure}[htbp]
 	\centering
 	\includegraphics[width=\textwidth]{figs/cap4/v_760_MxC_c_simple}
-	\caption{Curva de coexistencia de fases para un fluido de VdW con los parámetros $a = 0,5 $ y $b = 4,0 $, obtenida en simple precisión en la GPU NVIDIA Geforce GTX 760 en el código desarrollado en \textbf{C}. $\sigma = 0.075[\bigtriangleup]$	 $\sigma = 0.125[\bigcirc]$ y $\sigma = 0.200[\diamondsuit]$ }
+	\caption{Curva de coexistencia de fases para un fluido de VdW con los parámetros $a = 0,5 $ y $b = 4,0 $, obtenida en simple precisión en la GPU NVIDIA Geforce GTX 760 en el código desarrollado en \textsc{C}. $\sigma = 0.075[\bigtriangleup]$	 $\sigma = 0.125[\bigcirc]$ y $\sigma = 0.200[\diamondsuit]$ }
  	\label{fig:v_760_MxC_c_simple}	
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}[htbp]
 	\centering
 	\includegraphics[width=\textwidth]{figs/cap4/v_760_MxC_cuda_simple}
-	\caption{Curva de coexistencia de fases para un fluido de VdW con los parámetros $a = 0,5 $ y $b = 4,0 $, obtenida en simple precisión en la GPU NVIDIA Geforce GTX 760 en el código desarrollado en \textbf{CUDA C}. $\sigma = 0.075[\bigtriangleup]$	 $\sigma = 0.125[\bigcirc]$ y $\sigma = 0.200[\diamondsuit]$ }
+	\caption{Curva de coexistencia de fases para un fluido de VdW con los parámetros $a = 0,5 $ y $b = 4,0 $, obtenida en simple precisión en la GPU NVIDIA Geforce GTX 760 en el código desarrollado en \textsc{Cuda C}. $\sigma = 0.075[\bigtriangleup]$	 $\sigma = 0.125[\bigcirc]$ y $\sigma = 0.200[\diamondsuit]$ }
 	\label{fig:v_760_MxC_cuda_simple}	
 \end{figure}
 
-Ambos resultados mostrados en las Figuras (\ref{fig:v_760_MxC_c_simple}) y (\ref{fig:v_760_MxC_cuda_simple}) fueron realizados para 50000 pasos de tiempo en cada uno de los valores de $T_r$. El valor obtenido de las densidades de coexistencia de fases entre los códigos de \textbf{C} y \textbf{CUDA C} resultan exactamente iguales. 
+Ambos resultados mostrados en las Figuras (\ref{fig:v_760_MxC_c_simple}) y (\ref{fig:v_760_MxC_cuda_simple}) fueron realizados para 50000 pasos de tiempo en cada uno de los valores de $T_r$. El valor obtenido de las densidades de coexistencia de fases entre los códigos de \textsc{C} y \textsc{Cuda C} resultan exactamente iguales. 
 
 El resultado que se obtuvo de realizar la validación en doble precisión es que los dos códigos desarrollados obtienen el mismo valor en las densidades de fase.
 
 \newpage
 \subsection{Comparación de precisiones}
 
-En el análisis de la comparación de las precisiones, sólo se presentan los resultados obtenidos mediante el código de \textbf{C}; debido a que los resultados de \textbf{CUDA C} son idénticos.
+En el análisis de la comparación de las precisiones, sólo se presentan los resultados obtenidos mediante el código de \textsc{C}; debido a que los resultados de \textsc{Cuda C} son idénticos.
 
 La Figura (\ref{fig:v_760_MxC_c_comparacion}) muestra los resultados de las densidades de coexistencia de fases para simple y doble precisión, no siendo apreciable la diferencia.
 
-\begin{figure}[h!]
+\begin{figure}[htbp]
 	\centering
 	\includegraphics[width=\textwidth]{figs/cap4/v_760_MxC_c_comparacion}
-	\caption{Curva de coexistencia de fases para un fluido de VdW con los parámetros $a = 0,5 $ y $b = 4,0 $, obtenida en simple precisión[$\bigcirc$] y doble precisión [$\diamondsuit$] en la GPU NVIDIA Geforce GTX 760 en el código desarrollado en \textbf{C}.} 
+	\caption{Curva de coexistencia de fases para un fluido de VdW con los parámetros $a = 0,5 $ y $b = 4,0 $, obtenida en simple precisión[$\bigcirc$] y doble precisión [$\diamondsuit$] en la GPU NVIDIA Geforce GTX 760 en el código desarrollado en \textsc{C}.} 
 	\label{fig:v_760_MxC_c_comparacion}	
 \end{figure}
 
@@ -115,106 +115,111 @@ Porcentualmente para la fase gaseosa, la distancia calculada en simple precisió
 
 \subsection{Speed Up}
 
-En la presente sección se muestran las mejora en el tiempo de cálculo realizados para el código de \textbf{C} y \textbf{CUDA C}. La comparación se realizó en simple y doble precisión; en dos GPU, siendo las mismas NVIDIA Geforce GTX 760 y NVIDIA Geforce GTX 970. Se tomó una $T_r$ fija y se varió el tamaño de la grilla, de manera que ésta siempre fuese cuadrada, respetando un número de nodos de potencia de 2 en los lados del cuadrado. La cantidad de \textit{thread blocks} que se utilizó para realizar la comnparación en el código de \textbf{CUDA} fueron de potencia de 2.
+En la presente sección se muestran las mejora en el tiempo de cálculo realizados para el código de \textsc{C} y \textsc{Cuda C}. La comparación se realizó en simple y doble precisión; en dos GPU, siendo las mismas NVIDIA Geforce GTX 760 y NVIDIA Geforce GTX 970. Se tomó una $T_r$ fija y se varió el tamaño de la grilla, de manera que ésta siempre fuese cuadrada, respetando un número de nodos de potencia de 2 en los lados del cuadrado. La cantidad de \textit{thread blocks} que se utilizó para realizar la comnparación en el código de \textsc{CUDA} fueron de potencia de 2.
 
 \subsubsection{NVIDIA Geforce GTX 760}
 
 Los tamaños de grilla que se utilizaron para realizar las pruebas de tiempo de ésta placa, tienen el rango de grilla de 16x16 nodos hasta 2048x2048 nodos. La cantidad de \textit{thread blocks} que se utilizó fueron de 1 a 512.
 
-Las Figuras (\ref{fig:s_760_MxC_simple_1.0}) y (\ref{fig:s_760_MxC_double_1.0}) muestran el \textit{Speed Up} obtenido comparando los códigos de \textbf{C} y \textbf{CUDA C}, donde la Figura (\ref{fig:s_760_MxC_simple_1.0}) está obtenida con simple precisión y la Figura (\ref{fig:s_760_MxC_double_1.0}) en doble precisión. El mejor resultado en ambos casos se obtuvo para un número de \textit{thread block} igual a 64, donde la mejora fue de 18.67 y 11.40 en simple y doble precisión respectivamente, para el mayor número de elementos de malla.
+Las Figuras (\ref{fig:s_760_MxC_simple_1.0}) y (\ref{fig:s_760_MxC_double_1.0}) muestran el \textit{Speed Up} obtenido comparando los códigos de \textsc{C} y \textsc{Cuda C}, donde la Figura (\ref{fig:s_760_MxC_simple_1.0}) está obtenida con simple precisión y la Figura (\ref{fig:s_760_MxC_double_1.0}) en doble precisión. El mejor resultado en ambos casos se obtuvo para un número de \textit{thread block} igual a 64, donde la mejora fue de 18.67 y 11.40 en simple y doble precisión respectivamente, para el mayor número de elementos de malla.
 
 
-\begin{figure}[h!]
+\begin{figure}[htbp]
 	\centering
 	\includegraphics[width=\textwidth]{figs/cap4/s_760_MxC_simple_10}
-	\caption{Speed Up realizado para el problema de la Construcción de Maxwell con la GPU NVIDIA Geforce GTX 760 en simple precisión, comparando los códigos de \textbf{C} y \textbf{CUDA C}.} 
+	\caption{Speed Up realizado para el problema de la Construcción de Maxwell con la GPU NVIDIA Geforce GTX 760 en simple precisión, comparando los códigos de \textsc{C} y \textsc{Cuda C}.} 
 	\label{fig:s_760_MxC_simple_1.0}	
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}[htbp]
 	\centering
 	\includegraphics[width=\textwidth]{figs/cap4/s_760_MxC_double_10}
-	\caption{Speed Up realizado para el problema de la Construcción de Maxwell con la GPU NVIDIA Geforce GTX 760 en doble precisión, comparando los códigos de \textbf{C} y \textbf{CUDA C}.} 
+	\caption{Speed Up realizado para el problema de la Construcción de Maxwell con la GPU NVIDIA Geforce GTX 760 en doble precisión, comparando los códigos de \textsc{C} y \textsc{Cuda C}.} 
 	\label{fig:s_760_MxC_double_1.0}	
 \end{figure}
 
 \newpage
 
-Las Figuras (\ref{fig:c_760_MxC_c_10}) y (\ref{fig:c_760_MxC_cuda_10}) muestran el \textit{Speed Up} obtenido comparando simple precisión y doble precisión, donde la Figura (\ref{fig:c_760_MxC_c_10}) está obtenida el código de \textbf{C} y la Figura (\ref{fig:c_760_MxC_cuda_10}) en el código de \textbf{CUDA C}. 
+Las Figuras (\ref{fig:c_760_MxC_c_10}) y (\ref{fig:c_760_MxC_cuda_10}) muestran el \textit{Speed Up} obtenido comparando simple precisión y doble precisión, donde la Figura (\ref{fig:c_760_MxC_c_10}) está obtenida el código de \textsc{C} y la Figura (\ref{fig:c_760_MxC_cuda_10}) en el código de \textsc{Cuda C}. 
 
-En el código de \textbf{C} para el mayor número de elementos de la malla, el resultado de tiempos de cálculo en doble precisión es apenas 1,026 veces mayor que en  simple precisión. En contraste, al fijarse el resultado para un número de \textit{thread block} igual a 64 (el que mayor ganancia obtuvo), el tiempo de cálculo en doble precisión es 1,68 veces mayor que en simple precisión; para el mayor número de elementos de malla calculado.
+En el código de \textsc{C} para el mayor número de elementos de la malla, el resultado de tiempos de cálculo en doble precisión es apenas 1,026 veces mayor que en  simple precisión. En contraste, al fijarse el resultado para un número de \textit{thread block} igual a 64 (el que mayor ganancia obtuvo), el tiempo de cálculo en doble precisión es 1,68 veces mayor que en simple precisión; para el mayor número de elementos de malla calculado.
 
-\begin{figure}[h!]
+\begin{figure}[htbp]
 	\centering
 	\includegraphics[width=\textwidth]{figs/cap4/c_760_MxC_c_10}
-	\caption{Speed Up realizado para el problema de la Construcción de Maxwell con la GPU NVIDIA Geforce GTX 760 en en el código de \textbf{C}, comparando simple precisión y doble precisión.} 
+	\caption{Speed Up realizado para el problema de la Construcción de Maxwell con la GPU NVIDIA Geforce GTX 760 en en el código de \textsc{C}, comparando simple precisión y doble precisión.} 
 	\label{fig:c_760_MxC_c_10}	
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}[htbp]
 	\centering
 	\includegraphics[width=\textwidth]{figs/cap4/c_760_MxC_cuda_10}
-	\caption{Speed Up realizado para el problema de la Construcción de Maxwell con la GPU NVIDIA Geforce GTX 760 en en el código de \textbf{CUDA C}, comparando simple precisión y doble precisión.} 
+	\caption{Speed Up realizado para el problema de la Construcción de Maxwell con la GPU NVIDIA Geforce GTX 760 en en el código de \textsc{Cuda C}, comparando simple precisión y doble precisión.} 
 	\label{fig:c_760_MxC_cuda_10}	
 \end{figure}
 
 Los valores que se obtuvieron en las Figuras (\ref{fig:s_760_MxC_simple_1.0}), (\ref{fig:s_760_MxC_double_1.0}), (\ref{fig:c_760_MxC_c_10}) y (\ref{fig:c_760_MxC_cuda_10}) se encuentran en el Apéndice \ref{apend_MxC_760}
 
-\newpage
-
 \subsubsection{NVIDIA Geforce GTX 970}
 
 Los tamaños de grilla que se utilizaron para realizar las pruebas de tiempo de ésta placa, tienen el rango de grilla de 16x16 nodos hasta 4096x4096 nodos en simple precisión y de 16x16 nodos hasta 2048x2048 nodos en doble precisión . La cantidad de \textit{thread blocks} que se utilizó fueron de 1 a 512.
 
-Las Figuras (\ref{fig:s_970_MxC_simple_10}) y (\ref{fig:s_970_MxC_double_10}) muestran el \textit{Speed Up} obtenido comparando los códigos de \textbf{C} y \textbf{CUDA C}, donde la Figura (\ref{fig:s_970_MxC_simple_10}) está obtenida con simple precisión y la Figura (\ref{fig:s_970_MxC_double_10}) en doble precisión. El mejor resultado en ambos casos se obtuvo para un número de \textit{thread block} igual a 32, donde la mejora fue de 23.39 y 10.96 en simple y doble precisión respectivamente, para el mayor número de elementos de malla.
+Las Figuras (\ref{fig:s_970_MxC_simple_10}) y (\ref{fig:s_970_MxC_double_10}) muestran el \textit{Speed Up} obtenido comparando los códigos de \textsc{C} y \textsc{Cuda C}, donde la Figura (\ref{fig:s_970_MxC_simple_10}) está obtenida con simple precisión y la Figura (\ref{fig:s_970_MxC_double_10}) en doble precisión. El mejor resultado en ambos casos se obtuvo para un número de \textit{thread block} igual a 32, donde la mejora fue de 23.39 y 10.96 en simple y doble precisión respectivamente, para el mayor número de elementos de malla.
 
-Las Figuras (\ref{fig:c_970_MxC_c_10}) y (\ref{fig:c_970_MxC_cuda_10}) muestran el \textit{Speed Up} obtenido comparando simple precisión y doble precisión, donde la Figura (\ref{fig:c_970_MxC_c_10}) está obtenida el código de \textbf{C} y la Figura (\ref{fig:c_970_MxC_cuda_10}) en el código de \textbf{CUDA C}.
+Las Figuras (\ref{fig:c_970_MxC_c_10}) y (\ref{fig:c_970_MxC_cuda_10}) muestran el \textit{Speed Up} obtenido comparando simple precisión y doble precisión, donde la Figura (\ref{fig:c_970_MxC_c_10}) está obtenida el código de \textsc{C} y la Figura (\ref{fig:c_970_MxC_cuda_10}) en el código de \textsc{Cuda C}.
 
-En el código de \textbf{C} para el mayor número de elementos de la malla, el resultado de tiempos de cálculo en doble precisión es apenas 1,035 veces mayor que en  simple precisión. En contraste, al fijarse el resultado para un número de \textit{thread block} igual a 32 (el que mayor ganancia obtuvo), el tiempo de cálculo en doble precisión es 1,29 veces mayor que en simple precisión; para el mayor número de elementos de malla calculado.
+En el código de \textsc{C} para el mayor número de elementos de la malla, el resultado de tiempos de cálculo en doble precisión es apenas 1,035 veces mayor que en  simple precisión. En contraste, al fijarse el resultado para un número de \textit{thread block} igual a 32 (el que mayor ganancia obtuvo), el tiempo de cálculo en doble precisión es 1,29 veces mayor que en simple precisión; para el mayor número de elementos de malla calculado.
 
-\begin{figure}[h!]
+\begin{figure}[htbp]
 	\centering
 	\includegraphics[width=\textwidth]{figs/cap4/s_970_MxC_simple_10}
-	\caption{Speed Up realizado para el problema de la Construcción de Maxwell con la GPU NVIDIA Geforce GTX 970 en simple precisión, comparando los códigos de \textbf{C} y \textbf{CUDA C}.} 
+	\caption{Speed Up realizado para el problema de la Construcción de Maxwell con la GPU NVIDIA Geforce GTX 970 en simple precisión, comparando los códigos de \textsc{C} y \textsc{Cuda C}.} 
 	\label{fig:s_970_MxC_simple_10}	
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}[htbp]
 	\centering
 	\includegraphics[width=\textwidth]{figs/cap4/s_970_MxC_double_10}
-	\caption{Speed Up realizado para el problema de la Construcción de Maxwell con la GPU NVIDIA Geforce GTX 970 en doble precisión, comparando los códigos de \textbf{C} y \textbf{CUDA C}.} 
+	\caption{Speed Up realizado para el problema de la Construcción de Maxwell con la GPU NVIDIA Geforce GTX 970 en doble precisión, comparando los códigos de \textsc{C} y \textsc{Cuda C}.} 
 	\label{fig:s_970_MxC_double_10}	
 \end{figure}
 
 
-\begin{figure}[h!]
+\begin{figure}[htbp]
 	\centering
 	\includegraphics[width=\textwidth]{figs/cap4/c_970_MxC_c_10}
-	\caption{Speed Up realizado para el problema de la Construcción de Maxwell con la GPU NVIDIA Geforce GTX 970 en en el código de \textbf{C}, comparando simple precisión y doble precisión.} 
+	\caption{Speed Up realizado para el problema de la Construcción de Maxwell con la GPU NVIDIA Geforce GTX 970 en en el código de \textsc{C}, comparando simple precisión y doble precisión.} 
 	\label{fig:c_970_MxC_c_10}	
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}[htbp]
 	\centering
 	\includegraphics[width=\textwidth]{figs/cap4/c_970_MxC_cuda_10}
-	\caption{Speed Up realizado para el problema de la Construcción de Maxwell con la GPU NVIDIA Geforce GTX 970 en en el código de \textbf{CUDA C}, comparando simple precisión y doble precisión.} 
+	\caption{Speed Up realizado para el problema de la Construcción de Maxwell con la GPU NVIDIA Geforce GTX 970 en en el código de \textsc{Cuda C}, comparando simple precisión y doble precisión.} 
 	\label{fig:c_970_MxC_cuda_10}	
 \end{figure}
 
-Los valores que se obtuvieron en las Figuras (\ref{fig:s_970_MxC_simple_10}), (\ref{fig:s_970_MxC_double_10}), (\ref{fig:c_970_MxC_c_10}) y (\ref{fig:c_970_MxC_cuda_10}) se encuentran en el Apéndice \ref{apend_MxC_970}
+Los datos de las Figuras (\ref{fig:s_970_MxC_simple_10}), (\ref{fig:s_970_MxC_double_10}), (\ref{fig:c_970_MxC_c_10}) y (\ref{fig:c_970_MxC_cuda_10}) se encuentran en las Tablas (\ref{tab:s_970_MxC_simple_10}), (\ref{tab:s_970_MxC_double_10}), (\ref{fig:c_970_MxC_c_10}) y (\ref{tab:c_970_MxC_cuda_10}) del Apéndice \ref{apend_MxC_970}
 
 
 \subsection{Análisis}
 
-La utilización de simple precisión en el código de \textbf{CUDA C} es más conveniente que doble precisión. Una de las razones es que no hay demasiada diferencia entre los valores que se pueden obtener, según los resultados obtenidos no difirieren más del 0,003 \%. Otra de las razones es que debido a las mejoras obtenidas en los tiempos de cálculo en las placas NVIDIA Geforce GTX 760 y NVIDIA Geforce GTX 970 en el código de \textbf{CUDA C} de 18.67 y 23.39 respectivamente en simple precisión que el código de \textbf{C}. Las mejoras en doble precisión de las ganancias son de 11.40 y 10.96 respectivamente en las placas mencionadas. Por lo que el resultado obtenido en simple precisión difiere apenas un 0.003 \% que en doble precisión, además siendo 1.68 y 1.29 veces más rapido según la GPU utilizada.
+La utilización de simple precisión en el código de \textsc{Cuda C} es más conveniente que doble precisión. Una de las razones es que no hay demasiada diferencia entre los valores que se pueden obtener, según los resultados obtenidos no difirieren más del 0,003 \%. Otra de las razones es que debido a las mejoras obtenidas en los tiempos de cálculo en las placas NVIDIA Geforce GTX 760 y NVIDIA Geforce GTX 970 en el código de \textsc{Cuda C} de 18.67 y 23.39 respectivamente en simple precisión que el código de \textsc{C}. Las mejoras en doble precisión de las ganancias son de 11.40 y 10.96 respectivamente en las placas mencionadas. Por lo que el resultado obtenido en simple precisión difiere apenas un 0.003 \% que en doble precisión, además siendo 1.68 y 1.29 veces más rapido según la GPU utilizada.
 
-
+\newpage
 
 \section{Estratificación de un fluido VdW con temperatura no uniforme}
 
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.3\textwidth]{figs/cap4/esquema_problema_VdW}
+	\caption{Esquema del problema de la estratificación de un fluido VdW. Donde se muestra el alto (H) de la cavidad y el ancho (L).} 
+	\label{fig:esquema_VdW}	
+\end{figure}
+
 Se quiere resolver el problema de tener una cavidad unidimensional en presencia de un fluido cuya EOS es la de Van der Waals; con temperatura  no uniforme y fuerza de gravedad no nula. Éste problema fue desarrollado por Berberan-Santos \cite{berberan2002liquid} y que Fogliatto \cite{fogliatto2019simulation} extendió. 
 
-Se toma como coordenada del problema \textit{y}, teniéndose una temperatura fija $T_{0}$ en $y = 0$ y $T_{1}$ en $y = H$ como se observa en la Figura (xxxx) en presencia de la gravedad.
+Se toma como coordenada del problema \textit{y}, teniéndose una temperatura fija $T_{0}$ en $y = 0$ y $T_{1}$ en $y = H$ como se observa en la Figura (\ref{fig:esquema_VdW}) en presencia de la gravedad.
 
 El gradiente de presión surge de realizar el balance de momento en un volumen de control, obteniéndose:
 
@@ -226,6 +231,8 @@ siendo \textit{g} la gravedad, \textit{M} el peso molecular, $C = \frac{1}{v}$ l
 
 Realizando la adimensionalisación de $ P_r = \frac{P}{P_c}$ , $ T_r = \frac{T}{T_c}$, $c = C v_c$ y $E_r = \frac{M g y}{R T_c}$; siendo \textit{c} el punto crítico en el cuál comienza la coexistencia de las dos fases, se pueden reemplazar en el gradiente de presión y una Ecuación de estado para obtener una ecuación adimensional con la concentración molar distribuida \cite{fogliatto2019simulation}.
 
+
+
 Si se elije la EOS de VdW de la Ec.(\ref{eq:VdW_P}), se obtiene la siguiente ecuación adimensional diferencial:
 
 \begin{align}
@@ -235,19 +242,19 @@ Si se elije la EOS de VdW de la Ec.(\ref{eq:VdW_P}), se obtiene la siguiente ecu
 
 Si se resuelve iterativamente la Ec. (\ref{eq:adim_dif}) se puede obtener dos curvas adimensionales correspondientes al perfil de temperatura y al de concentraciones.
 
-En la Figura xx se muestra la curva adimensional $ \rho_r - Y_r $ , siendo $\rho_r = \frac{\rho}{\rho_c}$ y  $Y_r = \frac{y}{H}$  y la Figura xx muestra la curva adimensional $ T_r - Y_r $. Ambas para distintos valores de $T_0$, mientras que en la otra pared $T_1 = cte = 0.99 \> T_r$.
+En la Figura (\ref{fig:VdW_val_rho_y}) se muestra la curva adimensional $ \rho_r - Y_r $ , siendo $\rho_r = \frac{\rho}{\rho_c}$ y  $Y_r = \frac{y}{H}$  y la Figura (\ref{fig:VdW_val_T_y}) muestra la curva adimensional $ T_r - Y_r $. Ambas para distintos valores de $T_0$, mientras que en la otra pared $T_1 = cte = 0.99 \> T_r$.
 
-\begin{figure}[h!]
+\begin{figure}[htbp]
 	\centering
 	\includegraphics[width=\textwidth]{figs/cap4/VdW_val_rho_y}
-	\caption{Perfil de densidad adimensional a lo largo de la longitud de la pared,para distintos valores de condición de temperatura fija en $y = 0$, para un fluido de VdW con los parámetros $a = 0,5 $ y $b = 4,0 $, obtenida en simple precisión en la GPU NVIDIA Geforce GTX 760 en el código desarrollado en \textbf{C}.} 
+	\caption{Perfil de densidad adimensional a lo largo de la longitud de la pared,para distintos valores de condición de temperatura fija en $y = 0$, para un fluido de VdW con los parámetros $a = 0,5 $ y $b = 4,0 $, obtenida en simple precisión en la GPU NVIDIA Geforce GTX 760 en el código desarrollado en \textsc{C}.} 
 	\label{fig:VdW_val_rho_y}	
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}[htbp]
 	\centering
 	\includegraphics[width=\textwidth]{figs/cap4/VdW_val_T_y}
-	\caption{Perfil de temperatura adimensional a lo largo de la longitud de la pared, para distintos valores de condición de temperatura fija en $y = 0$,para un fluido de VdW con los parámetros $a = 0,5 $ y $b = 4,0 $, obtenida en simple precisión en la GPU NVIDIA Geforce GTX 760 en el código desarrollado en \textbf{C}.} 
+	\caption{Perfil de temperatura adimensional a lo largo de la longitud de la pared, para distintos valores de condición de temperatura fija en $y = 0$,para un fluido de VdW con los parámetros $a = 0,5 $ y $b = 4,0 $, obtenida en simple precisión en la GPU NVIDIA Geforce GTX 760 en el código desarrollado en \textsc{C}.} 
 	\label{fig:VdW_val_T_y}	
 \end{figure}
 
@@ -255,26 +262,26 @@ En la Figura xx se muestra la curva adimensional $ \rho_r - Y_r $ , siendo $\rho
 
 \subsection{Validación}
 
-La validación de éste problema se hizo utilizando los parámetros $a =0,5$ y $b = 4,0$; para un tamaño de malla de 3 x 300 nodos y $T_0 = T_r$, variando $T_r$ con un paso de $0,025$ en el rango de $[0,6 - 0,975]$. Mostrándose en los gráficos únicamente los valores de $T_r = 0,6 ; 0,7 ; 0,8 y 0,9$   El valor de $\mathbf{M}$ utilizado es el mismo que es de la Construcción de Maxwell, mientras que el valor de $\Lambda$ se encuentran en el Apéndice (xxxx).
+La validación de éste problema se hizo utilizando los parámetros $a =0,5$ y $b = 4,0$; para un tamaño de malla de 3 x 300 nodos y $T_0 = T_r$, variando $T_r$ con un paso de $0,025$ en el rango de $[0,6 - 0,975]$. Mostrándose en los gráficos únicamente los valores de $T_r = 0,6 ; 0,7 ; 0,8 \> y \> 0,9$.    El valor de $\mathbf{M}$ utilizado es el mismo que es de la Construcción de Maxwell, el resto de los parámetros se encuentran en el Apéndice (\ref{parametros_VdW}).
 
-La Figura(\ref{fig:v_760_VdW_c_simple_rho_y}) y (\ref{fig:v_760_VdW_c_simple_T_y})  muestran la validación del código realizado en \textbf{C} para simple precisión en una GPU NVIDIA Geforce GTX 760; con distintos valores de $T_0$. 
+La Figura(\ref{fig:v_760_VdW_c_simple_rho_y}) y (\ref{fig:v_760_VdW_c_simple_T_y})  muestran la validación del código realizado en \textsc{C} para simple precisión en una GPU NVIDIA Geforce GTX 760; con distintos valores de $T_0$. 
 
 El quiebre abrupto y discontínuo de la densidad a lo largo de la pared en la Figura (\ref{fig:v_760_VdW_c_simple_rho_y}) muestra la coexistencia de las dos fases, para la solución analítica. Debido a que se tiene una solución contínua y un poco difusa porque el modelo toma una cierta cantidad de nodos como separación entre ambas fases, se presenta una mayor diferencia en el ajuste de la curva obtenida con la analítica en el cambio de fase. Lo mismo sucede en la Figura (\ref{fig:v_760_VdW_c_simple_T_y}).
 
 El tiempo de vuelo utilizado en cada uno de los nodos de la malla fue de 750000. 
-El resultado obtenido para ambas curvas validades es exactamente igual en el código de \textbf{C} y \textbf{CUDA C}.
+El resultado obtenido para ambas curvas validades es exactamente igual en el código de \textsc{C} y \textsc{Cuda C}.
 
-\begin{figure}[h!]
+\begin{figure}[htbp]
 	\centering
 	\includegraphics[width=\textwidth]{figs/cap4/v_760_VdW_c_simple_rho_y}
-	\caption{Perfil de densidad adimensional a lo largo de la longitud de la pared, para valores de $T_0 = T_r$ , siendo $T_r = 0,6 ; 0,7 ; 0,8 y 0,9$, para un fluido de VdW con los parámetros $a = 0,5 $ y $b = 4,0 $, obtenida en simple precisión en la GPU NVIDIA Geforce GTX 760 en el código desarrollado en \textbf{C}.}
+	\caption{Perfil de densidad adimensional a lo largo de la longitud de la pared, para valores de $T_0 = T_r$ , siendo $T_r = 0,6 ; 0,7 ; 0,8 y 0,9$, para un fluido de VdW con los parámetros $a = 0,5 $ y $b = 4,0 $, obtenida en simple precisión en la GPU NVIDIA Geforce GTX 760 en el código desarrollado en \textsc{C}.}
 	\label{fig:v_760_VdW_c_simple_rho_y}	
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}[htbp]
 	\centering
 	\includegraphics[width=\textwidth]{figs/cap4/v_760_VdW_c_simple_T_y}
-	\caption{Perfil de temperatura adimensional a lo largo de la longitud de la pared, para valores de $T_0 = T_r$ , siendo $T_r = 0,6 ; 0,7 ; 0,8 \>y\> 0,9$, para un fluido de VdW con los parámetros $a = 0,5 $ y $b = 4,0 $, obtenida en simple precisión en la GPU NVIDIA Geforce GTX 760 en el código desarrollado en \textbf{C}.}
+	\caption{Perfil de temperatura adimensional a lo largo de la longitud de la pared, para valores de $T_0 = T_r$ , siendo $T_r = 0,6 ; 0,7 ; 0,8 \>y\> 0,9$, para un fluido de VdW con los parámetros $a = 0,5 $ y $b = 4,0 $, obtenida en simple precisión en la GPU NVIDIA Geforce GTX 760 en el código desarrollado en \textsc{C}.}
 	\label{fig:v_760_VdW_c_simple_T_y}	
 \end{figure}
 
@@ -282,46 +289,46 @@ El resultado obtenido para ambas curvas validades es exactamente igual en el có
 
 \subsection{Speed Up}
 
-En la presente sección se muestran las mejora en el tiempo de cálculo realizados para el código de \textbf{C} y \textbf{CUDA C}. La comparación se realizó en simple y doble precisión; en las GPU NVIDIA Geforce GTX 760 y NVIDIA Geforce GTX 970. Se tomó una $T_r$ fija y se varió el tamaño de la grilla, de manera que ésta siempre tuviese un ancho constante de 300 nodos y variando la dimensión en el eje \textsc{Y} respetando un número de nodos de potencia de 2 (exceptuando el primer valor que es 3) . La cantidad de \textit{thread blocks} que se utilizó para realizar la comnparación en el código de \textbf{CUDA} fueron de potencia de 2.
+En la presente sección se muestran las mejora en el tiempo de cálculo realizados para el código de \textsc{C} y \textsc{Cuda C}. La comparación se realizó en simple y doble precisión; en las GPU NVIDIA Geforce GTX 760 y NVIDIA Geforce GTX 970. Se tomó una $T_r$ fija y se varió el tamaño de la grilla, de manera que ésta siempre tuviese un ancho constante de 300 nodos y variando la dimensión en el eje \textsc{Y} respetando un número de nodos de potencia de 2 (exceptuando el primer valor que es 3) . La cantidad de \textit{thread blocks} que se utilizó para realizar la comnparación en el código de \textsc{CUDA} fueron de potencia de 2.
 
 \subsubsection{NVIDIA Geforce GTX 760}
 
 Los tamaños de grilla que se utilizaron para realizar las pruebas de tiempo de ésta placa, tienen el rango de grilla de 3x300 nodos hasta 1638400x300 nodos. La cantidad de \textit{thread blocks} que se utilizó fueron de 1 a 512.
 
-Las Figuras (\ref{fig:s_760_VdW_simple_10}) y (\ref{fig:s_760_VdW_double_10}) muestran el \textit{Speed Up} obtenido comparando los códigos de \textbf{C} y \textbf{CUDA C}, donde la Figura (\ref{fig:s_760_VdW_simple_10}) está obtenida con simple precisión y la Figura (\ref{fig:s_760_VdW_double_10}) en doble precisión. El mejor resultado en ambos casos se obtuvo para un número de \textit{thread block} igual a 64, donde la mejora fue de 13.26 y 7.88 en simple y doble precisión respectivamente, para el mayor número de elementos de malla.
+Las Figuras (\ref{fig:s_760_VdW_simple_10}) y (\ref{fig:s_760_VdW_double_10}) muestran el \textit{Speed Up} obtenido comparando los códigos de \textsc{C} y \textsc{Cuda C}, donde la Figura (\ref{fig:s_760_VdW_simple_10}) está obtenida con simple precisión y la Figura (\ref{fig:s_760_VdW_double_10}) en doble precisión. El mejor resultado en ambos casos se obtuvo para un número de \textit{thread block} igual a 64, donde la mejora fue de 13.26 y 7.88 en simple y doble precisión respectivamente, para el mayor número de elementos de malla.
 
 
-\begin{figure}[h!]
+\begin{figure}[htbp]
 	\centering
 	\includegraphics[width=\textwidth]{figs/cap4/s_760_VdW_simple_10}
-	\caption{Speed Up realizado para el problema de la Estratificación de un fluido Van der Waals con la GPU NVIDIA Geforce GTX 760 en simple precisión, comparando los códigos de \textbf{C} y \textbf{CUDA C}.} 
+	\caption{Speed Up realizado para el problema de la Estratificación de un fluido Van der Waals con la GPU NVIDIA Geforce GTX 760 en simple precisión, comparando los códigos de \textsc{C} y \textsc{Cuda C}.} 
 	\label{fig:s_760_VdW_simple_10}	
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}[htbp]
 	\centering
 	\includegraphics[width=\textwidth]{figs/cap4/s_760_VdW_double_10}
-	\caption{Speed Up realizado para el problema de la Estratificación de un fluido Van der Waals con la GPU NVIDIA Geforce GTX 760 en doble precisión, comparando los códigos de \textbf{C} y \textbf{CUDA C}.} 
+	\caption{Speed Up realizado para el problema de la Estratificación de un fluido Van der Waals con la GPU NVIDIA Geforce GTX 760 en doble precisión, comparando los códigos de \textsc{C} y \textsc{Cuda C}.} 
 	\label{fig:s_760_VdW_double_10}	
 \end{figure}
 
 \newpage
 
-Las Figuras (\ref{fig:c_760_VdW_c_10}) y (\ref{fig:c_760_VdW_cuda_10}) muestran el \textit{Speed Up} obtenido comparando simple precisión y doble precisión, donde la Figura (\ref{fig:c_760_VdW_c_10}) está obtenida el código de \textbf{C} y la Figura (\ref{fig:c_760_VdW_cuda_10}) en el código de \textbf{CUDA C}. 
+Las Figuras (\ref{fig:c_760_VdW_c_10}) y (\ref{fig:c_760_VdW_cuda_10}) muestran el \textit{Speed Up} obtenido comparando simple precisión y doble precisión, donde la Figura (\ref{fig:c_760_VdW_c_10}) está obtenida el código de \textsc{C} y la Figura (\ref{fig:c_760_VdW_cuda_10}) en el código de \textsc{Cuda C}. 
 
-En el código de \textbf{C} para el mayor número de elementos de la malla, el resultado de tiempos de cálculo en doble precisión es apenas 1,052 veces mayor que en  simple precisión. En contraste, al fijarse el resultado para un número de \textit{thread block} igual a 64 (el que mayor ganancia obtuvo), el tiempo de cálculo en doble precisión es 1,77 veces mayor que en simple precisión; para el mayor número de elementos de malla calculado.
+En el código de \textsc{C} para el mayor número de elementos de la malla, el resultado de tiempos de cálculo en doble precisión es apenas 1,052 veces mayor que en  simple precisión. En contraste, al fijarse el resultado para un número de \textit{thread block} igual a 64 (el que mayor ganancia obtuvo), el tiempo de cálculo en doble precisión es 1,77 veces mayor que en simple precisión; para el mayor número de elementos de malla calculado.
 
-\begin{figure}[h!]
+\begin{figure}[htbp]
 	\centering
 	\includegraphics[width=\textwidth]{figs/cap4/c_760_VdW_c_10}
-	\caption{Speed Up realizado para el problema de la Estratificación de un fluido Van der Waals con la GPU NVIDIA Geforce GTX 760 en en el código de \textbf{C}, comparando simple precisión y doble precisión.} 
+	\caption{Speed Up realizado para el problema de la Estratificación de un fluido Van der Waals con la GPU NVIDIA Geforce GTX 760 en en el código de \textsc{C}, comparando simple precisión y doble precisión.} 
 	\label{fig:c_760_VdW_c_10}	
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}[htbp]
 	\centering
 	\includegraphics[width=\textwidth]{figs/cap4/c_760_MxC_cuda_10}
-	\caption{Speed Up realizado para el problema de la Estratificación de un fluido Van der Waals con la GPU NVIDIA Geforce GTX 760 en en el código de \textbf{CUDA C}, comparando simple precisión y doble precisión.} 
+	\caption{Speed Up realizado para el problema de la Estratificación de un fluido Van der Waals con la GPU NVIDIA Geforce GTX 760 en en el código de \textsc{Cuda C}, comparando simple precisión y doble precisión.} 
 	\label{fig:c_760_VdW_cuda_10}	
 \end{figure}
 
@@ -333,50 +340,156 @@ Los valores que se obtuvieron en las Figuras (\ref{fig:s_760_VdW_simple_10}), (\
 
 Los tamaños de grilla que se utilizaron para realizar las pruebas de tiempo de ésta placa, tienen el rango de grilla de 3x300 nodos hasta 1638400x300 nodos. La cantidad de \textit{thread blocks} que se utilizó fueron de 1 a 512.
 
-Las Figuras (\ref{fig:s_970_VdW_simple_10}) y (\ref{fig:s_970_VdW_double_10}) muestran el \textit{Speed Up} obtenido comparando los códigos de \textbf{C} y \textbf{CUDA C}, donde la Figura (\ref{fig:s_970_VdW_simple_10}) está obtenida con simple precisión y la Figura (\ref{fig:s_970_VdW_double_10}) en doble precisión. El mejor resultado en ambos casos se obtuvo para un número de \textit{thread block} igual a 32, donde la mejora fue de 15.95 y 13.29 en simple y doble precisión respectivamente, para el mayor número de elementos de malla.
+Las Figuras (\ref{fig:s_970_VdW_simple_10}) y (\ref{fig:s_970_VdW_double_10}) muestran el \textit{Speed Up} obtenido comparando los códigos de \textsc{C} y \textsc{Cuda C}, donde la Figura (\ref{fig:s_970_VdW_simple_10}) está obtenida con simple precisión y la Figura (\ref{fig:s_970_VdW_double_10}) en doble precisión. El mejor resultado en ambos casos se obtuvo para un número de \textit{thread block} igual a 32, donde la mejora fue de 15.95 y 13.29 en simple y doble precisión respectivamente, para el mayor número de elementos de malla.
 
 
-\begin{figure}[h!]
+\begin{figure}[htbp]
 	\centering
 	\includegraphics[width=\textwidth]{figs/cap4/s_970_VdW_simple_10}
-	\caption{Speed Up realizado para el problema de la Estratificación de un fluido Van der Waals con la GPU NVIDIA Geforce GTX 970 en simple precisión, comparando los códigos de \textbf{C} y \textbf{CUDA C}.} 
+	\caption{Speed Up realizado para el problema de la Estratificación de un fluido Van der Waals con la GPU NVIDIA Geforce GTX 970 en simple precisión, comparando los códigos de \textsc{C} y \textsc{Cuda C}.} 
 	\label{fig:s_970_VdW_simple_10}	
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}[htbp]
 	\centering
 	\includegraphics[width=\textwidth]{figs/cap4/s_970_VdW_double_10}
-	\caption{Speed Up realizado para el problema de la Estratificación de un fluido Van der Waals con la GPU NVIDIA Geforce GTX 970 en doble precisión, comparando los códigos de \textbf{C} y \textbf{CUDA C}.} 
+	\caption{Speed Up realizado para el problema de la Estratificación de un fluido Van der Waals con la GPU NVIDIA Geforce GTX 970 en doble precisión, comparando los códigos de \textsc{C} y \textsc{Cuda C}.} 
 	\label{fig:s_970_VdW_double_10}	
 \end{figure}
 
 \newpage
 
-Las Figuras (\ref{fig:c_970_VdW_c_10}) y (\ref{fig:c_970_VdW_cuda_10}) muestran el \textit{Speed Up} obtenido comparando simple precisión y doble precisión, donde la Figura (\ref{fig:c_970_VdW_c_10}) está obtenida el código de \textbf{C} y la Figura (\ref{fig:c_970_VdW_cuda_10}) en el código de \textbf{CUDA C}. 
+Las Figuras (\ref{fig:c_970_VdW_c_10}) y (\ref{fig:c_970_VdW_cuda_10}) muestran el \textit{Speed Up} obtenido comparando simple precisión y doble precisión, donde la Figura (\ref{fig:c_970_VdW_c_10}) está obtenida el código de \textsc{C} y la Figura (\ref{fig:c_970_VdW_cuda_10}) en el código de \textsc{Cuda C}. 
 
-En el código de \textbf{C} para el mayor número de elementos de la malla, el resultado de tiempos de cálculo en doble precisión es apenas 1,045 veces mayor que en  simple precisión. En contraste, al fijarse el resultado para un número de \textit{thread block} igual a 32 (el que mayor ganancia obtuvo), el tiempo de cálculo en doble precisión es 1,25 veces mayor que en simple precisión; para el mayor número de elementos de malla calculado.
+En el código de \textsc{C} para el mayor número de elementos de la malla, el resultado de tiempos de cálculo en doble precisión es apenas 1,045 veces mayor que en  simple precisión. En contraste, al fijarse el resultado para un número de \textit{thread block} igual a 32 (el que mayor ganancia obtuvo), el tiempo de cálculo en doble precisión es 1,25 veces mayor que en simple precisión; para el mayor número de elementos de malla calculado.
 
-\begin{figure}[h!]
+\begin{figure}[htbp]
 	\centering
 	\includegraphics[width=\textwidth]{figs/cap4/c_970_VdW_c_10}
-	\caption{Speed Up realizado para el problema de la Estratificación de un fluido Van der Waals con la GPU NVIDIA Geforce GTX 970 en en el código de \textbf{C}, comparando simple precisión y doble precisión.} 
+	\caption{Speed Up realizado para el problema de la Estratificación de un fluido Van der Waals con la GPU NVIDIA Geforce GTX 970 en en el código de \textsc{C}, comparando simple precisión y doble precisión.} 
 	\label{fig:c_970_VdW_c_10}	
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}[htbp]
 	\centering
 	\includegraphics[width=\textwidth]{figs/cap4/c_970_VdW_cuda_10}
-	\caption{Speed Up realizado para el problema de la Estratificación de un fluido Van der Waals con la GPU NVIDIA Geforce GTX 970 en en el código de \textbf{CUDA C}, comparando simple precisión y doble precisión.} 
+	\caption{Speed Up realizado para el problema de la Estratificación de un fluido Van der Waals con la GPU NVIDIA Geforce GTX 970 en en el código de \textsc{Cuda C}, comparando simple precisión y doble precisión.} 
 	\label{fig:c_970_VdW_cuda_10}	
 \end{figure}
 
 Los valores que se obtuvieron en las Figuras (\ref{fig:s_970_VdW_simple_10}), (\ref{fig:s_970_VdW_double_10}), (\ref{fig:c_970_VdW_c_10}) y (\ref{fig:c_970_VdW_cuda_10}) se encuentran en el Apéndice \ref{apend_VdW_970}
+
+\subsection{Análisis}
+
 
 
 \newpage
 
 
 \section{Generación de burbujas sobre una superficie horizontal calefaccionada}
+
+Mediante éste problema se quiere reproducir el fenómeno de ebullición nucleada. El trabajo en los dos problemas anteriores constituyen pasos para validar por partes el código. Ésto se debe a que el problema de la Construcción de Maxwell utiliza solamente una ecuación pseudopotencial, mientras que el problema de la estratificación deun fluido VdW utiliza las dos operaciones pseudopotenciales planteadas.
+
+La diferencia del problema de la estratificación de VdW con el de la generación de burbujas, radica en que el primero es unidimensional, el segundo es bidimensional. A su vez en la aplicación del código cambia únicamente en realizar una función que imponga como condición una superficie calefaccionada.
+
+El valor de $\mathbf{M}$ utilizado es el mismo que los probelmas anteriores, el resto de los parámetros se encuentran en el Apéndice (\ref{parametros_bub}).
+
+Los resultados que se obtuvieron se encuentran en las Figuras ()()()()(, las cuáles son de los tiempos de vuelo 10000, 15000, 20000, 25000 y 30000 respectivamente. El tamaño de grilla utilizado fue de L = 300 y H = 500, si se toma como esquema el mostrado en la Figura(\ref{fig:esquema_VdW}).
+
+
+\iffalse
+
+
+\begin{figure}[htbp]
+	\centering
+	\subfigure[burb_1]{\includegraphics[width=40mm]{figs/cap4/burbuja_10000}}\hspace{10mm}
+	\subfigure[burb_2]{\includegraphics[width=40mm]{figs/cap4/burbuja_15000}}\vspace{10mm}
+	\subfigure[burb_3]{\includegraphics[width=40mm]{figs/cap4/burbuja_20000}}\hspace{10mm}
+	\subfigure[burb_4]{\includegraphics[width=40mm]{figs/cap4/burbuja_25000}}\vspace{10mm}
+	\caption{Legos.} \label{fig:lego}
+\end{figure}
+
+\fi
+
+\section{Resultados con \textsc{Python}}
+
+La realización de los códigos numéricos mediante \textsc{C} y \textsc{Cuda C} tenian como primera finalidad conocer cuál es la ganancia en tiempo de cálculo realizando la implementación en GPU. Como segunda finalidad de realizar un código en \textsc{Cuda C} es compilar en código en una biblioteca para ser utilizado en \textsc{Python}.
+
+Por falta de tiempo, no se pudo hacer un código en \textsc{Python} que resuelva los problemas mecionados en el presente capítulo. Lo que se realizó fue un \textit{Speed Up} 
+de uno de las \textit{kernel} del código, el cual resuelve la Ec.(\ref{eq:rho}):
+
+\begin{equation*}
+	\rho = \sum_{\alpha} f_{\alpha}
+\end{equation*}
+
+Para éste análisis se inicializó a $f$ con valores aleatorios, haciendo una repetición de la ejecución de la función 100000 veces para realizar la toma de tiempo. Se varió el tamaño de la grilla, de manera que ésta siempre fuese cuadrada, respetando un número de nodos de potencia de 2 en los lados del cuadrado. La cantidad de \textit{thread blocks} que se utilizó para realizar la comparación en el código fue de potencia de 2. El tamaño de la grilla varió de 16x16 hasta 4096x4906 y la cantidad de \textit{thread blocks} utilizado es de 1 a 512.
+
+\newpage
+\title{\textbf{NVIDIA Geforce GTX 760}}
+
+La Figura (\ref{fig:s_cuda_760_test_simple_10}) muestra la ganancia obtenida en el código de \textsc{Cuda C} sobre \textsc{C}. Para 64 \textit{thread blocks} se obtuvo la mayor ganancia, siendo de 3.198. La Figura (\ref{fig:s_py_c_760_test_simple_10}) muestra la ganancia obtenida en el código de \textsc{PyCuda} sobre \textsc{C}. Para 128 \textit{thread blocks} se obtuvo la mayor ganancia, siendo de 2.867. La Figura (\ref{fig:s_py_760_test_simple_10}) muestra cuanto más se demora el código de \textsc{PyCuda} con respecto al de \textsc{Cuda C}. Para 128 y 512  \textit{thread blocks} se obtuvo el menor incremento de tiempos de cálculo, siendo de 1.144. 
+%Coincide que la mayor ganancia con respecto al código de \textsc{C} por parte de \textsc{Python}, sea la menor en incrementar su tiempo de cálculo en comparación del código de \textsc{Cuda C}.
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=\textwidth]{figs/cap4/s_cuda_760_test_simple_10}
+	\caption{Speed Up realizado entre CUDA y C para la función de obtensión de la densidad con la GPU NVIDIA Geforce GTX 760 en simple precisión.} 
+	\label{fig:s_cuda_760_test_simple_10}	
+\end{figure}
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=\textwidth]{figs/cap4/s_py_c_760_test_simple_10}
+	\caption{Speed Up realizado entre PyCUDA y C para la función de obtensión de la densidad con la GPU NVIDIA Geforce GTX 760 en simple precisión.} 
+	\label{fig:s_py_c_760_test_simple_10}	
+\end{figure}
+\newpage
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=\textwidth]{figs/cap4/s_py_760_test_simple_10}
+	\caption{Speed Up realizado entre PyCUDA y CUDA para la función de obtensión de la densidad con la GPU NVIDIA Geforce GTX 760 en simple precisión.} 
+	\label{fig:s_py_760_test_simple_10}	
+\end{figure}
+
+
+
+%\newpage
+\title{\textbf{NVIDIA Geforce GTX 970}}
+
+La Figura (\ref{fig:s_cuda_970_test_simple_10}) muestra la ganancia obtenida en el código de \textsc{Cuda C} sobre \textsc{C}. Para 64 \textit{thread blocks} se obtuvo la mayor ganancia, siendo de 4.815. La Figura (\ref{fig:s_py_c_970_test_simple_10}) muestra la ganancia obtenida en el código de \textsc{PyCuda} sobre \textsc{C}. Para 256 \textit{thread blocks} se obtuvo la mayor ganancia, siendo de 4.242. La Figura (\ref{fig:s_py_970_test_simple_10}) muestra cuanto más se demora el código de \textsc{PyCuda} con respecto al de \textsc{Cuda C}. Para 512  \textit{thread blocks} se obtuvo el menor incremento de tiempos de cálculo, siendo de 1.087; y para 256 \textit{thread blocks} es de 1.104 veces.
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=\textwidth]{figs/cap4/s_cuda_970_test_simple_10}
+	\caption{Speed Up realizado entre CUDA y C para la función de obtensión de la densidad con la GPU NVIDIA Geforce GTX 970 en simple precisión.} 
+	\label{fig:s_cuda_970_test_simple_10}	
+\end{figure}
+\newpage
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=\textwidth]{figs/cap4/s_py_c_970_test_simple_10}
+	\caption{Speed Up realizado entre PyCUDA y C para la función de obtensión de la densidad con la GPU NVIDIA Geforce GTX 970 en simple precisión.} 
+	\label{fig:s_py_c_970_test_simple_10}	
+\end{figure}
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=\textwidth]{figs/cap4/s_py_970_test_simple_10}
+	\caption{Speed Up realizado entre PyCUDA y CUDA para la función de obtensión de la densidad con la GPU NVIDIA Geforce GTX 970 en simple precisión.} 
+	\label{fig:s_py_970_test_simple_10}	
+\end{figure}
+
+Los valores de las Figuras (\ref{fig:s_cuda_760_test_simple_10}), (\ref{fig:s_py_c_760_test_simple_10}), (\ref{fig:s_py_760_test_simple_10}), (\ref{fig:s_cuda_970_test_simple_10}), (\ref{fig:s_py_c_970_test_simple_10}) y (\ref{fig:s_py_970_test_simple_10}) se encuentran en las Tablas (\ref{tab:s_cuda_760_test_simple_10}), (\ref{tab:s_py_c_760_test_simple_10}), (\ref{tab:s_py_760_test_simple_10}), (\ref{tab:s_cuda_970_test_simple_10}), (\ref{tab:s_py_c_970_test_simple_10}) y (\ref{tab:s_py_970_test_simple_10}) respectivamente, del Apéndice (\ref{ap_python}).
+\section{Análisis}
+
+Según los resultados obtenidos, se espera que utilizando la cantidad de \textit{thread blocks} que maximicen la ganancia en un código de \textsc{Python} sobre el código de \textsc{C}, el primero posea un incremento de un  15 \%  u 10 \% en comparación con el código de \textsc{Cuda C}, si es que se utiliza una GPU NVIDIA Geforce GTX 760/970 respectivamente.
+
+Por lo que no se pierde mucha eficiencia programando en el lenguaje de \textsc{Python}.
+
+
+
+
 %%% Local Variables: 
 %%% mode: latex
 %%% TeX-master: "template"

@@ -1,0 +1,96 @@
+\chapter{}
+\label{ap}
+
+En el presente apéndice se muestra cuál es la matriz $\mathbf{M}$ en el modelo de LBM. También se encuentran diferenciados según el problema resuelto, los valores de $\mathbf{\Lambda}$ y $\mathbf{Q}$.
+
+\begin{equation}
+\mathbf{M} =
+\begin{bmatrix}
+	1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 \\
+   -4 &-1 &-1 &-1 &-1 & 2 & 2 & 2 & 2 \\
+    4 &-2 &-2 &-2 &-2 & 1 & 1 & 1 & 1 \\
+    0 & 1 & 0 &-1 & 0 & 1 &-1 &-1 & 1 \\
+    0 &-2 & 0 & 2 & 0 & 1 &-1 &-1 & 1 \\
+    0 & 0 & 1 & 0 &-1 & 1 & 1 &-1 &-1 \\
+    0 & 0 &-2 & 0 & 2 & 1 & 1 &-1 &-1 \\
+    0 & 1 &-1 & 1 &-1 & 0 & 0 & 0 & 0 \\    
+    0 & 0 & 0 & 0 & 0 & 1 &-1 & 1 &-1 \\        
+\end{bmatrix}
+\end{equation}
+
+\section{Construcción de Maxwell}
+\label{parametros_MxC}
+
+\begin{equation}
+	diag(\mathbf{\Lambda}) = 
+	\begin{bmatrix}
+		1.0 & 0.8 & 1.1 & 1.0 & 1.1 & 1.0 & 1.1 & 0.8 & 0.8 \\
+	\end{bmatrix}
+\end{equation}
+
+\begin{equation}
+G = -1.0 \quad c = 1.0 \quad \sigma = 0.125 \quad a = 0.5 \quad b = 4.0 
+\end{equation}
+
+\begin{equation}
+\mathbf{g} = (0.0 \quad 0.0 \quad 0.0 ) \qquad \rho_c = \frac{1}{12} \qquad T_c = 0.037037037
+\end{equation}
+
+\section{Estratificación de un fluido VdW}
+\label{parametros_VdW}
+
+\begin{equation}
+	diag(\mathbf{\Lambda}) = 
+	\begin{bmatrix}
+		1.0 & 0.8 & 1.1 & 1.0 & 1.1 & 1.0 & 1.1 & 0.8 & 0.8 \\
+	\end{bmatrix}
+\end{equation}
+
+\begin{equation}
+diag(\mathbf{Q}) = 
+	\begin{bmatrix}
+		1.0 & 1.0 & 1.0 & 0.8 & 1.0 & 0.8 & 1.0 & 1.0 & 1.0 \\
+	\end{bmatrix}
+\end{equation}
+
+\begin{equation}
+	\alpha_{1} = 1.0 \qquad 	\alpha_{2} = 1.0 \qquad C_{v} = 1.0
+\end{equation}
+
+\begin{equation}
+	G = -1.0 \quad c = 1.0 \quad \sigma = 0.125 \quad a = 0.5 \quad b = 4.0 
+\end{equation}
+
+\begin{equation}
+\mathbf{g} = (0.0 \quad-1.234567e^{-7}\quad 0.0 ) \qquad \rho_c = \frac{1}{12} \qquad T_c = 0.037037037
+\end{equation}
+
+\section{Generación de burbujas}
+\label{parametros_bub}
+
+\begin{equation}
+	diag(\mathbf{\Lambda}) = 
+		\begin{bmatrix}
+			1.0 & 1.25 & 1.0 & 1.0 & 1.1 & 1.0 & 1.1 & 1.3 & 1.3 \\
+		\end{bmatrix}
+\end{equation}
+
+\begin{equation}
+diag(\mathbf{Q}) = 
+\begin{bmatrix}
+1.0 & 1.0 & 1.0 & 1.55 & 1.0 & 1.55 & 1.0 & 1.0 & 1.0 \\
+\end{bmatrix}
+\end{equation}
+
+\begin{equation}
+\alpha_{1} = -2.0 \qquad 	\alpha_{2} = 2.0 \qquad C_{v} = 5.0
+\end{equation}
+
+
+\begin{equation}
+G = -1.0 \quad c = 1.0 \quad \sigma = 0.125 \quad a = 1.0 \quad b = 4.0 
+\end{equation}
+
+\begin{equation}
+\mathbf{g} = (0.0 \quad -8.0^{-6} \quad 0.0 ) \qquad \rho_c = \frac{1}{12} \qquad T_c = 0.074074074
+\end{equation}

@@ -2,9 +2,12 @@
 \graphicspath{{figs/cap4/}}
 \label{cap5}
 
-En el presente trabajo se realizó un código numérico desarrollado mediante los lenguajes de programación C y CUDA C, para resolver problemas de transferencia de calor en flujos multifásicos con cambio de fase.
-El modelo utilizado es el modelo de lattice Boltzmann de dos (2) ecuaciones pseudopotenciales con operador MRT, siédno el mismo del tipo D2Q9.
+En el presente trabajo se realizaron dos códigos numéricos, desarrollados mediante los lenguajes de programación \textbf{C} y \textbf{CUDA C}, para resolver problemas de transferencia de calor en flujos multifásicos con cambio de fase.
+
+El modelo utilizado es el de lattice Boltzmann de dos (2) ecuaciones pseudopotenciales con operador MRT, siédno el mismo del tipo D2Q9.
+
 La validación del código se realizó en dos (2) GPU diferentes, siendo NVIDIA Geforce GTX 760 y  NVIDIA Geforce GTX 970; para simple precisión y doble precisión.
+
 La validación se realizó por medio de tres (3) problemas físicos, siendo ellos:
 
 \begin{itemize}
@@ -21,9 +24,9 @@ La validación se realizó por medio de tres (3) problemas físicos, siendo ello
 
 Para el problema de la Construcción de Maxwell, se reprodució el resultado que obtuvo Fogliatto en \cite{fogliatto2019simulation}, para el cuál el valor del parámetro $\sigma = 0,125$ del operador MRT es el que ajusta mejor la curva de coexistencia de fases para un fluido con la Ecuación de estado de Van der Waals de parámetros $ a = 0,5 $ y $ b = 4,0 $. 
 
-Para la GPU NVIDIA Geforce GTX 760 en simple precisión se obtuvo una ganancia del código realizado en \textbf{CUDA C} de 18.67 veces con respecto al código de \textbf{C} para un número de 64 \textit{thread block} y la cantidad de 4194304 elementos de malla. Mientras que en la  GPU NVIDIA Geforce GTX 970 en las mismas condiciones se obtuvo una ganancia de 23.39 utilizando 32 \textit{thread block} 
+Para la GPU NVIDIA Geforce GTX 760 en simple precisión se obtuvo una ganancia del código realizado en \textbf{CUDA C} de 18.67 veces con respecto al código de \textbf{C} para un número de 64 \textit{thread block} y la cantidad de 4194304 elementos de malla. Mientras que en la  GPU NVIDIA Geforce GTX 970 en las mismas condiciones se obtuvo una ganancia de 23.39 utilizando 32 \textit{thread block} .
 
-En doble precisión la ganancia de la GPU NVIDIA Geforce GTX 760 con 64 \textit{thread block} fue de 11.40 mientras que en GPU NVIDIA Geforce GTX 970 con 32 \textit{thread block} fue de 10.96 .
+En doble precisión, la ganancia de la GPU NVIDIA Geforce GTX 760 con 64 \textit{thread block} fue de 11.40 mientras que en GPU NVIDIA Geforce GTX 970 con 32 \textit{thread block} se obtuvo 10.96 .
 
 Por el comportamiento que se observó en los resultados, la GPU NVIDIA Geforce GTX 760 llegó a una ganancia máxima, mientras que la GPU NVIDIA Geforce GTX 970 posee la tendencia de aumentar su ganancia a un número de elementos de malla mayor.
 
@@ -32,7 +35,18 @@ Se comparó los resultados obtenidos en simple precisión y doble precisión en 
 Debido a que no existe un gran beneficio en la mejora que se obtiene utilizando doble precisión, y puesto que el tiempo que se demora en doble precesión con respecto a simple precisión es de 1.68 y 1.29 según se utilice GPU NVIDIA Geforce GTX 760/970 respectivamente. Se recomienda la utilización en simple precisión del código realizado.
 
 
+\section{Generación de burbujas en una superficie horizontal calefaccionada}
+
+A partir del problema de la estratificación de un fluido VdW con temperatura no uniforme, el cuál es unidimensional; se pudo realizar una pequeña modificación en el código, para agregar una condición de contorno de calefacción. En esencia el código es exactamente el mismo y puede reproducir el comportamiento de generación de una burbuja en el proceso de ebullición. 
+
+Se demuestra de ésta manera que un fenómeno complejo puede ser resuelto mediante el LBM utilizado en el trabajo, obteniéndose una mejora en los tiempos de 13.26 y 15.95 veces, para simple precisión en la GPU NVIDIA Geforce GTX 760/970 respectivamente. Suponiendo que la condición de contorno de la superficie calefaccionada no la hace variar.
 
 \section{Trabajo futuro}
 
 La siguiente línea de desarrollo para éste trabajo son la mejora contínua de las funciones que posee el código realizado, por lo que se puede seguir haciendo \textit{profiling} del mismo ya sea en la utilización de las memorias que posee cada uno de los \textit{threads} 
+
+Una de las cosas que queda por investigar , es el almacenamiento de los valores de la función de distribución de poblaciones, debido a que en nuestro problema se poseen 3 matrices con la información. una de ellas es la matriz de vecinosy la siguiente es las de poblaciones. Puesto a que depende de cómo es la etiqueta que se realizan a los vecinos, éstos irán a ser buscados en la memoria de la maquina. Dependiendo de cómo estén almacenados los lugares de la memoria de los nodos vecinos, éstos pueden tardart más o menios. de ahí surge la posibilidad/idea de que se distribuya de una manera distinta la forma de almacenar la informacion de lkis nodos vecinos y así realizzar un al profiling que haga que el código tenga una mayor ganancia.
+
+Por cuestión de tiempo no se llego a impementar un código en Python tilizando las librerías de CTypes y PyCuda. Se mostraron unas pequeñas implementaciones para dar una idea de cómo seguir el proyecto. 
+
+Tamvbién se puede realizar una interfaz gráfica mediante Python para que el usuario pueda manejar / acceder a la utilización del código sin necesidad de saber utilizar la terminal. de ahí surje que se puede utilizar el código realizado tanto en Windows como en Linux. 

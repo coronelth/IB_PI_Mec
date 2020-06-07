@@ -1,4 +1,4 @@
-﻿\chapter{Introducción}
+\chapter{Introducción}
 \graphicspath{{figs/cap1/}}
 \label{cap1}
 
@@ -152,17 +152,16 @@ Debido a que cada nodo de la grilla debe realizar la misma operación de colisi�
 \newpage
 \section{Descripción GPU}
 
-Una Unidad de Procesamiento Gráfico (\textit{Graphics Processing Unit} o GPU) es un  circuito electrónico diseñado para realizar operaciones con comapunto flotante para renderizar píxeles en una pantalla. Están optimizadas para actuar en paralelo de forma simultánea instrucciones simples.
+Una Unidad de Procesamiento Gráfico (\textit{Graphics Processing Unit} o GPU) es un  circuito electrónico diseñado para realizar operaciones con punto flotante para renderizar píxeles en una pantalla. Están optimizadas para actuar en paralelo de forma simultánea instrucciones simples.
 
-La GPU trabaja en conjunto con Unidad Central de Procesamiento (\textit{Central Processing Unit} o CPU), debido a ello no presenta circuitos de control en su arquitectura. Dicho espacio que se encuentra ocupado en las CPU por el circuito de control las GPU lo disponen para incrementar el espacio en su chip de Unidades Aritmético Lógicas (\textit{Arithmetic Logic Unit} o ALU) elevando su poder de cálculo. \textbf{citas}
+La GPU trabaja en conjunto con una Unidad Central de Procesamiento (\textit{Central Processing Unit} o CPU), debido a ello no presenta circuitos de control en su arquitectura. Dicho espacio que se encuentra ocupado en las CPU por el circuito de control las GPU lo disponen para incrementar el espacio en su chip de Unidades Aritmético Lógicas (\textit{Arithmetic Logic Unit} o ALU) elevando su poder de cálculo. \textbf{citas}
 
-El esquema de la figura \ref{fig:cpu_gpu_transis} muestra las cantidades de transistores dedicados a diferentes tareas en la CPU comparado con la GPU.
-\textbf{No veo una comparacion de transistores. Es algo cualitativo}
+El esquema de la Figura \ref{fig:cpu_gpu_transis} se muestra cuanlitativamente la cantidade de transistores dedicados a diferentes tareas en la CPU comparado con la GPU.
 
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=10cm]{cpu_gpu.png}
-	\caption{Comparación del uso de transistores entre CPU y GPU \cite{rinaldi2011modelos}.}
+	\caption{Comparación cualitatica del uso de transistores entre CPU y GPU \cite{rinaldi2011modelos}.}
 	\label{fig:cpu_gpu_transis}
 \end{figure}
 
@@ -178,26 +177,27 @@ El lenguaje de programación que se utiliza en las placas gráficas es CUDA y fu
 
 \section{Descripción y alcance del proyecto integrador}
 
-Mediante el método LBM desarrollado por Fogliatto en \cite{fogliatto2018modelado}, \cite{fogliatto2019simulation} y \colorbox{green}{cita de ec energia} se realizará la implementación de un código numérico para resolver problemas de transferencia de calor en flujos multifásicos con cambio de fase, usando GPU y realizando el código en C, CUDA y Python , de la manera más robusta posible.
+Mediante el método LBM desarrollado por Fogliatto en \cite{fogliatto2018modelado}, \cite{fogliatto2019simulation} y \colorbox{green}{cita de ec energia} se realizó la implementación de un código numérico desarrollado en los lenguajes de programación \textsc{C} y \textsc{CUDA C}; para resolver problemas de transferencia de calor en flujos multifásicos con cambio de fase usando GPU de la forma más robusta posible.
 
-La implementación del código se ejecutará en los lenguajes de programación de \textbf{C} y \textbf{CUDA}. Por medio de éstos lenguajes se construirán bibliotecas las cuales serán usadas mediante el lenguaje \textbf{Python}. La utilización de \textbf{Python} es debida a la compatibilidad de aplicar  el código en las distintos sistemas operativos , como \textit{Linux} y \textit{Windows}.
+La compilación del código se hizo mediante la herramienta multiplataforma \textsc{CMake}, por ser un proyecto complejo. Las bibliotecas que se generaron mediante \textsc{CMake} pueden ser utilizadas mediante el lenguaje \textsc{Python}. La utilización de \textsc{Python} es debida a la compatibilidad de aplicar  el código en las distintos sistemas operativos , como \textit{Linux} y \textit{Windows}. Además de que existe mucho soporte en éste lenguaje que cada vez se incrementa su número de usuarios por su facilidad.
 
-Al ser un proyecto complejo, mediante la herramienta multiplataforma \textbf{CMake} se realizó la compilación de las librerías. El proyecto se encuentra en \textbf{Git Hub} donde puede ser descargado en \url{ https://github.com/efogliatto/LBCUDA_Test}.
+El proyecto se encuentra en \textbf{Git Hub} donde puede ser descargado en \url{ https://github.com/efogliatto/LBCUDA_Test}.
 
 
-La validación del código se procederá mediante los siguientes tres problemas:
+La validación del código se hizo mediante los siguientes tres problemas:
 \begin{itemize}
 	\item \textit{construcción de Maxwell}
 	\item \textit{estratificación de un fluido VdW con temperatura no uniforme}
 	\item \textit{generación de burbujas sobre una superficie horizontal calefaccionada}
 \end{itemize} 
 
-las cuáles se encuentran explicadas en el Capítulo \ref{cap4}.
+las cuáles se encuentran explicadas en el Capítulo (\ref{cap4}).
 
+Para los dos primeros problemas, se realizó una comparación en cuanto difieren los resultados de simple precisión y doble precisión del resultado analítico deseado. 
 
+Se realizó un Speed Up, comparando el código en \textsc{C} y en \textsc{CUDA C}, ésto para ambas precisiones. Luego se realizó un Speed Up de las precisiones, tomando los códigos de \textsc{C} y \textsc{CUDA C} por separado.
 
-
-Se realizará una comparación entre los resultados de \textit{simple} y \textit{doble} precisión. Y a su vez cuánto es el \textit{Speed Up} de los códigos en \textbf{C}, \textbf{CUDA} y \textbf{Python}. 
+Se implementó en \textsc{Python} parte del código realizado en \textsc{CUDA C}, exportando su biblioteca compilada mediante la biblioteca \textsc{PyCuda} de \textsc{Python}. También se realizó un Speed Up, ésta vez comparanco los resultados obtenidos en \textsc{CUDA C} con los de \textsc{Python}.
 
 
 %%% Local Variables: 
