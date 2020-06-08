@@ -47,7 +47,7 @@ Realizando adecuadamente la adimensionalización  de la Ec.(\ref{eq:rho_eos}) se
 
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[width=.8\textwidth]{figs/cap4/Diagrama_T_r_vs_rho_r_analitico}
+	\includegraphics[width=\textwidth]{figs/cap4/Diagrama_T_r_vs_rho_r_analitico_1}
 	\caption{Curva de coexistencia de fases para un fluido de VdW con los parámetros $a = 0,5 $ y $b = 4,0 $.}
 	\label{fig:T_r_rho_r_analitico}	
 \end{figure}
@@ -206,7 +206,7 @@ Los datos de las Figuras (\ref{fig:s_970_MxC_simple_10}), (\ref{fig:s_970_MxC_do
 
 La utilización de simple precisión en el código de \textsc{Cuda C} es más conveniente que doble precisión. Una de las razones es que no hay demasiada diferencia entre los valores que se pueden obtener, según los resultados obtenidos no difirieren más del 0,003 \%. Otra de las razones es que debido a las mejoras obtenidas en los tiempos de cálculo en las placas NVIDIA Geforce GTX 760 y NVIDIA Geforce GTX 970 en el código de \textsc{Cuda C} de 18.67 y 23.39 respectivamente en simple precisión que el código de \textsc{C}. Las mejoras en doble precisión de las ganancias son de 11.40 y 10.96 respectivamente en las placas mencionadas. Por lo que el resultado obtenido en simple precisión difiere apenas un 0.003 \% que en doble precisión, además siendo 1.68 y 1.29 veces más rapido según la GPU utilizada.
 
-\newpage
+
 
 \section{Estratificación de un fluido VdW con temperatura no uniforme}
 
@@ -363,14 +363,14 @@ Las Figuras (\ref{fig:c_970_VdW_c_10}) y (\ref{fig:c_970_VdW_cuda_10}) muestran 
 
 En el código de \textsc{C} para el mayor número de elementos de la malla, el resultado de tiempos de cálculo en doble precisión es apenas 1,045 veces mayor que en  simple precisión. En contraste, al fijarse el resultado para un número de \textit{thread block} igual a 32 (el que mayor ganancia obtuvo), el tiempo de cálculo en doble precisión es 1,25 veces mayor que en simple precisión; para el mayor número de elementos de malla calculado.
 
-\begin{figure}[htbp]
+\begin{figure}[h!]
 	\centering
 	\includegraphics[width=\textwidth]{figs/cap4/c_970_VdW_c_10}
 	\caption{Speed Up realizado para el problema de la Estratificación de un fluido Van der Waals con la GPU NVIDIA Geforce GTX 970 en en el código de \textsc{C}, comparando simple precisión y doble precisión.} 
 	\label{fig:c_970_VdW_c_10}	
 \end{figure}
 
-\begin{figure}[htbp]
+\begin{figure}[h!]
 	\centering
 	\includegraphics[width=\textwidth]{figs/cap4/c_970_VdW_cuda_10}
 	\caption{Speed Up realizado para el problema de la Estratificación de un fluido Van der Waals con la GPU NVIDIA Geforce GTX 970 en en el código de \textsc{Cuda C}, comparando simple precisión y doble precisión.} 
@@ -382,86 +382,15 @@ Los valores que se obtuvieron en las Figuras (\ref{fig:s_970_VdW_simple_10}), (\
 \subsection{Análisis}
 
 
-
-\newpage
-
-
-\begin{figure}[h!]
-	\centering % <-- added
-	\begin{subfigure}{0.25\textwidth}
-		\includegraphics[width=\linewidth]{figs/cap4/bubble_5}
-		\caption{t = 5000}
-		\label{fig:1}
-	\end{subfigure}\hfil % <-- added
-	\begin{subfigure}{0.25\textwidth}
-		\includegraphics[width=\linewidth]{figs/cap4/bubble_10}
-		\caption{t = 10000}
-		\label{fig:2}
-	\end{subfigure}\hfil % <-- added
-	\begin{subfigure}{0.25\textwidth}
-		\includegraphics[width=\linewidth]{figs/cap4/bubble_20}
-		\caption{t = 20000}
-		\label{fig:3}
-	\end{subfigure}
-	
-	\medskip
-	\begin{subfigure}{0.25\textwidth}
-		\includegraphics[width=\linewidth]{figs/cap4/bubble_25}
-		\caption{t = 25000}
-		\label{fig:4}
-	\end{subfigure}\hfil % <-- added
-	\begin{subfigure}{0.25\textwidth}
-		\includegraphics[width=\linewidth]{figs/cap4/bubble_30}
-		\caption{t = 30000}
-		\label{fig:5}
-	\end{subfigure}\hfil % <-- added
-	\begin{subfigure}{0.25\textwidth}
-		\includegraphics[width=\linewidth]{figs/cap4/bubble_35}
-		\caption{t = 35000}
-		\label{fig:6}
-	\end{subfigure}
-	
-	\medskip
-	\begin{subfigure}{0.25\textwidth}
-		\includegraphics[width=\linewidth]{figs/cap4/bubble_40}
-		\caption{t = 40000}
-		\label{fig:7}
-	\end{subfigure}\hfil % <-- added
-	\begin{subfigure}{0.25\textwidth}
-		\includegraphics[width=\linewidth]{figs/cap4/bubble_45}
-		\caption{t = 45000}
-		\label{fig:8}
-	\end{subfigure}\hfil % <-- added
-	\begin{subfigure}{0.25\textwidth}
-		\includegraphics[width=\linewidth]{figs/cap4/bubble_50}
-		\caption{t = 50000}
-		\label{fig:9}
-	\end{subfigure}
-	\caption{Creación y desarrollo de una burbuja a partir de una superficie horizontal calefaccionada.}
-	\label{fig:secuencia_burbujas}
-\end{figure}
-
-\section{Generación de burbujas sobre una superficie horizontal calefaccionada}
-
-Mediante éste problema se quiere reproducir el fenómeno de ebullición nucleada. El trabajo en los dos problemas anteriores constituyen pasos para validar por partes el código. Ésto se debe a que el problema de la Construcción de Maxwell utiliza solamente una ecuación pseudopotencial, mientras que el problema de la estratificación de un fluido VdW utiliza las dos operaciones pseudopotenciales planteadas.
-
-La diferencia del problema de la estratificación de VdW con el de la generación de burbujas, radica en que el primero es unidimensional, el segundo es bidimensional. A su vez, la aplicación del código cambia únicamente en realizar una función que imponga como condición de contorno un área de la superficie calefaccionada.
-
-El valor de $\mathbf{M}$ utilizado es el mismo que los probelmas anteriores, el resto de los parámetros se encuentran en el Apéndice (\ref{parametros_bub}).
-
-Los resultados que se obtuvieron se encuentra en las Figura (\ref{fig:secuencia_burbujas}), donde los tiempos de vuelo mostrados son de 5000, 10000, 20000, 25000, 30000, 35000, 40000, 45000 y 5000 pasos. El tamaño de grilla utilizado fue de L = 300 y H = 500, si se toma como esquema el mostrado en la Figura(\ref{fig:esquema_VdW}). La superficie calefaccionada se encuentra en el centro del lado L y posee un tamaño de 24 elementos de malla, siendo la temperatura de calefacción $T_{heat} = T_c$. El resto de la superficie se encuentra a $T = 0.8 T_c$ y la parte superior de la cavidad está a $T = 0.99 T_c$.
-
-\newpage
-
 \section{Resultados con \textsc{Python}}
 
-La realización de los códigos numéricos mediante \textsc{C} y \textsc{Cuda C} tenian como primera finalidad conocer cuál es la ganancia en tiempo de cálculo realizando la implementación en GPU. Como segunda finalidad de realizar un código en \textsc{Cuda C} es compilar en código en una biblioteca para ser utilizado en \textsc{Python}.
+La realización de los códigos numéricos mediante \textsc{C} y \textsc{Cuda C} tenian como primera finalidad conocer cuál es la ganancia en tiempo de cálculo realizando la implementación en GPU. Como segunda finalidad de realizar un código en \textsc{Cuda C} es compilar el código en una biblioteca para ser utilizado en \textsc{Python}.
 
 Por falta de tiempo, no se pudo hacer un código en \textsc{Python} que resuelva los problemas mecionados en el presente capítulo. Lo que se realizó fue un \textit{Speed Up} 
 de uno de las \textit{kernel} del código, el cual resuelve la Ec.(\ref{eq:rho}):
 
 \begin{equation*}
-	\rho = \sum_{\alpha} f_{\alpha}
+\rho = \sum_{\alpha} f_{\alpha}
 \end{equation*}
 
 Para éste análisis se inicializó a $f$ con valores aleatorios, haciendo una repetición de la ejecución de la función 100000 veces para realizar la toma de tiempo. Se varió el tamaño de la grilla, de manera que ésta siempre fuese cuadrada, respetando un número de nodos de potencia de 2 en los lados del cuadrado. La cantidad de \textit{thread blocks} que se utilizó para realizar la comparación en el código fue de potencia de 2. El tamaño de la grilla varió de 16x16 hasta 4096x4906 y la cantidad de \textit{thread blocks} utilizado es de 1 a 512.
@@ -470,7 +399,6 @@ Para éste análisis se inicializó a $f$ con valores aleatorios, haciendo una r
 \title{\textbf{NVIDIA Geforce GTX 760}}
 
 La Figura (\ref{fig:s_cuda_760_test_simple_10}) muestra la ganancia obtenida en el código de \textsc{Cuda C} sobre \textsc{C}. Para 64 \textit{thread blocks} se obtuvo la mayor ganancia, siendo de 3.198. La Figura (\ref{fig:s_py_c_760_test_simple_10}) muestra la ganancia obtenida en el código de \textsc{PyCuda} sobre \textsc{C}. Para 128 \textit{thread blocks} se obtuvo la mayor ganancia, siendo de 2.867. La Figura (\ref{fig:s_py_760_test_simple_10}) muestra cuanto más se demora el código de \textsc{PyCuda} con respecto al de \textsc{Cuda C}. Para 128 y 512  \textit{thread blocks} se obtuvo el menor incremento de tiempos de cálculo, siendo de 1.144. 
-%Coincide que la mayor ganancia con respecto al código de \textsc{C} por parte de \textsc{Python}, sea la menor en incrementar su tiempo de cálculo en comparación del código de \textsc{Cuda C}.
 
 \begin{figure}[h!]
 	\centering
@@ -528,6 +456,78 @@ Los valores de las Figuras (\ref{fig:s_cuda_760_test_simple_10}), (\ref{fig:s_py
 Según los resultados obtenidos, se espera que utilizando la cantidad de \textit{thread blocks} que maximicen la ganancia en un código de \textsc{Python} sobre el código de \textsc{C}, el primero posea un incremento de un  15 \%  u 10 \% en comparación con el código de \textsc{Cuda C}, si es que se utiliza una GPU NVIDIA Geforce GTX 760/970 respectivamente.
 
 Por lo que no se pierde mucha eficiencia programando en el lenguaje de \textsc{Python}.
+
+
+\section{Generación de burbujas sobre una superficie horizontal calefaccionada}
+
+Mediante éste problema se quiere reproducir el fenómeno de ebullición nucleada. El trabajo en los dos problemas anteriores constituyen pasos para validar por partes el código. Ésto se debe a que el problema de la Construcción de Maxwell utiliza solamente una ecuación pseudopotencial, mientras que el problema de la estratificación de un fluido VdW utiliza las dos operaciones pseudopotenciales planteadas.
+
+La diferencia del problema de la estratificación de VdW con el de la generación de burbujas, radica en que el primero es unidimensional, el segundo es bidimensional. A su vez, la aplicación del código cambia únicamente en realizar una función que imponga como condición de contorno un área de la superficie calefaccionada.
+
+El valor de $\mathbf{M}$ utilizado es el mismo que los probelmas anteriores, el resto de los parámetros se encuentran en el Apéndice (\ref{parametros_bub}).
+
+Los resultados que se obtuvieron se encuentra en las Figura (\ref{fig:secuencia_burbujas}), donde los tiempos de vuelo mostrados son de 5000, 10000, 20000, 25000, 30000, 35000, 40000, 45000 y 5000 pasos. El tamaño de grilla utilizado fue de L = 300 y H = 500, si se toma como esquema el mostrado en la Figura(\ref{fig:esquema_VdW}). La superficie calefaccionada se encuentra en el centro del lado L y posee un tamaño de 24 elementos de malla, siendo la temperatura de calefacción $T_{heat} = T_c$. El resto de la superficie se encuentra a $T = 0.8 T_c$ y la parte superior de la cavidad está a $T = 0.99 T_c$. La separación inicial de las dos fases se encuentra en $y = 350$, donde $\rho = 0.1610588 \> sii \> y \in [0,350]$ y $\rho = 0.0199722 \>\> y \in (350,500]$.
+
+\begin{figure}[h!]
+	\centering
+	\begin{subfigure}{0.25\textwidth}
+		\includegraphics[width=\linewidth]{figs/cap4/bubble_5}
+		\caption{t = 5000}
+		\label{fig:1}
+	\end{subfigure}\hfil 
+	\begin{subfigure}{0.25\textwidth}
+		\includegraphics[width=\linewidth]{figs/cap4/bubble_10}
+		\caption{t = 10000}
+		\label{fig:2}
+	\end{subfigure}\hfil 
+	\begin{subfigure}{0.25\textwidth}
+		\includegraphics[width=\linewidth]{figs/cap4/bubble_20}
+		\caption{t = 20000}
+		\label{fig:3}
+	\end{subfigure}
+	
+	\medskip
+	\begin{subfigure}{0.25\textwidth}
+		\includegraphics[width=\linewidth]{figs/cap4/bubble_25}
+		\caption{t = 25000}
+		\label{fig:4}
+	\end{subfigure}\hfil  
+	\begin{subfigure}{0.25\textwidth}
+		\includegraphics[width=\linewidth]{figs/cap4/bubble_30}
+		\caption{t = 30000}
+		\label{fig:5}
+	\end{subfigure}\hfil 
+	\begin{subfigure}{0.25\textwidth}
+		\includegraphics[width=\linewidth]{figs/cap4/bubble_35}
+		\caption{t = 35000}
+		\label{fig:6}
+	\end{subfigure}
+	
+	\medskip
+	\begin{subfigure}{0.25\textwidth}
+		\includegraphics[width=\linewidth]{figs/cap4/bubble_40}
+		\caption{t = 40000}
+		\label{fig:7}
+	\end{subfigure}\hfil
+	\begin{subfigure}{0.25\textwidth}
+		\includegraphics[width=\linewidth]{figs/cap4/bubble_45}
+		\caption{t = 45000}
+		\label{fig:8}
+	\end{subfigure}\hfil 
+	\begin{subfigure}{0.25\textwidth}
+		\includegraphics[width=\linewidth]{figs/cap4/bubble_50}
+		\caption{t = 50000}
+		\label{fig:9}
+	\end{subfigure}
+	\caption{Creación y desarrollo de una burbuja a partir de una superficie horizontal calefaccionada.}
+	\label{fig:secuencia_burbujas}
+\end{figure}
+
+
+
+\newpage
+
+
 
 
 

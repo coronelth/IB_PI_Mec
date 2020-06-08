@@ -487,15 +487,41 @@ Por último la sincronización de los \textit{threads} es proporcionada mediante
 
 \section{Arquitectura del código numérico y compilación}
 
-El código numérico fue desarrollado en el repositorio de la página web \textbf{Git Hub}, la cual permite realizar un control de versiones. El proyecto se encuentra disponible para ser descargado en \url{https://github.com/efogliatto/LBCUDA_Test}. Al momento de haber terminado este trabajo la última versión estable de la rama \textit{master} se encontraba en el \textit{commit} \textcolor{green}{xxxxxxxxxxxxxxxxxxxx}.
+El código numérico fue desarrollado en el repositorio de la página web \textbf{Git Hub}, la cual permite realizar un control de versiones. El proyecto se encuentra disponible para ser descargado en \url{https://github.com/efogliatto/LBCUDA_Test}. Al momento de haber terminado este trabajo la última versión estable de la rama \textit{master} se encontraba en el \textit{commit} \textsc{bb405d3d32b2eb288995ec32c909c3941f0d7f36} .
 
 Se utilizó la herramienta de software \textbf{CMake} para compilar el código. Donde el CMakeList.txt principal tiene la siguiente estructura: 
 
 
 donde quedan fijados los directorios de \textit{build} (binarios), \textit{bin} (ejecutables), \textit{lib} (librerías de salida), \textit{include} (headers de las funciones) y \textit{src} (códigos fuente), así también las opciones de compilación sobre el código realizado en C y CUDA; si el proyecto resuelve en simple precisión o doble precisión.
 
+La estructura de la memoria utilizada, es poseer allocada en matrices o vectores para todos los elementos de la malla los siguientes parámetros que se detallan abajo.
 
+\begin{itemize}
+	\item Función distribución de poblaciones \textit{f} y \textit{q}. (Tamaño N x q)
+	\item una memoria Swap para realizar el proceso de \textit{streaming}. (Tamaño N x q)
+	\item información de elementos vecinos de un nodo de la malla (Tamaño N x q)
+	\item Densidad $\rho$. (Tamaño N )
+	\item Temperatura $T$. (Tamaño N )
+	\item Velocidad $\mathbf{U}$. (Tamaño N x 3 )
+	\item Fuerza de interacción entre elementos de malla $\mathbf{F_{int}}$. (Tamaño N x 3 )
+	\item Fuerza de total actuante en los nodos $\mathbf{F_{tot}}$. (Tamaño N x 3 )
+	
+\end{itemize}
 
+Siendo \textit{N} la cantidad de elementos de la malla y \textit{q} la dimensión de la velocidad de grilla del modelo.
+
+Cabe destacar que la matriz que posee la información de los nodos vecinos, sigue una asignación utilizada según cómo está dispuesta la velocidad de grilla $\mathbf{e}$, como indica la Figura (\ref{fig:grilla_D2Q9}). En nuestro caso, la información se encuentra almacenada para el nodo \textit{i} de la siguiente forma:
+
+\begin{align*}
+	vecino_{\>i} =
+	\begin{bmatrix}
+	v_0 & v_1 & v_2 & v_3 & v_4 & v_6 & v_7 & v_8 \\
+	\end{bmatrix}
+\end{align*}
+
+Donde la nomeclatura de $v_\alpha$ indica que es el vecino que se encuentra en la dirección de $\alpha$. Siendo $v_0 = i$.
+
+Ésta disposición marca la forma en que leerán los registros de memoria, pudiendo no estar optimizada totalmente, ya que cuando se leen los registros no siempre se utiliza toda la información dispuesta.
 
 
 %%% Local Variables: 

@@ -37,7 +37,7 @@ Los mayoría de los modelos para resolver los flujos multifásicos son tres clas
 
 \section{Modelo pseudopotencial}
 
-El modelo pseudopotencial es el adoptado en el presente trabajo para abordar los problemas descriptos en el Cap. \ref{cap4} por lo cual se detalla en ésta sección. Este modelo multifásico tiene la particularidad de que la frontera entre las fases no es resuelta con exactitud. Dicha interfaz es representada de forma difusa con un cierto tamaño en la grilla, siendo una importante ventaja para el cálculo puesto que la interfaz no debe ser reconstruida.\cite{parrill2019reviews}.
+El modelo pseudopotencial es el adoptado en el presente trabajo para abordar los problemas descriptos en el Cap. (\ref{cap4}) por lo cual se detalla en ésta sección. Este modelo multifásico tiene la particularidad de que la frontera entre las fases no es resuelta con exactitud. Dicha interfaz es representada de forma difusa con un cierto tamaño en la grilla, siendo una importante ventaja para el cálculo puesto que la interfaz no debe ser reconstruida.\cite{parrill2019reviews}.
 
 
 La obtención de la ecuación de lattice Boltzmann (LBE) a través de la ecuación de Boltzmann se encuentra descripta en \cite{kruger2017lattice} (Sec 3.4 y 3.5 ). Primero se explica la discretización en el espacio de velocidades, en el segundo la del espacio físico, temporal e integración de las características.
@@ -45,27 +45,9 @@ La obtención de la ecuación de lattice Boltzmann (LBE) a través de la ecuaci�
 
 El problema físico a resolver cuenta con una región, la cuál se le realizará un mallado para discretizar el espacio. El nodo i - ésimo de la malla posee las coordenadas ${\bar{X}}_{i} = (x,y,z)$, a su vez densidad $\rho_{i}$ y temperatura $T_{i}$. La velocidad en el nodo tiene las componentes ${\bar{U}}_{i} = ({U}_{ix},{U}_{iy},{U}_{iz})$. El espacio de velocidades indica como es la propagación de las propiedades en la grilla. Dicha velocidad de grilla $\mathbf{e}_{i}$ posee $\alpha$ componentes donde $\alpha = q $. 
 
-Para el modelo D2Q9 la figura \ref{fig:D1Q3_D2Q9} muestra un esquema de las velocidades de grilla del nodo i - ésimo y la Ec. (\ref{eq:velgrilla}) el valor adoptado.
+En el presente trabajo el LBM es $D2Q9$, el esquema de velocidades de grilla para el nodo i-ésimo del D2Q9 es el presentado en la Figura \ref{fig:D1Q3_D2Q9}. La Ec. (\ref{eq:velgrilla}) detalla los valores de velocidad adoptados. 
 
-En el presente trabajo el LBM es $D2Q9$. 
-
-
-\begin{equation}
-    {\mathbf{e}}_{i} =  
-    \left( \begin{array}{c} 
-                e_{i0} \\ e_{i1}\\ e_{i2}\\ e_{i3}\\ e_{i4}\\ e_{i5}\\
-                e_{i6}\\ e_{i7}\\ e_{i8}\\
-            \end{array}
-    \right) =
-    \left( \begin{array}{c} 
-        (0,0,0) \\ (1,0,0) \\ (0,1,0) \\(-1,0,0) \\ (0,-1,0) \\ (1,1,0) \\
-        (-1,1,0) \\ (-1,-1,0) \\ (1,-1,0)\\ 
-    \end{array}
-    \right) 
-    \label{eq:velgrilla}
-\end{equation}
-
-Cada nodo de la grilla contará con una distribución $f_{i}$, asociada al espacio de poblaciones. En el caso más simple se cuenta con una distribución y esa asociada a la densidad. La distribución $f_{i}$ posee $\alpha$ componentes. Mediante ésta funcion de distribución, pueden recuperarse variables macroscópicas del problema, como ser : $\rho$ , $U$,$T$ .
+Cada nodo de la grilla contará con una distribución $f_{i}$, asociada al espacio de poblaciones. En el caso más simple se cuenta con una distribución y esa asociada a la densidad. La distribución $f_{i}$ posee $\alpha$ componentes. Mediante ésta funcion de distribución, pueden recuperarse variables macroscópicas del problema, como ser : $\rho$ , $U$,$T$.
 
 En éste modelo la distribución $f$ se calcula a través de las fuerzas de interacción que poseen las partículas de cada nodo. Por lo que se debe proporcionar un potencial que describa a las fuerzas de interacción, dicho potencial estará dado por una Ecuación de estado (\textit{Equation of state} o EOS).
 
@@ -97,7 +79,7 @@ La EOS de VdW es utilizada en el presente trabajo para modelar el potencial del 
 
 En ésta sección se describirá cuál es el LBM que se utilizará para resolver los problemas descriptos en el Cap. \ref{cap4}. La denominación del tipo de operador, \textit{multiple relaxation times} o MRT, proviene por los parámetros que se deben ajustar y proponer para que el modelo concuerde con los valores esperados.
 
-Se deben resolver dos ecuaciones, la primera es la hidrodinámica que representa a la conservación de masa y momento; la segunda a la de energía, descriptas en \colorbox{green}{cita de ec energia}.
+Se deben resolver dos ecuaciones, la primera es la hidrodinámica que representa a la conservación de masa y momento; la segunda a la de energía, descriptas en \colorbox{green}{citar paper con la ec de energia}.
 
 
 \subsection{Ecuación hidrodinámica}
