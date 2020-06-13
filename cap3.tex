@@ -434,7 +434,7 @@ pycuda.driver.Context.synchronize()
 
 Habiéndose desarrollado el código en \textsc{Cuda C} y compilado cada \textit{kernel} del mismo en formato \textsc{ptx}, éstos pueden ser utilizados en el lenguaje \textsc{Python} mediante la biblioteca \textsc{PyCuda}. El código que se muestra arriba es el implementado para la Ec. (\ref{eq:rho}).
 
-Donde la función \textit{pycuda.driver.module\_from\_file()} nos permite importar el \textit{kernel} compilado previamente en CUDA, siendo \textcolor{red}{\textbf{/PATH/}} la dirección del directorio dónde se encuentra el archivo \textit{.ptx} compilado. Las variables \textbf{deviceField} y \textbf{deviceRho} son las respectivas a la función de distribución de poblaciones \textit{f} y la densidad $\rho$. Previamente se deben haber inicializado las variables en el \textit{host}, como por ejemplo:
+Donde la función \textit{pycuda.driver.module\_from\_file()} nos permite importar el \textit{kernel} compilado previamente en \textsc{Cuda C}, siendo \textcolor{red}{\textbf{/PATH/}} la dirección del directorio dónde se encuentra el archivo \textsc{ptx} compilado. Las variables \textit{deviceField} y \textit{deviceRho} son las respectivas a la función de distribución de poblaciones \textit{f} y la densidad $\rho$. Previamente se deben haber inicializado las variables en el \textit{host}, como por ejemplo:
 {\footnotesize
 	\begin{frame}{}
 		\lstset{language=python,
@@ -480,9 +480,276 @@ Por último la sincronización de los \textit{threads} es proporcionada mediante
 
 \section{Arquitectura del código numérico y compilación}
 
-El código numérico fue desarrollado en el repositorio de la página web \textsc{Git Hub}, la cual permite realizar un control de versiones. En la Sec.(\ref{sec:git}) se explica conceptos básicos para utilizar la herramienta \textsc{Git}, las funciones más relevantes que se utilizaron en el transcurso del presente trabajo y también buenas prácticas. El proyecto se encuentra disponible para ser descargado en \url{https://github.com/efogliatto/LBCUDA_Test}. La versión 1.0 de la rama \textit{master} es la que se poseía al momento de finalizar el presente trabajo.
+El código numérico fue desarrollado en el repositorio de la página web \textsc{Git Hub}, la cual permite realizar un control de versiones. En la Sec.(\ref{sec:git}) se explica conceptos básicos para utilizar la herramienta \textsc{Git}, las funciones más relevantes y buenas prácticas que se adquirieron en el transcurso del presente trabajo. El proyecto se encuentra disponible para ser descargado en \url{https://github.com/efogliatto/LBCUDA_Test}, siendo la carpeta LBCUDA\_Test la que contiene el proyecto. La versión 1.0 de la rama \textit{master} es la que se poseía al momento de finalizar el presente trabajo.
 
-Se utilizó la herramienta de software \textsc{CMake} para compilar el código. Donde el CMakeList.txt principal tiene la siguiente estructura: 
+Las subcarpetas (\textbf{en negrita}) y archivos (\underline{subrayados}) que posee nuestro proyecto en su directorio principal son los siguientes:
+
+\begin{itemize}
+	\item \textbf{build}: es el directorio en el cual se encuentran los binarios del proyecto.
+	\item \textbf{bin}: es el directorio en el cual se encuentran los ejecutables del proyecto.
+	\item \textbf{include}: es el directorio en el cual se encuentran todos los \textit{headers} de las funciones y \textit{kernels} realizados.
+	\item \textbf{lib}: es el directorio en el cual, una vez compilado el proyecto, se encuentran las bibliotecas realizadas en \textsc{C} y \textsc{Cuda C}.
+	\item \textbf{ptx}: es el directorio en el cual, una vez compilado el proyecto, se encuentran compilados los \textit{kernel} de \textsc{Cuda C} en formato \textsc{ptx}.	
+	\item \textbf{src}: es el directorio que posee los códigos fuente para los lenguajes \textsc{C}, \textsc{Cuda C} y \textsc{Python}.
+	\item \textbf{examples}: es el directorio el cual posee ejemplos de ejecución del código por medio de \textit{scripts} de bash.
+	\item \textbf{validation\_speed\_up}: es un directorio que contiene dos tipos de \textit{scripts} de bash. Los del primer tipo al ser ejecutados, realizan la validación de los problemas tratados en el Cap. (\ref{cap4}). El otro tipo de \textit{scripts} realizan una toma de tiempo de cálculo de los mismos problemas, para obtener un índice (\textit{speed\_up}) que indique la mejora de tiempo de cálculo entre lenguajes utilizados. 
+	\item \underline{CMakeLists.txt}: es el archivo principal del compilador utilizado, el cuál contiene todas las opciones de compilación del proyecto.
+	
+\end{itemize}
+
+
+La herramienta de software \textsc{CMake} fue la utilizada para compilar el código desarrollado,  donde el archivo CMakeLists.txt principal tiene que encontrarse en la carpeta principal del proyecto. Dicho archivo contiene todas las instrucciones de compilación que debe/puede tener un proyecto a trabajar. A continuación se detallan las instrucciones más relevantes.
+
+Para indicar las carpetas de binarios (\textit{build}), ejecutables (\textit{bin}), bibliotecas (\textit{lib}), \textit{headers} de las funciones y \textit{kernels} (\textit{include}) y código fuente (\textit{src}) se realizan las siguientes instrucciones:
+
+%, algunas de ellas son los directorios en que se encuentran los binarios, ejecutables, bibliotecas, códigos fuente entre otros. Otra de las instrucciones son los lenguajes a compilar con sus respectivas opciones de compilación. A continuación se describe las instrucciones ed compilación que tuvo el proyecto.
+
+
+{\footnotesize
+	\begin{frame}{}
+		\lstset{language=c,
+			framesep=2mm,
+			%		baselinestretch=1.2,
+			basicstyle=\ttfamily,
+			keywordstyle=\color{blue}\ttfamily,
+			stringstyle=\color{red}\ttfamily,
+			commentstyle=\color{green}\ttfamily,
+			morecomment=[l][\color{magenta}]{\#}
+		}
+		\begin{lstlisting}[frame=single]
+	set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/build)
+
+	set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
+
+	set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/lib)
+
+	include_directories(include) # Bring the headers
+	
+	add_subdirectory (src) 	# Directorio con fuentes
+
+		\end{lstlisting}
+		
+	\end{frame}
+}
+
+
+Para asignar las bibliotecas en que se compilarán el código, se realizan las instrucciones mostradas a continuación, donde se colocaron algunas bibliotecas utilizadas a modo de ejemplo.
+\newpage
+{\footnotesize
+	\begin{frame}{}
+		\lstset{language=c,
+			framesep=2mm,
+			%		baselinestretch=1.2,
+			basicstyle=\ttfamily,
+			keywordstyle=\color{blue}\ttfamily,
+			stringstyle=\color{red}\ttfamily,
+			commentstyle=\color{green}\ttfamily,
+			morecomment=[l][\color{magenta}]{\#}
+		}
+		\begin{lstlisting}[frame=single]
+# Link libraries
+
+#Para el codigo realizado en C
+set ( PROJECT_LINK_LIBS 
+liblatticemodel.so 		
+liblatticemesh.so
+...
+)
+
+#Para el codigo realizado en Cuda C
+set ( CUDATEST_LINK_LIBS 
+cudatest.a
+cudalatticemesh.a
+...
+)
+
+link_directories( ${CMAKE_SOURCE_DIR}/lib )
+		
+		\end{lstlisting}
+		
+	\end{frame}
+}
+
+La instrucción de asignar opciones de compilación en \textsc{C} y \textsc{Cuda C} son respectivamente las siguientes:
+\\\\
+\textcolor{blue}{\textbf{SET}}( CMAKE\_C\_FLAGS  \textcolor{red}{''\$\{CMAKE\_C\_FLAGS\} (opciones)''})
+\\\\
+\textcolor{blue}{\textbf{SET}}( CMAKE\_CUDA\_FLAGS  \textcolor{red}{''\$\{CMAKE\_CUDA\_FLAGS\} (opciones)''})
+\\
+\\
+donde es importante señalar que dependiendo de la aquitectura que posee la GPU, debe asignársele una distinta opción de compilación. A continuación su muestra una opción de compilación genérica, en donde xx se refiere a la arquitectura de la GPU.
+\\
+\\
+\textcolor{blue}{\textbf{SET}}( CMAKE\_CUDA\_FLAGS \textcolor{red}{''\$\{CMAKE\_C\_FLAGS\}}\\
+                 $.\qquad \qquad \qquad $\textcolor{red}{ -gencode arch=compute\_xx,code=sm\_xx -rdc=true''})
+\\
+
+
+Otras de las instrucciones que se le asignó al compilador, es que tenga la opción de que el proyecto se  compile únicamente en \textsc{C} ó, en su defecto  \textsc{C} y \textsc{Cuda C}. A su vez como se trabajó con distintas GPU, se implementó que el compilador detecte de forma automática la arquitectura que poseía la GPU de la PC, en dónde se está realizando la compilación. 
+
+El \textit{script} siguiente muestra la implementación de las instrucciones descriptas arriba:
+\newpage
+
+{\scriptsize
+	\begin{frame}{}
+		\lstset{language=c,
+			framesep=2mm,
+			%		baselinestretch=1.2,
+			basicstyle=\ttfamily,
+			keywordstyle=\color{blue}\ttfamily,
+			stringstyle=\color{red}\ttfamily,
+			commentstyle=\color{green}\ttfamily,
+			morecomment=[l][\color{magenta}]{\#}
+		}
+		\begin{lstlisting}[frame=single]
+
+SET( CMAKE_C_FLAGS  "${CMAKE_C_FLAGS} -Wall -lm -pedantic -funroll-loops" )
+
+# Opcional: Desabilitar CUDA para poder compilar al menos
+# una parte en dispositivos sin GPU
+
+option(DISABLE_CUDA "Deshabilitar manualmente la compilacion en CUDA" OFF)
+
+set(CUDAARCH "30" CACHE STRING "Arquitectura de GPU")
+
+if(DISABLE_CUDA)
+
+	# Asignar solo C como lenguaje de compilacion
+	project(LBCUDA_Test LANGUAGES C)
+
+else()
+	# Asignar C y CUDA como lenguajes
+	project(LBCUDA_Test LANGUAGES CUDA C)
+	
+	# Bibliotecas para compilar CUDA
+	find_package( CUDA REQUIRED )
+
+	# Opciones de compilador
+	if(CUDAARCH STREQUAL "30")
+		message("-- CUDA: Arquitectura 30")
+		SET( CMAKE_CUDA_FLAGS  "${CMAKE_CUDA_FLAGS} 
+				-gencode arch=compute_30,code=sm_30 -rdc=true")
+	else()
+		if(CUDAARCH STREQUAL "50")
+			message("-- CUDA: Arquitectura 50")      
+			SET( CMAKE_CUDA_FLAGS  "${CMAKE_CUDA_FLAGS} 
+					-gencode arch=compute_50,code=sm_50 -rdc=true")
+		else()
+			message("-- CUDA: Arquitectura no reconocida. Uso de 30")
+			SET( CMAKE_CUDA_FLAGS  "${CMAKE_CUDA_FLAGS} 
+					-gencode arch=compute_30,code=sm_30 -rdc=true")      
+		endif()
+	endif()
+endif()
+		
+		\end{lstlisting}
+		
+	\end{frame}
+}
+
+Por último el código numérico se realizó para que sus variables estén en simple precisión o doble precisión. Por lo cual en el código de \textsc{C}, la declaración de variables que tomarán la asignación de \textcolor{blue}{float} ó \textcolor{blue}{double} será \textbf{scalar}, mientras que en el código de \textsc{Cuda C} será \textbf{cuscalar}. La forma de concretar lo mencionado se realizó en dos partes.
+
+La primera de ellas es que en el CMakeLists.txt principal se declararon las variables SP, DP, SP\_CUDA y DP\_CUDA, correspondiendo a simple precisión, doble precisión en \textsc{C} y \textsc{Cuda C} respectivamente. Por lo que dependiendo de que variable es la adoptada en el compilador, será la que se utilice luego en el código. El \textit{script} que ejecuta lo propuesto es el siguiente:
+
+\newpage
+{\scriptsize
+	\begin{frame}{}
+		\lstset{language=c,
+			framesep=2mm,
+			%		baselinestretch=1.2,
+			basicstyle=\ttfamily,
+			keywordstyle=\color{blue}\ttfamily,
+			stringstyle=\color{red}\ttfamily,
+			commentstyle=\color{green}\ttfamily,
+			morecomment=[l][\color{magenta}]{\#}
+		}
+		\begin{lstlisting}[frame=single]
+# Optional: precision
+set(PRECISION "simple" CACHE STRING "Floating-point precision")
+
+if(PRECISION STREQUAL "double")
+	message("-- C   : Double precision")
+	add_definitions(-DDP)
+
+	elseif(PRECISION STREQUAL "simple")
+		add_definitions(-DSP)
+		message("-- C   : Simple precision")
+	else()
+		message( FATAL_ERROR "Precision not supported" )
+endif()
+
+# Optional: CUDA precision
+set(CUDA_PRECISION "simple" CACHE STRING "CUDA Floating-point precision")
+
+if(CUDA_PRECISION STREQUAL "simple")
+	message("-- CUDA: Simple precision")
+	add_definitions(-DSP_CUDA)
+
+	elseif(CUDA_PRECISION STREQUAL "double")
+		add_definitions(-DDP_CUDA)
+		message("-- CUDA: Double precision")
+	else()
+		message( FATAL_ERROR "CUDA Precision not supported" )
+endif()
+		
+		\end{lstlisting}
+		
+	\end{frame}
+}
+La segunda parte para asignar un tipo de variable a \textbf{scalar} y \textbf{cuscalar} es el \textit{script} de tipo \textit{header} que aparece debajo. En él se busca las variables declaradas en el compilador (SP, DP, SP\_CUDA ó DP\_CUDA) y en base a ellas, define el tipo de variable para \textbf{scalar} y \textbf{cuscalar}. El \textit{header}, cuyo nombre de archivo es \textit{dataTypes.h} y se encuentra en el directorio \textit{include}, debe ser incluido en cada función o \textit{kernel} que posea una variable de tipo  \textbf{scalar} ó \textbf{cuscalar}.
+
+{\footnotesize
+	\begin{frame}{}
+		\lstset{language=c,
+			framesep=2mm,
+			%		baselinestretch=1.2,
+			basicstyle=\ttfamily,
+			keywordstyle=\color{blue}\ttfamily,
+			stringstyle=\color{red}\ttfamily,
+			commentstyle=\color{green}\ttfamily,
+			morecomment=[l][\color{magenta}]{\#}
+		}
+		\begin{lstlisting}[frame=single]
+#ifndef DATATYPES_H
+#define DATATYPES_H
+	#ifdef DP
+		typedef double scalar;
+	#elif SP
+		typedef float scalar;
+	#endif	
+	
+	#ifdef DP_CUDA
+		typedef double cuscalar;
+	#elif SP_CUDA
+		typedef float cuscalar;
+	#endif
+#endif // DATATYPES_H
+		
+		\end{lstlisting}
+		
+	\end{frame}
+}
+\newpage
+
+sea la que el compilador utilice
+distintas del código, la primera es para que el código tenga las variables mencionadas y la segunda es para que el compilador sepa cuál de ellas realizar.
+
+Comenzando 
+
+
+por lo que es necesario realizar una instrucción para que CMake al compilar detecte qué tipo de variable se desea utilizar.  La forma de obtener lo planteado es crear una variable y en base a su contenido, el código realizado denotará los tipos de variables en simple precisión (\textit{float}) o doble precisión (\textit{double}).
+
+
+
+
+
+
+ella 
+Por último se realizó la instrucción para que el código pueda compilarse con variables de tipo simple precisión y doble precisión, donde se puede seleccionar de manera discriminada la precisión en cada lenguaje realizado. Para que de forma automática se realice ésto en el proyecto, además de las opciones de compilación que se detallan en el siguiente \textit{script}, se debe realizar un \textit{header} en el proyecto para que se incluya el mismo, dicho \textit{header} en el código es el que tiene el nombre dataTypes.h y debe ser incluido en cada una de las funciones del código que se realicen.
+
+
+
+
 
 
 donde quedan fijados los directorios de \textit{build} (binarios), \textit{bin} (ejecutables), \textit{lib} (librerías de salida), \textit{include} (headers de las funciones) y \textit{src} (códigos fuente), así también las opciones de compilación sobre el código realizado en \textsc{C} y \textsc{Cuda C}, si el proyecto resuelve en simple precisión o doble precisión.
@@ -516,8 +783,10 @@ Donde la nomeclatura de $v_\alpha$ indica que es el vecino que se encuentra en l
 
 Ésta disposición marca la forma en que leerán los registros de memoria, pudiendo no estar optimizada totalmente, ya que cuando se leen los registros no siempre se utiliza toda la información dispuesta.
 
-\section{Control de versiones y desarrollo del código numérico en Git}
+\section{Control de versiones y desarrollo del código \\ numérico en Git}
 \label{sec:git}
+
+
 
 %%% Local Variables: 
 %%% mode: latex
