@@ -7,20 +7,20 @@
 
 %\section{Implementación del código}
 
-En el presente capítulo se realizará la descripción de la implementación del código numérico del LBM descripto en la Sec. (\ref{sec:LBM_2_ec_MRT}); como también las implicancias de elaborar la implementación en una GPU de forma eficiente.
+En el presente capítulo se realizará la descripción de la implementación del código numérico del LBM descripto en la Sec. (\ref{sec:LBM_2_ec_MRT}), como también las implicancias de elaborar la implementación en una GPU de forma eficiente.
 
-El lenguaje de programación \textbf{C} desarrollado por Dennis MacAlistair Ritchie será utlizado primeramente para confeccionar el código. Dicho lenguaje brinda instrucciones a la CPU de una PC para ser ejecutadas. Las CPU son diseñadas óptimamente para que sus instrucciones sean procesadas de forma secuencial en los núcleos que poseen; aunque también se permite realizar los procesos en paralelo, según la cantidad de núcleos.
+El lenguaje de programación \textsc{C} desarrollado por Dennis MacAlistair Ritchie será utlizado primeramente para confeccionar el código. Dicho lenguaje brinda instrucciones a la CPU de una PC para ser ejecutadas. Las CPU son diseñadas óptimamente para que sus instrucciones sean procesadas de forma secuencial en los núcleos que poseen; aunque también se permite realizar los procesos en paralelo, según la cantidad de núcleos.
 
-Luego se implementará un código en \textbf{CUDA C} el cuál fue desarrollado por la empresa NVIDIA. Este lenguaje permite ejecutar instrucciones en una GPU, la cuál está diseñada para que los procesos a realizar sean de forma paralela.
+Luego se implementará un código en \textsc{Cuda C} el cuál fue desarrollado por la\\
+empresa NVIDIA. Este lenguaje permite ejecutar instrucciones en una GPU, la cual está diseñada para que los procesos a realizar sean de forma paralela.
 
-Ambos códigos , \textbf{C} y \textbf{CUDA C}, son compilados en bibliotecas estáticas mediante \textbf{CMake}. Con las bibliotecas compiladas se prosigue a utilizarlas mediante el lenguaje de programación interpretado \textbf{Python}. La bibliotecas necesarias para que el código de \textbf{C} y \textbf{CUDA C} puedan ser llevadas a cabo en \textbf{Python} son \textit{CTypes} y \textit{PyCUDA} respectivamente.
+Se eligió la programación en \textsc{C} y \textsc{Cuda C} para comparar la eficiencia en el tiempo de cálculo, debido a que el lenguaje \textsc{Cuda C} es una extensión del lenguaje \textsc{C}. La diferencia principal es que \textsc{Cuda C}  tiene una forma particular de escribir las funciones que se ejecutarán en la GPU, las cuáles son llamadas \textit{kernel}.
 
-Se eligió la programación en \textbf{C} y \textbf{CUDA C} para comparar la eficiencia en el tiempo de cálculo, debido a que el lenguaje \textbf{CUDA C} es una extensión del lenguaje \textbf{C}. La diferencia principal es que \textbf{CUDA C}  tiene una forma particular de escribir las funciones que se ejecutarán en la GPU, las cuáles son llamadas \textit{kernel}.
+Ambos códigos, \textsc{C} y \textsc{Cuda C}, son compilados en bibliotecas estáticas mediante \textsc{CMake}, y además los \textit{kernels} realizados en \textsc{Cuda C} son compilados en formato \textsc{ptx}. La utilidad de poseer código en \textsc{ptx} es que el lenguaje de programación interpretado \textsc{Python} los puede utilizar. La biblioteca necesaria de \textsc{Python} para adquirir los \textit{kernels} es \textsc{PyCuda}.
 
-La implementación en \textbf{Python} es debido a su facilidad de programación, el cuál permite incorporar las bibliotecas compiladas y obtener una mayor versatilidad de problemas a resolver. \textbf{Python} puede ser utilizado en distintos sistemas oparativos como \textit{Linux}, \textit{Windows} y \textit{Mac OS}. 
+La implementación en \textsc{Python} es debido a su facilidad de programación, el cual permite incorporar las bibliotecas compiladas y obtener una mayor versatilidad de problemas a resolver. \textsc{Python} puede ser utilizado en distintos sistemas oparativos como \textit{Linux}, \textit{Windows} y \textit{Mac OS}. 
 
-En \textbf{Python} sólo se realizará la implementación con la biblioteca \textit{PyCUDA}, debido a que se espera una mayor eficiencia en tiempos de cálculo que en \textit{CTypes}.
-
+Para visualizar los resultados del código se utiliza el programa \textsc{Paraview}, donde el formato en que realiza la lectura el programa es \textit{Ensight}. A través del lenguaje \textsc{C}, es que se hicieron las funciones de escritura de éste tipo de archivos y así observar gráficamente las variables de interés del problema que se desea resolver. La biblioteca \textsc{CTypes} de \textsc{Python} es la necesaria para adquirir las funciones de escritura de \textsc{Ensight} del código compilado en \textsc{C}.
 
 
 
@@ -35,7 +35,7 @@ A su vez una PC opcionalmente puede contener un coprocesador siendo una GPU. Dic
 
 
 
-El procesador principal que tiene una PC es la CPU, por lo cual se denomina \textit{host}, la GPU es un coprocesador y se denomina \textit{device}. Las ejecuciones de los procesos en la CPU están diseñadas para que se efectúen de manera secuecncial, en cuánto las de la GPU en paralelo; las últimas realizándose en varios hilos de ejecución (\textit{threads}). Las operaciones en paralelo que son analizadas por la CPU y las deriva a la GPU son llevadas a cabo mediante funciones llamadas \textit{kernel}. \textit{Host} y \textit{device} poseen su propia memoria RAM, llamadas \textit{host memory} y \textit{device memory} respectivamente. \cite{rinaldi2011modelos}
+El procesador principal que tiene una PC es la CPU, por lo cual se denomina \textit{host}, la GPU es un coprocesador y se denomina \textit{device}. Las ejecuciones de los procesos en la CPU están diseñadas para que se efectúen de manera secuencial, en cuánto las de la GPU en paralelo; las últimas realizándose en varios hilos de ejecución (\textit{threads}). El nombre que recibe una funcion que ejecuta un proceso de forma paralela en la GPU se denomina \textit{kernel}. \textit{Host} y \textit{device} poseen su propia memoria RAM, llamadas \textit{host memory} y \textit{device memory} respectivamente. \cite{rinaldi2011modelos}
 
 Los \textit{threads} que posee una GPU se pueden agrupar de dos formas, una de ellas es por bloques (\textit{thread block}) y la otra mediante grilla de bloques (\textit{grid}). Todos los \textit{threads} del mismo \textit{thread block} poseen un acceso rápido a una memoria compartida y permite sincronizar las ejecuciones que se les asigna. Debido a la posibilidad de sincronización de los mismos, se evita el riesgo de que varios \textit{threads} accedan de manera simultánea al mismo lugar de memoria. Un \textit{grid} es un conjunto de \textit{thread block}, en dónde las instrucciones del \textit{kernel} son paralelizadas, ésto vence la limitación de hardware del finito número de \textit{threads} por bloque. Puesto que la ejecución del proceso en los \textit{thread blocks} de un \textit{grid} pueden ser ejecutados en tiempos distintos, es necesario realizar un sincronización entre los mismos para que su comunicación sea segura y no haya conflictos\cite{tolke2010implementation}. La figura \ref{fig:block_grid_threads} muestra el concepto de \textit{grid} y \textit{thread block}.
 
@@ -83,10 +83,10 @@ Los procesos en el \textit{device} tienen almacenados los datos según una jerar
 
 \section{Programación en CUDA C}
 
-La programación de las GPU se lleva a cabo mediante el lenguaje \textbf{CUDA}, el cuál es una extención del lenguaje \textbf{C} debido su familiaridad y uso extendido; por lo que el lenguaje se denomina \textbf{CUDA C}. La realización de procesos en paralelos es ejecutada mediante funciones llamadas \textit{kernel} y son del tipo \textit{void}.
+La programación de las GPU se lleva a cabo mediante el lenguaje \textsc{Cuda C}, el cuál es una extención del lenguaje \textsc{C} debido su familiaridad y uso extendido; por lo que el lenguaje se denomina \textsc{Cuda C}. La realización de procesos en paralelos es ejecutada mediante funciones llamadas \textit{kernel} y son del tipo \textit{void}.
 \\
 
-Existen tres tipos de funciones que se pueden efectuar en \textbf{CUDA C} y son:
+Existen tres tipos de funciones que se pueden efectuar en \textsc{Cuda C} y son:
 
 \begin{itemize}
 	
@@ -106,13 +106,13 @@ Otra particularidad que se presenta en la programación es el manejo de la memor
 
 \subsection{Programación de un \textit{kernel}}
 
-Para visualizar las diferencias de programación de una función \textbf{CUDA C } (\textit{kernel}), con una típica función de \textbf{C}, se muestra a continiación como ejemplo la programación para ambos lenguajes de la Ec. (\ref{eq:rho}): 
+Para visualizar las diferencias de programación de una función \textbf{CUDA C } (\textit{kernel}), con una típica función de \textsc{C}, se muestra a continiación como ejemplo la programación para ambos lenguajes de la Ec. (\ref{eq:rho}): 
 
 \begin{align*}
 	\rho = \sum_{\alpha} f_{\alpha}
 \end{align*}
 
-Primeramente se detalla el código realizado en el lenguaje \textbf{C}, siendo la función :
+Primeramente se detalla el código realizado en el lenguaje \textsc{C}, siendo la función :
 
 {\footnotesize
 	\begin{frame}{}
@@ -131,9 +131,7 @@ void momentoDensity(scalar* rho, scalar* field, basicMesh* mesh);
 	\end{frame}
 }.
 \\
-donde el argumento \textbf{basicMesh* mesh} es un puntero a una estructura, la cuál posee información del mallado que se realizó al dominio del problema a resolver ; como por ejemplo la cantidad de nodos que posee la malla (\textbf{nPoints}) y la cantidad de direcciones que posee el modelo en su espacio de velocidades \textbf{Q}. El vector  \textbf{scalar* rho} es de dimensión \textit{nPoints} y contiene los valores de $\rho$, por último \textbf{scalar* field} es un vector que posee las \textit{Q} componentes de la función de distribución de poblaciones \textit{f} para cada uno de los  \textit{nPoints} nodos de la malla.
-
-Cabe destacar que los resultados obtenidos durante la programación del código en \textbf{C}, se concluyó que es más eficiente el uso de la función \textcolor{blue}{\textbf{for}} que \textcolor{blue}{\textbf{while}}.
+donde el argumento \textbf{basicMesh* mesh} es un puntero a una estructura, la cuál posee información del mallado que se realizó al dominio del problema a resolver, como por ejemplo la cantidad de nodos que posee la malla (\textbf{nPoints}) y la cantidad de direcciones que posee el modelo en su espacio de velocidades \textbf{Q}. El \textit{array}  \textbf{scalar* rho} es de dimensión \textit{nPoints} y contiene los valores de $\rho$, por último \textbf{scalar* field} es un \textit{array} que posee las \textit{q} componentes de la función de distribución de poblaciones \textit{f} para cada uno de los  \textit{nPoints} nodos de la malla.
 
 
 {\footnotesize
@@ -173,7 +171,7 @@ void momentoDensity(scalar* rho, scalar* field, basicMesh* mesh) {
 }.
 \\
 
-La programación de la Ec.(\ref{eq:rho}) implementada en \textbf{CUDA C} es con la función:
+La programación de la Ec.(\ref{eq:rho}) implementada en \textsc{Cuda C} es con el \textit{kernel}:
 
 {\footnotesize
 	\begin{frame}{}
@@ -193,9 +191,9 @@ extern "C" __global__ void cudaMomentoDensity(
 	\end{frame}
 }.
 \\
-en éste caso se pasa de forma distinta los valores de la cantidad de nodos (\textbf{np}) y de la cantidad de velocidades del modelo \textit{DdQq} (\textbf{Q}). La distinción en los argumentos que se pasan en ambos códigos, es debido a la forma que \textbf{CUDA} permite el manejo de las estructuras y también de las decisiones que se tomaron cuando se desarrollaba el código para uno u otro lenguaje.
+en este caso se pasa de forma distinta los valores de la cantidad de nodos (\textit{np}) y de la cantidad de velocidades del modelo \textit{DdQq} (\textit{Q}). La distinción en los argumentos que se pasan en ambos códigos, es debido a la forma que \textsc{Cuda C} permite el manejo de las estructuras y también de las decisiones que se tomaron cuando se desarrollaba el código para uno u otro lenguaje.
 
-Se colola \textcolor{blue}{extern} \textcolor{red}{''C''} para que el compilador sepa que es una función de \textbf{CUDA} y además para que lo implemente en una biblioteca tipo \textit{ptx} para \textbf{Python}.
+Se coloca \textcolor{blue}{extern} \textcolor{red}{''C''} para que el compilador detecte que es un \textit{kernel} de \textsc{Cuda C} y cuando se le indique pueda compilar los \textit{kernel} en formato \textsc{ptx}.
 \newpage
 {\footnotesize
 	\begin{frame}{}
@@ -244,7 +242,7 @@ extern "C" __global__ void cudaMomentoDensity(cuscalar* field,
 	\end{frame}
 }.
 \\
-en éste leguaje, se observó que es más eficiente el uso de la función \textcolor{blue}{\textbf{while}} que \textcolor{blue}{\textbf{for}} en el tiempo de ejecución del código.
+en este leguaje, se observó que es más eficiente el uso de la función \textcolor{blue}{\textbf{while}} que \textcolor{blue}{\textbf{for}} en el tiempo de ejecución del código.
 
 Es de importancia conocer la función que cumplen las siguientes líneas:
 {\footnotesize
@@ -267,7 +265,7 @@ Es de importancia conocer la función que cumplen las siguientes líneas:
 \\
 donde las tareas que se hallen en \textcolor{blue}{if} ( idx < np)\{...\} se realizarán de forma paralela y es necesario identificar los \textit{threads} en dónde se llevaran a cabo los procesos. El identificador de los \textit{threads} es \textit{idx} donde blockIdx.x  indica la cantidad de \textit{threads} por \textit{block} y blockDim.x el numero de \textit{block's}.
 
-Resta ver cómo es el llamado de las funciones realizadas en el \textit{main}, por lo que en \textbf{C} se observa:
+Resta ver cómo es el llamado de las funciones realizadas en el \textit{main}, por lo que en \textsc{C} se observa:
 
 
 {\footnotesize
@@ -287,7 +285,7 @@ Resta ver cómo es el llamado de las funciones realizadas en el \textit{main}, p
 	\end{frame}
 }.
 \\
-la cuál no requiere de ninguna explicación, mientras que en \textbf{CUDA C} se tiene:
+la cual no requiere de ninguna explicación, mientras que en \textsc{Cuda C} se tiene:
 
 {\footnotesize
 	\begin{frame}{}
@@ -317,19 +315,14 @@ en donde < < <, > > > indica la cantidad de \textit{thread blocks} en que se rea
 
 \subsection{Sincronización}
 
-Debido a que los procesos en la GPU son realizados de una forma no determinística, es necesario que exista un procedimiento para sincronizar los \textit{threads}. Por ejemplo, un conflicto puede ser que el \textbf{Thread idx = 1} quiera acceder a un lugar de la memoria al mismo tiempo que el \textbf{Thread idx = 2}. Otro caso es que el \textbf{Thread idx = 1} escriba un valor en la \textit{shared memory} y se requiera que el \textbf{Thread idx = 2} realice alguna operación con dicho valor. Un tercer caso puede ser similar al del segundo, con la diferencia de que el valor esté en \textit{global memory}. Los métodos que se utilizan para resolver éstos problemas son los siguientes:
-
-\begin{itemize}
-	\item \textbf{syncthreads()} para sincronizar los \textit{threads} de un mismo \textit{thread block}
-	\item \textbf{cudaDeviceSynchronize()} para sincronizar los \textit{thread blocks} de una \textit{grid}
-\end{itemize}
+Debido a que los procesos en la GPU son asignados de una forma no determinística, es necesario que exista un procedimiento para sincronizar los \textit{threads}. Por ejemplo, un conflicto puede ser que el Thread idx = 1 quiera acceder a un lugar de la memoria al mismo tiempo que el Thread idx = 2. Otro caso es que el Thread idx = 1 escriba un valor en la \textit{global memory} y se requiera que el Thread idx = 2 realice alguna operación con dicho valor. El método utilizado para resolver éstos problemas es \textbf{cudaDeviceSynchronize()}, el cual sincroniza los \textit{thread blocks} de una \textit{grid}.
 
 \subsection{Utilización de la memoria de \textit{host} y \textit{device}}
 
 
-Las funciones que son realizadas en \textbf{C} permiten retornar alguna variable mientras que en \textbf{CUDA C} los \textit{kernel} son del tipo \textit{void}. Por lo cuál es necesario almacenar memoria en el \textit{device} para una variable, y pasarla como argumento al \textit{kernel} para que éste la modifique y así obtener lo requerido. 
+Las funciones que son realizadas en \textsc{C} permiten retornar alguna variable mientras que en \textsc{Cuda C} los \textit{kernel} son del tipo \textit{void}, debido a ello es necesario almacenar memoria en el \textit{device} para una variable, y pasarla como argumento al \textit{kernel}. Lo mencionado permite que el \textit{kernel} modifique dicha variable y así obtener lo requerido. 
 
-La allocación de memoria en el \textit{host} es la misma que se utiliza en \textbf{C}  \textbf{malloc($\>$)} :
+La allocación de memoria en el \textit{host} es la misma que se utiliza en \textsc{C}  \textbf{malloc($\>$)} :
 {\footnotesize
 	\begin{frame}{}
 		\lstset{language=C,
@@ -439,7 +432,7 @@ pycuda.driver.Context.synchronize()
 	\end{frame}
 }
 
-Habiéndose desarrollado el código en \textbf{CUDA C} y compilado en una biblioteca tipo \textit{ptx}; puede utilizarse dicha biblioteca en el lenguaje \textit{Python}, mediante la biblioteca \textit{PyCUDA}. El código que se muestra arriba es el implementado para la Ec. (\ref{eq:rho}).
+Habiéndose desarrollado el código en \textsc{Cuda C} y compilado cada \textit{kernel} del mismo en formato \textsc{ptx}, éstos pueden ser utilizados en el lenguaje \textsc{Python} mediante la biblioteca \textsc{PyCuda}. El código que se muestra arriba es el implementado para la Ec. (\ref{eq:rho}).
 
 Donde la función \textit{pycuda.driver.module\_from\_file()} nos permite importar el \textit{kernel} compilado previamente en CUDA, siendo \textcolor{red}{\textbf{/PATH/}} la dirección del directorio dónde se encuentra el archivo \textit{.ptx} compilado. Las variables \textbf{deviceField} y \textbf{deviceRho} son las respectivas a la función de distribución de poblaciones \textit{f} y la densidad $\rho$. Previamente se deben haber inicializado las variables en el \textit{host}, como por ejemplo:
 {\footnotesize
@@ -479,7 +472,7 @@ y luego ser copiadas y allocadas en el  \textit{device} con la función \textit{
 	\end{frame}
 }.
 \\
-Además de los argumentos que tenía originalmente el \textit{kernel}; hay que pasarle a la función obtenida por \textit{PyCUDA} el número de \textit{blocks} \textbf{block=( args.xgrid, 1, 1 )} y la cantidad de \textit{thread por block} \textbf{grid=( gs, 1, 1)} donde será ejecutada. 
+Además de los argumentos que tenía originalmente el \textit{kernel}; hay que pasarle a la función obtenida por \textsc{PyCuda} el número de \textit{blocks} \textbf{block=( args.xgrid, 1, 1 )} y la cantidad de \textit{thread por block} \textbf{grid=( gs, 1, 1)} donde será ejecutada. 
 
 Por último la sincronización de los \textit{threads} es proporcionada mediante el método \\
 \textit{pycuda.driver.Context.synchronize()}.
@@ -487,18 +480,18 @@ Por último la sincronización de los \textit{threads} es proporcionada mediante
 
 \section{Arquitectura del código numérico y compilación}
 
-El código numérico fue desarrollado en el repositorio de la página web \textbf{Git Hub}, la cual permite realizar un control de versiones. El proyecto se encuentra disponible para ser descargado en \url{https://github.com/efogliatto/LBCUDA_Test}. Al momento de haber terminado este trabajo la última versión estable de la rama \textit{master} se encontraba en el \textit{commit} \textsc{bb405d3d32b2eb288995ec32c909c3941f0d7f36} .
+El código numérico fue desarrollado en el repositorio de la página web \textsc{Git Hub}, la cual permite realizar un control de versiones. En la Sec.(\ref{sec:git}) se explica conceptos básicos para utilizar la herramienta \textsc{Git}, las funciones más relevantes que se utilizaron en el transcurso del presente trabajo y también buenas prácticas. El proyecto se encuentra disponible para ser descargado en \url{https://github.com/efogliatto/LBCUDA_Test}. La versión 1.0 de la rama \textit{master} es la que se poseía al momento de finalizar el presente trabajo.
 
-Se utilizó la herramienta de software \textbf{CMake} para compilar el código. Donde el CMakeList.txt principal tiene la siguiente estructura: 
+Se utilizó la herramienta de software \textsc{CMake} para compilar el código. Donde el CMakeList.txt principal tiene la siguiente estructura: 
 
 
-donde quedan fijados los directorios de \textit{build} (binarios), \textit{bin} (ejecutables), \textit{lib} (librerías de salida), \textit{include} (headers de las funciones) y \textit{src} (códigos fuente), así también las opciones de compilación sobre el código realizado en C y CUDA; si el proyecto resuelve en simple precisión o doble precisión.
+donde quedan fijados los directorios de \textit{build} (binarios), \textit{bin} (ejecutables), \textit{lib} (librerías de salida), \textit{include} (headers de las funciones) y \textit{src} (códigos fuente), así también las opciones de compilación sobre el código realizado en \textsc{C} y \textsc{Cuda C}, si el proyecto resuelve en simple precisión o doble precisión.
 
-La estructura de la memoria utilizada, es poseer allocada en matrices o vectores para todos los elementos de la malla los siguientes parámetros que se detallan abajo.
+La estructura de la memoria utilizada, es reservada en matrices o vectores para todos los elementos de la malla los siguientes parámetros que se detallan abajo.
 
 \begin{itemize}
 	\item Función distribución de poblaciones \textit{f} y \textit{q}. (Tamaño N x q)
-	\item una memoria Swap para realizar el proceso de \textit{streaming}. (Tamaño N x q)
+	\item un \textit{array} Swap para realizar el proceso de \textit{streaming}. (Tamaño N x q)
 	\item información de elementos vecinos de un nodo de la malla (Tamaño N x q)
 	\item Densidad $\rho$. (Tamaño N )
 	\item Temperatura $T$. (Tamaño N )
@@ -523,6 +516,8 @@ Donde la nomeclatura de $v_\alpha$ indica que es el vecino que se encuentra en l
 
 Ésta disposición marca la forma en que leerán los registros de memoria, pudiendo no estar optimizada totalmente, ya que cuando se leen los registros no siempre se utiliza toda la información dispuesta.
 
+\section{Control de versiones y desarrollo del código numérico en Git}
+\label{sec:git}
 
 %%% Local Variables: 
 %%% mode: latex
