@@ -47,7 +47,7 @@ Los \textit{threads} que posee una GPU se pueden agrupar de dos formas, una de e
 	\label{fig:block_grid_threads}
 \end{figure}
 
-En el proyecto se utilizaron dos PC, cada una con distinta CPU y GPU. En la Tabla (\ref{tab:icore_gtx}) se encuentran las características de cada componente. La primera PC contaba con la CPU Intel Core i7-3770 y la GPU NVIDIA GeForce GTX 760. La primera PC contaba con la CPU Intel Core i7-4770 y la GPU NVIDIA GeForce GTX 970.
+En el proyecto se utilizaron dos PC, cada una con distinta CPU y GPU. En la Tabla (\ref{tab:icore_gtx}) se encuentran las características de cada componente. La primera PC contaba con la CPU Intel Core i7-3770 y la GPU NVIDIA GeForce GTX 760. La segunda PC contaba con la CPU Intel Core i7-4770 y la GPU NVIDIA GeForce GTX 970.
 
 \begin{table}[h!]
 	\resizebox{\textwidth}{!}{
@@ -55,7 +55,7 @@ En el proyecto se utilizaron dos PC, cada una con distinta CPU y GPU. En la Tabl
 		\cline{1-3} \cline{5-7}
 		Intel Core                                                                     & i7-3770        & i7-4770        & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{NVIDIA GeForce}                                                                        & \multicolumn{1}{c|}{GTX 760}       & \multicolumn{1}{c|}{GTX 970}       \\ \cline{1-3} \cline{5-7} 
 		Núcleos                                                                        & 4              & 4              & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{Núcleos CUDA}                                                                          & \multicolumn{1}{c|}{1152}          & \multicolumn{1}{c|}{1664}          \\ \cline{1-3} \cline{5-7} 
-		Threads                                                                        & 8              & 8              & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Frecuencia de \\ reloj normal {[}MHz{]}\end{tabular}}       & \multicolumn{1}{c|}{980}           & \multicolumn{1}{c|}{1050}          \\ \cline{1-3} \cline{5-7} 
+		Threads                                                                        & 8              & 8              & \multicoludesarrolladoresmn{1}{c|}{} & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Frecuencia de \\ reloj normal {[}MHz{]}\end{tabular}}       & \multicolumn{1}{c|}{980}           & \multicolumn{1}{c|}{1050}          \\ \cline{1-3} \cline{5-7} 
 		\begin{tabular}[c]{@{}c@{}}Frecuencia de \\ base {[}GHz{]}\end{tabular}        & 3,40           & 3,40           & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{Tipo de Memoria}                                                                       & \multicolumn{1}{c|}{GDDR5 a 6 GHz} & \multicolumn{1}{c|}{GDDR5 a 7 GHz} \\ \cline{1-3} \cline{5-7} 
 		\begin{tabular}[c]{@{}c@{}}Tamaño de \\ memoria caché {[}MB{]}\end{tabular}    & 8              & 8              & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Configuracion de \\ memoria estándar {[}MB{]}\end{tabular}} & \multicolumn{1}{c|}{2048}          & \multicolumn{1}{c|}{4096}          \\ \cline{1-3} \cline{5-7} 
 		Tipo de Memoria                                                                & DDR3-1333/1600 & DDR3-1333/1600 & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{Interfaz de Memoria {[}bits{]}}                                                        & \multicolumn{1}{c|}{256}           & \multicolumn{1}{c|}{256}           \\ \cline{1-3} \cline{5-7} 
@@ -947,9 +947,91 @@ target_link_libraries(maxwellConstruction
 
 Lo que se describió hasta la presente instancia es todo lo que se utilizó en cuanto a las instrucciones de compilación mediante la herramienta de software \textsc{CMake}. También se describió lo necesario para entender la estructuración del código y poder entender de forma clara, cómo es la aplicación de el método descripto en la Sec. (\ref{sec:LBM_2_ec_MRT}).
 
+\newpage
 \section{Control de versiones y desarrollo del código \\ numérico en Git}
 \label{sec:git}
 
+Git es un software que sirve para controlar versiones de archivos que se encuentran en un repositorio. El mismo fue desarrollado por Linus Torvalds cuando él empezo a desarrollar el \textit{kernel} de \textit{Linux}. El proyecto de éste trabajo se desarrollo con el sistema operativo \textit{Debian 10} y se encuentra en el repositorio de la página web de \textsc{Git Hub}. El proyecto puede ser descargado mediante las siguientes líneas de comando en la terminal:
+
+{\footnotesize
+	\begin{frame}{}
+		\lstset{language=bash,
+			framesep=2mm,
+			%		baselinestretch=1.2,
+			basicstyle=\ttfamily,
+			keywordstyle=\color{blue}\ttfamily,
+			stringstyle=\color{red}\ttfamily,
+			commentstyle=\color{green}\ttfamily,
+			morecomment=[l][\color{magenta}]{\#}
+		}
+		\begin{lstlisting}
+$ sudo apt-get install git #Para instalar Git
+
+$ git clone https://github.com/efogliatto/LBCUDA_Test #Iniciar descarga 
+		\end{lstlisting}
+		
+	\end{frame}
+}
+
+creándose un repositorio local del mismo.
+
+\subsection{Conceptos básicos}
+
+Para comprender el funcionamiento de \textit{git} se definen algunos conceptos básicos. 
+
+El estado de un repositorio indica los archivos añadidos al mismo, eliminados ó modificados. Añadir un archivo significa que \textit{git} realiza un seguimiento del mismo y su estado puede ser nuevo, modificado ó eliminado. Un \textit{commit} es indicarle a \textit{git} el estado actual que refleja el proyecto en todos sus archivos, por lo cual recibe una identificación, y al mismo se le asigna un comentario que debe reflejar las diferencias realizadas con respecto al estado anterior de los mismos. Una rama (\textit{branch}) es una línea de trabajo, donde se va realizando el proyecto añadiéndose \textit{commits}. Se pueden tener múltiples ramas para trabajar un proyecto y obtener un mejor desarrollo del mismo. Cuando es conveniente, una rama que terminó su desarrollo puede ser fusionada en otra, éste proceso se llama \textit{merge}.
+
+\textit{Git} fue pensado para hacer desarrollo entre colaboradores. Lo más usual es contar con un repositorio remoto principal, en donde se encuentra el último estado del proyecto a trabajar. Cada uno de los colaboradores posee su propio repositorio, dependiendo de si es el propio o de otro colaborador recibe el nombre de local y remoto. Debido al trabajo contínuo de los colaboradores, el repositorio remoto puede ir variando. El proceso de colocar \textit{commits} que uno desarrolla en el repositorio remoto se llama \textit{push} y el de adquirir los \textit{commits} de otros colaboradores \textit{pull}.
+
+\newpage
+\subsection{Principales comandos}
+
+En el transcurso del desarrollo del presente proyecto se utilizaron algunos de los comandos de \textit{git}. A continuación se detallan los más utilizados acompañados de una breve explicación. Para más información remitirse al manual de usuario que se encuentra en la siguiente página web \url{https://git-scm.com/docs/user-manual} o en su defecto directamente al libro \url{https://git-scm.com/book/en/v2}.
+
+\begin{itemize}
+	\item \textbf{git init}: inicializa un repositorio, también se puede hacer mediante la página \url{https://github.com} , entre varias plataformas existentes.
+	\item \textbf{git add archivo}: se añade al repositorio el archivo de nombre \textit{archivo}
+	\item \textbf{git status}: indica el estado actual del repositorio y la rama en la que se encuentra
+	\item \textbf{git add *}: añade el estado actual de todos los archivos
+	\item \textbf{git commit -a}: se realiza commit
+	\item \textbf{git log}: se muestra los comentarios de todos los \textit{commits} realizados con su nombre indicatorio. Si se coloca \textbf{-n} como opción, se mostrarán los últimos n \textit{commits}.
+	\item \textbf{git commit - -amend}: se utiliza cuando se realizo mal el comentario de un \textit{commit} o faltó agregar algún archivo.
+	\item \textbf{git push}: se añade al repositorio remoto todos los \textit{commits} realizados.
+	\item \textbf{git pull}: se bajan del repositorio remoto, los \textit{commits} que no se tienen en el local.
+	\item \textbf{git checkout name}: el repositorio local vuelve al estado del nombre identifiatorio del \textit{commit}, sin perder lo trabajado.
+	\item \textbf{git branch name\_branch}: si se desea modificar desde un cierto \textit{commit} se debe crear una nueva rama y a partir de ahí seguir el desarrollo, luego de ello se debe realizar \textbf{git checkout name\_branch}.
+	\item \textbf{git diff}: posee varias opciones y nos muestra diferencias. Ellas pueden ser de un archivo de la rama actual, entre dos ramas, entre un archivo que se encuentra en dos ramas, entre otros.
+	\item \textbf{git merge}: se utiliza para fusionar dos ramas. Si no hay conflictos entre las dos ramas que se fusionan se realiza un \textit{fast foward} y no se debe realizar nada. Si hay conflictos y no se realiza el \textit{merge} de forma automática, se debe resolver dicho conflicto. Remitirse al manual de usuario para mayor información.
+\end{itemize}
+
+\subsection{Buenas prácticas}
+
+En el transcurso del proyecto se adquirieron buenas prácticas de desarrollo de código mediante \textit{git}, dónde algunas de ellas son las que se desarrollan a continuación.
+
+\textbf{Commits}: al momento de realizar un commit, es recomendable no hacerlo sobre muchos archivos juntos, sino sobre algunos que reflejen un cambio en la misma línea de trabajo. El comentario que lleva el \textit{commit} debe ser corto y enfocado a un desarrollo o cambio puntual. Antes de hacer \textbf{push} al repositorio remoto verificar que todos los archivos que uno desea esten añadidos, caso contrario se los agrega y para no generar otro \textit{commit} es que se utiliza \textbf{git commit - -amend}.
+
+\textbf{branchs}: para desarrollar mejor el proyecto y tener diferenciado como es su avance, es que se estila trabajar con diferentes niveles de ramas. Los niveles recomendados son tres (3), el primero es de la rama \textit{master} que posee la última versión estable, la segunda es la rama \textit{develop} donde se harán los desarrollos
+ siendo de buena práctica tener una rama \textit{master} donde está la verción estable del proyecto, una rama \textit{develop} para desarrollar las modificaciones y una o varias ramas tipo \textit{feature} que se enfoca en desarrollar algo específico. La idea es que cuando se tengan terminadas las versiones del \textit{feature}, se realice en \textit{merge} a la rama \textit{develop} y una vez que ésta posea todos los \textit{feature} hacer un \textsc{merge} a la rama \textit{master}. Lo que se explico queda ilustrado mediante la Figura (\ref{fig:ramas}).
+ 
+ \begin{figure}[htbp]
+ 	\centering
+ 	\includegraphics[width=0.85\textwidth]{figs/cap3/ejemplo_ramas}
+ 	\caption{Ejemplo de una buena práctica de la diagramación del proyecto mediante el uso de ramas.}
+ 	\label{fig:ramas}	
+ \end{figure}
+ 
+ 
+
+
+%Una vez creado un repositorio se debe indicar que se realice un seguimiento del mismo, para ello se utiliza el comando \textbf{git add (opciones)}, donde entre las opciones que se le puede indicar es el nombre del archivo a seguir.
+%Si queremos er el estado de nuestro repositorio, se utiliza el comando \textbf{git status}, en dónde debe aparecer el archivo recientemente añadido a seguir. En el caso de que ése mismo archivo sea modificado ó eliminado, su estado será marcado al realizar \textbf{git status}. 
+
+%Habiendose añadido todos los archivos que se deseean llevar al repositorio, es que se debe realizar un \textit{commit}, donde el mismo creará una imagen del estado actual del proyecto y a su vez se le debe iñadir un comentario haciendo alusión a lo que se realizó. Para ello es que se utiliza el comando \textbf{git commit -a} (pudiendo encontrarse otras opciones). Con el comando \textbf{git push} se añade a nuestro repositorio el \textit{commit} realizado.
+%No es necesario que cada vez que se realice un \textit{commit} se suba al mismo al repositorio, es más, no es de buena práctica realizar ello, a menos que lo que se esté desarrollando lo amerite.
+
+
+
+%Para saber el estado en que se encuentra el repositorio existe la función \textbf{git status}, que indicará si un archivo fue añadido, modificado ó eliminado. En el caso de que se desee hacer un seguimiento de todos los archivos listados mediante \textbf{git status}, se utiliza el comando \textbf{git add *}.
 
 
 %%% Local Variables: 
