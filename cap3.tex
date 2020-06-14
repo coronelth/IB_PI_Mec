@@ -1,5 +1,5 @@
 %\chapter{Implementación del código numérico en GPU}
-\chapter{Código numérico de LBM en GPU}
+\chapter{Código numérico de LBM}
 \graphicspath{{figs/cap3/}}
 \label{cap3}
 
@@ -47,6 +47,24 @@ Los \textit{threads} que posee una GPU se pueden agrupar de dos formas, una de e
 	\label{fig:block_grid_threads}
 \end{figure}
 
+En el proyecto se utilizaron dos PC, cada una con distinta CPU y GPU. En la Tabla (\ref{tab:icore_gtx}) se encuentran las características de cada componente. La primera PC contaba con la CPU Intel Core i7-3770 y la GPU NVIDIA GeForce GTX 760. La primera PC contaba con la CPU Intel Core i7-4770 y la GPU NVIDIA GeForce GTX 970.
+
+\begin{table}[h!]
+	\resizebox{\textwidth}{!}{
+	\begin{tabular}{|c|c|c|cccc}
+		\cline{1-3} \cline{5-7}
+		Intel Core                                                                     & i7-3770        & i7-4770        & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{NVIDIA GeForce}                                                                        & \multicolumn{1}{c|}{GTX 760}       & \multicolumn{1}{c|}{GTX 970}       \\ \cline{1-3} \cline{5-7} 
+		Núcleos                                                                        & 4              & 4              & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{Núcleos CUDA}                                                                          & \multicolumn{1}{c|}{1152}          & \multicolumn{1}{c|}{1664}          \\ \cline{1-3} \cline{5-7} 
+		Threads                                                                        & 8              & 8              & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Frecuencia de \\ reloj normal {[}MHz{]}\end{tabular}}       & \multicolumn{1}{c|}{980}           & \multicolumn{1}{c|}{1050}          \\ \cline{1-3} \cline{5-7} 
+		\begin{tabular}[c]{@{}c@{}}Frecuencia de \\ base {[}GHz{]}\end{tabular}        & 3,40           & 3,40           & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{Tipo de Memoria}                                                                       & \multicolumn{1}{c|}{GDDR5 a 6 GHz} & \multicolumn{1}{c|}{GDDR5 a 7 GHz} \\ \cline{1-3} \cline{5-7} 
+		\begin{tabular}[c]{@{}c@{}}Tamaño de \\ memoria caché {[}MB{]}\end{tabular}    & 8              & 8              & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Configuracion de \\ memoria estándar {[}MB{]}\end{tabular}} & \multicolumn{1}{c|}{2048}          & \multicolumn{1}{c|}{4096}          \\ \cline{1-3} \cline{5-7} 
+		Tipo de Memoria                                                                & DDR3-1333/1600 & DDR3-1333/1600 & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{Interfaz de Memoria {[}bits{]}}                                                        & \multicolumn{1}{c|}{256}           & \multicolumn{1}{c|}{256}           \\ \cline{1-3} \cline{5-7} 
+		Tamaño de Memoria {[}GB{]}                                                     & 32             & 32             & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Ancho de banda \\ de memoria {[}GB/s{]}\end{tabular}}       & \multicolumn{1}{c|}{192.2}         & \multicolumn{1}{c|}{224.0}         \\ \cline{1-3} \cline{5-7} 
+		\begin{tabular}[c]{@{}c@{}}Ancho de banda\\ de memoria {[}GB/s{]}\end{tabular} & 25,6           & 25,6           &                       &                                                                                                            &                                    &                                    \\ \cline{1-3}
+	\end{tabular}}
+	\caption{Especificaciones técnicas de las CPU y GPU utilizadas \cite{i73:2020:intel}\cite{i74:2020:intel}\cite{760:2020:nvidia}\cite{970:2020:nvidia}.}
+	\label{tab:icore_gtx}
+\end{table}
 
 
 \section{Arquitectura de la memoria de una GPU}
@@ -79,11 +97,10 @@ Los procesos en el \textit{device} tienen almacenados los datos según una jerar
 	
 \end{itemize}
 
-\newpage
 
 \section{Programación en CUDA C}
 
-La programación de las GPU se lleva a cabo mediante el lenguaje \textsc{Cuda C}, el cuál es una extención del lenguaje \textsc{C} debido su familiaridad y uso extendido; por lo que el lenguaje se denomina \textsc{Cuda C}. La realización de procesos en paralelos es ejecutada mediante funciones llamadas \textit{kernel} y son del tipo \textit{void}.
+La programación de las GPU se lleva a cabo mediante el lenguaje \textsc{Cuda C}, el cuál es una extención del lenguaje \textsc{C} debido su familiaridad y uso extendido; por lo que el lenguaje se denomina \textsc{Cuda C}. La versión 10.1 de CUDA fue la utilizada para el desarrollo del presente trabajo. La realización de procesos en paralelos es ejecutada mediante funciones llamadas \textit{kernel} y son del tipo \textit{void}.
 \\
 
 Existen tres tipos de funciones que se pueden efectuar en \textsc{Cuda C} y son:
@@ -111,6 +128,8 @@ Para visualizar las diferencias de programación de una función \textbf{CUDA C 
 \begin{align*}
 	\rho = \sum_{\alpha} f_{\alpha}
 \end{align*}
+
+\newpage
 
 Primeramente se detalla el código realizado en el lenguaje \textsc{C}, siendo la función :
 
@@ -194,7 +213,7 @@ extern "C" __global__ void cudaMomentoDensity(
 en este caso se pasa de forma distinta los valores de la cantidad de nodos (\textit{np}) y de la cantidad de velocidades del modelo \textit{DdQq} (\textit{Q}). La distinción en los argumentos que se pasan en ambos códigos, es debido a la forma que \textsc{Cuda C} permite el manejo de las estructuras y también de las decisiones que se tomaron cuando se desarrollaba el código para uno u otro lenguaje.
 
 Se coloca \textcolor{blue}{extern} \textcolor{red}{''C''} para que el compilador detecte que es un \textit{kernel} de \textsc{Cuda C} y cuando se le indique pueda compilar los \textit{kernel} en formato \textsc{ptx}.
-\newpage
+
 {\footnotesize
 	\begin{frame}{}
 		\lstset{language=C,
@@ -401,38 +420,8 @@ siendo \textit{dst} un puntero con la dirección de destino de los datos, \texti
 
 
 \section{Programación en Python}
-{\footnotesize
-	\begin{frame}{}
-		\lstset{language=python,
-			framesep=2mm,
-			%		baselinestretch=1.2,
-			basicstyle=\ttfamily,
-			keywordstyle=\color{blue}\ttfamily,
-			stringstyle=\color{red}\ttfamily,
-			commentstyle=\color{green}\ttfamily,
-			morecomment=[l][\color{magenta}]{\#}
-		}
-		\begin{lstlisting}[frame=single]
-import pycuda
-from pycuda import gpuarray
-import pycuda.autoinit
-		
-cudaMomentoDensity = pycuda.driver.module_from_file(
-			'/PATH/cudaMomentoDensity.ptx').get_function(
-			'cudaMomentoDensity')					
-cudaMomentoDensity(	deviceField,
-			deviceRho,
-			mesh.nPoints,
-			mesh.Q,
-			block=( args.xgrid, 1, 1 ),
-			grid=( gs, 1, 1) )     			    
-pycuda.driver.Context.synchronize()
-		\end{lstlisting}
-		
-	\end{frame}
-}
 
-Habiéndose desarrollado el código en \textsc{Cuda C} y compilado cada \textit{kernel} del mismo en formato \textsc{ptx}, éstos pueden ser utilizados en el lenguaje \textsc{Python} mediante la biblioteca \textsc{PyCuda}. El código que se muestra arriba es el implementado para la Ec. (\ref{eq:rho}).
+Habiéndose desarrollado el código en \textsc{Cuda C} y compilado cada \textit{kernel} del mismo en formato \textsc{ptx}, éstos pueden ser utilizados en el lenguaje \textsc{Python} mediante la biblioteca \textsc{PyCuda}. El código de la siguiente página es el implementado para la Ec. (\ref{eq:rho}).
 
 Donde la función \textit{pycuda.driver.module\_from\_file()} nos permite importar el \textit{kernel} compilado previamente en \textsc{Cuda C}, siendo \textcolor{red}{\textbf{/PATH/}} la dirección del directorio dónde se encuentra el archivo \textsc{ptx} compilado. Las variables \textit{deviceField} y \textit{deviceRho} son las respectivas a la función de distribución de poblaciones \textit{f} y la densidad $\rho$. Previamente se deben haber inicializado las variables en el \textit{host}, como por ejemplo:
 {\footnotesize
@@ -476,6 +465,41 @@ Además de los argumentos que tenía originalmente el \textit{kernel}; hay que p
 
 Por último la sincronización de los \textit{threads} es proporcionada mediante el método \\
 \textit{pycuda.driver.Context.synchronize()}.
+
+{\footnotesize
+	\begin{frame}{}
+		\lstset{language=python,
+			framesep=2mm,
+			%		baselinestretch=1.2,
+			basicstyle=\ttfamily,
+			keywordstyle=\color{blue}\ttfamily,
+			stringstyle=\color{red}\ttfamily,
+			commentstyle=\color{green}\ttfamily,
+			morecomment=[l][\color{magenta}]{\#}
+		}
+		\begin{lstlisting}[frame=single]
+import pycuda
+from pycuda import gpuarray
+import pycuda.autoinit
+		
+cudaMomentoDensity = pycuda.driver.module_from_file(
+			'/PATH/cudaMomentoDensity.ptx').get_function(
+			'cudaMomentoDensity')					
+cudaMomentoDensity(	deviceField,
+			deviceRho,
+			mesh.nPoints,
+			mesh.Q,
+			block=( args.xgrid, 1, 1 ),
+			grid=( gs, 1, 1) )     			    
+pycuda.driver.Context.synchronize()
+		\end{lstlisting}
+		
+	\end{frame}
+}
+
+
+
+
 	   
 
 \section{Arquitectura del código numérico y compilación}
