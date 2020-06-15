@@ -2,19 +2,20 @@
 \graphicspath{{figs/cap4/}}
 \label{cap4}
 
-En el presente capíulo se realiza la descripción de los problemas con transferencia de calor para fluidos multifásicos con cambio de fase llevados a cabo para validar los códigos numéricos desarrollados, siendo éstos la \textit{Construcción de Maxwell}, la \textit{Estratificación de un fluido Van Der Waals con temperatura no uniforme} y la \textit{Generación de bubbles en una superficie horizontal calefaccionada}.
+En el presente capíulo se realiza la descripción de los problemas con transferencia de calor para fluidos multifásicos con cambio de fase llevados a cabo para validar los códigos numéricos desarrollados, siendo éstos la \textit{Construcción de Maxwell}, la \textit{Estratificación de un fluido Van der Waals con temperatura no uniforme} y la \textit{Generación de burbujas en una superficie horizontal calefaccionada}.
 
 \section{Construcción de Maxwell}
 
-Como se desarrollo en el Cap. \ref{cap2} la Ec. (\ref{eq:VdW_P}) es una EOS que modela el comportamiento de un gas real.
+En esta sección se explica el procedimiento mediante el cual, a partir de una EOS se puede obtener las densidades de coexistencia de un fluido para un dado valor de presión y temperatura. Dicho procedimiento se llama Construcción de Maxwell, donde necesariamente la EOS con la que se modela el fluido debe permitir la coexistencia de densidades para sus variables de estado.
 
-\begin{align*}
+En el desarrollo del Cap. (\ref{cap2}) se adoptó como EOS del presente trabajo, la ecuaciónde VdW Ec. (\ref{eq:p_eos_4})que describe el comportamiento de un gas real y permite la coexistencia de diferente densidad.
+
+\begin{align}
 	p = \frac{R T}{V_m - B} - A {\left(\frac{1}{V_m}\right)}^2
-\end{align*}
+	\label{eq:p_eos_4}
+\end{align}
 
-La Ec. (\ref{eq:VdW_P}) puede ser representada gráficamente en un diagrama $P - V_m$. \\ La Figura \ref{fig:P_V_CO2} muestra el diagrama mencionado para el dióxido de carbono ($CO_2$) a distintas temperaturas: 373 (K), 304 (K) y 270 (K). Para $T = 270 \> K$ se vislumbra que en $p = 44,08 \> atm$ la gráfica se intersecta en tres valores de $V_m$, siendo dos de ellos estables; por lo que se observa que hay dos volúmenes molares de coexistencia, indicando las fases líquido y gaseosa.
-
-La construcción de Maxwell, también llamada regla de igualdad de áreas, indicada en Ec. (\ref{eq:maxwell_Construction}), es un procedimiento analítico para encontrar las densidades de coexistencia del líquido y gas. Donde $P$ es la presión de la EOS y $p_0$ es una presión constante. Al realizar la integral propuesta surge que las áreas \textbf{A1} y \textbf{A2} de la Figura \ref{fig:P_V_CO2} deben ser iguales.
+La Ec. (\ref{eq:p_eos_4}) puede ser representada gráficamente en un diagrama $P - V_m$. A modo de ejemplo se presenta él diagrama para el caso del dióxido de carbono ($CO_2$) de tres temperaturas distintas en la Figura (\ref{fig:P_V_CO2}).  La temperatura de interés es la de $T = 270 \> K$, donde se vislumbra que en $p = 44,08 \> atm$ la gráfica se intersecta en tres valores de $V_m$, siendo dos de ellos estables; por lo que se observa que hay dos volúmenes molares de coexistencia, indicando las fases líquido y gaseosa. En las otras dos temperaturas, $T = 373 \> K$ y $T = 304 \> K$, no se encuentra que para algún valor de presión existan dos volúmenes molares.
 
 \begin{equation}
 \int_{V_{m,l}}^{V_{m,g}} P d V_m = p_0 (V_{m,l} -  V_{m,g})
@@ -28,6 +29,7 @@ La construcción de Maxwell, también llamada regla de igualdad de áreas, indic
 	\label{fig:P_V_CO2}	
 \end{figure}
 
+La construcción de Maxwell, también llamada regla de igualdad de áreas, indicada en Ec. (\ref{eq:maxwell_Construction}), es un procedimiento analítico para encontrar las densidades de coexistencia del líquido y gas. Donde $P$ es la presión de la EOS y $p_0$ es una presión constante. Al realizar la integral propuesta surge que las áreas \textbf{A1} y \textbf{A2} de la Figura \ref{fig:P_V_CO2} deben ser iguales.
 
 La Ec. (\ref{eq:VdW_P}) se puede re-estructurar como Ec. (\ref{eq:rho_eos}) puesto que $\rho = \frac{1}{v}$, siendo $v$ el volúmen másico y relacionando $V_m$ con $v$ según cada fluido. Donde para un dado valor de temperatura tendremos la coexistencia de fases con su densidad $\rho_l$ para la fase líquida y $\rho_g$ para la gaseosa.
 
