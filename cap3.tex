@@ -9,24 +9,23 @@
 
 En el presente capítulo se realizará la descripción de la implementación del código numérico del LBM descripto en la Sec. (\ref{sec:LBM_2_ec_MRT}), como también las implicancias de elaborar la implementación en una GPU de forma eficiente.
 
-El lenguaje de programación \textsc{C} desarrollado por Dennis MacAlistair Ritchie será utlizado primeramente para confeccionar el código. Dicho lenguaje brinda instrucciones a la CPU de una PC para ser ejecutadas. Las CPU son diseñadas óptimamente para que sus instrucciones sean procesadas de forma secuencial en los núcleos que poseen; aunque también se permite realizar los procesos en paralelo, según la cantidad de núcleos.
+El lenguaje de programación \textsc{C} desarrollado por Dennis MacAlistair Ritchie será utlizado para desarrollar el código. Dicho lenguaje brinda instrucciones a la CPU de una PC para ser ejecutadas. Las CPU son diseñadas óptimamente para que sus instrucciones sean procesadas de forma secuencial en los núcleos que poseen; aunque también se permite realizar los procesos en paralelo, según la cantidad de núcleos.
 
-Luego se implementará un código en \textsc{Cuda C} el cuál fue desarrollado por la\\
-empresa NVIDIA. Este lenguaje permite ejecutar instrucciones en una GPU, la cual está diseñada para que los procesos a realizar sean de forma paralela.
+Luego se implementará un código en \textsc{Cuda C}, desarrollado por la empresa NVIDIA. Este lenguaje permite ejecutar instrucciones en una GPU, la cual está diseñada para que los procesos a realizar sean de forma paralela.
 
-Se eligió la programación en \textsc{C} y \textsc{Cuda C} para comparar la eficiencia en el tiempo de cálculo, debido a que el lenguaje \textsc{Cuda C} es una extensión del lenguaje \textsc{C}. La diferencia principal es que \textsc{Cuda C}  tiene una forma particular de escribir las funciones que se ejecutarán en la GPU, las cuáles son llamadas \textit{kernel}.
+Se eligió la programación en \textsc{C} y \textsc{Cuda C} para comparar la eficiencia en el tiempo de cálculo, debido a que el lenguaje \textsc{Cuda C} es una extensión del lenguaje \textsc{C}. La diferencia principal es que \textsc{Cuda C}  tiene una forma particular de escribir las funciones que se ejecutarán en la GPU, las cuales son llamadas \textit{kernel}.
 
-Ambos códigos, \textsc{C} y \textsc{Cuda C}, son compilados en bibliotecas estáticas mediante \textsc{CMake}, y además los \textit{kernels} realizados en \textsc{Cuda C} son compilados en formato \textsc{ptx}. La utilidad de poseer código en \textsc{ptx} es que el lenguaje de programación interpretado \textsc{Python} los puede utilizar. La biblioteca necesaria de \textsc{Python} para adquirir los \textit{kernels} es \textsc{PyCuda}.
+Ambos códigos, en \textsc{C} y \textsc{Cuda C}, son compilados mediante \textsc{CMake} en bibliotecas tipo \textit{shared} y \textit{static} respectivamente. También se realizó la compilación en formato \textsc{ptx} de los \textit{kernels} de \textsc{Cuda C}, donde éste formato puede utilizarse en el lenguaje de programación interpretado \textsc{Python}. El módulo de \textsc{Python} necesario para adquirir los \textit{kernels} es \textsc{PyCuda}.
 
-La implementación en \textsc{Python} es debido a su facilidad de programación, el cual permite incorporar las bibliotecas compiladas y obtener una mayor versatilidad de problemas a resolver. \textsc{Python} puede ser utilizado en distintos sistemas oparativos como \textit{Linux}, \textit{Windows} y \textit{Mac OS}. 
+La implementación en \textsc{Python} es debido a su facilidad de programación, el cual permite incorporar las bibliotecas compiladas en otros lenguajes y así obtener una mayor versatilidad de problemas a resolver. \textsc{Python} puede ser utilizado en distintos sistemas oparativos como \textit{Linux}, \textit{Windows} y \textit{Mac OS}. 
 
-Para visualizar los resultados del código se utiliza el programa \textsc{Paraview}, donde el formato en que realiza la lectura el programa es \textit{Ensight}. A través del lenguaje \textsc{C}, es que se hicieron las funciones de escritura de éste tipo de archivos y así observar gráficamente las variables de interés del problema que se desea resolver. La biblioteca \textsc{CTypes} de \textsc{Python} es la necesaria para adquirir las funciones de escritura de \textsc{Ensight} del código compilado en \textsc{C}.
+Para visualizar los resultados del código se utiliza el programa \textsc{Paraview}, de modo que el formato que se eligió para la escritura de los campos es \textsc{Ensight Gold}. A través del lenguaje \textsc{C}, es que se hicieron las funciones de escritura de éste tipo de archivos y así observar gráficamente las variables de interés del problema que se desea resolver. El módulo \textsc{CTypes} de \textsc{Python} es la necesaria para adquirir las funciones de escritura de \textsc{Ensight} del código compilado en \textsc{C}.
 
 
 
 \section{Programación en GPU}
 
-Una computadora (\textit{Personal Computer} o PC) posee como procesador principal la CPU, cuyo diseño se encuentra optimizado para realizar tareas secuenciales. Comercialmente vienen de una amplia variedad de núcleos, en el rango de 8 a 64 núcleos en el caso de los Procesadores AMD Ryzen™ Threadripper, 4 a 8 núcleos en los Procesador AMD FX™, en el caso de Intel se encuentra el Procesador Intel® Core™ serie X con 18 núcleos y  Intel® Core™ I3-9100T de 4 núcleos entre otros. \cite{edp:2020:amd} \cite{icp:2020:intel}
+Una computadora (\textit{Personal Computer} o PC) posee como procesador principal la CPU, cuyo diseño se encuentra optimizado para realizar tareas secuenciales. Comercialmente vienen de una amplia variedad de núcleos, en el rango de 8 a 64 núcleos en el caso de los Procesadores AMD Ryzen™ Threadripper, 4 a 8 núcleos en los Procesador AMD FX™, en el caso de Intel se encuentra el Procesador Intel® Core™ serie X con 18 núcleos y  Intel® Core™ I7-3770 de 4 núcleos entre otros. \cite{edp:2020:amd} \cite{icp:2020:intel}
 
 Es posible realizar tareas y procesos en paralelo en la CPU proveyendo instrucciones a cada núcleo del procesador de forma independiente, siendo más eficiente en el tiempo de ejecución de los procesos realizados.
 
@@ -35,7 +34,7 @@ A su vez una PC opcionalmente puede contener un coprocesador siendo una GPU. Dic
 
 
 
-El procesador principal que tiene una PC es la CPU, por lo cual se denomina \textit{host}, la GPU es un coprocesador y se denomina \textit{device}. Las ejecuciones de los procesos en la CPU están diseñadas para que se efectúen de manera secuencial, en cuánto las de la GPU en paralelo; las últimas realizándose en varios hilos de ejecución (\textit{threads}). El nombre que recibe una funcion que ejecuta un proceso de forma paralela en la GPU se denomina \textit{kernel}. \textit{Host} y \textit{device} poseen su propia memoria RAM, llamadas \textit{host memory} y \textit{device memory} respectivamente. \cite{rinaldi2011modelos}
+El procesador principal que tiene una PC es la CPU, por lo cual se denomina \textit{host}, la GPU es un coprocesador y se denomina \textit{device}. Las ejecuciones de los procesos en la CPU están diseñadas para que se efectúen de manera secuencial, en cuánto las de la GPU en paralelo; las últimas realizándose en varios hilos de ejecución (\textit{threads}). El nombre que recibe una función que ejecuta un proceso de forma paralela en la GPU se denomina \textit{kernel}. \textit{Host} y \textit{device} poseen su propia memoria RAM, llamadas \textit{host memory} y \textit{device memory} respectivamente. \cite{rinaldi2011modelos}
 
 Los \textit{threads} que posee una GPU se pueden agrupar de dos formas, una de ellas es por bloques (\textit{thread block}) y la otra mediante grilla de bloques (\textit{grid}). Todos los \textit{threads} del mismo \textit{thread block} poseen un acceso rápido a una memoria compartida y permite sincronizar las ejecuciones que se les asigna. Debido a la posibilidad de sincronización de los mismos, se evita el riesgo de que varios \textit{threads} accedan de manera simultánea al mismo lugar de memoria. Un \textit{grid} es un conjunto de \textit{thread block}, en dónde las instrucciones del \textit{kernel} son paralelizadas, ésto vence la limitación de hardware del finito número de \textit{threads} por bloque. Puesto que la ejecución del proceso en los \textit{thread blocks} de un \textit{grid} pueden ser ejecutados en tiempos distintos, es necesario realizar un sincronización entre los mismos para que su comunicación sea segura y no haya conflictos\cite{tolke2010implementation}. La figura \ref{fig:block_grid_threads} muestra el concepto de \textit{grid} y \textit{thread block}.
 
@@ -55,7 +54,7 @@ En el proyecto se utilizaron dos PC, cada una con distinta CPU y GPU. En la Tabl
 		\cline{1-3} \cline{5-7}
 		Intel Core                                                                     & i7-3770        & i7-4770        & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{NVIDIA GeForce}                                                                        & \multicolumn{1}{c|}{GTX 760}       & \multicolumn{1}{c|}{GTX 970}       \\ \cline{1-3} \cline{5-7} 
 		Núcleos                                                                        & 4              & 4              & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{Núcleos CUDA}                                                                          & \multicolumn{1}{c|}{1152}          & \multicolumn{1}{c|}{1664}          \\ \cline{1-3} \cline{5-7} 
-		Threads                                                                        & 8              & 8              & \multicoludesarrolladoresmn{1}{c|}{} & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Frecuencia de \\ reloj normal {[}MHz{]}\end{tabular}}       & \multicolumn{1}{c|}{980}           & \multicolumn{1}{c|}{1050}          \\ \cline{1-3} \cline{5-7} 
+		Threads                                                                        & 8              & 8              & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Frecuencia de \\ reloj normal {[}MHz{]}\end{tabular}}       & \multicolumn{1}{c|}{980}           & \multicolumn{1}{c|}{1050}          \\ \cline{1-3} \cline{5-7} 
 		\begin{tabular}[c]{@{}c@{}}Frecuencia de \\ base {[}GHz{]}\end{tabular}        & 3,40           & 3,40           & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{Tipo de Memoria}                                                                       & \multicolumn{1}{c|}{GDDR5 a 6 GHz} & \multicolumn{1}{c|}{GDDR5 a 7 GHz} \\ \cline{1-3} \cline{5-7} 
 		\begin{tabular}[c]{@{}c@{}}Tamaño de \\ memoria caché {[}MB{]}\end{tabular}    & 8              & 8              & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Configuracion de \\ memoria estándar {[}MB{]}\end{tabular}} & \multicolumn{1}{c|}{2048}          & \multicolumn{1}{c|}{4096}          \\ \cline{1-3} \cline{5-7} 
 		Tipo de Memoria                                                                & DDR3-1333/1600 & DDR3-1333/1600 & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{Interfaz de Memoria {[}bits{]}}                                                        & \multicolumn{1}{c|}{256}           & \multicolumn{1}{c|}{256}           \\ \cline{1-3} \cline{5-7} 
@@ -100,7 +99,7 @@ Los procesos en el \textit{device} tienen almacenados los datos según una jerar
 
 \section{Programación en CUDA C}
 
-La programación de las GPU se lleva a cabo mediante el lenguaje \textsc{Cuda C}, el cuál es una extención del lenguaje \textsc{C} debido su familiaridad y uso extendido; por lo que el lenguaje se denomina \textsc{Cuda C}. La versión 10.1 de CUDA fue la utilizada para el desarrollo del presente trabajo. La realización de procesos en paralelos es ejecutada mediante funciones llamadas \textit{kernel} y son del tipo \textit{void}.
+La programación de las GPU se lleva a cabo mediante el lenguaje \textsc{Cuda C}, el cual es una extención del lenguaje \textsc{C} debido su familiaridad y uso extendido; por lo que el lenguaje se denomina \textsc{Cuda C}. La versión 10.1 de CUDA fue la utilizada para el desarrollo del presente trabajo. La realización de procesos en paralelos es ejecutada mediante funciones llamadas \textit{kernel} y son del tipo \textit{void}.
 \\
 
 Existen tres tipos de funciones que se pueden efectuar en \textsc{Cuda C} y son:
@@ -123,15 +122,10 @@ Otra particularidad que se presenta en la programación es el manejo de la memor
 
 \subsection{Programación de un \textit{kernel}}
 
-Para visualizar las diferencias de programación de una función \textbf{CUDA C } (\textit{kernel}), con una típica función de \textsc{C}, se muestra a continiación como ejemplo la programación para ambos lenguajes de la Ec. (\ref{eq:rho}): 
+Para visualizar las diferencias de programación de una función \textbf{CUDA C } (\textit{kernel}), con una típica función de \textsc{C}, se muestra a continuación como ejemplo la programación para ambos lenguajes de la Ec. (\ref{eq:rho})
 
-\begin{align*}
-	\rho = \sum_{\alpha} f_{\alpha}
-\end{align*}
 
-\newpage
-
-Primeramente se detalla el código realizado en el lenguaje \textsc{C}, siendo la función :
+En primer lugar se detalla el código realizado en el lenguaje \textsc{C}, siendo la función :
 
 {\footnotesize
 	\begin{frame}{}
@@ -150,7 +144,7 @@ void momentoDensity(scalar* rho, scalar* field, basicMesh* mesh);
 	\end{frame}
 }.
 \\
-donde el argumento \textbf{basicMesh* mesh} es un puntero a una estructura, la cuál posee información del mallado que se realizó al dominio del problema a resolver, como por ejemplo la cantidad de nodos que posee la malla (\textbf{nPoints}) y la cantidad de direcciones que posee el modelo en su espacio de velocidades \textbf{Q}. El \textit{array}  \textbf{scalar* rho} es de dimensión \textit{nPoints} y contiene los valores de $\rho$, por último \textbf{scalar* field} es un \textit{array} que posee las \textit{q} componentes de la función de distribución de poblaciones \textit{f} para cada uno de los  \textit{nPoints} nodos de la malla.
+donde el argumento \textbf{basicMesh* mesh} es un puntero a una estructura, la cual posee información del mallado que se realizó al dominio del problema a resolver, como por ejemplo la cantidad de nodos que posee la malla (\textbf{nPoints}) y la cantidad de direcciones que posee el modelo en su espacio de velocidades \textbf{Q}. La variable \textbf{scalar} corresponde a una de tipo \textcolor{blue}{float} o \textcolor{blue}{double}, según opciones elegidas al momento de la compilación. El \textit{array}  \textbf{scalar* rho} es de dimensión \textit{nPoints} y contiene los valores de $\rho$, por último \textbf{scalar* field} es un \textit{array} que posee las \textit{q} componentes de la función de distribución de poblaciones \textit{f} para cada uno de los  \textit{nPoints} nodos de la malla.
 
 
 {\footnotesize
@@ -213,6 +207,8 @@ extern "C" __global__ void cudaMomentoDensity(
 en este caso se pasa de forma distinta los valores de la cantidad de nodos (\textit{np}) y de la cantidad de velocidades del modelo \textit{DdQq} (\textit{Q}). La distinción en los argumentos que se pasan en ambos códigos, es debido a la forma que \textsc{Cuda C} permite el manejo de las estructuras y también de las decisiones que se tomaron cuando se desarrollaba el código para uno u otro lenguaje.
 
 Se coloca \textcolor{blue}{extern} \textcolor{red}{''C''} para que el compilador detecte que es un \textit{kernel} de \textsc{Cuda C} y cuando se le indique pueda compilar los \textit{kernel} en formato \textsc{ptx}.
+
+\newpage
 
 {\footnotesize
 	\begin{frame}{}
@@ -399,7 +395,7 @@ cudaMemcpy(void *dst, void *src, size_t count, cudaMemcpyKind kind);
 \end{frame}
 }.
 \\
-siendo \textit{dst} un puntero con la dirección de destino de los datos, \textit{src} un puntero con la dirección de origen de los datos, \textit{count} es la cantidad de bytes a transferir y \textit{kind} es el tipo de transferencia a realizar\cite{zone2020cuda}. La tabla \ref{tab:cudamemcy} contiene los cuatro tipos posibles de transferencia.
+siendo \textit{dst} un puntero con la dirección de destino de los datos, \textit{src} un puntero con la dirección de origen de los datos, \textit{count} es la cantidad de bytes a transferir y \textit{kind} es el tipo de transferencia a realizar \cite{zone2020cuda}. La tabla \ref{tab:cudamemcy} contiene los cuatro tipos posibles de transferencia.
 
 
 \begin{table}[h!]
@@ -421,7 +417,7 @@ siendo \textit{dst} un puntero con la dirección de destino de los datos, \texti
 
 \section{Programación en Python}
 
-Habiéndose desarrollado el código en \textsc{Cuda C} y compilado cada \textit{kernel} del mismo en formato \textsc{ptx}, éstos pueden ser utilizados en el lenguaje \textsc{Python} mediante la biblioteca \textsc{PyCuda}. El código de la siguiente página es el implementado para la Ec. (\ref{eq:rho}).
+Habiéndose desarrollado el código en \textsc{Cuda C} y compilado cada \textit{kernel} del mismo en formato \textsc{ptx}, éstos pueden ser utilizados en el lenguaje \textsc{Python} mediante el módulo \textsc{PyCuda}. El código de la siguiente página es el implementado para la Ec. (\ref{eq:rho}).
 
 Donde la función \textit{pycuda.driver.module\_from\_file()} nos permite importar el \textit{kernel} compilado previamente en \textsc{Cuda C}, siendo \textcolor{red}{\textbf{/PATH/}} la dirección del directorio dónde se encuentra el archivo \textsc{ptx} compilado. Las variables \textit{deviceField} y \textit{deviceRho} son las respectivas a la función de distribución de poblaciones \textit{f} y la densidad $\rho$. Previamente se deben haber inicializado las variables en el \textit{host}, como por ejemplo:
 {\footnotesize
@@ -510,21 +506,29 @@ Las subcarpetas (\textbf{en negrita}) y archivos (\underline{subrayados}) que po
 
 \begin{itemize}
 	\item \textbf{build}: es el directorio en el cual se encuentran los binarios del proyecto.
+	
 	\item \textbf{bin}: es el directorio en el cual se encuentran los ejecutables del proyecto.
-	\item \textbf{include}: es el directorio en el cual se encuentran todos los \textit{headers} de las funciones y \textit{kernels} realizados.
+	
+	\item \textbf{include}: es el directorio en el cual se encuentran los \textit{links} simbólicos a todos los \textit{headers} de las funciones y \textit{kernels} realizados.
+	
 	\item \textbf{lib}: es el directorio en el cual, una vez compilado el proyecto, se encuentran las bibliotecas realizadas en \textsc{C} y \textsc{Cuda C}.
+	
 	\item \textbf{ptx}: es el directorio en el cual, una vez compilado el proyecto, se encuentran compilados los \textit{kernel} de \textsc{Cuda C} en formato \textsc{ptx}.	
+	
 	\item \textbf{src}: es el directorio que posee los códigos fuente para los lenguajes \textsc{C}, \textsc{Cuda C} y \textsc{Python}.
+	
 	\item \textbf{examples}: es el directorio el cual posee ejemplos de ejecución del código por medio de \textit{scripts} de bash.
+	
 	\item \textbf{validation\_speed\_up}: es un directorio que contiene dos tipos de \textit{scripts} de bash. Los del primer tipo al ser ejecutados, realizan la validación de los problemas tratados en el Cap. (\ref{cap4}). El otro tipo de \textit{scripts} realizan una toma de tiempo de cálculo de los mismos problemas, para obtener un índice (\textit{speed\_up}) que indique la mejora de tiempo de cálculo entre lenguajes utilizados. 
-	\item \underline{CMakeLists.txt}: es el archivo principal del compilador utilizado, el cuál contiene todas las opciones de compilación del proyecto.
+	
+	\item \underline{CMakeLists.txt}: es el archivo principal del compilador utilizado, el cual contiene todas las opciones de compilación del proyecto.
 	
 \end{itemize}
 
 
 La herramienta de software \textsc{CMake} fue la utilizada para compilar el código desarrollado,  donde el archivo CMakeLists.txt principal tiene que encontrarse en la carpeta principal del proyecto. Dicho archivo contiene todas las instrucciones de compilación que debe/puede tener un proyecto a trabajar. A continuación se detallan las instrucciones más relevantes.
 
-Para indicar las carpetas de binarios (\textit{build}), ejecutables (\textit{bin}), bibliotecas (\textit{lib}), \textit{headers} de las funciones y \textit{kernels} (\textit{include}) y código fuente (\textit{src}) se realizan las siguientes instrucciones:
+Para indicar las carpetas de binarios (\textit{build}), ejecutables (\textit{bin}), bibliotecas (\textit{lib}), \textit{headers} de las funciones y \textit{kernels} (\textit{include}) y código fuente (\textit{src}) se incorporan las siguientes instrucciones:
 
 %, algunas de ellas son los directorios en que se encuentran los binarios, ejecutables, bibliotecas, códigos fuente entre otros. Otra de las instrucciones son los lenguajes a compilar con sus respectivas opciones de compilación. A continuación se describe las instrucciones ed compilación que tuvo el proyecto.
 
@@ -557,7 +561,7 @@ Para indicar las carpetas de binarios (\textit{build}), ejecutables (\textit{bin
 }
 
 
-Para asignar las bibliotecas en que se compilarán el código, se realizan las instrucciones mostradas a continuación, donde se colocaron algunas bibliotecas utilizadas a modo de ejemplo.
+Para asignar las bibliotecas en que se compilarán el código, se incorporan las instrucciones mostradas a continuación, donde se colocaron algunas bibliotecas utilizadas a modo de ejemplo.
 \newpage
 {\footnotesize
 	\begin{frame}{}
@@ -594,7 +598,7 @@ link_directories( ${CMAKE_SOURCE_DIR}/lib )
 	\end{frame}
 }
 
-La instrucción de asignar opciones de compilación en \textsc{C} y \textsc{Cuda C} son respectivamente las siguientes:
+La instrucción de asignar opciones de compilación en \textsc{C} y \textsc{Cuda C} respectivamente son las siguientes :
 \\\\
 \textcolor{blue}{\textbf{SET}}( CMAKE\_C\_FLAGS  \textcolor{red}{''\$\{CMAKE\_C\_FLAGS\} (opciones)''})
 \\\\
@@ -611,7 +615,7 @@ donde es importante señalar que dependiendo de la aquitectura que posee la GPU,
 
 Otras de las instrucciones que se le asignó al compilador, es que tenga la opción de que el proyecto se  compile únicamente en \textsc{C} ó, en su defecto  \textsc{C} y \textsc{Cuda C}. A su vez como se trabajó con distintas GPU, se implementó que el compilador detecte de forma automática la arquitectura que poseía la GPU de la PC, en dónde se está realizando la compilación. 
 
-El \textit{script} siguiente muestra la implementación de las instrucciones descriptas arriba:
+El siguiente archivo de configuración de \textsc{CMake} muestra la implementación de las instrucciones descriptas arriba:
 \newpage
 
 {\scriptsize
@@ -671,9 +675,9 @@ endif()
 	\end{frame}
 }
 
-Por último el código numérico se realizó para que sus variables estén en simple precisión o doble precisión. Por lo cual en el código de \textsc{C}, la declaración de variables que tomarán la asignación de \textcolor{blue}{float} ó \textcolor{blue}{double} será \textbf{scalar}, mientras que en el código de \textsc{Cuda C} será \textbf{cuscalar}. La forma de concretar lo mencionado se realizó en dos partes.
+Por último el código numérico se realizó para que sus variables estén en simple precisión o doble precisión. Por lo cual en el código de \textsc{C}, la declaración de variables que tomarán la asignación de \textcolor{blue}{float} ó \textcolor{blue}{double} será \textbf{scalar}, mientras que en el código de \textsc{Cuda C} será \textbf{cuscalar}. 
 
-La primera de ellas es que en el CMakeLists.txt principal se declararon las variables SP, DP, SP\_CUDA y DP\_CUDA, correspondiendo a simple precisión, doble precisión en \textsc{C} y \textsc{Cuda C} respectivamente. Por lo que dependiendo de que variable es la adoptada en el compilador, será la que se utilice luego en el código. El \textit{script} que ejecuta lo propuesto es el siguiente:
+La forma de concretar lo mencionado se realizó en dos partes. La primera de ellas es que en el CMakeLists.txt principal se declararon las variables SP, DP, SP\_CUDA y DP\_CUDA, correspondiendo a simple precisión, doble precisión en \textsc{C} y \textsc{Cuda C} respectivamente. Por lo que dependiendo de que variable es la adoptada en el compilador, será la que se utilice luego en el código. El archivo de configuración de \textsc{CMake} que ejecuta lo propuesto es el siguiente:
 
 \newpage
 {\scriptsize
@@ -720,7 +724,7 @@ endif()
 		
 	\end{frame}
 }
-La segunda parte para asignar un tipo de variable a \textbf{scalar} y \textbf{cuscalar} es el \textit{script} de tipo \textit{header} que aparece debajo. En él se busca las variables declaradas en el compilador (SP, DP, SP\_CUDA ó DP\_CUDA) y en base a ellas, define el tipo de variable para \textbf{scalar} y \textbf{cuscalar}. El \textit{header}, cuyo nombre de archivo es \textit{dataTypes.h} y se encuentra en el directorio \textit{include}, debe ser incluido en cada función o \textit{kernel} que posea una variable de tipo  \textbf{scalar} ó \textbf{cuscalar}.
+La segunda parte para asignar un tipo de variable a \textbf{scalar} y \textbf{cuscalar} es el \textit{script} de tipo \textit{header} que aparece debajo. En él se busca las variables declaradas en el compilador (SP, DP, SP\_CUDA ó DP\_CUDA) y en base a ellas, define el tipo de variable para \textbf{scalar} y \textbf{cuscalar}. El \textit{header}, cuyo nombre de archivo es \textit{dataTypes.h} y se encuentra en el directorio \textit{include}, debe ser incluido en cada función o \textit{kernel} que posea una variable de tipo  \textbf{scalar} o \textbf{cuscalar}.
 
 {\footnotesize
 	\begin{frame}{}
@@ -755,7 +759,7 @@ La segunda parte para asignar un tipo de variable a \textbf{scalar} y \textbf{cu
 }
 \newpage
 
-Anteriormente se detalló cómo agregar la carpeta con el código fuente (\textit{src}), éste a su vez posee otras subcarpetas, las cuáles se encuentran divididas en qué tipo de lenguaje se reaqlizó el código. Para que \textsc{CMake} siga agregando éstas carpetas con código fuente, es que se debe crear otro archivo CMakeLists.txt en ésta subcarpeta y agregar la ruta de compilación para los mismos. Lo descripto se realiza con el \textit{script}:
+Anteriormente se detalló cómo agregar la carpeta con el código fuente (\textit{src}), éste a su vez posee otras subcarpetas, las cuales se encuentran divididas en qué tipo de lenguaje se realizó el código. Para que \textsc{CMake} siga agregando éstas carpetas con código fuente, es que se debe crear otro archivo CMakeLists.txt en ésta subcarpeta y agregar la ruta de compilación para los mismos. Lo descripto se realiza mediante el siguiente archivo de configuración de \textsc{CMake} :
 
 {\footnotesize
 	\begin{frame}{}
@@ -784,7 +788,7 @@ Anteriormente se detalló cómo agregar la carpeta con el código fuente (\texti
 
 donde el metodo de utilizar \textbf{add\_subdirectory()} es la misma para las siguientes subcarpetas que posea el proyecto. 
 
-La Figura (\ref{fig:arq_proyecto}) muestra la arquitectura principal del proyecto a partir del directorio \textit{\textbf{src}}. En ella se encuentra desglosada las subcarpetas del lenguaje \textsc{C}, ya que la carpeta de \textsc{Cuda C} es el similar. En cuanto a la parte de \textsc{Python}, sólo se desarrolló la obtención de uno de los \textit{kernels} compilados en \textsc{ptx}, por lo que no se posee una estructura como la del resto de los lenguajes.
+La Figura (\ref{fig:arq_proyecto}) muestra la arquitectura principal del proyecto a partir del directorio \textit{\textbf{src}}. En ella se encuentra desglosada las subcarpetas del lenguaje \textsc{C}, ya que la carpeta de \textsc{Cuda C} es similar. En cuanto a la parte de \textsc{Python}, sólo se desarrolló la obtención de uno de los \textit{kernels} compilados en \textsc{ptx}, por lo que no se posee una estructura como la del resto de los lenguajes.
 
 \begin{figure}[htbp]
 	\centering
@@ -793,10 +797,11 @@ La Figura (\ref{fig:arq_proyecto}) muestra la arquitectura principal del proyect
 	\label{fig:arq_proyecto}	
 \end{figure}
 
+\newpage
 
 Cada una de las carpetas finales que se encuentran detalladas poseen uno o varios archivos que son funciones/\textit{kernels} con sus respectivos \textit{headers} y cada uno de los \textit{headers} tiene un \textit{link} simbólico en el directorio \textit{include}.
 
-Para agregar las funciones o \textit{kernels} a las bibliotecas que se configuraron en el CMakeLists.text principal, se debe indicar una instrucción \textbf{add\_library()}. Primero se ejemplifica en el código de \textsc{C} para la biblioteca \textit{lbequation.so} con algunas de las funciones que posee la misma. En el directorio de lbEquation, además de contar con sus subdirectorios, posee un CMakeLists.txt el cuál contiene la forma del siguiente \textit{script}:
+Para agregar las funciones o \textit{kernels} a las bibliotecas que se configuraron en el CMakeLists.text principal, se debe indicar una instrucción \textbf{add\_library()}. Primero se ejemplifica en el código de \textsc{C} para la biblioteca \textit{lbequation.so} con algunas de las funciones que posee la misma. En el directorio de lbEquation, además de contar con sus subdirectorios, posee un CMakeLists.txt el cual contiene la forma del siguiente archivo de configuración de \textsc{CMake} :
 
 {\footnotesize
 	\begin{frame}{}
@@ -834,9 +839,9 @@ Para agregar las funciones o \textit{kernels} a las bibliotecas que se configura
 	\end{frame}
 }
 
-En el caso del código de \textsc{Cuda C}, además de lo realizado, se debe agregar la instrucción de compilación en el formato \textsc{ptx} de cada uno de los \textit{kernels} desarrollados. El \textit{script} de la siguiente página ejemplifica la forma de obtener lo requerido.
+En el caso del código de \textsc{Cuda C}, además de lo realizado, se debe agregar la instrucción de compilación en el formato \textsc{ptx} de cada uno de los \textit{kernels} desarrollados. El archivo de configuración de \textsc{CMake} de la siguiente página ejemplifica la forma de obtener lo requerido.
 
-El directorio \textit{applications} posee archivos \textit{main}, que son los ejecutables. De ellos falta aclarar dos cosas, la primera es la estructuración de la memoria para resolver los problemas mediante el método descripto en la Sec. ( \ref{sec:LBM_2_ec_MRT}) y la segunda es la instrucción que debe dársele al compilador para que efectivamente el archivo sea compilado como un ejecutable.
+El directorio \textit{applications} posee archivos que contienen la definición de \textit{main} y son los ejecutables. Es necesario remarcar dos aspectos. Por un lado la estructuración de la memoria para resolver los problemas mediante el método descripto en la Sec. ( \ref{sec:LBM_2_ec_MRT}). Por otro lado la instrucción que debe dársele al compilador para que efectivamente el archivo sea compilado como un ejecutable.
 
 \newpage
 {\footnotesize
@@ -889,7 +894,7 @@ install(TARGETS cudalbequationPTX
 	\end{frame}
 }
 
-La estructura de la memoria utilizada, es reservada en matrices o vectores para todos los elementos de la malla los siguientes parámetros que se detallan abajo.
+La estructura de la memoria utilizada, es reservada en matrices o vectores para todos los elementos de la malla con los parámetros que se detallan a continuación.
 
 \begin{itemize}
 	\item Función distribución de poblaciones \textit{f} y \textit{q}. (Tamaño N x q)
@@ -903,7 +908,7 @@ La estructura de la memoria utilizada, es reservada en matrices o vectores para 
 	
 \end{itemize}
 
-Siendo \textit{N} la cantidad de elementos de la malla y \textit{q} la dimensión de la velocidad de grilla del modelo.
+En éste caso \textit{N} es la cantidad de elementos de la malla y \textit{q} la dimensión de la velocidad de grilla del modelo.
 
 Cabe destacar que la matriz que posee la información de los nodos vecinos, sigue una asignación utilizada según cómo está dispuesta la velocidad de grilla $\mathbf{e}$, como indica la Figura (\ref{fig:grilla_D2Q9}). En nuestro caso, la información se encuentra almacenada para el nodo \textit{i} de la siguiente forma:
 
@@ -914,9 +919,9 @@ Cabe destacar que la matriz que posee la información de los nodos vecinos, sigu
 	\end{bmatrix}
 \end{align*}
 
-donde la nomeclatura de $v_\alpha$ indica que es el vecino que se encuentra en la dirección de $\alpha$. Siendo $v_0 = i$. Ésta disposición marca la forma en que leerán los registros de memoria, pudiendo no estar optimizada totalmente.
+donde la nomeclatura de $v_\alpha$ indica que es el vecino que se encuentra en la dirección de $\alpha$. En el caso presentado $v_0 = i$. Ésta disposición marca la forma en que leerán los registros de memoria, pudiendo no estar optimizada totalmente.
 
-Para finalizar se utiliza la instrucción \textbf{add\_exacutable()} y \textbf{target\_link\_libraries()} para realizar un archivo ejecutable mediante \textsc{CMake}. A modo de ejemplo, se muestra el archivo CMakeLists.txt del ejecutabla maxwellConstruction que se encuentra en el directorio con su mismo nombre.
+Para finalizar se utiliza la instrucción \textbf{add\_exacutable()} y \textbf{target\_link\_libraries()} para realizar un archivo ejecutable mediante \textsc{CMake}. A modo de ejemplo, se muestra el archivo CMakeLists.txt del ejecutable maxwellConstruction que se encuentra en el directorio con su mismo nombre.
 
 {\footnotesize
 	\begin{frame}{}
@@ -948,7 +953,7 @@ target_link_libraries(maxwellConstruction
 Lo que se describió hasta la presente instancia es todo lo que se utilizó en cuanto a las instrucciones de compilación mediante la herramienta de software \textsc{CMake}. También se describió lo necesario para entender la estructuración del código y poder entender de forma clara, cómo es la aplicación de el método descripto en la Sec. (\ref{sec:LBM_2_ec_MRT}).
 
 \newpage
-\section{Control de versiones y desarrollo del código \\ numérico en Git}
+\section{Control de versiones y desarrollo del código \\ numérico utilizando Git}
 \label{sec:git}
 
 Git es un software que sirve para controlar versiones de archivos que se encuentran en un repositorio. El mismo fue desarrollado por Linus Torvalds cuando él empezo a desarrollar el \textit{kernel} de \textit{Linux}. El proyecto de éste trabajo se desarrollo con el sistema operativo \textit{Debian 10} y se encuentra en el repositorio de la página web de \textsc{Git Hub}. El proyecto puede ser descargado mediante las siguientes líneas de comando en la terminal:

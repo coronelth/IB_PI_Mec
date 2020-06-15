@@ -7,27 +7,24 @@
 
 En éste capítulo se presentara cuál es el modelo de LB para la resolución de problemas de transferencia de calor con flujos multifásicos y cambio de fase.
 
-Generalmente es difícil resolver las ecuaciones de la mecánica de los fluidos. Las soluciones analíticas de los problemas que pueden ser halladas son escasas, como el caso de flujos \textit{Couette} o \textit{Poisueuille}. Problemas que contengan una geometría más compleja u otras condiciones de contorno, poseen una gran dificultad para encontrar la solución de las ecuaciones de la mecánica de fluidos, si es que el problema la tiene. Debido a ello las soluciónes se obtienen numéricamente \cite{kruger2017lattice}(Sec 3.1). Es de importancia el desarrollo de métodos numéricos que resuelvan los problemas de forma paralela y por medio de este proceso, reducir el tiempo de cálculo.
+Generalmente es difícil resolver las ecuaciones de la mecánica de los fluidos. Las soluciones analíticas de los problemas que pueden ser halladas son escasas, como el caso de flujos \textit{Couette} o \textit{Poisueuille}. Es difícil encontrar la solución de las ecuaciones de la mecánica de fluidos en problemas con geometrías complejas u otras condiciones de contorno, si es que el problema la tiene. Debido a ello las soluciónes se obtienen numéricamente \cite{kruger2017lattice}(Sec 3.1), por lo tanto es de importancia el desarrollo de métodos numéricos que resuelvan los problemas de forma paralela y por medio de este proceso, reducir el tiempo de cálculo.
 
 Los problemas que se plantean resolver en el presente trabajo son de transferencia de calor en flujos multifásicos con cambio de fase y la escala de fluido adoptada es la mesoscópica. Considerando la escala y siendo un problema multifásico, se opta por resolver numéricamente mediante LBM. 
 
 
-Los mayoría de los modelos para resolver los flujos multifásicos son clasificados en cuatro categorias generales : \textit{color gradient}, \textit{Shan Chen model} o \textit{pseudopotential}, \textit{Free-energy} y  \textit{phase-field}. 
+Los mayoría de los modelos LBM para resolver los flujos multifásicos son clasificados en cuatro categorias generales : \textit{color gradient}, \textit{Shan Chen model} o \textit{pseudopotential}, \textit{Free-energy} y  \textit{phase-field}. 
 
 
 \begin{itemize}
 	
-	\item \textit{Color gradient}: fue el primer modelo de LBM para flujos multifásicos siendo desarrollado por Gunstensen \cite{gunstensen1991lattice}. Las fases y las interacciones entre las partículas son denotadas mediante diferentes colores. Por medio del modelado local del gradiente de color que se encuentra asociado a la diferencia de las densidades de las dos fases, se conoce cómo es la segregación y separación de las fases.
+	\item \textit{Color gradient}: fue el primer modelo de LBM para flujos multifásicos desarrollado por Gunstensen \cite{gunstensen1991lattice}. Las fases y las interacciones entre las partículas son denotadas mediante diferentes colores. Por medio del modelado local del gradiente de color que se encuentra asociado a la diferencia de las densidades de las dos fases, se conoce cómo es la segregación y separación de las fases.
 	
-	\item \textit{Shan Chen model} o \textit{pseudopotential} surge de representar la fenomenología de \textit{color gradient} por medio de una redistribución de las particulas del fluido. La fuerza de interacción proviene de la diferencia entre las fuerzas promedio del modelo molecular  entre ambos lados de la interfaz. Shan and Chen \cite{shan1993lattice} presentaron un modelo de LBE (referenciado como modelo SC) que podría representar la interacción entre partículas fluidas de forma más precisa y directa introduciendo un pseudo potencial. 
+	\item \textit{Shan Chen model} o \textit{pseudopotential} surge de representar la fenomenología de \textit{color gradient} por medio de una redistribución de las partículas del fluido. La fuerza de interacción proviene de la diferencia entre las fuerzas promedio del modelo molecular  entre ambos lados de la interface. Shan and Chen \cite{shan1993lattice} presentaron un modelo de LBE (referenciado como modelo SC) que podría representar la interacción entre partículas fluidas de forma más precisa y directa introduciendo un pseudo-potencial. En este caso, el pseudo-potencial que produce la fuerza de interacción entre partículas fluidas está basado en la incorporación de una EOS que permita la coexistencia de fases en equilibrio.
 	
-	\item \textit{Free-energy} es un tipo de modelo alternativo de LBE desarrollado por Swift \cite{swift1995lattice} para modelos multifásicos/multicomponentes basado en la teoría de energía libre (\textit{free-energy}). La idea básica del nuevo método es realizar una función de distribución de equilibrio basada en funciones de energía libre, en las cuales se incorpora el tensor de presión termodinámico.\cite{guo2013lattice}(sec 7).
+	\item \textit{Free-energy} es un tipo de modelo alternativo de LBM desarrollado por Swift \cite{swift1995lattice} para modelos multifásicos/multicomponentes basado en la teoría de energía libre (\textit{free-energy}). La idea básica del nuevo método es realizar una función de distribución de equilibrio basada en funciones de energía libre, en las cuales se incorpora el tensor de presión termodinámico.\cite{guo2013lattice}(sec 7).
 	
 	\item \textit{Phase-field} utiliza en su modelo un parámetro gobernado por una ecuación de tipo convección-difusión para realizar un seguimiento de la interfase. Presenta una gran estabilidad numérica y precisión para problemas con grandes relaciones de densidad y viscosidad \cite{wang2019brief}.
 	
-	\iffalse
-	Debido a que la fenomenología representada en los modelos de LBE de color y pseudo potenciales son la misma. \textbf{se corta la oracion}
-	\fi
 	
 \end{itemize}
 
@@ -37,47 +34,42 @@ Los mayoría de los modelos para resolver los flujos multifásicos son clasifica
 
 \section{Modelo pseudopotencial}
 
-El modelo pseudopotencial es el adoptado en el presente trabajo, donde dicho modelo resuelve problemas cuya discretización espacial está realizada de forma regular, siendo los dominios rectangulares o cuadrados. Este modelo multifásico tiene la particularidad de que la frontera entre las fases no es resuelta con exactitud. Dicha interfaz es representada de forma difusa con un cierto tamaño en la grilla, siendo una importante ventaja para el cálculo puesto que la interfase no debe ser reconstruida.\cite{parrill2019reviews}.
+El modelo pseudopotencial es el adoptado en el presente trabajo, donde dicho modelo resuelve problemas cuya discretización espacial está realizada de forma regular, siendo la geometría de discretización un cuadrado. Este modelo multifásico tiene la particularidad de que la frontera entre las fases no es resuelta con exactitud, sino que es representada dicha interfaz es representada de forma difusa con un cierto tamaño en la grilla, siendo una importante ventaja para el cálculo puesto que la interfase no debe ser reconstruida \cite{parrill2019reviews}.
 
 
-La obtención de la ecuación de lattice Boltzmann (LBE) a través de la ecuación de Boltzmann se encuentra descripta en \cite{kruger2017lattice} (Sec 3.4 y 3.5 ). Primero se explica la discretización en el espacio de velocidades, en el segundo la del espacio físico, temporal e integración de las características.
+La obtención de la ecuación de lattice Boltzmann (LBE) a través de la ecuación de Boltzmann se encuentra descripta con detalle en \cite{kruger2017lattice}, de modo que sólo se incluirá una breve descripción. El problema físico a resolver cuenta con una región a la que se le realizará un mallado regular para discretizar el espacio. El nodo i - ésimo de la malla posee las coordenadas ${\bar{X}}_{i} = (x,y,z)$, a su vez densidad $\rho_{i}$ y temperatura $T_{i}$. La velocidad del fluido en el nodo tiene las componentes ${\bar{U}}_{i} = ({U}_{ix},{U}_{iy},{U}_{iz})$. El espacio de velocidades indica la propagación de las propiedades en la grilla, donde la velocidad de grilla $\mathbf{e}_{i}$ posee $q$ componentes.
 
+Los modelos de grilla suelen denotarse como \textit{DdQq}, donde \textit{d} son las dimensiones del espacio euclídeo y \textit{q} la cantidad de componentes en que se discretiza en espacio de fases. En el presente trabajo el modelo de grilla es $D2Q9$, donde el esquema de velocidades de grilla para el nodo i-ésimo del D2Q9 es el presentado en la Figura \ref{fig:D1Q3_D2Q9}. La Ec. (\ref{eq:velgrilla}) detalla los valores de velocidad adoptados. 
 
-El problema físico a resolver cuenta con una región, la cuál se le realizará un mallado para discretizar el espacio. El nodo i - ésimo de la malla posee las coordenadas ${\bar{X}}_{i} = (x,y,z)$, a su vez densidad $\rho_{i}$ y temperatura $T_{i}$. La velocidad del fluido en el nodo tiene las componentes ${\bar{U}}_{i} = ({U}_{ix},{U}_{iy},{U}_{iz})$. El espacio de velocidades indica como es la propagación de las propiedades en la grilla, donde la velocidad de grilla $\mathbf{e}_{i}$ posee $q$ componentes.
+En el caso más simple se cuenta con una única función de distribucion \textit{f}, y sus primeros momentos discretos en el espacio de velocidades están asociados a propiedades macroscópicas del fluido, como la densidad y velocidad del fluido.
 
-En el presente trabajo el LBM es $D2Q9$, el esquema de velocidades de grilla para el nodo i-ésimo del D2Q9 es el presentado en la Figura \ref{fig:D1Q3_D2Q9}. La Ec. (\ref{eq:velgrilla}) detalla los valores de velocidad adoptados. 
-
-Cada nodo de la grilla contará con una distribución $\mathbf{f}$, asociada al espacio de poblaciones. En el caso más simple se cuenta con una distribución y es asociada a la densidad. La distribución $\mathbf{f}$ posee $q$ componentes y mediante ella se pueden recuperarse variables macroscópicas del problema, como ser : $\rho$, $U$, $T$.
-
-En este modelo es necesario porporcionar un potencial que describa a las fuerzas de interacción entre los nodos, dicho potencial estará dado por una Ecuación de estado (\textit{Equation of state} o EOS). Es de importancia la elección de la EOS a utilizar, puesto que según ella se recupera el tensor de presión, las variables $\rho$, $U$, $T$ ; a una dada presión y temperatura las densidades de coexistencia de líquido y gas, como el calor latente en entre otras propiedades intrínsecas del fluido.
+En este modelo es necesario porporcionar un potencial que describa a las fuerzas de interacción entre los nodos y dicho potencial estará dado por una Ecuación de estado (\textit{Equation of state} o EOS). Es de importancia la elección de la EOS a utilizar, puesto que según ella se recupera el tensor de presión, las variables $\rho$, $U$, $T$ ; a una dada presión y temperatura las densidades de coexistencia de líquido y gas, como el calor latente en entre otras propiedades intrínsecas del fluido.
 
 \section{Ecuación de estado y fluido de Van der Waals}
 
-Al ser multifásicos los problemas a desarrollar, es de importancia conocer las leyes que gobiernan las fases de los fluidos. La ley de gases ideales \ref{eq:gas_ideal} es una EOS , cabe destacar que la mayor supusición es que las partículas del gas son puntuales. Donde \textit{p} es la presión (atm), V es el volúmen (L), \textit{n} número de moles, R constante universal de los gases y \textit{T} temperatura. La Ley caracteriza el comportamiento para gases de baja densidad.
+Al ser multifásicos los problemas a desarrollar, es de importancia conocer las leyes que gobiernan las fases de los fluidos. La ley de gases ideales Ec. (\ref{eq:gas_ideal}) es un ejemplo de EOS , donde \textit{p} es la presión (atm), V es el volúmen (L), \textit{n} número de moles, R constante universal de los gases y \textit{T} temperatura. La Ley caracteriza el comportamiento para gases de baja densidad.
 
 \begin{align}
 p V = n R T
 \label{eq:gas_ideal}
 \end{align}
 
-La EOS de Van der Waals (VdW) \ref{eq:VdW_P} fue propuesta para caracterizar el comportamiento de los gases reales, siendo $V_m = \frac{V}{n}$ el volúmen molar. Las constantes \textit{a} y \textit{b} son características de cada fluido.
+La EOS de Van der Waals (VdW) Ec.(\ref{eq:VdW_P}) fue propuesta para caracterizar el comportamiento de los gases reales, siendo $V_m = \frac{V}{n}$ el volúmen molar. Las constantes \textit{a} y \textit{b} son características de cada fluido.
 
 \begin{align}
 p = \frac{R T}{V_m - B} - A {(\frac{1}{V_m})}^2
 \label{eq:VdW_P}
 \end{align}
 
-El parámetro \textit{A}  ($\frac{atm L^2}{mol^2}$) caracterizan la interacción que poseen las moléculas del gas entre sí, y \textit{B} ($\frac{L}{mol}$) da una idea del volumen molar mínimo que posee una partícula del fluído (éste parámetro define a la partícula del gas con un dado volúmen en vez de ser puntual como en la Ley de gases ideales).
+El parámetro \textit{A}  ($\frac{atm L^2}{mol^2}$) caracteriza la interacción que poseen las moléculas del gas entre sí, y \textit{B} ($\frac{L}{mol}$) da una idea del volumen molar mínimo que posee una partícula del fluido (éste parámetro define a la partícula del gas con un dado volúmen en vez de ser puntual como en la Ley de gases ideales).
 
-La EOS de VdW es utilizada en el presente trabajo para modelar el potencial del modelo LBM \textit{pseudopotential} de interacción entre las partículas. Su elección es debido a que permite la coexistencia de dos fases en equilibrio \cite{huang2015multiphase}. 
+La EOS de VdW es utilizada en el presente trabajo para modelar el potencial del modelo LBM \textit{pseudopotential} de interacción entre las partículas. Su elección es debido a que permite la coexistencia de diferente densidad \cite{huang2015multiphase}. 
 
 
 \section{Modelo pseudopotencial de dos ecuaciones con operador MRT}
 \label{sec:LBM_2_ec_MRT}
 
-En ésta sección se describirá cuál es el LBM utilizado para resolver problemas con discretización espacial de dominio regular, con geometría cuadrada o rectangular. El operador \textit{multiple relaxation times} (MRT) dispone de una determinada cantidad de  parámetros, donde los mismos se ajustan para validar el modelo.
-
-Se deben resolver dos ecuaciones, la primera es la hidrodinámica que representa a la conservación de masa y momento; la segunda a la de energía, descriptas en \colorbox{green}{citar paper con la ec de energia}.
+En ésta sección se describirá cuál es el LBM utilizado para resolver problemas con discretización espacial de dominio regular. Se deben resolver dos ecuaciones, la primera es la hidrodinámica que representa a la conservación de masa y momento; la segunda a la de energía, descriptas en \colorbox{green}{citar paper con la ec de energia}.
 
 
 \subsection{Ecuación hidrodinámica}
@@ -89,9 +81,9 @@ Por medio de la función de distribución Ec.(\ref{eq:fieldmom}) \cite{li2013lat
     \mathbf{f}(\mathbf{x} + \mathbf{e} \> \delta_{t} , t + \delta_{t}) = \mathbf{M}^{-1} \left[ \mathbf{m} - \mathbf{\Lambda}(\mathbf{m} - \mathbf{m}^{(eq)}) + \delta_{t} \left( \mathbf{I} - 0,5 \mathbf{\Lambda} \right) \mathbf{\bar{S}}  \right]_{(\mathbf{x},t)} 
     \label{eq:fieldmom}
 \end{equation}\\
-donde $\mathbf{x}$ es la posición espacial, \textit{t} el tiempo, $\delta_{t}$ el paso de tiempo , \textit{\textbf{e}} la velocidad de grilla en sus direcciones $\alpha$ y $\textit{f}$ es la distribución de densidad en el espacio de poblaciones. La notación utilizada implica que la componente $\alpha$-ésima del miembro izquiero de la Ec. (\ref{eq:fieldmom}) esté dado por $f_{\alpha}(x + e_{\alpha} \delta_{t}  , t + \delta_{t} )$. El miembro derecho de la Ec. (\ref{eq:fieldmom}) corresponde a la etapa de post-colisión definida en el espacio de momentos, donde \textbf{I} es el tensor identidad, \textbf{M} una matriz de transformación ortogonal, $\mathbf{m} = \mathbf{M} \cdot \mathbf{f}$ , $\mathbf{m}_{eq} = \mathbf{M} \cdot \mathbf{f}_{eq}$ , $\mathbf{\bar{S}} = \mathbf{M} \mathbf{S}$ el término de fuente y $ \Lambda$ es una matriz diagonal.
+donde $\mathbf{x}$ es la posición espacial, \textit{t} el tiempo, $\delta_{t}$ el paso de tiempo , \textit{\textbf{e}} la velocidad de grilla en sus direcciones $\alpha$ y $\textit{f}$ es la distribución de densidad en el espacio de poblaciones. La notación utilizada implica que la componente $\alpha$-ésima del miembro izquiero de la Ec. (\ref{eq:fieldmom}) esté dado por $f_{\alpha}(x + e_{\alpha} \delta_{t}  , t + \delta_{t} )$. El miembro derecho de la Ec. (\ref{eq:fieldmom}) corresponde a la etapa de post-colisión definida en el espacio de momentos, donde \textbf{I} es el tensor identidad, \textbf{M} una matriz de transformación ortogonal, $\mathbf{m} = \mathbf{M} \cdot \mathbf{f}$ , $\mathbf{m}_{eq} = \mathbf{M} \cdot \mathbf{f}_{eq}$ , $\mathbf{\bar{S}} = \mathbf{M} \mathbf{S}$ el término de fuente y $ \Lambda$ es una matriz diagonal. Este tipo de operador se conoce como MRT (\textit{Multiple Relaxation Times}).
 
-Para el modelo de grilla D2Q9 utilizado en el presente trabajo $\mathbf{m}_{eq}$ y $ \Lambda$ están dados por Ec. \ref{eq:m} y \ref{eq:lambda} respectivamente.
+Para el modelo de grilla D2Q9 utilizado en el presente trabajo $\mathbf{m}_{eq}$ y $ \Lambda$ están dados por Ecs. (\ref{eq:m}) y (\ref{eq:lambda}) respectivamente.
 
 \begin{align}
 m_{eq} =  \rho  \left( 1, - 2 + 3 {|u|}^{2} , 1 - 3{|u|}^{2} , u_{x} , - u_{x} , u_{y} , - u_{y} , {u_{x}}^{2} - {u_{y}}^{2} , u_{x} u_{y} \right) 
@@ -180,7 +172,7 @@ Se puede recuperar la ecuación de Navier - Stokes utilizando Ecs. [\ref{eq:rho}
 \mathbf{F} = - G c^{2} \left[	\psi \nabla \psi + \frac{1}{6} c^{2} \psi \nabla \left( \nabla^{2} \psi\right) + ...\right] + \mathbf{F}_{b} = \mathbf{F}_{int} + \mathbf{F}_{b}
 \end{equation}
 \\
-Siendo $\mathbf{\Pi}$ es el tensor de viscosidad dado por :
+En éste caso, el tensor de viscosidad $\mathbf{\Pi}$ queda determinado por :
 
 \begin{equation}
 	\mathbf{\Pi} = \rho \nu \left[	\nabla \mathbf{u} + {\left(\nabla \mathbf{u}\right)}^{T}\right] + \rho \left(\ \xi - \nu \right) \left( \nabla \mathbf{u}\right) \mathbf{I}
@@ -190,9 +182,9 @@ siendo $\quad\nu = {c_{s}}^{2} (\tau_{\nu}- 0,5) \delta_{t}\quad$ la viscosidad 
 
 
 
-\subsection{Ecuación energía}
+\subsection{Ecuación de energía}
 
-Para tener en cuenta la transferencia de calor en el modelo, es necesario adicionar otra ecuación de LB acoplandola con la primera \cite{li2013lattice}. Para nuestro caso, se utiliza la distribución de poblaciones \textit{g} en la Ec. (\ref{eq:fieldenergy}), la cuál también posee un operador de colisión MRT, donde $\mathbf{n} = \mathbf{M} \mathbf{g}$ es una distribución de momentos y $\hat{\Gamma}$ es una fuente en el espacio de momentos.
+Para tener en cuenta la transferencia de calor en el modelo, es necesario adicionar otra ecuación de LB acoplandola con la Ec. (\ref{eq:fieldmom})primera \cite{li2013lattice}. Para nuestro caso, se utiliza la distribución de poblaciones \textit{g} en la Ec. (\ref{eq:fieldenergy}), la cuál también posee un operador de colisión MRT, donde $\mathbf{n} = \mathbf{M} \mathbf{g}$ es una distribución de momentos y $\hat{\Gamma}$ es una fuente en el espacio de momentos.
 
 
 \begin{equation}
@@ -200,7 +192,7 @@ Para tener en cuenta la transferencia de calor en el modelo, es necesario adicio
     \label{eq:fieldenergy}
 \end{equation}
 
-En éste caso los parámetros libres del modelo MRT vienen dados en parte por la matriz de coeficientes de relajación \textbf{Q}, siendo compuesta por la diagonal que se indica en Ec.(\ref{eq:Q_matriz}) y además por los elementos no nulos $Q_{3,4}$ y $ Q_{5,6}$ que se indican en las Ecs. (\ref{eq:Q_34}) y (\ref{eq_Q_56})  respectivamente.
+En este caso los parámetros libres del modelo MRT vienen dados en parte por la matriz de coeficientes de relajación \textbf{Q}, siendo compuesta por la diagonal que se indica en Ec.(\ref{eq:Q_matriz}) y además por los elementos no nulos $Q_{3,4}$ y $ Q_{5,6}$ que se indican en las Ecs. (\ref{eq:Q_34}) y (\ref{eq_Q_56})  respectivamente.
 
 \begin{equation}
     \textit{diag} (Q) = {( q_{0} , q_{1} , q_{2} , q_{3} , q_{4} , q_{5} , q_{6} , q_{7} , q_{8} )}^{T}
@@ -215,7 +207,7 @@ En éste caso los parámetros libres del modelo MRT vienen dados en parte por la
     \label{eq_Q_56}
 \end{equation}
 
-La distribución de equilibrio $\mathbf{n}_{eq}$ se encuentra definida en Ec.(\ref{eq:n_eq}), siendo $\alpha_{1}$ y $\alpha_{2}$ parámetros libres del modelo MRT.
+La distribución de equilibrio $\mathbf{n}_{eq}$ se encuentra definida en Ec.(\ref{eq:n_eq}), siendo $\alpha_{1}$ y $\alpha_{2}$ parámetros libres del modelo :
 
 \begin{equation}
     {\mathbf{n}}_{eq} = T { \left( 1, \alpha_{1}, \alpha_{2}, u_{x}, -u_{x}, u_{y}, -u_{y}, 0, 0 \right) }^{T}
@@ -231,7 +223,7 @@ T = \sum_{\alpha} g_{\alpha} + \frac{1}{2} \delta_{t} {\hat{\Gamma}}_{0}
 
 
 
-Siendo el término fuente :
+donde el término fuente resulta :
 
 
 \begin{equation}
@@ -251,18 +243,21 @@ Por medio de las  Ecs.(\ref{eq:fieldenergy}) y (\ref{eq:temperatura}) se recuper
     \frac{\partial T}{\partial t} + \nabla \cdot ( \mathbf{u} T ) = \chi \> {\nabla }^{2} T + s
 \end{equation}
 
-Donde $\chi$ es la difusividad térmica, considerándose constante por simplicidad, obteniéndose mediante Ec. (\ref{eq:chi}). La difusividad térmica queda determinada por los coeficientes de relajación $\mathbf{Q}$ y los parámetros libres $\alpha_{1}$ y $\alpha_{2}$ de ${\textbf{n}}_{eq}$.
+Donde $\chi$ es la difusividad térmica:
 
 \begin{equation}
-    \chi = \delta_{t} \left( \frac{1}{q_{3}} - \frac{1}{2} \right) \left( \frac{ 4 + 3 \alpha_{1} + 2 \alpha_{2}}{6} \right)
-    \label{eq:chi}
+\chi = \delta_{t} \left( \frac{1}{q_{3}} - \frac{1}{2} \right) \left( \frac{ 4 + 3 \alpha_{1} + 2 \alpha_{2}}{6} \right)
+\label{eq:chi}
 \end{equation}
+
+En el presente trabajo, se considera $\chi$ constante en cada fase, y puede verse que queda determinada por coeficientes de relajación específicos y los parámetros libres $\alpha_{1}$ y $\alpha_{2}$.
+
 
 \subsection{Condiciones de contorno}
 
 Cuando se realiza el \textit{streaming} en los nodos que se encuentran en la frontera de la región a resolver, no se poseen todos los valores de la función de distribución de poblaciones $\mathbf{f}$ y $\mathbf{g}$, por lo que es necesario determinar cómo se obtienen los mismos. 
 
-El código numérico que se desarrolló es para tipos de problemas con una región cuadrada o rectangular y condición de contorno periódicas, ya sea en el eje \textit{X}, \textit{Y} o en ambos. Por lo que no existe la dificultad de fijar los valores de $\mathbf{f}$ y $\mathbf{g}$ en nodos que se encuentran en los vértices de la región. Siendo los casos a desarrollar  el de los nodos que se encuentran en las aristas del cuadrado o rectángulo. Las cuatro (4) aristas de la región se resuelven de forma idéntica por lo que sólo se  desarrollará una.
+El código numérico que se desarrolló es para tipos de problemas con una región cuadrada o rectangular y condición de contorno periódicas, ya sea en el eje \textit{X}, \textit{Y} o en ambos. En este caso, las fronteras a analizar corresponden a una de las 4 aristas del dominio. Como la resolución es idéntica, sólo se detalla el procedimiento para una.
 
 La Figura (\ref{fig:CC_hidro}) ilustra las direcciones de las componentes de $\mathbf{f}$ y $\mathbf{g}$ para un nodo que se encuentra en la frontera. La disposición observada es la que se evaluará para las condiciones de contorno hidrodinámica y de energía.  Por convención las direcciones que se conocen los valores de las funciones de distribución pertenecen al conjunto A y las que no se conocen al conjunto B. Por lo que $ 0, 1, 2, 4, 5, 8 \in A$ y $ 3, 6, 7 \in B$. 
 
@@ -306,7 +301,7 @@ Para obtener una resolución de problemas genéricos, se debe agregar la condici
 
 La condición de contorno a realizar en la ecuación de energía, es mantener una temperatura fija en una de las aristas o en secciones de la misma. Por lo cual se utiliza el desarrollo de Inamuro \cite{inamuro2002lattice}.
 
-Primeramente se calcula el valor de la distribución de equilibrio del nodo $i$-ésimo $\mathbf{g_{eq}}$ utilizando Ec. (\ref{eq:n_eq}) y $\mathbf{M}$ de la forma $\mathbf{g_{eq}} = \mathbf{M}^{-1} \mathbf{n_{eq}}$. Se prosigue a calcular el parámetro $\beta$:
+Primero se calcula el valor de la distribución de equilibrio del nodo $i$-ésimo $\mathbf{g_{eq}}$ utilizando Ec. (\ref{eq:n_eq}) y $\mathbf{M}$ de la forma $\mathbf{g_{eq}} = \mathbf{M}^{-1} \mathbf{n_{eq}}$. Se prosigue a calcular el parámetro $\beta$:
 
 \begin{equation}
 \beta = \frac{T_{cc} - \sum_{A} g_{A}}{\sum_{B} g_{B}}
