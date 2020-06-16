@@ -132,7 +132,7 @@ Para calcular el \textsc{SU} de éste problema, se tomó una $T_r$ fija y se var
 
 Los tamaños de grilla que se utilizaron para realizar las pruebas de tiempo de ésta placa, tienen el rango de grilla de 16x16 nodos hasta 2048x2048 nodos. La cantidad de \textit{thread blocks} que se utilizó fueron de 1 a 512.
 
-Las Figuras (\ref{fig:s_760_MxC_simple_1.0}) y (\ref{fig:s_760_MxC_double_1.0}) muestran el \textit{SU} obtenido en simple precisión y doble precisión respectivamente. El mejor resultado en ambos casos se obtuvo para un número de \textit{thread block} igual a 64, donde la mejora fue de 18.67 y 11.40 en simple y doble precisión respectivamente, para el mayor número de elementos de malla.
+Las Figuras (\ref{fig:s_760_MxC_simple_1.0}) y (\ref{fig:s_760_MxC_double_1.0}) muestran el SU obtenido en simple precisión y doble precisión respectivamente. El mejor resultado en ambos casos se obtuvo para un número de \textit{thread block} igual a 64, donde la mejora fue de 18.67 y 11.40 en simple y doble precisión respectivamente, para el mayor número de elementos de malla.
 
 
 \begin{figure}[htbp]
@@ -181,7 +181,7 @@ Los tamaños de grilla que se utilizaron para realizar las pruebas de tiempo de 
 
 \newpage
 
-Las Figuras (\ref{fig:s_970_MxC_simple_10}) y (\ref{fig:s_970_MxC_double_10}) muestran el \textit{SU} obtenido en simple precisión y doble precisión respectivamente. El mejor resultado en ambos casos se obtuvo para un número de \textit{thread block} igual a 32, donde la mejora fue de 23.39 y 10.96 en simple y doble precisión respectivamente, para el mayor número de elementos de malla.
+Las Figuras (\ref{fig:s_970_MxC_simple_10}) y (\ref{fig:s_970_MxC_double_10}) muestran el SU obtenido en simple precisión y doble precisión respectivamente. El mejor resultado en ambos casos se obtuvo para un número de \textit{thread block} igual a 32, donde la mejora fue de 23.39 y 10.96 en simple y doble precisión respectivamente, para el mayor número de elementos de malla.
 
 La Figura (\ref{fig:c_970_MxC_cuda_10}) muestra el ${SU}_p$ del código de \textsc{Cuda C} en la GPU NVIDIA GeForce GTX 970. Para un número de \textit{thread block} igual a 32, el tiempo de cálculo en doble precisión es 1,29 veces mayor que en simple precisión en el mayor número de elementos de malla calculado. Se reporta únicamente el resultado para esa cantidad de \textit{thread block}, debido a que los resultados de las Figuras (\ref{fig:s_970_MxC_simple_10}) y (\ref{fig:s_970_MxC_double_10}) indican que es el que tiene un mayor SU.
 
@@ -297,7 +297,7 @@ En la presente sección se muestran las mejoras en el tiempo de cálculo realiza
 
 Los tamaños de grilla que se utilizaron para realizar las pruebas de tiempo de ésta placa, tienen el rango de grilla de 3x300 nodos hasta 1638400x300 nodos. La cantidad de \textit{thread blocks} que se utilizó fueron de 1 a 512.
 
-Las Figuras (\ref{fig:s_760_VdW_simple_10}) y (\ref{fig:s_760_VdW_double_10}) muestran el \textit{SU} obtenido en simple precisión y doble precisión respectivamente. El mejor resultado en ambos casos se obtuvo para un número de \textit{thread block} igual a 64, donde la mejora fue de 13.26 y 7.88 en simple y doble precisión respectivamente, para el mayor número de elementos de malla.
+Las Figuras (\ref{fig:s_760_VdW_simple_10}) y (\ref{fig:s_760_VdW_double_10}) muestran el SU obtenido en simple precisión y doble precisión respectivamente. El mejor resultado en ambos casos se obtuvo para un número de \textit{thread block} igual a 64, donde la mejora fue de 13.26 y 7.88 en simple y doble precisión respectivamente, para el mayor número de elementos de malla.
 
 
 
@@ -348,7 +348,7 @@ Los tamaños de grilla que se utilizaron para realizar las pruebas de tiempo de 
 
 \newpage
 
-Las Figuras (\ref{fig:s_970_VdW_simple_10}) y (\ref{fig:s_970_VdW_double_10}) muestran el \textit{SU} obtenido en simple precisión y doble precisión respectivamente. El mejor resultado en ambos casos se obtuvo para un número de \textit{thread block} igual a 32, donde la mejora fue de 15.95 y 13.29 en simple y doble precisión respectivamente, para el mayor número de elementos de malla.
+Las Figuras (\ref{fig:s_970_VdW_simple_10}) y (\ref{fig:s_970_VdW_double_10}) muestran el SU obtenido en simple precisión y doble precisión respectivamente. El mejor resultado en ambos casos se obtuvo para un número de \textit{thread block} igual a 32, donde la mejora fue de 15.95 y 13.29 en simple y doble precisión respectivamente, para el mayor número de elementos de malla.
 
 La Figura (\ref{fig:c_970_VdW_cuda_10}) muestra el ${SU}_p$ del código de \textsc{Cuda C} en la GPU NVIDIA GeForce GTX 760. Para un número de \textit{thread block} igual a 32, el tiempo de cálculo en doble precisión es 1,25 veces mayor que en simple precisión en el mayor número de elementos de malla calculado. Se reporta únicamente el resultado para esa cantidad de \textit{thread block}, debido a que los resultados de las Figuras (\ref{fig:s_760_VdW_simple_10}) y (\ref{fig:s_760_VdW_double_10}) indican que es el que tiene un mayor SU.
 
@@ -364,7 +364,7 @@ La Figura (\ref{fig:c_970_VdW_cuda_10}) muestra el ${SU}_p$ del código de \text
 
 La realización de los códigos numéricos mediante \textsc{C} y \textsc{Cuda C} tenian como primera finalidad conocer cuál es la ganancia en tiempo de cálculo realizando la implementación en GPU, y su otra finalidad era  realizar un código en \textsc{Cuda C}, para luego compilarlo en formato \textsc{ptx} y ser utilizado en \textsc{Python} por medio del módulo \textsc{PyCuda} del mismo.
 
-Por falta de tiempo, no se pudo hacer un código en \textsc{Python} que resuelva los problemas mecionados en el presente capítulo. Lo que se realizó fue un \textit{SU} 
+Por falta de tiempo, no se pudo hacer un código en \textsc{Python} que resuelva los problemas mecionados en el presente capítulo. Lo que se realizó fue un SU 
 de uno de las \textit{kernel} del código, el cual resuelve la Ec.(\ref{eq:rho_py}):
 
 \begin{equation}
@@ -376,7 +376,7 @@ Para éste análisis se inicializó a $f$ con valores aleatorios, haciendo una r
 
 \newpage
 
-Al  realizar la implementación de un \textit{kernel} de \textsc{Cuda C} en \textsc{Python}, se espera que el tiempo de cálculo en \textsc{Python} sea más lento que en \textsc{Cuda C}, debido a que el primer lenguaje es interpretado. Debido a lo mencionado es que se define el índice \textit{Speed Down} (SD), que resulta ser una medida de cuánto es la demora de un código respecto a otro y se calcula de la siguiente forma :
+Al  realizar la implementación de un \textit{kernel} de \textsc{Cuda C} en \textsc{Python}, se espera que el tiempo de cálculo en \textsc{Python} sea más lento que en \textsc{Cuda C}, debido a que el primer lenguaje es interpretado. Debido a lo mencionado es que se define el índice \textit{Speed Down} (SD), \textit{t} es el tiempo de cálculo. SD es una medida de cuánto es la demora de un código respecto a otro y se calcula de la siguiente forma :
 
 \begin{align}
 	SD = \frac{t_{\>PyCuda}}{t_{\>Cuda \> C}} 
@@ -385,7 +385,7 @@ Al  realizar la implementación de un \textit{kernel} de \textsc{Cuda C} en \tex
 
 \title{\textbf{NVIDIA GeForce GTX 760}}
 
-La Figura (\ref{fig:s_cuda_760_test_simple_10}) muestra el SU para la GPU NVIDIA GeForce GTX 760, en donde la mayor ganancia se obtuvo que para 64 \textit{thread blocks}, siendo de 3.198. La Figura (\ref{fig:s_py_760_test_simple_10}) muestra el $SD$, en donde sobtuvo que para 128 y 512  \textit{thread blocks} se obtuvo el menor incremento de tiempos de cálculo, siendo de 1.144. 
+La Figura (\ref{fig:s_cuda_760_test_simple_10}) muestra el SU para la GPU NVIDIA GeForce GTX 760, en donde la mayor ganancia se obtuvo que para 64 \textit{thread blocks}, siendo de 3.198. La Figura (\ref{fig:s_py_760_test_simple_10}) muestra el $SD$, en donde se obtuvo el menor incremento en tiempos de cálculo fue de 1.144 para 128 y 512  \textit{thread blocks}. \\
 
 \begin{figure}[h!]
 	\centering
@@ -393,6 +393,8 @@ La Figura (\ref{fig:s_cuda_760_test_simple_10}) muestra el SU para la GPU NVIDIA
 	\caption{SU entre \textsc{C} y \textsc{Cuda C} para la función de obtensión de la densidad con la GPU NVIDIA GeForce GTX 760 en simple precisión.} 
 	\label{fig:s_cuda_760_test_simple_10}	
 \end{figure}
+
+
 
 %\begin{figure}[h!]
 %	\centering
@@ -405,54 +407,94 @@ La Figura (\ref{fig:s_cuda_760_test_simple_10}) muestra el SU para la GPU NVIDIA
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=\textwidth]{figs/cap4/s_py_760_test_simple_10}
-	\caption{SD realizado entre PyCUDA y CUDA para la función de obtensión de la densidad con la GPU NVIDIA GeForce GTX 760 en simple precisión.} 
+	\caption{SD realizado entre \textsc{PyCuda} y \textsc{Cuda} para la función de obtensión de la densidad con la GPU NVIDIA GeForce GTX 760 en simple precisión.} 
 	\label{fig:s_py_760_test_simple_10}	
 \end{figure}
 
 
-
+\newpage
 %
-\title{\textbf{NVIDIA GeForce GTX 970}}
+\title{\textbf{NVIDIA GeForce GTX 970}}\\
 
-La Figura (\ref{fig:s_cuda_970_test_simple_10}) muestra la ganancia obtenida en el código de \textsc{Cuda C} sobre \textsc{C}. Para 64 \textit{thread blocks} se obtuvo la mayor ganancia, siendo de 4.815. La Figura (\ref{fig:s_py_c_970_test_simple_10}) muestra la ganancia obtenida en el código de \textsc{PyCuda} sobre \textsc{C}. Para 256 \textit{thread blocks} se obtuvo la mayor ganancia, siendo de 4.242. La Figura (\ref{fig:s_py_970_test_simple_10}) muestra cuanto más se demora el código de \textsc{PyCuda} con respecto al de \textsc{Cuda C}. Para 512  \textit{thread blocks} se obtuvo el menor incremento de tiempos de cálculo, siendo de 1.087; y para 256 \textit{thread blocks} es de 1.104 veces.
 
-\begin{figure}[htbp]
+La Figura (\ref{fig:s_cuda_970_test_simple_10}) muestra el SU para la GPU NVIDIA GeForce GTX 970, en donde la mayor ganancia se obtuvo que para 64 \textit{thread blocks}, siendo de 4.815. La Figura (\ref{fig:s_py_970_test_simple_10}) muestra el $SD$, en donde se obtuvo que el menor incremento en tiempos de cálculo fue de 1.087 y 1.104 para 128 y 512  \textit{thread blocks} respectivamente. 
+
+\begin{figure}[h!]
 	\centering
 	\includegraphics[width=\textwidth]{figs/cap4/s_cuda_970_test_simple_10}
 	\caption{SU realizado entre \textsc{C} y \textsc{Cuda C} para la función de obtensión de la densidad con la GPU NVIDIA GeForce GTX 970 en simple precisión.} 
 	\label{fig:s_cuda_970_test_simple_10}	
 \end{figure}
 
-%\begin{figure}[htbp]
-%	\centering
-%	\includegraphics[width=\textwidth]{figs/cap4/s_py_c_970_test_simple_10}
-%	\caption{Speed Up realizado entre PyCUDA y C para la función de obtensión de la densidad con la GPU NVIDIA GeForce GTX 970 en simple precisión.} 
-%	\label{fig:s_py_c_970_test_simple_10}	
-%\end{figure}
-
-\begin{figure}[htbp]
+\begin{figure}[h!]
 	\centering
 	\includegraphics[width=\textwidth]{figs/cap4/s_py_970_test_simple_10}
-	\caption{SU realizado entre \textsc{PyCuda} y \textsc{Cuda C} para la función de obtensión de la densidad con la GPU NVIDIA GeForce GTX 970 en simple precisión.} 
+	\caption{SD para la función de obtensión de la densidad con la GPU NVIDIA GeForce GTX 970 en simple precisión.} 
 	\label{fig:s_py_970_test_simple_10}	
 \end{figure}
 
-\section{Análisis}
+%\section{Análisis}
 
-Según los resultados obtenidos, se espera que utilizando la cantidad de \textit{thread blocks} que maximicen la ganancia en un código de \textsc{Python} sobre el código de \textsc{C}, el primero posea un incremento de un  15 \%  u 10 \% en comparación con el código de \textsc{Cuda C}, si es que se utiliza una GPU NVIDIA GeForce GTX 760/970 respectivamente.
+\newpage
+Luego de haber realizado la implementación de un \textit{kernel} de \textsc{Cuda C} en un \textit{script} de \textsc{Python} por medio del módulo \textsc{PyCuda}, se observa que el tiempo de cálculo se incrementa. La variación del incremento, que se mide por el índice SD depende en gran medida de la cantidad de \textit{thread blocks} utilizados, al igual que el tamaño de la grilla.
 
-Por lo que no se pierde mucha eficiencia programando en el lenguaje de \textsc{Python}.
+Debido a que se pretende utilizar con la mayor eficiencia posible los \textit{kernels} en \textit{Python}, debe ejecutarse con la cantidad de \textit{thread blocks} que minimicen SD. De las pruebas realizadasse obtuvo que para la GPU NVIDIA GeForce GTX 760 con 128 y 512  \textit{thread blocks} el valor de SD se encuentra cercano al 15 \% , mientras que en la GPU NVIDIA GeForce GTX 970 ese valor esta cercano al 10 \%.
+
+Con los resultados obtenidos se observó que el incremento en tiempos de cálculo con \textit{Python} se encuentra en un rango del 10 \% a 15 \%. Debido a que la pérdida de tiempo de cálculo es aceptable es recomendable el uso de \textsc{Python} en éste tipo de problemas. 
+
+Es de importancia el desarrollo de códigos numéricos para que sean eficientes en el tiempo de cálculo, y que el desarrollo del mismo no implique un gran insumo de tiempo. Por lo último mencionado realizar códigos en \textsc{Python} es eficiente al ser un lenguaje interpretado y no tener que reservar memoria, liberar memoria, declarar variables entre otros. Los módulos de \textsc{Python} tienen sus bibliotecas realizadas mayormente en \textsc{C} y \textsc{Cuda C} para que sean eficientes y debido a ello es conveniente la utilización de sus módulos, que ya poseen las funciones que uno necesita, además siendo eficientes. 
+
+Si se necesita desarrollar un código con un gran costo computacional, no es necesario realizarlo en su totalidad en \textsc{C}, \textsc{Cuda C} u otros. Se puede utilizar \textsc{Python} con sus módulos, y las funciones necesarias a eficientizar realizarlas en otros lenguaje, y utilizarla mediante alguno de los mismos módulos.
+
+
+
+% por medio de alguno de sus módulos utiliar la función creada. , debido a que no se incrementa mucho el tiempo de cálculo al utiliar \textit{kernels} previamente compilados. 
+
+
+
+% Al momento de realizar una función específica se puede recurrir a módulos de \textsc{Python} que probablemente tengan ya implementado lo que se pretende hacer. Entonces se puede utilizar \textit{Python} para progresar rápido en porcentualmente en la terminación un proyecto, en donde la optimización del mismo puede ser llevada a cabo mediante módulos de \textit{Python}. casi el tiempo de cálculo que se rlo utilizando el módulo de \textit{PyCuda}
+%
+% al hecho concreto de programar. Por ello es que se recomienda que sean 
+%
+%
+%
+%Para realizar un balance de la conveniencia del uso de \textsc{Python} se deben tener en cuenta viarios factores, el siguiente análisis sólo toma tres (3).
+%
+%
+%El primero es la facilidad de programar en paralelo mediante \textsc{Cuda C} debido a su extensión de \textsc{C}. Lo segundo es la facilidad y fluidez de programación en \textit{Python} mediante el uso de clases,  objetos y los módulos disponibles que posee. Lo tercero es la implementación de los \textit{kernels} mediante el módulo \textsc{PyCuda}.
+%
+%Para el desarrollo de proyectos complejos, como el presente caso, se consume mucho tiempo tener que realizarrealizar 
+%Debido a que el desarrollo de LBM para casos más complejos y genéricos resulta un insumo importante de tiempo, 
+%
+%Al realizar un balance de la facilidad de realizar código en \textsc{Python} por ser un lenguaje interpretado
+%Por lo que no se pierde mucha eficiencia programando en el lenguaje de \textsc{Python}.
 
 \newpage
 \section{Generación de burbujas sobre una superficie horizontal calefaccionada}
 
-Mediante éste problema se quiere reproducir el fenómeno de ebullición nucleada. El trabajo en los dos problemas anteriores constituyen pasos para validar por partes el código. Ésto se debe a que el problema de la Construcción de Maxwell utiliza solamente una ecuación pseudopotencial, mientras que el problema de la estratificación de un fluido VdW utiliza las dos operaciones pseudopotenciales planteadas.
+Mediante éste problema se quiere reproducir el fenómeno de ebullición nucleada. El trabajo en los dos problemas anteriores constituyen pasos para validar por partes del código. Ésto se debe a que el problema de la Construcción de Maxwell utiliza solamente una ecuación pseudo-potencial, mientras que el problema de la estratificación de un fluido VdW utiliza las dos ecuaciones pseudo-potencial planteadas.
 
-La diferencia del problema de la estratificación de VdW con el de la generación de burbujas, radica en que el primero es unidimensional, el segundo es bidimensional. A su vez, la aplicación del código cambia únicamente en realizar una función que imponga como condición de contorno un área de la superficie calefaccionada.
+La diferencia del problema de la estratificación de VdW con el de la generación de burbujas, radica en que el primero es unidimensional y el segundo es bidimensional. A su vez, la aplicación del código cambia únicamente en realizar una función que imponga como condición de contorno un área de la superficie calefaccionada.
 
-El valor de $\mathbf{M}$ utilizado es el mismo que los probelmas anteriores, el resto de los parámetros se encuentran en el Apéndice (\ref{parametros_bub}).
+A partir de las mismas bibliotecas utilizadas anteriormente y cambiando una única función, se obtuvo como resultado el fenómeno de formación, crecimiento y desprendimiento de una burbuja . Para realizar lo mencionado, se utilizaron los siguientes parámetros de LBM :
+\begin{align*}
+diag(\mathbf{\Lambda}) = 
+\begin{bmatrix}
+1.0 & 1.25 & 1.0 & 1.0 & 1.1 & 1.0 & 1.1 & 1.3 & 1.3 \\
+\end{bmatrix}\\
+diag(\mathbf{Q}) = 
+\begin{bmatrix}
+1.0 & 1.0 & 1.0 & 1.55 & 1.0 & 1.55 & 1.0 & 1.0 & 1.0 \\
+\end{bmatrix}\\
+\alpha_{1} = -2.0 \qquad 	\alpha_{2} = 2.0 \qquad C_{v} = 5.0\\
+G = -1.0 \quad c = 1.0 \quad \sigma = 0.125 \quad a = 1.0 \quad b = 4.0 \\
+\mathbf{g} = (0.0 \quad -8.0^{-6} \quad 0.0 ) \qquad \rho_c = \frac{1}{12} \qquad T_c = 0.074074074
+\end{align*}
+El tamaño de grilla utilizado fue de L = 300 y H = 500 basándose en el esquema de la Figura(\ref{fig:esquema_VdW}), donde la superficie calefaccionada se encuentra en el centro del lado L y posee un tamaño de 24 elementos de malla. La temperatura de calefacción $T_{heat} = T_c$  y elresto de la superficie se encuentra a $T = 0.8 T_c$ con la parte superior de la cavidad está a $T = 0.99 T_c$. La separación inicial de las dos fases se encuentra en $y = 350$, donde $\rho = 0.1610588 \> si \> y \in [0,350]$ y $\rho = 0.0199722$ $y$ para $(350,500]$.
 
-Los resultados que se obtuvieron se encuentra en las Figura (\ref{fig:secuencia_burbujas}), donde los tiempos de vuelo mostrados son de 5000, 10000, 20000, 25000, 30000, 35000, 40000, 45000 y 5000 pasos. El tamaño de grilla utilizado fue de L = 300 y H = 500, si se toma como esquema el mostrado en la Figura(\ref{fig:esquema_VdW}). La superficie calefaccionada se encuentra en el centro del lado L y posee un tamaño de 24 elementos de malla, siendo la temperatura de calefacción $T_{heat} = T_c$. El resto de la superficie se encuentra a $T = 0.8 T_c$ y la parte superior de la cavidad está a $T = 0.99 T_c$. La separación inicial de las dos fases se encuentra en $y = 350$, donde $\rho = 0.1610588 \> sii \> y \in [0,350]$ y $\rho = 0.0199722 \>\> y \in (350,500]$.
+El resultado que se obtuvo para 5000, 10000, 20000, 25000, 30000, 35000, 40000, 45000 y 50000 pasos de tiempo se encuentran en la Figura (\ref{fig:secuencia_burbujas}), en donde se aprecia la formación, creación y desprendimiento mencionado anteriormente.
+
+Con ésto se demuestra que la reproducción de un fenómeno complejo como la ebullición, puede ser resuelta mediante un LBM de sencilla aplicación y a su vez con un costo computacional bajo, comparando con métodos de elementos finitos o diferencias finitas \cite{guo2013lattice}.
 
 \begin{figure}[h!]
 	\centering
