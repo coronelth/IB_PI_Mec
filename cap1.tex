@@ -74,7 +74,9 @@ Los LBM provienen de la ecuación de Boltzmann, ésta se encuentra discretizada 
 
 La discretización espacial que se suele utilizar es mediante un mallado de forma regular\cite{guo2013lattice}, y  cada nodo de la malla tiene asignado un espacio de velocidades. Los modelos de grilla suelen denotarse como $DdQq$, donde \textit{d} son las dimensiones y \textit{q} la cantidad de componentes que se discretiza el espacio de velocidades. La figura \ref{fig:D1Q3_D2Q9} muestra como es el conjunto de velocidades para el modelo D1Q3 y D2Q9.
 
-El espacio de velocidades indica cómo es la propagación de las propiedades que poseen los nodos de la grilla. La velocidad de grilla del nodo i-ésimo se denota $\mathbf{e}_{i}$ y posee \textit{q} componentes. Para el modelo D2Q9 la figura \ref{fig:D1Q3_D2Q9} muestra un esquema de las velocidades de grilla del nodo i - ésimo y la Ec. (\ref{eq:velgrilla}) el valor adoptado.
+El espacio de velocidades indica cómo es la propagación de las propiedades que poseen los nodos de la grilla. La velocidad de grilla del nodo i-ésimo se denota $\mathbf{e}_{i}$ y posee \textit{q} componentes. Para el modelo D2Q9 la figura \ref{fig:D1Q3_D2Q9} muestra un esquema de las velocidades de grilla del nodo i - ésimo y la Ec. (\ref{eq:velgrilla}) el valor adoptado. 
+
+Cada modelo $DdQq$ cuenta con una matriz de transformación ortogonal $\mathbf{M}$, que depende del espacio de velocidades de grilla. Para el modelo D2Q9 adoptado, la matriz $\mathbf{M}$ es la indicada en la Ec.(\ref{eq:matriz_m})
 
 \begin{figure}[h!]
 	\centering
@@ -99,6 +101,21 @@ e_{6}\\ e_{7}\\ e_{8}\\
 \label{eq:velgrilla}
 \end{equation}
 
+\begin{equation}
+\mathbf{M} =
+\begin{bmatrix}
+1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 \\
+-4 &-1 &-1 &-1 &-1 & 2 & 2 & 2 & 2 \\
+4 &-2 &-2 &-2 &-2 & 1 & 1 & 1 & 1 \\
+0 & 1 & 0 &-1 & 0 & 1 &-1 &-1 & 1 \\
+0 &-2 & 0 & 2 & 0 & 1 &-1 &-1 & 1 \\
+0 & 0 & 1 & 0 &-1 & 1 & 1 &-1 &-1 \\
+0 & 0 &-2 & 0 & 2 & 1 & 1 &-1 &-1 \\
+0 & 1 &-1 & 1 &-1 & 0 & 0 & 0 & 0 \\    
+0 & 0 & 0 & 0 & 0 & 1 &-1 & 1 &-1 \\        
+\end{bmatrix}
+\label{eq:matriz_m}
+\end{equation}
 
 Para la resolución de los problems de transferencia de calor con flujos multifásicos y cambio de fase que se propuso estudiar, es necesario contar con un LBM adecuado. Para los problemas de flujos multifásicos existen cuatro modelos generales de LB, siendo ellos:
 
@@ -127,32 +144,37 @@ A continuación se datallará un ejemplo sencillo de un modelo \textit{D2Q9}. La
 El término derecho de la Ec. (\ref{eq:field_intro}) contiene el proceso de \textit{colisión} y el izquierdo al \textit{streaming}; $\alpha$ corresponde al  $\alpha$-ésimo componente de los \textit{q} componentes del modelo, en éste ejemplo $\alpha = 1, 2, ...,9$. $f^{eq}$ es la función de distribución en estado de equilibrio. $\tau$ es un parámetro de relajación del modelo que determina propiedades macroscópicas como la viscosidad.
 
 Por medio de la \textit{colisión} y luego del \textit{streaming} se obtienen los parámetros macroscópicos el problema. Para éste caso sencillo se obtiene $\rho$ y $\mathbf{u}$ de las Ec. (\ref{eq: rho.1}) y (\ref{eq: u.1}) respectivamente.
-
 \begin{align}
 	\rho = \sum_{\alpha} \mathbf{f}_{\alpha}
 	\label{eq: rho.1}
 \end{align}
-
 \begin{align}
 	\rho \mathbf{u}= \sum_{\alpha} \mathbf{e}_{\alpha} \mathbf{f}_{\alpha}
 	\label{eq: u.1}
 \end{align}
 
-El método numérico en éste caso tiene los siguiente forma de resolución:
-\newline
-{\scriptsize
+La Figura (\ref{fig:esquema_lbm}) muestra el esquema de resolución para el LBM descripto. En donde primero se realiza la colisión de los nodos para luego mediante el \textit{streaming} actualizar en todos los nodos el valor de \textit{f}. A partir de ahí se deben aplicar las condiciones de contorno que pueda tener el problema y calcular las variables macroscópicas del sistema. Una vez realizada la actualización de las variables macroscópicas se recupera la solución de la ecuación diferencial de interés. Éste proceso descripto es para cada paso de tiempo que se realiza la ejecución del método.
 
-\xymatrix{\>\ar@{->}[r]&\textbf{Colisión}\ar@^{->}[r]&\textbf{Streaming}\ar@{->}[r]&\textbf{C. de Contorno}\ar@{->}[r]&\textbf{Cálculo $\rho$, \textit{F} y \textit{U}\ar@{->}[r]}&\textbf{Actualización$\rho$, \textit{F} y \textit{U}}\ar@{->}[r]&\> \ar@/^{7mm}/[llllll]_{SIGUIENTE \> PASO \> DE \> TIEMPO}}
-}
-.
-\newline 
-\newline 
+%\newline
+%{\scriptsize
+%
+%\xymatrix{\>\ar@{->}[r]&\textbf{Colisión}\ar@^{->}[r]&\textbf{Streaming}\ar@{->}[r]&\textbf{C. de Contorno}\ar@{->}[r]&\textbf{Cálculo $\rho$, \textit{F} y \textit{U}\ar@{->}[r]}&\textbf{Actualización$\rho$, \textit{F} y \textit{U}}\ar@{->}[r]&\> \ar@/^{7mm}/[llllll]_{SIGUIENTE \> PASO \> DE \> TIEMPO}}
+%}
+%.
+%\newline 
+%\newline 
 
-Por medio de las variables macroscópicas que se obtienen, se recupera la solución de la ecuación diferencial de interés
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=12cm]{figs/cap1/esquema_LBM}
+	\caption{Esquema de resolución de un método numérico de LB.}
+	\label{fig:esquema_lbm}
+\end{figure}
 
-Debido a que cada nodo de la grilla debe realizar la misma operación de colisión de manera independiente del resto, el modelo es altamente paralelizable. Y además las operaciones matemáticas que deben ejecutarse en el operador de colisión son sencillas, no implicando un gran costo computacional.
+Debido a que cada nodo de la grilla debe realizar la misma operación de colisión de manera independiente del resto, el modelo es altamente paralelizable y además las operaciones matemáticas que deben ejecutarse en el operador de colisión son sencillas, no implicando un gran costo computacional.
 
-
+Por lo que se describió anteriormente, el LBM permite resolver indirectamente una EDO no lineal a partir de una ecuación lineal más sencilla y es paralelizable. Debido ue el metodo es paralelizable es que se desarrollan códigos numéricos en unidades de procesamiento gráfico (\textit{Graphics Processing Unit} o GPU).
+\newpage
 \section{Descripción GPU}
 
 Una Unidad de Procesamiento Gráfico (\textit{Graphics Processing Unit} o GPU) es un  circuito electrónico diseñado para realizar operaciones con punto flotante para renderizar píxeles en una pantalla. Están optimizadas para actuar en paralelo de forma simultánea instrucciones simples.
@@ -173,10 +195,7 @@ Las GPUs estan acondicionadas para llevar a cabo los cálculos que presentan los
 
 El lenguaje de programación que se utiliza en las placas gráficas es \textsc{Cuda C} y fue desarrollado mediante la empresea NVIDIA. Se basa en el lenguaje de programación \textsc{C} con ciertas modificaciones para que los procesos sean en paralelo. Dichos procesos se especifican para que puedan ser lanzados en un número de \textit{blocks} y \textit{threads} de ejecución.
 
-
-
-
-
+\newpage
 
 \section{Descripción y alcance del proyecto integrador}
 

@@ -67,10 +67,14 @@ Al ser \textit{Python} un lenguaje interpretado que permite un avance rápido en
 
 \section{Trabajo futuro}
 
-Una de las líneas de desarrollo para éste trabajo es la mejora en los \textit{kernel} del código de \textsc{Cuda C} para que la ganancia en los tiempos de cálculo con respecto al del código de \textsc{C} aumente. Una de las formas de realizar ésto puede ser mediante la utilización de \textit{shared memory} ó \textit{local memory} de las \textit{thread block}. Por otro lado se puede trabajar en el desarrollo de una forma distinta de almacenar la información de los nodos vecinos. Debido a que cuando se realiza la colisión en el LBM 
+Una de las líneas de desarrollo para éste trabajo es la mejora en los \textit{kernel} del código de \textsc{Cuda C} para que la ganancia en los tiempos de cálculo con respecto al del código de \textsc{C} aumente. Una de las formas de realizar ésto puede ser mediante la utilización de \textit{shared memory} ó \textit{local memory} de las \textit{thread block}. 
 
+El código fue realizado para que la implementación en un modelo de grilla D3Q15 sea de forma sencilla, no se le tiene que realizar un gran cambio, sólo se tiene que agregar en el directorio \textit{latticeModel} éste tipo de modelo 
 
- ya que cuando se realiza la lectura de los mismos no toda la memoria que es adquirida e utiliza toda la información y se debe investigar como almacenar la informació para queal momento de la lectura del registro correspondiente de memoria se maximice la utilización de ésa lectura.
+%Por otro lado se puede trabajar en el desarrollo de una forma distinta de almacenar la información de los nodos vecinos, debido a que cuando se accede al registro de la memoria para realizar el proceso de \textit{streaming}, no toda la información que toma al acceder sirve para el cálculo del \textit{streaming} de ése nodo. Por lo que 
+%
+%
+% ya que cuando se realiza la lectura de los mismos no toda la memoria que es adquirida e utiliza toda la información y se debe investigar como almacenar la informació para queal momento de la lectura del registro correspondiente de memoria se maximice la utilización de ésa lectura.
 
 %Una de las cosas que queda por investigar , es el almacenamiento de los valores de la función de distribución de poblaciones, debido a que en nuestro problema se poseen 3 matrices con la información. una de ellas es la matriz de vecinosy la siguiente es las de poblaciones. Puesto a que depende de cómo es la etiqueta que se realizan a los vecinos, éstos irán a ser buscados en la memoria de la maquina. Dependiendo de cómo estén almacenados los lugares de la memoria de los nodos vecinos, éstos pueden tardart más o menios. de ahí surge la posibilidad/idea de que se distribuya de una manera distinta la forma de almacenar la informacion de lkis nodos vecinos y así realizzar un al profiling que haga que el código tenga una mayor ganancia.
 
