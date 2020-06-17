@@ -2,9 +2,25 @@
 \graphicspath{{figs/cap4/}}
 \label{cap5}
 
-En el presente trabajo se realizaron dos códigos numéricos, desarrollados mediante los lenguajes de programación \textbf{C} y \textbf{CUDA C}, para resolver problemas de transferencia de calor en flujos multifásicos con cambio de fase.
+En el presente trabajo se realizó un código numérico para resolver problemas de transferencia de calor en flujos multifásicos con cambio de fase, en donde el método utilizado es el de lattice Boltzmann de dos ecuaciones pseudo-pontencial y operador MRT desarrollado por Fogliatto en \colorbox{green}{paper energia} . El modelo desarrollado resuelve problemas con discretización espacial de dominio regular y el tipo de modelo de grilla es el denominado D2Q9.
 
-El modelo utilizado es el de lattice Boltzmann de dos (2) ecuaciones pseudopotenciales con operador MRT, siédno el mismo del tipo D2Q9.
+El código numérico fue desarrollado mediante el software \textsc{Git}, donde el repositorio utilizado es el de la página web \textsc{Git Hub} y puede ser descargado en \url{https://github.com/efogliatto/LBCUDA_Test}. \textsc{Git} permite controlar las versiones de los archivos que se encuentran en un repositorio de forma fácil y eficiente. En el transcurso del proyecto se comprobó que una buena práctica para desarrollar código es mediante el uso de ramas, donde para éste proyecto en particular se trabajó mediante tres niveles: \textit{master}, \textit{develop} y \textit{feature}. La versión 1.0 es la que se encontraba en la rama \textit{master} al finalizar el presente trabajo.
+
+El código realizado utilizó como compilador el software \textsc{CMake}, el cual permite desarrollar proyectos que posean una gran cantidad de directorios de forma simple. El código se encuentra implementado en tres lenguajes de programación, siendo ellos \textsc{C}, \textsc{Cuda C} y \textsc{Python}. La compilación correspondiente a \textsc{C} se hizo en bibliotecas del tipo \textit{shared} mientras que las bibliotecas de \textsc{Cuda C} eran del tipo \textit{static}. Además los \textit{kernels} realizados en \textit{Cuda C} son compilados en formato \textsc{ptx} para que \textsc{Python} los utilice mediante su módulo llamado \textsc{PyCuda}.
+
+Las instrucciones de compilación de \textit{CMake} se realizan por medio de un archivo de configuración principal llamado CMakeLists.txt. Se concretaron direferntes opciones de configuración para compilar el código, siendo ellas :
+
+\begin{itemize}
+	\item seleccionar el tipo de variable del código en simple precisión o doble precisión. 
+	\item detección automática de la arquitectura de la GPU que cuenta la PC en donde se produce la compilación.
+	\item posibilidad de compilar únicamente en \textsc{C} o en su defecto \textsc{C} y \textsc{Cuda C}.
+\end{itemize}
+
+La validación del código fue realizado en dos PC diferentes, la primera contaba con una CPU Intel Core i7-3770 con una GPU NVIDIA GeForce GTX 760 y la segunda disponia de una CPU Intel Core i7-4770 con una GPU NVIDIA GeForce GTX 970. A su vez la validación se concretó en variables de simple precisión y doble precisión.
+
+se realizaron dos códigos numéricos, desarrollados mediante los lenguajes de programación \textbf{C} y \textbf{CUDA C}, para resolver problemas de transferencia de calor en flujos multifásicos con cambio de fase.
+
+El modelo utilizado es el de lattice Boltzmann de dos (2) ecuaciones pseudopotenciales con operador MRT, siendo el mismo del tipo D2Q9.
 
 La validación del código se realizó en dos (2) GPU diferentes, siendo NVIDIA Geforce GTX 760 y  NVIDIA Geforce GTX 970; para simple precisión y doble precisión.
 
