@@ -357,7 +357,7 @@ Mediante este problema se busca reproducir la fenomenología asociada a los proc
 La diferencia del problema de la estratificación de VdW con el de la generación de burbujas, radica en que el primero es unidimensional y el segundo es bidimensional. A su vez, la aplicación del código cambia únicamente en realizar una función que imponga como condición de contorno un área de la superficie calefaccionada.
 
 A partir de las mismas bibliotecas utilizadas anteriormente y cambiando una única función, se obtuvo como resultado el fenómeno de formación, crecimiento y desprendimiento de una burbuja. Para realizar lo mencionado, se utilizaron los siguientes parámetros de LBM :
-\begin{align*}
+{\footnotesize \begin{align*}
 diag(\mathbf{\Lambda}) = 
 \begin{bmatrix}
 1.0 & 1.25 & 1.0 & 1.0 & 1.1 & 1.0 & 1.1 & 1.3 & 1.3 \\
@@ -369,76 +369,255 @@ diag(\mathbf{Q}) =
 \alpha_{1} = -2.0 \qquad 	\alpha_{2} = 2.0 \qquad C_{v} = 5.0\\
 G = -1.0 \quad c = 1.0 \quad \sigma = 0.125 \quad a = 1.0 \quad b = 4.0 \\
 \mathbf{g} = (0.0 \quad -8.0^{-6} \quad 0.0 ) \qquad \rho_c = \frac{1}{12} \qquad T_c = 0.074074074
-\end{align*}
+\end{align*}}
 El tamaño de grilla utilizado fue de L = 300 y H = 500 basándose en el esquema de la Figura(\ref{fig:esquema_VdW}), donde la superficie calefaccionada se encuentra en el centro del lado L y posee un tamaño de 24 elementos de malla. La temperatura de calefacción $T_{heat} = T_c$  y el resto de la superficie se encuentra a $T = 0.8 T_c$ con la parte superior de la cavidad está a $T = 0.99 T_c$. La separación inicial de las dos fases se encuentra en $y = 350$, donde $\rho = 0.1610588 \> si \> y \in [0,350]$ y $\rho = 0.0199722$ $y$ para $(350,500]$.
 
-El resultado que se obtuvo para 5000, 10000, 20000, 25000, 30000, 35000, 40000, 45000 y 50000 pasos de tiempo se encuentran en las Figuras (\ref{fig:secuencia_burbujas}) y (\ref{fig:secuencia_burbujas}), realizas en la GPU NVIDIA GeForce GTX 970 en doble precisióny CPU Intel Core i7-4770 en simple precisión respectivamente, en donde se aprecia la formación, creación y desprendimiento mencionado anteriormente.  
-
-Si se observan las Figuras Figuras (\ref{fig:secuencia_burbujas}) y (\ref{fig:secuencia_burbujas}), a simple vista no se halla ninguna diferencia entre los resultados que fueron en precisiones y lenguajes distintos.
+El resultado que se obtuvo para 5000, 10000, 20000, 25000, 30000, 35000, 40000, 45000 y 50000 pasos de tiempo se encuentran en las Figuras (\ref{fig:burbujas_760_simple}) y (\ref{fig:burbujas_760_doble}), realizas en la CPU Intel Core i7-3770 en simple y doble  respectivamente, en donde se aprecia la formación, creación y desprendimiento mencionado anteriormente. Adicionalmente, se encuentra el resultado para los mismos pasos de realizados por medio de la GPU NVIDIA GeForce GTX 760 en las Figuras (\ref{fig:burbujas_760_simple_cuda}) y (\ref{fig:burbujas_760_doble_cuda}) para simple y doble precisión respectivamente. Al analizar los resultados de la CPU y GPU con sus precisiones, y comparándolas entre todos los casos realizados, resultan similares en primera instancia.
 
 Con ésto se demuestra que la reproducción de un fenómeno complejo como la ebullición, puede ser resuelta mediante un LBM de sencilla aplicación y a su vez con un costo computacional bajo, comparando con métodos de elementos finitos o diferencias finitas \cite{guo2013lattice}.
 
+%Si se observan las Figuras (\ref{fig:burbujas_760_simple}) y (\ref{fig:burbujas_760_doble}), que fueron realizadas por medio de la CPU Intel Core i7-3770 a simple vista no se halla ninguna diferencia entre los resultados en distintas precisiones. Por otro lado para las figuras las Figuras (\ref{fig:burbujas_760_simple_cuda}) y (\ref{fig:burbujas_760_doble_cuda}) sucede exactamente lo mismo en cuanto a las precisiones.
+%Por lo tanto no se halla ninguna diferencia en primera instancia en utilizar las GPU en lugar de la CPU en cuanto al resultado esperado, como así también, tampoco se encontró una diferencia notable en cuanto a utilizar distintas precesiones. 
 
 
-\newpage
+
+
+
+
 
 \begin{figure}[H]
 	\centering
 	\begin{subfigure}{0.25\textwidth}
-		\includegraphics[width=\linewidth]{figs/cap4/bubble_5}
+		\includegraphics[width=\linewidth]{figs/cap4/bb_760_s5}
 		\caption{t = 5000}
 		\label{fig:1}
 	\end{subfigure}\hfil 
 	\begin{subfigure}{0.25\textwidth}
-		\includegraphics[width=\linewidth]{figs/cap4/bubble_10}
+		\includegraphics[width=\linewidth]{figs/cap4/bb_760_s10}
 		\caption{t = 10000}
 		\label{fig:2}
 	\end{subfigure}\hfil 
 	\begin{subfigure}{0.25\textwidth}
-		\includegraphics[width=\linewidth]{figs/cap4/bubble_20}
+		\includegraphics[width=\linewidth]{figs/cap4/bb_760_s20}
 		\caption{t = 20000}
 		\label{fig:3}
 	\end{subfigure}
 	
 	\medskip
 	\begin{subfigure}{0.25\textwidth}
-		\includegraphics[width=\linewidth]{figs/cap4/bubble_25}
+		\includegraphics[width=\linewidth]{figs/cap4/bb_760_s25}
 		\caption{t = 25000}
 		\label{fig:4}
 	\end{subfigure}\hfil  
 	\begin{subfigure}{0.25\textwidth}
-		\includegraphics[width=\linewidth]{figs/cap4/bubble_30}
+		\includegraphics[width=\linewidth]{figs/cap4/bb_760_s30}
 		\caption{t = 30000}
 		\label{fig:5}
 	\end{subfigure}\hfil 
 	\begin{subfigure}{0.25\textwidth}
-		\includegraphics[width=\linewidth]{figs/cap4/bubble_35}
+		\includegraphics[width=\linewidth]{figs/cap4/bb_760_s35}
 		\caption{t = 35000}
 		\label{fig:6}
 	\end{subfigure}
 	
 	\medskip
 	\begin{subfigure}{0.25\textwidth}
-		\includegraphics[width=\linewidth]{figs/cap4/bubble_40}
+		\includegraphics[width=\linewidth]{figs/cap4/bb_760_s40}
 		\caption{t = 40000}
 		\label{fig:7}
 	\end{subfigure}\hfil
 	\begin{subfigure}{0.25\textwidth}
-		\includegraphics[width=\linewidth]{figs/cap4/bubble_45}
+		\includegraphics[width=\linewidth]{figs/cap4/bb_760_s45}
 		\caption{t = 45000}
 		\label{fig:8}
 	\end{subfigure}\hfil 
 	\begin{subfigure}{0.25\textwidth}
-		\includegraphics[width=\linewidth]{figs/cap4/bubble_50}
+		\includegraphics[width=\linewidth]{figs/cap4/bb_760_s50}
 		\caption{t = 50000}
 		\label{fig:9}
 	\end{subfigure}
-	\caption{Creación y desarrollo de una burbuja a partir de una superficie horizontal calefaccionada.}
-	\label{fig:secuencia_burbujas}
+	\caption{Creación y desarrollo de una burbuja a partir de una superficie horizontal calefaccionada. Realizado por medio de la CPU Intel Core i7-3770 en simple precisión. }
+	\label{fig:burbujas_760_simple}
 \end{figure}
 
 \newpage
 
+\newpage
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{0.25\textwidth}
+		\includegraphics[width=\linewidth]{figs/cap4/bb_760_d5}
+		\caption{t = 5000}
+		\label{fig:1}
+	\end{subfigure}\hfil 
+	\begin{subfigure}{0.25\textwidth}
+		\includegraphics[width=\linewidth]{figs/cap4/bb_760_d10}
+		\caption{t = 10000}
+		\label{fig:2}
+	\end{subfigure}\hfil 
+	\begin{subfigure}{0.25\textwidth}
+		\includegraphics[width=\linewidth]{figs/cap4/bb_760_d20}
+		\caption{t = 20000}
+		\label{fig:3}
+	\end{subfigure}
+	
+	\medskip
+	\begin{subfigure}{0.25\textwidth}
+		\includegraphics[width=\linewidth]{figs/cap4/bb_760_d25}
+		\caption{t = 25000}
+		\label{fig:4}
+	\end{subfigure}\hfil  
+	\begin{subfigure}{0.25\textwidth}
+		\includegraphics[width=\linewidth]{figs/cap4/bb_760_d30}
+		\caption{t = 30000}
+		\label{fig:5}
+	\end{subfigure}\hfil 
+	\begin{subfigure}{0.25\textwidth}
+		\includegraphics[width=\linewidth]{figs/cap4/bb_760_d35}
+		\caption{t = 35000}
+		\label{fig:6}
+	\end{subfigure}
+	
+	\medskip
+	\begin{subfigure}{0.25\textwidth}
+		\includegraphics[width=\linewidth]{figs/cap4/bb_760_d40}
+		\caption{t = 40000}
+		\label{fig:7}
+	\end{subfigure}\hfil
+	\begin{subfigure}{0.25\textwidth}
+		\includegraphics[width=\linewidth]{figs/cap4/bb_760_d45}
+		\caption{t = 45000}
+		\label{fig:8}
+	\end{subfigure}\hfil 
+	\begin{subfigure}{0.25\textwidth}
+		\includegraphics[width=\linewidth]{figs/cap4/bb_760_d50}
+		\caption{t = 50000}
+		\label{fig:9}
+	\end{subfigure}
+	\caption{Creación y desarrollo de una burbuja a partir de una superficie horizontal calefaccionada. Realizado por medio de la CPU Intel Core i7-3770 en doble precisión.}
+	\label{fig:burbujas_760_doble}
+\end{figure}
+
+\newpage
+
+\newpage
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{0.25\textwidth}
+		\includegraphics[width=\linewidth]{figs/cap4/cuda_bb_760_s5}
+		\caption{t = 5000}
+		\label{fig:1}
+	\end{subfigure}\hfil 
+	\begin{subfigure}{0.25\textwidth}
+		\includegraphics[width=\linewidth]{figs/cap4/cuda_bb_760_s10}
+		\caption{t = 10000}
+		\label{fig:2}
+	\end{subfigure}\hfil 
+	\begin{subfigure}{0.25\textwidth}
+		\includegraphics[width=\linewidth]{figs/cap4/cuda_bb_760_s20}
+		\caption{t = 20000}
+		\label{fig:3}
+	\end{subfigure}
+	
+	\medskip
+	\begin{subfigure}{0.25\textwidth}
+		\includegraphics[width=\linewidth]{figs/cap4/cuda_bb_760_s25}
+		\caption{t = 25000}
+		\label{fig:4}
+	\end{subfigure}\hfil  
+	\begin{subfigure}{0.25\textwidth}
+		\includegraphics[width=\linewidth]{figs/cap4/cuda_bb_760_s30}
+		\caption{t = 30000}
+		\label{fig:5}
+	\end{subfigure}\hfil 
+	\begin{subfigure}{0.25\textwidth}
+		\includegraphics[width=\linewidth]{figs/cap4/cuda_bb_760_s35}
+		\caption{t = 35000}
+		\label{fig:6}
+	\end{subfigure}
+	
+	\medskip
+	\begin{subfigure}{0.25\textwidth}
+		\includegraphics[width=\linewidth]{figs/cap4/cuda_bb_760_s40}
+		\caption{t = 40000}
+		\label{fig:7}
+	\end{subfigure}\hfil
+	\begin{subfigure}{0.25\textwidth}
+		\includegraphics[width=\linewidth]{figs/cap4/cuda_bb_760_s45}
+		\caption{t = 45000}
+		\label{fig:8}
+	\end{subfigure}\hfil 
+	\begin{subfigure}{0.25\textwidth}
+		\includegraphics[width=\linewidth]{figs/cap4/cuda_bb_760_s50}
+		\caption{t = 50000}
+		\label{fig:9}
+	\end{subfigure}
+	\caption{Creación y desarrollo de una burbuja a partir de una superficie horizontal calefaccionada. Realizado por medio de la GPU NVIDIA GeForce GTX 760 en simple precisión. }
+	\label{fig:burbujas_760_simple_cuda}
+\end{figure}
+
+\newpage
+
+\newpage
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{0.25\textwidth}
+		\includegraphics[width=\linewidth]{figs/cap4/cuda_bb_760_d5}
+		\caption{t = 5000}
+		\label{fig:1}
+	\end{subfigure}\hfil 
+	\begin{subfigure}{0.25\textwidth}
+		\includegraphics[width=\linewidth]{figs/cap4/cuda_bb_760_d10}
+		\caption{t = 10000}
+		\label{fig:2}
+	\end{subfigure}\hfil 
+	\begin{subfigure}{0.25\textwidth}
+		\includegraphics[width=\linewidth]{figs/cap4/cuda_bb_760_d20}
+		\caption{t = 20000}
+		\label{fig:3}
+	\end{subfigure}
+	
+	\medskip
+	\begin{subfigure}{0.25\textwidth}
+		\includegraphics[width=\linewidth]{figs/cap4/cuda_bb_760_d25}
+		\caption{t = 25000}
+		\label{fig:4}
+	\end{subfigure}\hfil  
+	\begin{subfigure}{0.25\textwidth}
+		\includegraphics[width=\linewidth]{figs/cap4/cuda_bb_760_d30}
+		\caption{t = 30000}
+		\label{fig:5}
+	\end{subfigure}\hfil 
+	\begin{subfigure}{0.25\textwidth}
+		\includegraphics[width=\linewidth]{figs/cap4/cuda_bb_760_d35}
+		\caption{t = 35000}
+		\label{fig:6}
+	\end{subfigure}
+	
+	\medskip
+	\begin{subfigure}{0.25\textwidth}
+		\includegraphics[width=\linewidth]{figs/cap4/cuda_bb_760_d40}
+		\caption{t = 40000}
+		\label{fig:7}
+	\end{subfigure}\hfil
+	\begin{subfigure}{0.25\textwidth}
+		\includegraphics[width=\linewidth]{figs/cap4/cuda_bb_760_d45}
+		\caption{t = 45000}
+		\label{fig:8}
+	\end{subfigure}\hfil 
+	\begin{subfigure}{0.25\textwidth}
+		\includegraphics[width=\linewidth]{figs/cap4/cuda_bb_760_d50}
+		\caption{t = 50000}
+		\label{fig:9}
+	\end{subfigure}
+	\caption{Creación y desarrollo de una burbuja a partir de una superficie horizontal calefaccionada. Realizado por medio de la GPU NVIDIA GeForce GTX 760 en doble precisión.}
+	\label{fig:burbujas_760_doble_cuda}
+\end{figure}
+
+\newpage
 
 \section{Uso de \textsc{PyCuda}}
 

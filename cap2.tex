@@ -70,7 +70,7 @@ La EOS de VdW es utilizada en el presente trabajo para modelar el potencial del 
 \section{Modelo pseudopotencial de dos ecuaciones con operador MRT}
 \label{sec:LBM_2_ec_MRT}
 
-En esta sección se describirá cuál es el LBM utilizado para resolver problemas con discretización espacial de dominio regular. Se deben resolver dos ecuaciones, la primera es la hidrodinámica que representa a la conservación de masa y momento; la segunda a la de energía, descriptas en \colorbox{green}{citar paper con la ec de energia}.
+En esta sección se describirá cuál es el LBM utilizado para resolver problemas con discretización espacial de dominio regular. Se deben resolver dos ecuaciones, la primera es la hidrodinámica que representa a la conservación de masa y momento; la segunda a la de energía, descriptas en \cite{fogliatto2019transferencia}.
 
 
 \subsection{Ecuación hidrodinámica}
@@ -93,6 +93,7 @@ m_{eq} =  \rho  \left( 1, - 2 + 3 {|u|}^{2} , 1 - 3{|u|}^{2} , u_{x} , - u_{x} ,
     \mathbf{\Lambda}  = diag ( {\tau_{\rho }}^{-1},{\tau_{e}}^{-1},{\tau_{\zeta }}^{-1},{\tau_{j}}^{-1},{\tau_{q}}^{-1},{\tau_{j}}^{-1},{\tau_{q}}^{-1},{\tau_{\nu }}^{-1},{\tau_{\nu}}^{-1}) 
     \label{eq:lambda}
 \end{align}
+{\footnotesize
 \begin{equation}
 \mathbf{M} =
 \begin{bmatrix}
@@ -108,7 +109,7 @@ m_{eq} =  \rho  \left( 1, - 2 + 3 {|u|}^{2} , 1 - 3{|u|}^{2} , u_{x} , - u_{x} ,
 \end{bmatrix}
 \label{eq:matriz_m}
 \end{equation}
-
+}
 
 La densidad macroscópica es obtenida mediante :
 
