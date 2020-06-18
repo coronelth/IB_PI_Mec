@@ -24,7 +24,7 @@ La Ec. (\ref{eq:p_eos_4}) puede ser representada gráficamente en un diagrama $P
 	\label{fig:P_V_CO2}	
 \end{figure}
 
-La construcción de Maxwell, también llamada regla de igualdad de áreas, indicada en Ec. (\ref{eq:maxwell_Construction}), es un procedimiento analítico para encontrar las densidades de coexistencia del líquido y gas. Al realizar la integral propuesta surge que las áreas \textbf{A1} y \textbf{A2} de la Figura (\ref{fig:P_V_CO2}) deben ser iguales.
+La construcción de Maxwell, también llamada regla de igualdad de áreas, indicada en la Ec. (\ref{eq:maxwell_Construction}), es un procedimiento analítico para encontrar las densidades de coexistencia del líquido y gas. Al realizar la integral propuesta surge que las áreas \textbf{A1} y \textbf{A2} de la Figura (\ref{fig:P_V_CO2}) deben ser iguales.
 
 \begin{equation}
 \int_{V_{m,l}}^{V_{m,g}} P d V_m = p_0 (V_{m,l} -  V_{m,g})
@@ -370,7 +370,7 @@ diag(\mathbf{Q}) =
 G = -1.0 \quad c = 1.0 \quad \sigma = 0.125 \quad a = 1.0 \quad b = 4.0 \\
 \mathbf{g} = (0.0 \quad -8.0^{-6} \quad 0.0 ) \qquad \rho_c = \frac{1}{12} \qquad T_c = 0.074074074
 \end{align*}}
-El tamaño de grilla utilizado fue de L = 300 y H = 500 basándose en el esquema de la Figura(\ref{fig:esquema_VdW}), donde la superficie calefaccionada se encuentra en el centro del lado L y posee un tamaño de 24 elementos de malla. La temperatura de calefacción $T_{heat} = T_c$  y el resto de la superficie se encuentra a $T = 0.8 T_c$ con la parte superior de la cavidad está a $T = 0.99 T_c$. La separación inicial de las dos fases se encuentra en $y = 350$, donde $\rho = 0.1610588 \> si \> y \in [0,350]$ y $\rho = 0.0199722$ $y$ para $(350,500]$.
+El tamaño de grilla utilizado fue de L = 300 y H = 500 basándose en el esquema de la Figura(\ref{fig:esquema_VdW}), donde la superficie calefaccionada se encuentra en el centro del lado L y posee un tamaño de 12 elementos de malla. La temperatura de calefacción $T_{heat} = T_c$  y el resto de la superficie se encuentra a $T = 0.8 T_c$ con la parte superior de la cavidad está a $T = 0.99 T_c$. La separación inicial de las dos fases se encuentra en $y = 350$, donde $\rho = 0.1610588 \> si \> y \in [0,350]$ y $\rho = 0.0199722$ $y$ para $(350,500]$.
 
 El resultado que se obtuvo para 5000, 10000, 20000, 25000, 30000, 35000, 40000, 45000 y 50000 pasos de tiempo se encuentran en las Figuras (\ref{fig:burbujas_760_simple}) y (\ref{fig:burbujas_760_doble}), realizas en la CPU Intel Core i7-3770 en simple y doble  respectivamente, en donde se aprecia la formación, creación y desprendimiento mencionado anteriormente. Adicionalmente, se encuentra el resultado para los mismos pasos de realizados por medio de la GPU NVIDIA GeForce GTX 760 en las Figuras (\ref{fig:burbujas_760_simple_cuda}) y (\ref{fig:burbujas_760_doble_cuda}) para simple y doble precisión respectivamente. Al analizar los resultados de la CPU y GPU con sus precisiones, y comparándolas entre todos los casos realizados, resultan similares en primera instancia.
 
@@ -724,6 +724,15 @@ De esta forma, se observó que resulta posible continuar con la extensión y gen
 %Por lo que no se pierde mucha eficiencia programando en el lenguaje de \textsc{Python}.
 
 
+\section{Optimización}
+
+Debido a que en la cersión 1.0 del código se lograron mejoras significativas en los tiempos de cálculos con implementaciones poco sofisticadas, es que se propuso mejorar la efiiciencia del código.
+
+Una de las ramas posibles es mediante cambios de instrucciones del optimizador, mientras que por otro lado se encuentran las realizadas en el código. Las optimizaciones realizadas son de este último tipo, y se propone la investigación del primer tipo como una futura mejora.
+
+ implementación y validación del código 
+
+En la presente sección se muestran los resultados luego de haber realizado un optimización simple al código. 
 
 
 %%% Local Variables: 

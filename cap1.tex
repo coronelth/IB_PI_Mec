@@ -20,10 +20,10 @@ Una de las ramas de investigación es en la industria nuclear, en donde se prete
 %
 %Es de importancia contar con un código numérico que se encuentre validado, reproduzca la fenomenología de forma efectiva, sea fácil de utilizar cambiando la geometría y/o parámetros del fluido a utilizar. Los costos de fabricación disminuirían considerablemente al no ser necesaria una gran iteración de prototipos (en el problema mencionado).
 
-Actualmente la dificultad para reproducir numéricamente los tipos de problemas mencionados es que debido a las escalas de fluido involucradas (\textit{mesoscópicas}), con las técnicas numéricas convencionales de Mecánica de Fluidos Computacional (\textit{Computational Fluid Mechanichs} o CFD) resulta difícil obtener resultados en un tiempo razonable y que también tenga en cuenta todos las interacciones físicas que ocurren \cite{guo2013lattice}. En parte es debido a que los métodos tradicionales resuelven ecuaciones diferenciales mediante técnicas de discretización que involucran la resolución numérica de grandes sistemas de ecuaciones, donde el tiempo de cálculo típicamente varía cuadráticamente con el número de elementos de malla utilizada para discretizar el problema físico.
+Actualmente la dificultad para reproducir numéricamente los tipos de problemas mencionados es que debido a las escalas de fluido involucradas (\textit{mesoscópicas}), con las técnicas numéricas convencionales de Mecánica de Fluidos Computacional (\textit{Computational Fluid Mechanichs} o CFD) resulta difícil obtener resultados en un tiempo razonable y que también tengan en cuenta todos las interacciones físicas que ocurren \cite{guo2013lattice}. En parte es debido a que los métodos tradicionales resuelven ecuaciones diferenciales mediante técnicas de discretización que involucran la resolución numérica de grandes sistemas de ecuaciones, donde el tiempo de cálculo típicamente varía cuadráticamente con el número de elementos de malla utilizada para discretizar el problema físico.
 
 Uno de los métodos numéricos que se están desarrollando para que el costo computacional sea cada vez menor es el método de lattice Boltzmann (\textit{lattice Boltzmann \\
-Method} o LBM). Estos métodos resuelven las Ecuaciones Diferenciales Ordinarias (EDO) no lineales por medio de una ecuación lineal más sencilla, lo cuál reduce drásticamente el tiempo de cálculo, y las variables que se obtienen cumplen con la EDO de interés. Debido a que están basados en realizar operaciones elementales en los elementos de la malla discretizada y a su vez no dependen del total de nodos de la misma, se convierten en algoritmos altamente paralelizables.
+Method} o LBM). Estos métodos resuelven las ecuaciones diferenciales por medio de una ecuación lineal más sencilla, lo cuál reduce drásticamente el tiempo de cálculo, y las variables que se obtienen cumplen con la ecuación de interés. Debido a que están basados en realizar operaciones elementales en los elementos de la malla discretizada y a su vez no dependen del total de nodos de la misma, se convierten en algoritmos altamente paralelizables.
 
 Por lo mencionado anteriormente, el estudio de la transferencia de calor en flujos multifásicos con cambio de fase es difícil de modelar numéricamente y los métodos existentes son costosos computacionalmente. Esto implica que resulta necesario desarrollar e investigar nuevas técnicas numéricas junto con sus implementaciones, de modo que  sea posible resolver la fenomenología de interés con precisión y en tiempo razonable.
 
@@ -67,7 +67,7 @@ Por lo mencionado anteriormente, el estudio de la transferencia de calor en fluj
 
 Tradicionalmente los problemas de mecánica de fluidos resueltos mediante la suposición del continuo son llevados a cabo mediante  ecuaciones como las de Navier-Stokes. Obtener la solución numérica de dichas ecuaciones implica resolver sistemas  algebraicos de ecuaciones, cuya cantidad está sujeta a la forma de realizar la discretización del espacio físico y según la cantidad de elementos de la malla. La resolución de este tipo de ecuaciones presenta la característica de que el tiempo de cálculo involucrado en su resolución depende típicamente de forma cuadŕatica con la cantidad de elementos discretizados \cite{kelley1995iterative}.
 
-El LBM resuelve de manera indirecta las EDO no lineales, a través de la discretización de una ecuación de Boltzmann, lineal y de resolución numérica más sencilla. En particular, dichas ecuaciones representan el transporte de funciones de distribución, cuyos momentos en el espacio de fases pueden asociarse con propiedades macroscópicas del fluido, como densidad, velocidad o temperatura.
+El LBM resuelve de manera indirecta las ecuaciones diferenciales, a través de la discretización de una ecuación de Boltzmann, lineal y de resolución numérica más sencilla. En particular, dichas ecuaciones representan el transporte de funciones de distribución, cuyos momentos en el espacio de fases pueden asociarse con propiedades macroscópicas del fluido, como densidad, velocidad o temperatura.
 
 La discretización espacial que se suele utilizar es mediante un mallado regular \cite{guo2013lattice}, y  cada nodo de la malla tiene asignado un espacio de velocidades. Los modelos de grilla suelen denotarse como $DdQq$, donde \textit{d} son las dimensiones y \textit{q} la cantidad de componentes que se discretiza el espacio de velocidades. La figura \ref{fig:D1Q3_D2Q9} muestra cómo son los conjuntos de velocidades para los modelos D1Q3 y D1Q9.
 
@@ -96,13 +96,11 @@ e_{6}\\ e_{7}\\ e_{8}\\
 \label{eq:velgrilla}
 \end{equation}
 
-Para la resolución de los problems de transferencia de calor con flujos multifásicos y cambio de fase que se propuso estudiar, es necesario contar con un LBM adecuado. En particular, existen cuatro (4) categorías generales para clasificar los modelos multifásicos:
-
-\qquad \qquad color gradient, free energy, phase field y pseudopotential.
+Para la resolución de los problems de transferencia de calor con flujos multifásicos y cambio de fase que se propuso estudiar, es necesario contar con un LBM adecuado. En particular, existen cuatro (4) categorías generales para clasificar los modelos multifásicos: color gradient, free energy, phase field y pseudopotential.
 
 En este trabajo se utilizará la familia pseudopotencial, la cual está basada en proponer un potencial de interacción entre las partículas del fluido. Dicho potencial se utiliza para calcular la fuerza de interacción entre las partículas del fluido y está dado según una Ecuación de estado (\textit{Equation of state o EOS}). 
 
-A continuación se datallará un ejemplo sencillo de un modelo D2Q9. La Figura (\ref{fig:grilla_D2Q9}) muestra un esquema de las direcciones de las velocidades de grilla del nodo i-ésimo. En la misma figura se esquematiza como  es el proceso de colisión y advección (\textit{streaming}) que se realiza para actualizar los estados de los nodos cuando transcurre un paso de tiempo de la discretización temporal del problema. 
+A continuación se datallará un ejemplo sencillo de un modelo D2Q9. La Figura (\ref{fig:grilla_D2Q9}) muestra un esquema de las direcciones de las velocidades de grilla del nodo i-ésimo. En la misma figura se esquematiza cómo  es el proceso de colisión y advección (\textit{streaming}) que se realiza para actualizar los estados de los nodos cuando transcurre un paso de tiempo de la discretización temporal del problema. 
 
 
 \begin{figure}[h!]
@@ -112,13 +110,15 @@ A continuación se datallará un ejemplo sencillo de un modelo D2Q9. La Figura (
 	\label{fig:grilla_D2Q9}
 \end{figure}
 
+\newpage
+
 
 \begin{align}
 	\mathbf{f}_{\alpha} (\mathbf{x} + \mathbf{e}_{\alpha} \mathbf{\delta}_{t}, t + \mathbf{\delta}_{t})  = \mathbf{f}_{\alpha} (\mathbf{x}, t) - \frac{1}{\tau} (\mathbf{f}_{\alpha} - {\mathbf{f}_{\alpha}}^{eq})
 	\label{eq:field_intro} 
 \end{align}
 
-El término derecho de la Ec. (\ref{eq:field_intro}) se conoce como \textit{colisión} y el izquierdo como \textit{streaming}; $\alpha$ corresponde al  $\alpha$-ésimo componente  ($\alpha = 0, 1, ... ,8$). $f^{eq}$ es la función de distribución en estado de equilibrio. $\tau$ es un parámetro de relajación del modelo que determina propiedades macroscópicas como la viscosidad.
+El término derecho de la Ec. (\ref{eq:field_intro}) se conoce como \textit{colisión} y el izquierdo como \textit{streaming}; $\alpha$ corresponde al  $\alpha$-ésimo componente  ($\alpha = 0, 1, ... ,8$), $f^{eq}$ es la función de distribución en estado de equilibrio, $\tau$ es un parámetro de relajación del modelo que determina propiedades macroscópicas como la viscosidad.
 
 Por medio de la \textit{colisión} y luego del \textit{streaming} se obtienen los parámetros macroscópicos el problema. Para éste caso sencillo se obtiene $\rho$ y $\mathbf{u}$ de las Ec. (\ref{eq: rho.1}) y (\ref{eq: u.1}) respectivamente.
 \begin{align}
@@ -141,7 +141,7 @@ La Figura (\ref{fig:esquema_lbm}) muestra el esquema de resolución para el LBM 
 
 Debido a que cada nodo de la grilla debe realizar la misma operación de colisión de manera independiente del resto, el modelo es altamente paralelizable. Además, las operaciones matemáticas que deben ejecutarse en el operador de colisión son sencillas, no implicando un gran costo computacional.
 
-Por lo que se describió anteriormente, el LBM permite resolver indirectamente una EDO no lineal a partir de una ecuación lineal más sencilla y es paralelizable. Por lo tanto, esto motiva el desarrollo de códigos numéricos en unidades de procesamiento gráfico (\textit{Graphics Processing Unit} o GPU).
+Por lo que se describió anteriormente, el LBM permite resolver indirectamente una ecuación, o EDP no lineal a partir de una ecuación lineal más sencilla y es paralelizable. Por lo tanto, esto motiva el desarrollo de códigos numéricos en unidades de procesamiento gráfico (\textit{Graphics Processing Unit} o GPU).
 \newpage
 \section{Descripción GPU}
 
@@ -171,9 +171,9 @@ En el presente trabajo se implementó un código numérico para resolver problem
 
 El código numérico fue desarrollado usando el software \textsc{Git} debido a que permite llevar a cabo un control de versiones de manera robusta y sencilla. El repositorio donde se encuentra alojado el proyecto está en la página web de \textsc{Git Hub} y puede ser desacargado de \url{https://github.com/efogliatto/LBCUDA_Test/}. 
 
-El código realizado utilizó como compilador el software \textsc{CMake}, el cual permite desarrollar proyectos que posean una gran cantidad de directorios de forma simple. El código se encuentra implementado en tres lenguajes de programación, siendo ellos \textsc{C}, \textsc{Cuda C} y \textsc{Python}. Las bibliotecas generadas son del tipo \textsc{shared} y \textit{static} para el caso de \textsc{C} y \textsc{Cuda C} respectivamente. Adicionalmente los \textit{kernels} de \textit{Cuda C} se compilaron en el formato tipo \textsc{ptx} para ser utilizadas mediante \textsc{Python} por medio del módulo \textsc{PyCuda}.
+El código realizado utilizó como compilador el software \textsc{CMake}, el cual permite desarrollar proyectos que posean una gran cantidad de directorios de forma simple. El código se encuentra implementado en tres lenguajes de programación, siendo ellos \textsc{C}, \textsc{Cuda C} y \textsc{Python}. Las bibliotecas generadas son del tipo \textit{shared} y \textit{static} para el caso de \textsc{C} y \textsc{Cuda C} respectivamente. Adicionalmente los \textit{kernels} de \textit{Cuda C} se compilaron en el formato tipo \textsc{ptx} para ser utilizadas mediante \textsc{Python} por medio del módulo \textsc{PyCuda}.
 
-La validación del código fue realizado en dos PC diferentes, la primera contaba con una CPU Intel Core i7-3770 con una GPU NVIDIA GeForce GTX 760 y la segunda con una CPU Intel Core i7-4770 con una GPU NVIDIA GeForce GTX 970. A su vez la validación se concretó en variables de simple precisión y doble precisión, a través de la resolución de diferentes problemas numéricos (detallados en el Cap. (\ref{cap4})), que entre ellos se encuentran:
+La validación del código fue realizado en dos PC diferentes, la primera contaba con una CPU Intel Core i7-3770 con una GPU NVIDIA GeForce GTX 760 y la segunda con una CPU Intel Core i7-4770 con una GPU NVIDIA GeForce GTX 970. A su vez la validación se concretó en variables de simple precisión y doble precisión, a través de la resolución de diferentes problemas numéricos (detallados en el Cap. (\ref{cap4})):
 
 \begin{itemize}
 	\item \textit{construcción de Maxwell}

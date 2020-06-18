@@ -48,7 +48,7 @@ En este modelo es necesario porporcionar un potencial que describa a las fuerzas
 
 \section{Ecuación de estado y fluido de Van der Waals}
 
-Al ser multifásicos los problemas a desarrollar, es de importancia conocer las leyes que describen la separación de fases. La ley de gases ideales Ec. (\ref{eq:gas_ideal}) es un ejemplo de EOS , donde \textit{p} es la presión (atm), V es el volúmen (L), \textit{n} número de moles, R constante universal de los gases y \textit{T} temperatura. La Ley caracteriza el comportamiento para gases de baja densidad.
+Al ser multifásicos los problemas a desarrollar, es de importancia conocer las leyes que describen la separación de fases. La ley de gases ideales Ec. (\ref{eq:gas_ideal}) es un ejemplo de EOS , donde \textit{p} es la presión (atm), V es el volúmen (L), \textit{n} número de moles, R constante universal de los gases y \textit{T} temperatura. La ley caracteriza el comportamiento para gases de baja densidad.
 
 \begin{align}
 p V = n R T
@@ -62,7 +62,7 @@ p = \frac{R T}{V_m - B} - A {\left(\frac{1}{V_m}\right)}^2
 \label{eq:VdW_P}
 \end{align}
 
-El parámetro \textit{A}  ($\frac{atm L^2}{mol^2}$) caracteriza la interacción que poseen las moléculas del gas entre sí, y \textit{B} ($\frac{L}{mol}$) da una idea del volumen molar mínimo que posee una partícula del fluido (este parámetro define a la partícula del gas con un dado volúmen en vez de ser puntual como en la Ley de gases ideales).
+El parámetro \textit{A}  ($\frac{atm L^2}{mol^2}$) caracteriza la interacción que poseen las moléculas del gas entre sí, y \textit{B} ($\frac{L}{mol}$) da una idea del volumen molar mínimo que posee una partícula del fluido (este parámetro define a la partícula del gas con un dado volumen en vez de ser puntual como en la Ley de gases ideales).
 
 La EOS de VdW es utilizada en el presente trabajo para modelar el potencial del modelo LBM \textit{pseudopotential} de interacción entre las partículas. Su elección es debido a que permite la coexistencia de diferentes densidades para una misma condición de presión y temperatura \cite{huang2015multiphase}. 
 
@@ -316,25 +316,25 @@ Para obtener una resolución de problemas genéricos, se debe agregar la condici
 
 La condición de contorno a realizar en la ecuación de energía, consiste en mantener una temperatura fija en una de las aristas o en secciones de la misma. Para este caso se utiliza el desarrollo de Inamuro \cite{inamuro2002lattice}.
 
-Primero se calcula el valor de la distribución de equilibrio del nodo $i$-ésimo $\mathbf{g_{eq}}$ utilizando Ec. (\ref{eq:n_eq}) y $\mathbf{M}$ de la forma $\mathbf{g_{eq}} = \mathbf{M}^{-1} \mathbf{n_{eq}}$. Se prosigue a calcular el parámetro $\beta$:
+Primero se calcula el valor de la distribución de equilibrio del nodo $i$-ésimo $\mathbf{g^{eq}}$ utilizando Ec. (\ref{eq:n_eq}) y $\mathbf{M}$ de la forma $\mathbf{g^{eq}} = \mathbf{M}^{-1} \mathbf{n^{eq}}$. Se prosigue a calcular el parámetro $\beta$:
 
 \begin{equation}
 \beta = \frac{T_{cc} - \sum_{A} g_{A}}{\sum_{B} g_{B}}
 \label{eq:beta}
 \end{equation}
 
-donde $T_{cc}$ es la temperatura fijada como condición de contorno, $g_{A}$ adopta los valores conocidos de las direcciones pertenecientes al conjunto A ($0, 1, 2, 4, 5, 8 $), mientras que $g_{B}$ adopta los valores de la dirección de $\mathbf{g_{eq}}$ calculada recientemente para las direcciones de B ($3, 6, 7$).
+donde $T_{cc}$ es la temperatura fijada como condición de contorno, $g_{A}$ adopta los valores conocidos de las direcciones pertenecientes al conjunto A ($0, 1, 2, 4, 5, 8 $), mientras que $g_{B}$ adopta los valores de la dirección de $\mathbf{g^{eq}}$ calculada recientemente para las direcciones de B ($3, 6, 7$).
 
 Por último en las direcciones del conjunto B, el valor de $g$ resulta:
 
 \begin{align}
-	g_{B} = \beta \> g_{eq \> B} 
+	g_{B} = \beta \> g^{eq}_{B} 
 \end{align}
 
 A modo de ejemplo se detalla el valor que adoptará la dirección \textbf{3}:
 
 \begin{equation}
-	g_{3} = \frac{T_{cc} - \overbrace{\left( g_{0} + g_{1} +g_{2} + g_{4} + g_{5} + g_{8} \right)}^{\sum_{A} g_{A}} }{\underbrace{\left( g_{eq\>3} + g_{eq\>6} + g_{eq\>7} \right)}_{\sum_{B} g_{B} }} \quad g_{eq\>3}
+	g_{3} = \frac{T_{cc} - \overbrace{\left( g_{0} + g_{1} +g_{2} + g_{4} + g_{5} + g_{8} \right)}^{\sum_{A} g_{A}} }{\underbrace{\left( g^{eq}_{3} + g^{eq}_{6} + g^{eq}_{7} \right)}_{\sum_{B} g_{B} }} \quad g^{eq}_{3}
 \end{equation}
 
 
