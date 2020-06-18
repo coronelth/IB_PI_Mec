@@ -1,4 +1,4 @@
-\chapter{Descripción de los problemas en fluidos con transferencia de calor }
+\chapter{Validación y optimización }
 \graphicspath{{figs/cap4/}}
 \label{cap4}
 
@@ -618,7 +618,7 @@ Con ésto se demuestra que la reproducción de un fenómeno complejo como la ebu
 \end{figure}
 
 \newpage
-
+una CPU Intel Core i7-4770 y GPU NVIDIA GeForce GTX 970
 \section{Uso de \textsc{PyCuda}}
 
 La realización de los códigos numéricos mediante \textsc{C} y \textsc{Cuda C} tenían como primera finalidad conocer cuál es la ganancia en tiempo de cálculo realizando la implementación en GPU, por otro lado desarrollar código en \textsc{Cuda C}, para luego compilarlo en formato \textsc{ptx} y ser utilizado en \textsc{Python} por medio del módulo \textsc{PyCuda} del mismo.
@@ -723,17 +723,23 @@ De esta forma, se observó que resulta posible continuar con la extensión y gen
 %Al realizar un balance de la facilidad de realizar código en \textsc{Python} por ser un lenguaje interpretado
 %Por lo que no se pierde mucha eficiencia programando en el lenguaje de \textsc{Python}.
 
-
+\newpage
 \section{Optimización}
 
-Debido a que en la cersión 1.0 del código se lograron mejoras significativas en los tiempos de cálculos con implementaciones poco sofisticadas, es que se propuso mejorar la efiiciencia del código.
+Con lo realizado hasta el momento se logró una implementación válida de LBM en los lenguajes de programación \textit{C} y \textit{Cuda C}, en donde se obtuvo un SU de hasta 19 y 23 en las GPU NVIDIA GeForce GTX 760 y GPU NVIDIA GeForce GTX 970 respectivamente para el problema de la construcción de Maxwell en simple precisión.
 
-Una de las ramas posibles es mediante cambios de instrucciones del optimizador, mientras que por otro lado se encuentran las realizadas en el código. Las optimizaciones realizadas son de este último tipo, y se propone la investigación del primer tipo como una futura mejora.
+Para obtener un mejor resultado posible se debe aprovechar la arquitectura de hardware de la GPU es necesario utilizar nuevas técnicas de las que ya se conocen para las CPU, es por eso que se decidió realizar el cambio de todas las funciones \textcolor{blue}{for} por las funciones \textcolor{blue}{while}. Éste cambio se encuentra argumentado, debido a que la estructura de la memoria utilizada en la GPU es un \textit{array} y que en las GPU no se permite una reserva de memoria de un puntero en el \textit{device memory} como se realizaba típicamente en una CPU. El cambio también fue realizado al tener todos los copmponentes del \textit{array} ocupados, ya que la condición lógica del \textcolor{blue}{while} es más provechosa que la de \textcolor{blue}{for} en éste tipo de situaciones.
 
- implementación y validación del código 
+Se pude implementar la optimización para la PC que contaba con una CPU Intel Core i7-4770 y GPU NVIDIA GeForce GTX 970, en el problema de la construcción de Maxwell para simple precisión. El SU máximo alcanzado es de 33,22 llevado a cabo con 32 \textit{thread block} y los valores obtenidos se pueden ver a continuación:
 
-En la presente sección se muestran los resultados luego de haber realizado un optimización simple al código. 
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.99\textwidth]{figs/cap4/version_2_970_MxC_cuda}
+	\caption{SU realizado para el problema de la Construcción de Maxwell en simple precisión con una CPU Intel Core i7-4770 y GPU NVIDIA GeForce GTX 970 con la optimización implementada.} 
+	\label{fig:s_970_MxC_simple_20}	
+\end{figure}
 
+La implementación realizada como optimización produjo un aumento de 42 \% con respecto a la versión anterior del código.
 
 %%% Local Variables: 
 %%% mode: latex
