@@ -26,7 +26,7 @@ Para visualizar los resultados del código se utiliza el programa \textsc{Paravi
 \section{Programación en GPU}
 \label{sec_pc}
 
-Una computadora (\textit{Personal Computer} o PC) posee como procesador principal la CPU, cuyo diseño se encuentra optimizado para realizar tareas secuenciales. Comercialmente vienen de una amplia variedad de núcleos, en el rango de 8 a 64 núcleos en el caso de los Procesadores AMD Ryzen™ Threadripper, 4 a 8 núcleos en los Procesador AMD FX™, en el caso de Intel se encuentra el Procesador Intel® Core™ serie X con 18 núcleos y  Intel® Core™ I7-3770 de 4 núcleos entre otros. \cite{edp:2020:amd} \cite{icp:2020:intel}
+Una computadora (\textit{Personal Computer} o PC) posee como procesador principal la CPU, cuyo diseño se encuentra optimizado para realizar tareas secuenciales. Comercialmente vienen de una amplia variedad de núcleos, en el rango de 8 a 64 núcleos como en el caso de los Procesadores AMD Ryzen™ Threadripper o 4 a 8 núcleos en los Procesador AMD FX™. En el caso de Intel se encuentra el Procesador Intel® Core™ serie X con 18 núcleos y  Intel® Core™ I7-3770 de 4 núcleos entre otros. \cite{edp:2020:amd} \cite{icp:2020:intel}
 
 Es posible realizar tareas y procesos en paralelo en la CPU proveyendo instrucciones a cada núcleo del procesador de forma independiente, siendo más eficiente en el tiempo de ejecución de los procesos realizados.
 
@@ -123,7 +123,7 @@ Otra particularidad que se presenta en la programación es el manejo de la memor
 
 \subsection{Programación de un \textit{kernel}}
 
-Para visualizar las diferencias de programación de una función \textbf{CUDA C } (\textit{kernel}), con una típica función de \textsc{C}, se muestra a continuación como ejemplo la programación para ambos lenguajes de la Ec. (\ref{eq:rho})
+Para visualizar las diferencias de programación de una función \textsc{Cuda C} (\textit{kernel}), con una típica función de \textsc{C}, se muestra a continuación como ejemplo la programación para ambos lenguajes de la Ec. (\ref{eq:rho})
 
 
 En primer lugar se detalla el código realizado en el lenguaje \textsc{C}, siendo la función :
@@ -145,7 +145,7 @@ void momentoDensity(scalar* rho, scalar* field, basicMesh* mesh);
 	\end{frame}
 }.
 \\
-donde el argumento \textbf{basicMesh* mesh} es un puntero a una estructura, la cual posee información del mallado que se realizó al dominio del problema a resolver, como por ejemplo la cantidad de nodos que posee la malla (\textbf{nPoints}) y la cantidad de direcciones que posee el modelo en su espacio de velocidades \textbf{Q}. La variable \textbf{scalar} corresponde a una de tipo \textcolor{blue}{float} o \textcolor{blue}{double}, según opciones elegidas al momento de la compilación. El \textit{array}  \textbf{scalar* rho} es de dimensión \textit{nPoints} y contiene los valores de $\rho$, por último \textbf{scalar* field} es un \textit{array} que posee las \textit{q} componentes de la función de distribución de poblaciones \textit{f} para cada uno de los  \textit{nPoints} nodos de la malla.
+donde el argumento \textbf{basicMesh* mesh} es un puntero a una estructura, la cual posee información del mallado que se realizó al dominio del problema a resolver, como por ejemplo la cantidad de nodos que posee la malla (\textbf{nPoints}) y la cantidad de direcciones que posee el modelo en su espacio de velocidades \textbf{Q}. El tipo \textbf{scalar} corresponde a \textcolor{blue}{float} o \textcolor{blue}{double}, según opciones elegidas al momento de la compilación. El \textit{array}  \textbf{scalar* rho} es de dimensión \textit{nPoints} y contiene los valores de $\rho$, por último \textbf{scalar* field} es un \textit{array} que posee las \textit{q} componentes de la función de distribución de poblaciones \textit{f} para cada uno de los  \textit{nPoints} nodos de la malla.
 
 
 {\footnotesize
@@ -420,7 +420,7 @@ siendo \textit{dst} un puntero con la dirección de destino de los datos, \texti
 
 Habiéndose desarrollado el código en \textsc{Cuda C} y compilado cada \textit{kernel} del mismo en formato \textsc{ptx}, éstos pueden ser utilizados en el lenguaje \textsc{Python} mediante el módulo \textsc{PyCuda}. El código de la siguiente página es el implementado para la Ec. (\ref{eq:rho}).
 
-Donde la función \textit{pycuda.driver.module\_from\_file()} nos permite importar el \textit{kernel} compilado previamente en \textsc{Cuda C}, siendo \textcolor{red}{\textbf{/PATH/}} la dirección del directorio dónde se encuentra el archivo \textsc{ptx} compilado. Las variables \textit{deviceField} y \textit{deviceRho} son las respectivas a la función de distribución de poblaciones \textit{f} y la densidad $\rho$. Previamente se deben haber inicializado las variables en el \textit{host}, como por ejemplo:
+La función \textit{pycuda.driver.module\_from\_file()} nos permite importar el \textit{kernel} compilado previamente en \textsc{Cuda C}, siendo \textcolor{red}{\textbf{/PATH/}} la dirección del directorio donde se encuentra el archivo \textsc{ptx} compilado. Las variables \textit{deviceField} y \textit{deviceRho} son las respectivas a la función de distribución de poblaciones \textit{f} y la densidad $\rho$. Previamente se deben haber inicializado las variables en el \textit{host}, como por ejemplo:
 {\footnotesize
 	\begin{frame}{}
 		\lstset{language=python,
@@ -522,7 +522,7 @@ Las subcarpetas (\textbf{en negrita}) y archivos (\underline{subrayados}) que po
 	
 	\item \textbf{validation\_speed\_up}: es un directorio que contiene dos tipos de \textit{scripts} de bash. Los del primer tipo al ser ejecutados, realizan la validación de los problemas tratados en el Cap. (\ref{cap4}). El otro tipo de \textit{scripts} realizan una toma de tiempo de cálculo de los mismos problemas, para obtener un índice (\textit{speed\_up}) que indique la mejora de tiempo de cálculo entre lenguajes utilizados. 
 	
-	\item \underline{CMakeLists.txt}: es el archivo principal del compilador utilizado, el cual contiene todas las opciones de compilación del proyecto.
+	\item \underline{CMakeLists.txt}: es el archivo de configuración de \textsc{CMake}, con la definición de las principales opciones de compilación y \textit{linkeo}.
 	
 \end{itemize}
 
@@ -725,7 +725,7 @@ endif()
 		
 	\end{frame}
 }
-La segunda parte para asignar un tipo de variable a \textbf{scalar} y \textbf{cuscalar} es el \textit{script} de tipo \textit{header} que aparece debajo. En él se busca las variables declaradas en el compilador (SP, DP, SP\_CUDA ó DP\_CUDA) y en base a ellas, define el tipo de variable para \textbf{scalar} y \textbf{cuscalar}. El \textit{header}, cuyo nombre de archivo es \textit{dataTypes.h} y se encuentra en el directorio \textit{include}, debe ser incluido en cada función o \textit{kernel} que posea una variable de tipo  \textbf{scalar} o \textbf{cuscalar}.
+La segunda parte para asignar un tipo de variable a \textbf{scalar} y \textbf{cuscalar} es el archivo \textit{header} que aparece debajo. En él se busca las variables declaradas en el compilador (SP, DP, SP\_CUDA ó DP\_CUDA) y en base a ellas, define el tipo de variable para \textbf{scalar} y \textbf{cuscalar}. El \textit{header}, cuyo nombre de archivo es \textit{dataTypes.h} y se encuentra en el directorio \textit{include}, debe ser incluido en cada función o \textit{kernel} que posea una variable de tipo  \textbf{scalar} o \textbf{cuscalar}.
 
 {\footnotesize
 	\begin{frame}{}

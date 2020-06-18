@@ -8,14 +8,14 @@ En el presente capíulo se realiza la descripción de los problemas con transfer
 
 En esta sección se explica el procedimiento por el que a partir de una EOS, se puede obtener las densidades de coexistencia de un fluido para un dado valor de presión y temperatura. Dicho procedimiento se llama Construcción de Maxwell, donde necesariamente la EOS con la que se modela el fluido debe permitir la coexistencia de densidades para sus variables de estado. Para la resolución de éste problema solo se utiliza la ecuación hidrodinámica del LBM.
 
-En el desarrollo del Cap. (\ref{cap2}) se adoptó como EOS del presente trabajo, la ecuación de VdW Ec. (\ref{eq:p_eos_4}) que describe el comportamiento de un gas real y permite la coexistencia de diferente densidad.
+En el desarrollo del Cap. (\ref{cap2}) se adoptó como EOS del presente trabajo, la ecuación de VdW Ec. (\ref{eq:p_eos_4}) que describe el comportamiento de un gas real y permite la coexistencia de diferentes densidades para igual presión y temperatura:
 
 \begin{align}
 	p = \frac{R T}{V_m - B} - A {\left(\frac{1}{V_m}\right)}^2
 	\label{eq:p_eos_4}
 \end{align}
 
-La Ec. (\ref{eq:p_eos_4}) puede ser representada gráficamente en un diagrama $P - V_m$. A modo de ejemplo se presenta él diagrama para el caso del dióxido de carbono ($CO_2$) de tres temperaturas distintas en la Figura (\ref{fig:P_V_CO2}).  La temperatura de interés es la de $T = 270 \> K$, donde se vislumbra que en $p = 44,08 \> atm$ la gráfica se intersecta en tres valores de $V_m$, siendo dos de ellos estables; por lo que se observa que hay dos volúmenes molares de coexistencia, indicando las fases líquido y gaseosa \cite{huang2015multiphase}. 
+La Ec. (\ref{eq:p_eos_4}) puede ser representada gráficamente en un diagrama $P - V_m$. A modo de ejemplo se presenta el diagrama para el caso del dióxido de carbono ($CO_2$) a tres temperaturas distintas en la Figura (\ref{fig:P_V_CO2}).  La temperatura de interés es la de $T = 270 \> K$, donde se vislumbra que en $p = 44,08 \> atm$ la gráfica se intersecta en tres valores de $V_m$, siendo dos de ellos estables; por lo que se observa que hay dos volúmenes molares de coexistencia, indicando las fases líquido y gaseosa \cite{huang2015multiphase}. 
 
 \begin{figure}[htbp]
 	\centering
@@ -24,21 +24,25 @@ La Ec. (\ref{eq:p_eos_4}) puede ser representada gráficamente en un diagrama $P
 	\label{fig:P_V_CO2}	
 \end{figure}
 
-La construcción de Maxwell, también llamada regla de igualdad de áreas, indicada en Ec. (\ref{eq:maxwell_Construction}), es un procedimiento analítico para encontrar las densidades de coexistencia del líquido y gas. Donde $P$ es la presión de la EOS y $p_0$ es una presión constante. Al realizar la integral propuesta surge que las áreas \textbf{A1} y \textbf{A2} de la Figura (\ref{fig:P_V_CO2}) deben ser iguales.
+La construcción de Maxwell, también llamada regla de igualdad de áreas, indicada en Ec. (\ref{eq:maxwell_Construction}), es un procedimiento analítico para encontrar las densidades de coexistencia del líquido y gas. Al realizar la integral propuesta surge que las áreas \textbf{A1} y \textbf{A2} de la Figura (\ref{fig:P_V_CO2}) deben ser iguales.
 
 \begin{equation}
 \int_{V_{m,l}}^{V_{m,g}} P d V_m = p_0 (V_{m,l} -  V_{m,g})
 \label{eq:maxwell_Construction}
 \end{equation}
 
-La Ec. (\ref{eq:p_eos_4}) se puede re-estructurar como Ec. (\ref{eq:p_VdW_rho}) puesto que $\rho = \frac{1}{v}$, siendo $v$ el volúmen másico y relacionando $V_m$ con $v$ según cada fluido. Donde para un dado valor de temperatura tendremos la coexistencia de fases con su densidad $\rho_l$ para la fase líquida y $\rho_g$ para la gaseosa.
+En donde $P$ es la presión de la EOS y $p_0$ es una presión constante.
+
+La Ec. (\ref{eq:p_eos_4}) puede reescribirse como:
 
 \begin{equation}
 	p_{EOS} = \frac{\rho R T}{1- \rho b} - a {\rho}^{2} 
 	\label{eq:p_VdW_rho}
 \end{equation}
 
-Para un dado valor de temperatura, llamado temperatura crítica (\textit{$T_c$}) comienzan a coexistir las dos fases. En el ejemplo mostrado de la Figura (\ref{fig:P_V_CO2}) $T_c = 304 \> K$. Analíticamente $T_c$ surge de aplicar el criterio de la primera y segunda derivada a la Ec.(\ref{eq:rho}) como se indica en Ec.(\ref{eq:criterio_1_2_deriv}) y se deben conocer los parámetros \textit{a} y \textit{b}.
+donde $\rho = \frac{1}{v}$, siendo $v = \frac{V_m}{M}$ el volúmen másico. De esta forma reescribiendo la integral de la Ec. (\ref{eq:maxwell_Construction}) usando la presión de Ec. (\ref{eq:p_VdW_rho}), pueden obtenerse los valores de coexistencia $\rho_l$ y $\rho_g$ para las fases líquida y gaseosa respectivamente. 
+
+La coexistencia de fases tiene lugar a temperaturas inferiores a la llamada temperatura crítica ($T_c$). En el ejemplo mostrado de la Figura (\ref{fig:P_V_CO2}) $T_c = 304 \> K$. Analíticamente $T_c$ surge de aplicar el criterio de la primera y segunda derivada a la Ec.(\ref{eq:rho}) como se indica en Ec.(\ref{eq:criterio_1_2_deriv}) y se deben conocer los parámetros \textit{a} y \textit{b}.
 
 \begin{equation}
 	\frac{\partial\> p}{\partial\> V_{m}} = 0 \qquad \qquad \frac{\partial^{2} \> p}{\partial\> {V_{m}}^{2}} = 0
@@ -47,9 +51,9 @@ Para un dado valor de temperatura, llamado temperatura crítica (\textit{$T_c$})
 
 Realizando adecuadamente la adimensionalización  de la Ec.(\ref{eq:p_VdW_rho}) se puede graficar una curva de coexistencia $T_r - \rho_r$, donde $T_r = \frac{T}{T_c}$, $\rho_r = \frac{\rho}{\rho_c}$ y $T_c$ es calculado a partir de los parámetros \textit{a} y \textit{b} asignados al fluido de estudio. Es de importancia destacar que las curvas de coexistencia dependen de la EOS que se esté utilizando para describir el comportamiento del fluido. En el caso de estudio analizado, la EOS es de VdW y la curva de coexistencia es universal, independientemente de los parámetros \textit{a} y \textit{b}, debido a que se encuentra normalizada por unidades críticas.
 
-En éste problema, se valida la curva de coexistencia $T_r - \rho_r$ calculada analíticamente para un fluido con una EOS de VdW, como la observada en la Figura (\ref{fig:v_760_MxC_c_simple}). 
+Para un fluido con una EOS de VdW con su respectivos parámetros \textit{a} y \textit{b}, se puede calcular los valores de $T_c$ y $\rho_c$. Para  el fluido mencionadado en una cavidad bidimensional a una dada temperatura e inicializando la densidad del mismo aleatoriamente alrededor de  $\rho_c$, cuando se deje evolucionar en el tiempo se producirá la separación de las fases del mismo, produciéndose una coexistencia de fases. Por medio de la obtención de las densidades de coexistencia para distintas temperaturas iniciales, se puede reconstruir la curva de coexistencia analítica. De esta forma, el problema de construcción de Maxwell puede emplearse para validar la implementación de las ecuaciones LBM hidrodinámicas.
 
-Para un fluido con una EOS de VdW con su respectivos parámetros \textit{a} y \textit{b}, se puede calcular los valores de $T_c$ y $\rho_c$. Para  el fluido mencionadado en una cavidad bidimensional a una dada temperatura e inicializando la densidad del mismo aleatoriamente alrededor de  $\rho_c$, cuando se deje evolucionar en el tiempo se producirá la separación de las fases del mismo, produciéndose una coexistencia de fases. Por medio de la obtención de las densidades de coexistencia para distintas temperaturas iniciales, se puede reconstruir la curva de coexistencia analítica.
+En este problema, se valida la curva de coexistencia $T_r - \rho_r$ calculada analíticamente para un fluido con una EOS de VdW, como la observada en la Figura (\ref{fig:v_760_MxC_c_simple}). 
 
 \subsection{Validación}
 
@@ -64,9 +68,9 @@ G = -1.0 \quad c = 1.0 \quad \sigma = 0.125 \quad a = 0.5 \quad b = 4.0 \\
 \mathbf{g} = (0.0 \quad 0.0 \quad 0.0 ) \qquad \rho_c = \frac{1}{12} \qquad T_c = 0.037037037
 \end{align*}
 
-La Figura(\ref{fig:v_760_MxC_c_simple}) muestra la validación del código realizado en \textsc{C} para simple precisión en una CPU Intel Core i7-3770; con distintos parámetros $\sigma$ del modelo MRT, donde se observa que el valor de $\sigma = 0,125$ es el que mejor ajusta a la curva de coexistencia como se discute en \cite{fogliatto2018modelado}. La Figura (\ref{fig:v_760_MxC_cuda_simple}) muestra el resultados obtenidos del código realizado en \textsc{Cuda C} en simple precisión en la misma GPU.
+La Figura(\ref{fig:v_760_MxC_c_simple}) muestra la validación del código realizado en \textsc{C} para simple precisión en una CPU Intel Core i7-3770; con distintos parámetros $\sigma$ del modelo MRT, donde se observa que el valor de $\sigma = 0,125$ es el que mejor ajusta a la curva de coexistencia como se discute en \cite{fogliatto2018modelado}. Por otro lado, en la Figura (\ref{fig:v_760_MxC_cuda_simple}) se muestran los resultados obtenidos con el código realizado en \textsc{Cuda C}, y ejecutado en la GPU correspondiente
 
-Los resultados de las Figuras (\ref{fig:v_760_MxC_c_simple}) y (\ref{fig:v_760_MxC_cuda_simple}) se realizaron en 50000 pasos de tiempo en cada uno de los valores de $T_r$. El valor obtenido de las densidades de coexistencia de fases entre los códigos de \textsc{C} y \textsc{Cuda C} resultan similares en primera instancia. 
+Los resultados de las Figuras (\ref{fig:v_760_MxC_c_simple}) y (\ref{fig:v_760_MxC_cuda_simple}) se realizaron en 50000 pasos de tiempo en cada uno de los valores de $T_r$. Puede observarse que los valores obtenidos de las densidades de coexistencia de fases entre los códigos de \textsc{C} y \textsc{Cuda C} resultan similares.
 
 El resultado que se obtuvo de realizar la validación en doble precisión es que los dos códigos desarrollados obtienen el mismo valor en las densidades de fase.
 
@@ -88,8 +92,6 @@ El resultado que se obtuvo de realizar la validación en doble precisión es que
 
 \newpage
 \subsection{Comparación de precisiones}
-
-En el análisis de la comparación de las precisiones, sólo se presentan los resultados obtenidos mediante el código de \textsc{C}, debido a que los resultados de \textsc{Cuda C} son idénticos.
 
 La Figura (\ref{fig:v_760_MxC_c_comparacion}) muestra los resultados de las densidades de coexistencia de fases para simple y doble precisión, no siendo apreciable la diferencia.
 
@@ -121,7 +123,7 @@ La mayor diferencia porcentual hallada para la distancia en la fase gaseosa, es 
 
 \subsection{Speed Up}
 
-En la presente sección se muestran las mejoras en el tiempo de cálculo realizados para el código de \textsc{C} y \textsc{Cuda C}. El índice \textit{Speed Up} (SU) calcula la mejora en el tiempo de calculo entre códigos y se calcula con la Ec.(\ref{eq:speedup}), siendo \textit{t} el tiempo de cálculo y \textit{p} significa comparación entre precisiones. La comparación se realizó en simple y doble precisión para las dos (2) PC detalladas en la Sec. (\ref{sec_pc}).
+En la presente sección se muestran las mejoras en el tiempo de cálculo realizados para el código de \textsc{C} y \textsc{Cuda C}. El índice \textit{Speed Up} (SU) calcula la mejora en el tiempo de cálculo entre códigos y se obtiene mediante la Ec.(\ref{eq:speedup}), siendo \textit{t} el tiempo de cálculo y \textit{p} significa comparación entre precisiones. La comparación se realizó en simple y doble precisión para las dos (2) PC detalladas en la Sec. (\ref{sec_pc}).
 \begin{align}
 	SU = \frac{t_{\>C}}{t_{\>Cuda \> C}} \qquad 	{SU}_p = \frac{t_{\>doble \> precisión}}{t_{\>simple \> precisión}} 
 	\label{eq:speedup}
@@ -130,7 +132,7 @@ Para calcular el \textsc{SU} de éste problema, se tomó una $T_r$ fija y se var
 
 \subsubsection{NVIDIA GeForce GTX 760}
 
-Los tamaños de grilla que se utilizaron para realizar las pruebas de tiempo de ésta placa, tienen el rango de grilla de 16x16 nodos hasta 2048x2048 nodos. La cantidad de \textit{thread blocks} que se utilizó fueron de 1 a 512.
+Los tamaños de grilla que se utilizaron para realizar las pruebas de tiempo de esta placa, varían entre 16x16 nodos hasta 2048x2048 nodos. La cantidad de \textit{thread blocks} que se utilizó fueron de 1 a 512.
 
 Las Figuras (\ref{fig:s_760_MxC_simple_1.0}) y (\ref{fig:s_760_MxC_double_1.0}) muestran el SU obtenido en simple precisión y doble precisión respectivamente. El mejor resultado en ambos casos se obtuvo para un número de \textit{thread block} igual a 64, donde la mejora fue de 18.67 y 11.40 en simple y doble precisión respectivamente, para el mayor número de elementos de malla.
 
@@ -161,7 +163,7 @@ La Figura (\ref{fig:c_760_MxC_cuda_10}) muestra el ${SU}_p$ del código de \text
 
 \subsubsection{NVIDIA GeForce GTX 970}
 
-Los tamaños de grilla que se utilizaron para realizar las pruebas de tiempo de ésta placa, tienen el rango de grilla de 16x16 nodos hasta 4096x4096 nodos en simple precisión y de 16x16 nodos hasta 2048x2048 nodos en doble precisión . La cantidad de \textit{thread blocks} que se utilizó fueron de 1 a 512.
+Los tamaños de grilla que se utilizaron para realizar las pruebas de tiempo de esta placa, varían entre 16x16 nodos hasta 4096x4096 nodos en simple precisión y varían entre 16x16 nodos hasta 2048x2048 nodos en doble precisión . La cantidad de \textit{thread blocks} que se utilizó fueron de 1 a 512.
 
 
 
@@ -204,11 +206,11 @@ Se puede concluir después de haber realizado un SU y $SU_p$ a las dos PC que se
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[width=0.3\textwidth]{figs/cap4/esquema_problema_VdW}
-	\caption{Esquema del problema de la estratificación de un fluido VdW. Donde se muestra el alto (H) de la cavidad y el ancho (L).} 
+	\caption{Esquema del problema de la estratificación de un fluido VdW. Se muestra el alto (H) de la cavidad y el ancho (L).} 
 	\label{fig:esquema_VdW}	
 \end{figure}
 
-Se quiere resolver el problema de una cavidad unidimensional en presencia de un fluido cuya EOS es la de Van der Waals; con temperatura  no uniforme y fuerza de gravedad no nula. Éste problema fue desarrollado por Berberan-Santos \cite{berberan2002liquid} y que Fogliatto \cite{fogliatto2019simulation} extendió. En éste caso se resuelven las dos ecuaciones pseudo-potencial del LBM, la ecuación hidrodinámica y la ecuación de energía.
+Se quiere resolver el problema de una cavidad unidimensional en presencia de un fluido cuya EOS es la de Van der Waals; con temperatura  no uniforme y fuerza de gravedad no nula. Éste problema fue desarrollado por Berberan-Santos et al. \cite{berberan2002liquid} y extendido por Fogliatto et al. \cite{fogliatto2019simulation}. En este caso se resuelven las dos ecuaciones pseudo-potencial del LBM, la ecuación hidrodinámica y la ecuación de energía.
 
 Se toma como coordenada del problema \textit{y}, teniéndose una temperatura fija $T_{0}$ en $y = 0$ y $T_{1}$ en $y = H$ como se observa en la Figura (\ref{fig:esquema_VdW}) en presencia de la gravedad.
 
@@ -220,40 +222,24 @@ El gradiente de presión surge de realizar el balance de momento en un volumen d
 
 siendo \textit{g} la gravedad, \textit{M} el peso molecular, $C = \frac{1}{v}$ la fracción molar, \textit{v} el volumen molar y \textit{P} la presión.
 
-Realizando la adimensionalización de $ P_r = \frac{P}{P_c}$ , $ T_r = \frac{T}{T_c}$, $c = C v_c$ y $E_r = \frac{M g y}{R T_c}$; siendo \textit{c} el punto crítico en el cuál comienza la coexistencia de las dos fases, se pueden reemplazar en el gradiente de presión y una Ecuación de estado para obtener una ecuación adimensional con la concentración molar distribuida \cite{fogliatto2019simulation}.
+Realizando la adimensionalización $ P_r = \frac{P}{P_c}$ , $ T_r = \frac{T}{T_c}$, $c = C v_c$ y $E_r = \frac{M g y}{R T_c}$; siendo \textit{c} el punto crítico en el cuál comienza la coexistencia de las dos fases, se pueden reemplazar en el gradiente de presión una ecuación de estado para obtener una ecuación adimensional con la concentración molar distribuida \cite{fogliatto2019simulation}.
 
 
 
-Al elejir la EOS de VdW de la Ec.(\ref{eq:VdW_P}), se obtiene la siguiente ecuación adimensional diferencial:
+En particular, para la EOS de VdW se obtiene:
 
 \begin{align}
 	\frac{d c}{d E_r} = - \left[ c + \frac{d T_r}{d E_r} \left( \frac{c}{1 - \frac{c}{3}}\right) \right] \left[	\frac{1}{\frac{T_r}{{\left(1- \frac{c}{3}\right)}^2} - \frac{9}{4} c}  \right] 
 	\label{eq:adim_dif}
 \end{align} 
 
-donde la posición de la interface dentro de la cavidad se puede determinar utilizando la masa inicial, siendo la misma una condición inicial para realizar la integración de la Ec. (\ref{eq:adim_dif}). Si se elije  resolver iterativamente la Ec. (\ref{eq:adim_dif}) junto con la ecuación macroscópica Ec. (\ref{eq:calor_ecu}) (ecuación del calor) se puede obtener las distribuciones de densidad y temperatura de la cavidad \cite{fogliatto2019simulation}. A partir de la densidad y temperatura recuperadas, se obtienen dos curvas adimensionales correspondientes al perfil de temperatura y al de concentraciones. 
+donde la posición de la interface dentro de la cavidad se puede determinar utilizando la masa inicial, siendo la misma una condición inicial para realizar la integración de la Ec. (\ref{eq:adim_dif}). Si se elige  resolver iterativamente la Ec. (\ref{eq:adim_dif}) junto con la ecuación macroscópica Ec. (\ref{eq:calor_ecu}) (ecuación del calor) se puede obtener las distribuciones de densidad y temperatura de la cavidad \cite{fogliatto2019simulation}. A partir de la densidad y temperatura recuperadas, se obtienen dos curvas adimensionales correspondientes al perfil de temperatura y al de concentraciones. 
 
-En éste problema a validar, se toma como temperatura fija $T_1 = 0.99 \> T_c$, y se hace variar el valor de  $T_0$. Se asigna la siguiente nomenclatura $\rho_r = \frac{\rho}{\rho_c}$ y  $Y_r = \frac{y}{H}$. En las Figuras (\ref{fig:v_760_VdW_c_simple_rho_y}) y (\ref{fig:v_760_VdW_c_simple_T_y}) se muestran las curvas adimensionales de $ \rho_r - Y_r $ y $ T_r - Y_r $ respectivamente.
-
-%\begin{figure}[htbp]
-%	\centering
-%	\includegraphics[width=\textwidth]{figs/cap4/VdW_val_rho_y}
-%	\caption{Perfil de densidad adimensional a lo largo de la longitud de la pared,para distintos valores de condición de temperatura fija en $y = 0$, para un fluido de VdW con los parámetros $a = 0,5 $ y $b = 4,0 $, obtenida en simple precisión en la GPU NVIDIA GeForce GTX 760 en el código desarrollado en \textsc{C}.} 
-%	\label{fig:VdW_val_rho_y}	
-%\end{figure}
-%
-%\begin{figure}[htbp]
-%	\centering
-%	\includegraphics[width=\textwidth]{figs/cap4/VdW_val_T_y}
-%	\caption{Perfil de temperatura adimensional a lo largo de la longitud de la pared, para distintos valores de condición de temperatura fija en $y = 0$,para un fluido de VdW con los parámetros $a = 0,5 $ y $b = 4,0 $, obtenida en simple precisión en la GPU NVIDIA GeForce GTX 760 en el código desarrollado en \textsc{C}.} 
-%	\label{fig:VdW_val_T_y}	
-%\end{figure}
-
-
-
+En éste problema a validar, se toma como temperatura fija $T_1 = 0.99 \> T_c$, y se hace variar el valor de  $T_0$. Se asigna la siguiente nomenclatura $\rho_r = \frac{\rho}{\rho_c}$ y  $Y_r = \frac{y}{H}$, que en este caso coinciden con $c$ y $\frac{E_r}{E_{r_{max}}}$ respectivamente. En las Figuras (\ref{fig:v_760_VdW_c_simple_rho_y}) y (\ref{fig:v_760_VdW_c_simple_T_y}) se muestran las curvas adimensionales de $ \rho_r - Y_r $ y $ T_r - Y_r $ respectivamente.
+\newline
 \subsection{Validación}
 
-La validación de éste problema se hizo utilizando los parámetros $a =0,5$ y $b = 4,0$; para un tamaño de malla de 3 x 300 nodos y $T_0 = T_r$, variando $T_r$ con un paso de $0,025$ en el rango de $[0,6 - 0,975]$, donde se muestra en los gráficos únicamente los valores de $T_r = 0,6 ; 0,7 ; 0,8 \> y \> 0,9$.  Los parámetros de LBM son los que se detallan a continuación:
+La validación de este problema se hizo utilizando los parámetros $a =0,5$ y $b = 4,0$; para un tamaño de malla de 3 x 300 nodos y $T_0 = T_r$, con $T_r = 0,6 ; 0,7 ; 0,8 \> y \> 0,9$.  Los parámetros de LBM son los que se detallan a continuación:
 \begin{align*}
 diag(\mathbf{\Lambda}) = 
 \begin{bmatrix}
@@ -267,23 +253,21 @@ diag(\mathbf{Q}) =
 G = -1.0 \quad c = 1.0 \quad \sigma = 0.125 \quad a = 0.5 \quad b = 4.0 \\
 \mathbf{g} = (0.0 \quad-1.234567e^{-7}\quad 0.0 ) \qquad \rho_c = \frac{1}{12} \qquad T_c = 0.037037037
 \end{align*}
+Las Figuras (\ref{fig:v_760_VdW_c_simple_rho_y}) y (\ref{fig:v_760_VdW_c_simple_T_y})  muestran la validación del código realizado en \textsc{C} para simple precisión en una GPU NVIDIA GeForce GTX 760 con distintos valores de $T_0$. 
 
-
-La Figura(\ref{fig:v_760_VdW_c_simple_rho_y}) y (\ref{fig:v_760_VdW_c_simple_T_y})  muestran la validación del código realizado en \textsc{C} para simple precisión en una GPU NVIDIA GeForce GTX 760; con distintos valores de $T_0$. 
-
-El quiebre abrupto y discontínuo de la densidad a lo largo de la pared en la Figura (\ref{fig:v_760_VdW_c_simple_rho_y}) muestra la coexistencia de las dos fases, para la solución analítica. Debido a que se tiene una solución continua y difusa porque el modelo toma una cierta cantidad de nodos como separación entre ambas fases, se presenta una mayor diferencia en el ajuste de la curva obtenida con la analítica en el cambio de fase. Lo mismo sucede en la Figura (\ref{fig:v_760_VdW_c_simple_T_y}). El paso de tiempo utilizado en cada uno de los nodos de la malla fue de 750000. El resultado obtenido para ambas curvas validades es similar en primer orden en el código de \textsc{C} y \textsc{Cuda C}.
+El quiebre abrupto y discontinuo de la densidad a lo largo de la columna en la Figura (\ref{fig:v_760_VdW_c_simple_rho_y}) muestra la coexistencia de las dos fases, para la solución analítica. Debido a que se tiene una solución continua y difusa porque el modelo toma una cierta cantidad de nodos como separación entre ambas fases, se presenta una mayor diferencia en el ajuste de la curva obtenida con la analítica en el cambio de fase. Lo mismo sucede en la Figura (\ref{fig:v_760_VdW_c_simple_T_y}). En todos los casos se simularon 750000 pasos de tiempo hasta alcanzar una solución estacionaria. El resultado obtenido para ambas curvas validades es similar en primer orden en el código de \textsc{C} y \textsc{Cuda C}.
 
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=\textwidth]{figs/cap4/v_760_VdW_c_simple_rho_y}
-	\caption{Perfil de densidad adimensional a lo largo de la cavidad, para valores de $T_0 = T_r$ , siendo $T_r = 0,6 ; 0,7 ; 0,8 y 0,9$, para un fluido de VdW con los parámetros $a = 0,5 $ y $b = 4,0 $, obtenida en simple precisión en la GPU NVIDIA GeForce GTX 760 en el código desarrollado en \textsc{C}.}
+	\caption{Perfil de densidad adimensional a lo largo de la cavidad, para valores de $T_0 = T_r$, siendo $T_r = 0,6\> ;\> 0,7\> ;\> 0,8\>\> y\>\> 0,9$, para un fluido de VdW con los parámetros $a = 0,5 $ y $b = 4,0 $, obtenida en simple precisión en la GPU NVIDIA GeForce GTX 760 en el código desarrollado en \textsc{C}.}
 	\label{fig:v_760_VdW_c_simple_rho_y}	
 \end{figure}
 
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=\textwidth]{figs/cap4/v_760_VdW_c_simple_T_y}
-	\caption{Perfil de temperatura adimensional a lo largo de la cavidad de la pared, para valores de $T_0 = T_r$ , siendo $T_r = 0,6 ; 0,7 ; 0,8 \>y\> 0,9$, para un fluido de VdW con los parámetros $a = 0,5 $ y $b = 4,0 $, obtenida en simple precisión en la GPU NVIDIA GeForce GTX 760 en el código desarrollado en \textsc{C}.}
+	\caption{Perfil de temperatura adimensional a lo largo de la cavidad de la pared, para valores de $T_0 = T_r$, siendo $T_r = 0,6\> ;\> 0,7\> ;\> 0,8\>\> y\>\> 0,9$, para un fluido de VdW con los parámetros $a = 0,5 $ y $b = 4,0 $, obtenida en simple precisión en la GPU NVIDIA GeForce GTX 760 en el código desarrollado en \textsc{C}.}
 	\label{fig:v_760_VdW_c_simple_T_y}	
 \end{figure}
 
@@ -291,13 +275,13 @@ El quiebre abrupto y discontínuo de la densidad a lo largo de la pared en la Fi
 
 \subsection{Speed Up}
 
-En la presente sección se muestran las mejoras en el tiempo de cálculo realizados para el código de \textsc{C} y \textsc{Cuda C}. El índice que se utiliza es el SU y $SU_p$ como indica la Ec. (\ref{eq:speedup}). Se tomó una $T_r$ fija y se varió el tamaño de la grilla, de manera que ésta siempre tuviese un ancho constante de 300 nodos y variando la dimensión en el eje \textsc{X} respetando un número de nodos de potencia de 2 (exceptuando el primer valor que es 3) . La cantidad de \textit{thread blocks} que se utilizó para realizar la comnparación en el código de \textsc{CUDA} fueron de potencia de 2.
+En la presente sección se muestran las mejoras en el tiempo de cálculo realizados para el código de \textsc{C} y \textsc{Cuda C}. El índice que se utiliza es el SU y $SU_p$ como indica la Ec. (\ref{eq:speedup}). Se tomó una $T_r$ fija y se varió el tamaño de la grilla, de manera que ésta siempre tuviese una altura constante de 300 nodos y variando la dimensión en el eje \textsc{X} respetando un número de nodos de potencia de 2 (exceptuando el primer valor que es 3) . La cantidad de \textit{thread blocks} que se utilizó para realizar la comnparación en el código de \textsc{CUDA} fueron de potencia de 2.
 
 \subsubsection{NVIDIA GeForce GTX 760}
 
-Los tamaños de grilla que se utilizaron para realizar las pruebas de tiempo de ésta placa, tienen el rango de grilla de 3x300 nodos hasta 1638400x300 nodos. La cantidad de \textit{thread blocks} que se utilizó fueron de 1 a 512.
+Los tamaños de grilla que se utilizaron para realizar las pruebas de tiempo de esta placa, varían entre 3x300 nodos hasta 1638400x300 nodos. La cantidad de \textit{thread blocks} que se utilizó fueron de 1 a 512.
 
-Las Figuras (\ref{fig:s_760_VdW_simple_10}) y (\ref{fig:s_760_VdW_double_10}) muestran el SU obtenido en simple precisión y doble precisión respectivamente. El mejor resultado en ambos casos se obtuvo para un número de \textit{thread block} igual a 64, donde la mejora fue de 13.26 y 7.88 en simple y doble precisión respectivamente, para el mayor número de elementos de malla.
+Las Figuras (\ref{fig:s_760_VdW_simple_10}) y (\ref{fig:s_760_VdW_double_10}) muestran el SU obtenido en simple y doble precisión respectivamente. El mejor resultado en ambos casos se obtuvo para un número de \textit{thread block} igual a 64, donde la mejora fue de 13.26 y 7.88 en simple y doble precisión respectivamente, para el mayor número de elementos de malla.
 
 
 
@@ -328,8 +312,7 @@ La Figura (\ref{fig:c_760_VdW_cuda_10}) muestra el ${SU}_p$ del código de \text
 
 \subsubsection{NVIDIA GeForce GTX 970}
 
-Los tamaños de grilla que se utilizaron para realizar las pruebas de tiempo de esta placa, tienen el rango de grilla de 3x300 nodos hasta 1638400x300 nodos. La cantidad de \textit{thread blocks} que se utilizó fueron de 1 a 512.
-
+Los tamaños de grilla que se utilizaron para realizar las pruebas de tiempo de esta placa, varían entre 3x300 nodos hasta 1638400x300 nodos. La cantidad de \textit{thread blocks} que se utilizó fueron de 1 a 512.
 
 
 \begin{figure}[h!]
@@ -350,7 +333,7 @@ Los tamaños de grilla que se utilizaron para realizar las pruebas de tiempo de 
 
 Las Figuras (\ref{fig:s_970_VdW_simple_10}) y (\ref{fig:s_970_VdW_double_10}) muestran el SU obtenido en simple precisión y doble precisión respectivamente. El mejor resultado en ambos casos se obtuvo para un número de \textit{thread block} igual a 32, donde la mejora fue de 15.95 y 13.29 en simple y doble precisión respectivamente, para el mayor número de elementos de malla.
 
-La Figura (\ref{fig:c_970_VdW_cuda_10}) muestra el ${SU}_p$ del código de \textsc{Cuda C} en la GPU NVIDIA GeForce GTX 760. Para un número de \textit{thread block} igual a 32, el tiempo de cálculo en doble precisión es 1,25 veces mayor que en simple precisión en el mayor número de elementos de malla calculado. Se reporta únicamente el resultado para esa cantidad de \textit{thread block}, debido a que los resultados de las Figuras (\ref{fig:s_760_VdW_simple_10}) y (\ref{fig:s_760_VdW_double_10}) indican que es el que tiene un mayor SU.
+La Figura (\ref{fig:c_970_VdW_cuda_10}) muestra el ${SU}_p$ del código de \textsc{Cuda C} en la GPU NVIDIA GeForce GTX 970. Para un número de \textit{thread block} igual a 32, el tiempo de cálculo en doble precisión es 1,25 veces mayor que en simple precisión en el mayor número de elementos de malla calculado. Se reporta únicamente el resultado para esa cantidad de \textit{thread block}, debido a que los resultados de las Figuras (\ref{fig:s_760_VdW_simple_10}) y (\ref{fig:s_760_VdW_double_10}) indican que es el que tiene un mayor SU.
 
 
 \begin{figure}[h!]
@@ -360,123 +343,20 @@ La Figura (\ref{fig:c_970_VdW_cuda_10}) muestra el ${SU}_p$ del código de \text
 	\label{fig:c_970_VdW_cuda_10}	
 \end{figure}
 
-\section{Resultados con \textsc{Python}}
 
-La realización de los códigos numéricos mediante \textsc{C} y \textsc{Cuda C} tenian como primera finalidad conocer cuál es la ganancia en tiempo de cálculo realizando la implementación en GPU, y su otra finalidad era  realizar un código en \textsc{Cuda C}, para luego compilarlo en formato \textsc{ptx} y ser utilizado en \textsc{Python} por medio del módulo \textsc{PyCuda} del mismo.
+En este problema las mejoras de implementación del código en \textsc{Cuda C} con respecto a \textsc{C} son considerables, y se puede observar en el índice SU. En el caso de la GPU NVIDIA GeForce GTX 760 se obtuvo un SU de 13,26 y 7,88 para simple y doble precisión respectivamente. Por otro lado en la GPU NVIDIA GeForce GTX 970 se obtuvo un SU de15,95 y 13,29 en simple y doble precisión respectivamente.
 
-Por falta de tiempo, no se pudo hacer un código en \textsc{Python} que resuelva los problemas mecionados en el presente capítulo. Lo que se realizó fue un SU 
-de uno de las \textit{kernel} del código, el cual resuelve la Ec.(\ref{eq:rho_py}):
-
-\begin{equation}
-\rho = \sum_{\alpha} f_{\alpha}
-\label{eq:rho_py}
-\end{equation}
-
-Para éste análisis se inicializó a $f$ con valores aleatorios, haciendo una repetición de la ejecución de la función 100000 veces para realizar la toma de tiempo. Se varió el tamaño de la grilla, de manera que ésta siempre fuese cuadrada, respetando un número de nodos de potencia de 2 en los lados del cuadrado. La cantidad de \textit{thread blocks} que se utilizó para realizar la comparación en el código fue de potencia de 2. El tamaño de la grilla varió de 16x16 hasta 4096x4906 y la cantidad de \textit{thread blocks} utilizado es de 1 a 512.
+Como se mecionó anteriormente, en este problema de estratficación de fluido VdW pudo observarse que la implementación en \textsc{Cuda C} produce una mejora significativa en el tiempo de cálculo con respecto la la implementación equivalente en \textsc{C}. Para este caso, sin embargo, se observó que el SU máximo es inferior al alcanzado en el problema de la Construcción de Maxwell, es decir, con una única LBE.
 
 \newpage
-
-Al  realizar la implementación de un \textit{kernel} de \textsc{Cuda C} en \textsc{Python}, se espera que el tiempo de cálculo en \textsc{Python} sea más lento que en \textsc{Cuda C}, debido a que el primer lenguaje es interpretado. Debido a lo mencionado es que se define el índice \textit{Speed Down} (SD), \textit{t} es el tiempo de cálculo. SD es una medida de cuánto es la demora de un código respecto a otro y se calcula de la siguiente forma :
-
-\begin{align}
-	SD = \frac{t_{\>PyCuda}}{t_{\>Cuda \> C}} 
-\end{align} 
-
-
-\title{\textbf{NVIDIA GeForce GTX 760}}
-
-La Figura (\ref{fig:s_cuda_760_test_simple_10}) muestra el SU para la GPU NVIDIA GeForce GTX 760, en donde la mayor ganancia se obtuvo que para 64 \textit{thread blocks}, siendo de 3.198. La Figura (\ref{fig:s_py_760_test_simple_10}) muestra el $SD$, en donde se obtuvo el menor incremento en tiempos de cálculo fue de 1.144 para 128 y 512  \textit{thread blocks}. \\
-
-\begin{figure}[h!]
-	\centering
-	\includegraphics[width=\textwidth]{figs/cap4/s_cuda_760_test_simple_10}
-	\caption{SU entre \textsc{C} y \textsc{Cuda C} para la función de obtensión de la densidad con la GPU NVIDIA GeForce GTX 760 en simple precisión.} 
-	\label{fig:s_cuda_760_test_simple_10}	
-\end{figure}
-
-
-
-%\begin{figure}[h!]
-%	\centering
-%	\includegraphics[width=\textwidth]{figs/cap4/s_py_c_760_test_simple_10}
-%	\caption{Speed Up realizado entre PyCUDA y C para la función de obtensión de la densidad con la GPU NVIDIA GeForce GTX 760 en simple precisión.} 
-%	\label{fig:s_py_c_760_test_simple_10}	
-%\end{figure}
-
-
-\begin{figure}[h!]
-	\centering
-	\includegraphics[width=\textwidth]{figs/cap4/s_py_760_test_simple_10}
-	\caption{SD realizado entre \textsc{PyCuda} y \textsc{Cuda} para la función de obtensión de la densidad con la GPU NVIDIA GeForce GTX 760 en simple precisión.} 
-	\label{fig:s_py_760_test_simple_10}	
-\end{figure}
-
-
-\newpage
-%
-\title{\textbf{NVIDIA GeForce GTX 970}}\\
-
-
-La Figura (\ref{fig:s_cuda_970_test_simple_10}) muestra el SU para la GPU NVIDIA GeForce GTX 970, en donde la mayor ganancia se obtuvo que para 64 \textit{thread blocks}, siendo de 4.815. La Figura (\ref{fig:s_py_970_test_simple_10}) muestra el $SD$, en donde se obtuvo que el menor incremento en tiempos de cálculo fue de 1.087 y 1.104 para 128 y 512  \textit{thread blocks} respectivamente. 
-
-\begin{figure}[h!]
-	\centering
-	\includegraphics[width=\textwidth]{figs/cap4/s_cuda_970_test_simple_10}
-	\caption{SU realizado entre \textsc{C} y \textsc{Cuda C} para la función de obtensión de la densidad con la GPU NVIDIA GeForce GTX 970 en simple precisión.} 
-	\label{fig:s_cuda_970_test_simple_10}	
-\end{figure}
-
-\begin{figure}[h!]
-	\centering
-	\includegraphics[width=\textwidth]{figs/cap4/s_py_970_test_simple_10}
-	\caption{SD para la función de obtensión de la densidad con la GPU NVIDIA GeForce GTX 970 en simple precisión.} 
-	\label{fig:s_py_970_test_simple_10}	
-\end{figure}
-
-%\section{Análisis}
-
-\newpage
-Luego de haber realizado la implementación de un \textit{kernel} de \textsc{Cuda C} en un \textit{script} de \textsc{Python} por medio del módulo \textsc{PyCuda}, se observa que el tiempo de cálculo se incrementa. La variación del incremento, que se mide por el índice SD depende en gran medida de la cantidad de \textit{thread blocks} utilizados, al igual que el tamaño de la grilla.
-
-Debido a que se pretende utilizar con la mayor eficiencia posible los \textit{kernels} en \textit{Python}, debe ejecutarse con la cantidad de \textit{thread blocks} que minimicen SD. De las pruebas realizadasse obtuvo que para la GPU NVIDIA GeForce GTX 760 con 128 y 512  \textit{thread blocks} el valor de SD se encuentra cercano al 15 \% , mientras que en la GPU NVIDIA GeForce GTX 970 ese valor esta cercano al 10 \%.
-
-Con los resultados obtenidos se observó que el incremento en tiempos de cálculo con \textit{Python} se encuentra en un rango del 10 \% a 15 \%. Debido a que la pérdida de tiempo de cálculo es aceptable es recomendable el uso de \textsc{Python} en éste tipo de problemas. 
-
-Es de importancia el desarrollo de códigos numéricos para que sean eficientes en el tiempo de cálculo, y que el desarrollo del mismo no implique un gran insumo de tiempo. Por lo último mencionado realizar códigos en \textsc{Python} es eficiente al ser un lenguaje interpretado y no tener que reservar memoria, liberar memoria, declarar variables entre otros. Los módulos de \textsc{Python} tienen sus bibliotecas realizadas mayormente en \textsc{C} y \textsc{Cuda C} para que sean eficientes y debido a ello es conveniente la utilización de sus módulos, que ya poseen las funciones que uno necesita, además siendo eficientes. 
-
-Si se necesita desarrollar un código con un gran costo computacional, no es necesario realizarlo en su totalidad en \textsc{C}, \textsc{Cuda C} u otros. Se puede utilizar \textsc{Python} con sus módulos, y las funciones necesarias a eficientizar realizarlas en otros lenguaje, y utilizarla mediante alguno de los mismos módulos.
-
-
-
-% por medio de alguno de sus módulos utiliar la función creada. , debido a que no se incrementa mucho el tiempo de cálculo al utiliar \textit{kernels} previamente compilados. 
-
-
-
-% Al momento de realizar una función específica se puede recurrir a módulos de \textsc{Python} que probablemente tengan ya implementado lo que se pretende hacer. Entonces se puede utilizar \textit{Python} para progresar rápido en porcentualmente en la terminación un proyecto, en donde la optimización del mismo puede ser llevada a cabo mediante módulos de \textit{Python}. casi el tiempo de cálculo que se rlo utilizando el módulo de \textit{PyCuda}
-%
-% al hecho concreto de programar. Por ello es que se recomienda que sean 
-%
-%
-%
-%Para realizar un balance de la conveniencia del uso de \textsc{Python} se deben tener en cuenta viarios factores, el siguiente análisis sólo toma tres (3).
-%
-%
-%El primero es la facilidad de programar en paralelo mediante \textsc{Cuda C} debido a su extensión de \textsc{C}. Lo segundo es la facilidad y fluidez de programación en \textit{Python} mediante el uso de clases,  objetos y los módulos disponibles que posee. Lo tercero es la implementación de los \textit{kernels} mediante el módulo \textsc{PyCuda}.
-%
-%Para el desarrollo de proyectos complejos, como el presente caso, se consume mucho tiempo tener que realizarrealizar 
-%Debido a que el desarrollo de LBM para casos más complejos y genéricos resulta un insumo importante de tiempo, 
-%
-%Al realizar un balance de la facilidad de realizar código en \textsc{Python} por ser un lenguaje interpretado
-%Por lo que no se pierde mucha eficiencia programando en el lenguaje de \textsc{Python}.
-
 \newpage
 \section{Generación de burbujas sobre una superficie horizontal calefaccionada}
 
-Mediante éste problema se quiere reproducir el fenómeno de ebullición nucleada. El trabajo en los dos problemas anteriores constituyen pasos para validar por partes del código. Ésto se debe a que el problema de la Construcción de Maxwell utiliza solamente una ecuación pseudo-potencial, mientras que el problema de la estratificación de un fluido VdW utiliza las dos ecuaciones pseudo-potencial planteadas.
+Mediante este problema se busca reproducir la fenomenología asociada a los procesos de transferencia de calor en ebullición, demostrando la potencialidad del método. 
 
 La diferencia del problema de la estratificación de VdW con el de la generación de burbujas, radica en que el primero es unidimensional y el segundo es bidimensional. A su vez, la aplicación del código cambia únicamente en realizar una función que imponga como condición de contorno un área de la superficie calefaccionada.
 
-A partir de las mismas bibliotecas utilizadas anteriormente y cambiando una única función, se obtuvo como resultado el fenómeno de formación, crecimiento y desprendimiento de una burbuja . Para realizar lo mencionado, se utilizaron los siguientes parámetros de LBM :
+A partir de las mismas bibliotecas utilizadas anteriormente y cambiando una única función, se obtuvo como resultado el fenómeno de formación, crecimiento y desprendimiento de una burbuja. Para realizar lo mencionado, se utilizaron los siguientes parámetros de LBM :
 \begin{align*}
 diag(\mathbf{\Lambda}) = 
 \begin{bmatrix}
@@ -490,13 +370,19 @@ diag(\mathbf{Q}) =
 G = -1.0 \quad c = 1.0 \quad \sigma = 0.125 \quad a = 1.0 \quad b = 4.0 \\
 \mathbf{g} = (0.0 \quad -8.0^{-6} \quad 0.0 ) \qquad \rho_c = \frac{1}{12} \qquad T_c = 0.074074074
 \end{align*}
-El tamaño de grilla utilizado fue de L = 300 y H = 500 basándose en el esquema de la Figura(\ref{fig:esquema_VdW}), donde la superficie calefaccionada se encuentra en el centro del lado L y posee un tamaño de 24 elementos de malla. La temperatura de calefacción $T_{heat} = T_c$  y elresto de la superficie se encuentra a $T = 0.8 T_c$ con la parte superior de la cavidad está a $T = 0.99 T_c$. La separación inicial de las dos fases se encuentra en $y = 350$, donde $\rho = 0.1610588 \> si \> y \in [0,350]$ y $\rho = 0.0199722$ $y$ para $(350,500]$.
+El tamaño de grilla utilizado fue de L = 300 y H = 500 basándose en el esquema de la Figura(\ref{fig:esquema_VdW}), donde la superficie calefaccionada se encuentra en el centro del lado L y posee un tamaño de 24 elementos de malla. La temperatura de calefacción $T_{heat} = T_c$  y el resto de la superficie se encuentra a $T = 0.8 T_c$ con la parte superior de la cavidad está a $T = 0.99 T_c$. La separación inicial de las dos fases se encuentra en $y = 350$, donde $\rho = 0.1610588 \> si \> y \in [0,350]$ y $\rho = 0.0199722$ $y$ para $(350,500]$.
 
-El resultado que se obtuvo para 5000, 10000, 20000, 25000, 30000, 35000, 40000, 45000 y 50000 pasos de tiempo se encuentran en la Figura (\ref{fig:secuencia_burbujas}), en donde se aprecia la formación, creación y desprendimiento mencionado anteriormente.
+El resultado que se obtuvo para 5000, 10000, 20000, 25000, 30000, 35000, 40000, 45000 y 50000 pasos de tiempo se encuentran en las Figuras (\ref{fig:secuencia_burbujas}) y (\ref{fig:secuencia_burbujas}), realizas en la GPU NVIDIA GeForce GTX 970 en doble precisióny CPU Intel Core i7-4770 en simple precisión respectivamente, en donde se aprecia la formación, creación y desprendimiento mencionado anteriormente.  
+
+Si se observan las Figuras Figuras (\ref{fig:secuencia_burbujas}) y (\ref{fig:secuencia_burbujas}), a simple vista no se halla ninguna diferencia entre los resultados que fueron en precisiones y lenguajes distintos.
 
 Con ésto se demuestra que la reproducción de un fenómeno complejo como la ebullición, puede ser resuelta mediante un LBM de sencilla aplicación y a su vez con un costo computacional bajo, comparando con métodos de elementos finitos o diferencias finitas \cite{guo2013lattice}.
 
-\begin{figure}[h!]
+
+
+\newpage
+
+\begin{figure}[H]
 	\centering
 	\begin{subfigure}{0.25\textwidth}
 		\includegraphics[width=\linewidth]{figs/cap4/bubble_5}
@@ -551,11 +437,112 @@ Con ésto se demuestra que la reproducción de un fenómeno complejo como la ebu
 	\label{fig:secuencia_burbujas}
 \end{figure}
 
-
-
 \newpage
 
 
+\section{Uso de \textsc{PyCuda}}
+
+La realización de los códigos numéricos mediante \textsc{C} y \textsc{Cuda C} tenían como primera finalidad conocer cuál es la ganancia en tiempo de cálculo realizando la implementación en GPU, por otro lado desarrollar código en \textsc{Cuda C}, para luego compilarlo en formato \textsc{ptx} y ser utilizado en \textsc{Python} por medio del módulo \textsc{PyCuda} del mismo.
+
+Debido a la falta de tiempo en el desarrollo del Proyecto Integrador no se pudo completar el desarrollo de módulos de \textsc{Python} que implementen con \textsc{PyCuda} los \textit{kernels} compilados previemente, con el objetivo de resolver los problemas de construcción de Maxwell, estratificación de fluido VdW y generación de burbujas sobre una placa calefaccionada.  Sin embargo, pudo analizarse el uso de \textit{kernels} individuales, como el que realiza el cálculo de la densidad macroscópica (Ec.(\ref{eq:rho_py})) en todos los nodos de la grilla.
+
+\begin{equation}
+\rho = \sum_{\alpha} f_{\alpha}
+\label{eq:rho_py}
+\end{equation}
+
+Para éste análisis se inicializó a $f$ con valores aleatorios, haciendo una repetición de la ejecución de la función 100000 veces para realizar la toma de tiempo. Se varió el tamaño de la grilla, de manera que ésta siempre fuese cuadrada, respetando un número de nodos de potencia de 2 en los lados del cuadrado. La cantidad de \textit{thread blocks} que se utilizó para realizar la comparación en el código fue de potencia de 2. El tamaño de la grilla varió de 16x16 hasta 4096x4906 y la cantidad de \textit{thread blocks} utilizado es de 1 a 512.
+
+Al  realizar la implementación de un \textit{kernel} de \textsc{Cuda C} en \textsc{Python}, se espera que el tiempo de cálculo en \textsc{Python} sea más lento que en \textsc{Cuda C}, debido a que el primer lenguaje es interpretado. Debido a lo mencionado es que se define el índice \textit{Speed Down} (SD), donde \textit{t} es el tiempo de cálculo. SD es una medida de cuánto es la demora de un código respecto a otro y se calcula de la siguiente forma :
+
+\begin{align}
+SD = \frac{t_{\>PyCuda}}{t_{\>Cuda \> C}} 
+\end{align} 
+
+
+\title{\textbf{NVIDIA GeForce GTX 760}}
+\newline
+
+La Figura (\ref{fig:s_cuda_760_test_simple_10}) muestra el SU para la GPU NVIDIA GeForce GTX 760, donde se observa que la mayor ganancia obtenida es de 3,2 para 64 \textit{thread blocks}. Por otro lado, en la Figura (\ref{fig:s_py_760_test_simple_10}) se muestra el SD, en donde puede verse que el menor valor alcanzado es de 1,14 para 128 y 512  \textit{thread blocks}.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{figs/cap4/s_cuda_760_test_simple_10}
+	\caption{SU entre \textsc{C} y \textsc{Cuda C} para la función de obtensión de la densidad con la GPU NVIDIA GeForce GTX 760 en simple precisión.} 
+	\label{fig:s_cuda_760_test_simple_10}	
+\end{figure}
+
+
+
+%\begin{figure}[h!]
+%	\centering
+%	\includegraphics[width=\textwidth]{figs/cap4/s_py_c_760_test_simple_10}
+%	\caption{Speed Up realizado entre PyCUDA y C para la función de obtensión de la densidad con la GPU NVIDIA GeForce GTX 760 en simple precisión.} 
+%	\label{fig:s_py_c_760_test_simple_10}	
+%\end{figure}
+
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{figs/cap4/s_py_760_test_simple_10}
+	\caption{SD realizado entre \textsc{PyCuda} y \textsc{Cuda} para la función de obtensión de la densidad con la GPU NVIDIA GeForce GTX 760 en simple precisión.} 
+	\label{fig:s_py_760_test_simple_10}	
+\end{figure}
+
+
+\newpage
+%
+\title{\textbf{NVIDIA GeForce GTX 970}}\\
+
+La Figura (\ref{fig:s_cuda_970_test_simple_10}) muestra el SU para la GPU NVIDIA GeForce GTX 970, donde se observa que la mayor ganancia obtenida es de 4,8 para 64 \textit{thread blocks}. Por otro lado, en la Figura (\ref{fig:s_py_970_test_simple_10}) se muestra el SD, en donde puede verse que los menores valores alcanzados son 1,08 y 1,10 para 128 y 512  \textit{thread blocks} respectivamente.
+
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{figs/cap4/s_cuda_970_test_simple_10}
+	\caption{SU realizado entre \textsc{C} y \textsc{Cuda C} para la función de obtensión de la densidad con la GPU NVIDIA GeForce GTX 970 en simple precisión.} 
+	\label{fig:s_cuda_970_test_simple_10}	
+\end{figure}
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{figs/cap4/s_py_970_test_simple_10}
+	\caption{SD para la función de obtensión de la densidad con la GPU NVIDIA GeForce GTX 970 en simple precisión.} 
+	\label{fig:s_py_970_test_simple_10}	
+\end{figure}
+
+%\section{Análisis}
+
+\newpage
+Luego de haber realizado la implementación de un \textit{kernel} de \textsc{Cuda C} en un \textit{script} de \textsc{Python} por medio del módulo \textsc{PyCuda}, se observa que el tiempo de cálculo se incrementa. La variación del incremento, que se mide por el índice SD depende en gran medida de la cantidad de \textit{thread blocks} utilizados, al igual que el tamaño de la grilla.
+
+Debido a que se pretende utilizar con la mayor eficiencia posible los \textit{kernels} en \textit{Python}, debe ejecutarse con la cantidad de \textit{thread blocks} que minimicen SD. De las pruebas realizadasse obtuvo que para la GPU NVIDIA GeForce GTX 760 con 128 y 512  \textit{thread blocks} el valor de SD se encuentra cercano al 15 \% , mientras que en la GPU NVIDIA GeForce GTX 970 ese valor esta cercano al 10 \%.
+
+Es de importancia el desarrollo de códigos numéricos para que sean eficientes en el tiempo de cálculo, y que el desarrollo del mismo no implique un gran insumo de tiempo. Por lo último mencionado realizar códigos en \textsc{Python} es eficiente al ser un lenguaje interpretado y no tener que reservar memoria, liberar memoria o declarar variables entre otros. Los módulos de \textsc{Python} tienen sus bibliotecas realizadas mayormente en \textsc{C} y \textsc{Cuda C} para que sean eficientes y debido a ello es conveniente la utilización de sus módulos, que ya poseen las funciones que uno necesita, además siendo eficientes. 
+
+De esta forma, se observó que resulta posible continuar con la extensión y generalización de herramientas de cálculo eficientes utilizando una combinación adecuada de los lenguajes mencionados.
+
+
+% por medio de alguno de sus módulos utiliar la función creada. , debido a que no se incrementa mucho el tiempo de cálculo al utiliar \textit{kernels} previamente compilados. 
+
+
+
+% Al momento de realizar una función específica se puede recurrir a módulos de \textsc{Python} que probablemente tengan ya implementado lo que se pretende hacer. Entonces se puede utilizar \textit{Python} para progresar rápido en porcentualmente en la terminación un proyecto, en donde la optimización del mismo puede ser llevada a cabo mediante módulos de \textit{Python}. casi el tiempo de cálculo que se rlo utilizando el módulo de \textit{PyCuda}
+%
+% al hecho concreto de programar. Por ello es que se recomienda que sean 
+%
+%
+%
+%Para realizar un balance de la conveniencia del uso de \textsc{Python} se deben tener en cuenta viarios factores, el siguiente análisis sólo toma tres (3).
+%
+%
+%El primero es la facilidad de programar en paralelo mediante \textsc{Cuda C} debido a su extensión de \textsc{C}. Lo segundo es la facilidad y fluidez de programación en \textit{Python} mediante el uso de clases,  objetos y los módulos disponibles que posee. Lo tercero es la implementación de los \textit{kernels} mediante el módulo \textsc{PyCuda}.
+%
+%Para el desarrollo de proyectos complejos, como el presente caso, se consume mucho tiempo tener que realizarrealizar 
+%Debido a que el desarrollo de LBM para casos más complejos y genéricos resulta un insumo importante de tiempo, 
+%
+%Al realizar un balance de la facilidad de realizar código en \textsc{Python} por ser un lenguaje interpretado
+%Por lo que no se pierde mucha eficiencia programando en el lenguaje de \textsc{Python}.
 
 
 
