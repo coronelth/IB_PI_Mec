@@ -79,12 +79,12 @@ Por medio de la función de distribución Ec.(\ref{eq:fieldmom}) \cite{li2013lat
 
 
 \begin{equation}
-    \mathbf{f}(\mathbf{x} + \mathbf{e} \> \delta_{t} , t + \delta_{t}) = \mathbf{M}^{-1} \left[ \mathbf{m} - \mathbf{\Lambda}(\mathbf{m} - \mathbf{m}^{(eq)}) + \delta_{t} \left( \mathbf{I} - 0,5 \mathbf{\Lambda} \right) \mathbf{\bar{S}}  \right]_{(\mathbf{x},t)} 
+    \mathbf{f}(\mathbf{x} + \mathbf{e} \> \delta_{t} , t + \delta_{t}) = \mathbf{M}^{-1} \left[ \mathbf{m} - \mathbf{\Lambda}(\mathbf{m} - \mathbf{m}^{eq}) + \delta_{t} \left( \mathbf{I} - 0,5 \mathbf{\Lambda} \right) \mathbf{\bar{S}}  \right]_{(\mathbf{x},t)} 
     \label{eq:fieldmom}
 \end{equation}\\
-donde $\mathbf{x}$ es la posición espacial, \textit{t} el tiempo, $\delta_{t}$ el paso de tiempo , \textit{\textbf{e}} la velocidad de grilla en sus direcciones $\alpha$ y $\textit{f}$ es la distribución de densidad en el espacio de poblaciones. La notación utilizada implica que la componente $\alpha$-ésima del miembro izquiero de la Ec. (\ref{eq:fieldmom}) esté dado por $f_{\alpha}(x + e_{\alpha} \delta_{t}  , t + \delta_{t} )$. El miembro derecho de la Ec. (\ref{eq:fieldmom}) corresponde a la etapa de post-colisión definida en el espacio de momentos, donde \textbf{I} es el tensor identidad, \textbf{M} una matriz de transformación ortogonal, $\mathbf{m} = \mathbf{M} \cdot \mathbf{f}$ , $\mathbf{m}_{eq} = \mathbf{M} \cdot \mathbf{f}_{eq}$ , $\mathbf{\bar{S}} = \mathbf{M} \mathbf{S}$ el término de fuente y $ \Lambda$ es una matriz diagonal. Este tipo de operador se conoce como MRT (\textit{Multiple Relaxation Times}).
+donde $\mathbf{x}$ es la posición espacial, \textit{t} el tiempo, $\delta_{t}$ el paso de tiempo , \textit{\textbf{e}} la velocidad de grilla en sus direcciones $\alpha$ y $\textit{f}$ es la distribución de densidad en el espacio de poblaciones. La notación utilizada implica que la componente $\alpha$-ésima del miembro izquiero de la Ec. (\ref{eq:fieldmom}) esté dado por $f_{\alpha}(x + e_{\alpha} \delta_{t}  , t + \delta_{t} )$. El miembro derecho de la Ec. (\ref{eq:fieldmom}) corresponde a la etapa de post-colisión definida en el espacio de momentos, donde \textbf{I} es el tensor identidad, \textbf{M} una matriz de transformación ortogonal, $\mathbf{m} = \mathbf{M} \cdot \mathbf{f}$ , $\mathbf{m}^{eq} = \mathbf{M} \cdot \mathbf{f}^{eq}$ , $\mathbf{\bar{S}} = \mathbf{M} \mathbf{S}$ el término de fuente y $ \Lambda$ es una matriz diagonal. Este tipo de operador se conoce como MRT (\textit{Multiple Relaxation Times}).
 
-Para el modelo de grilla D2Q9 utilizado en el presente trabajo $\mathbf{m}_{eq}$, $ \Lambda$ y $\mathbf{M}$ están dados por:
+Para el modelo de grilla D2Q9 utilizado en el presente trabajo $\mathbf{m}^{eq}$, $ \Lambda$ y $\mathbf{M}$ están dados por:
 \begin{align}
 m_{eq} =  \rho  \left( 1, - 2 + 3 {|u|}^{2} , 1 - 3{|u|}^{2} , u_{x} , - u_{x} , u_{y} , - u_{y} , {u_{x}}^{2} - {u_{y}}^{2} , u_{x} u_{y} \right) 
 \label{eq:m}
@@ -202,7 +202,7 @@ Para tener en cuenta la transferencia de calor en el modelo, es necesario adicio
 
 
 \begin{equation}
-    \mathbf{g}(\mathbf{x} + \mathbf{e} \delta_{t} ,t + \delta_{t}) = \mathbf{M}^{-1} \left[ \mathbf{n} - \mathbf{Q}(\mathbf{n} - \mathbf{n}^{(eq)}) + \delta_{t} \left( I - 0,5 Q \right) \hat{\Gamma}  \right]_{(\mathbf{x},t)}
+    \mathbf{g}(\mathbf{x} + \mathbf{e} \delta_{t} ,t + \delta_{t}) = \mathbf{M}^{-1} \left[ \mathbf{n} - \mathbf{Q}(\mathbf{n} - \mathbf{n}^{eq}) + \delta_{t} \left( I - 0,5 Q \right) \hat{\Gamma}  \right]_{(\mathbf{x},t)}
     \label{eq:fieldenergy}
 \end{equation}
 
@@ -221,10 +221,10 @@ En este caso los parámetros libres del modelo MRT vienen dados en parte por la 
     \label{eq_Q_56}
 \end{equation}
 
-La distribución de equilibrio $\mathbf{n}_{eq}$ se encuentra definida en Ec.(\ref{eq:n_eq}), siendo $\alpha_{1}$ y $\alpha_{2}$ parámetros libres del modelo :
+La distribución de equilibrio $\mathbf{n}^{eq}$ se encuentra definida en Ec.(\ref{eq:n_eq}), siendo $\alpha_{1}$ y $\alpha_{2}$ parámetros libres del modelo :
 
 \begin{equation}
-    {\mathbf{n}}_{eq} = T { \left( 1, \alpha_{1}, \alpha_{2}, u_{x}, -u_{x}, u_{y}, -u_{y}, 0, 0 \right) }^{T}
+    {\mathbf{n}}^{eq} = T { \left( 1, \alpha_{1}, \alpha_{2}, u_{x}, -u_{x}, u_{y}, -u_{y}, 0, 0 \right) }^{T}
     \label{eq:n_eq}
 \end{equation}
 
@@ -316,7 +316,8 @@ Para obtener una resolución de problemas genéricos, se debe agregar la condici
 
 La condición de contorno a realizar en la ecuación de energía, consiste en mantener una temperatura fija en una de las aristas o en secciones de la misma. Para este caso se utiliza el desarrollo de Inamuro \cite{inamuro2002lattice}.
 
-Primero se calcula el valor de la distribución de equilibrio del nodo $i$-ésimo $\mathbf{g^{eq}}$ utilizando Ec. (\ref{eq:n_eq}) y $\mathbf{M}$ de la forma $\mathbf{g^{eq}} = \mathbf{M}^{-1} \mathbf{n^{eq}}$. Se prosigue a calcular el parámetro $\beta$:
+Primero se calcula el valor de la distribución de equilibrio del nodo $i$-ésimo $\mathbf{g^{eq}}$ \\
+utilizando Ec. (\ref{eq:n_eq}) y $\mathbf{M}$ de la forma $\mathbf{g^{eq}} = \mathbf{M}^{-1} \mathbf{n^{eq}}$. Se prosigue a calcular el parámetro $\beta$:
 
 \begin{equation}
 \beta = \frac{T_{cc} - \sum_{A} g_{A}}{\sum_{B} g_{B}}
