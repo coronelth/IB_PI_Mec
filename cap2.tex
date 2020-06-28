@@ -12,7 +12,7 @@ Típicamente, las ecuaciones que describen la mecánica de fluidos suelen ser de
 Los problemas que se plantean resolver en el presente trabajo son de transferencia de calor en flujos multifásicos con cambio de fase y la escala de fluido adoptada es la mesoscópica. Considerando la escala y siendo un problema multifásico, se opta por resolver numéricamente mediante LBM. 
 
 
-Los mayoría de los modelos LBM para resolver los flujos multifásicos son clasificados en cuatro categorias generales : \textit{color gradient}, \textit{Shan Chen model} o \textit{pseudopotential}, \textit{Free-energy} y  \textit{phase-field}. 
+La mayoría de los modelos LBM para resolver los flujos multifásicos son clasificados en cuatro categorias generales : \textit{color gradient}, \textit{Shan Chen model} o \textit{pseudopotential}, \textit{Free-energy} y  \textit{phase-field}. 
 
 
 \begin{itemize}
@@ -40,22 +40,22 @@ El modelo pseudopotencial es el adoptado en el presente trabajo, donde dicho mod
 
 La obtención de la ecuación de lattice Boltzmann (LBE) a través de la ecuación de Boltzmann se encuentra descripta con detalle en \cite{kruger2017lattice}, de modo que sólo se incluirá una breve descripción. El problema físico a resolver cuenta con una región a la que se le realizará un mallado regular para discretizar el espacio. El nodo i - ésimo de la malla posee las coordenadas ${\bar{X}}_{i} = (x,y,z)$, a su vez densidad $\rho_{i}$ y temperatura $T_{i}$. La velocidad del fluido en el nodo tiene las componentes ${\bar{U}}_{i} = ({U}_{ix},{U}_{iy},{U}_{iz})$. El espacio de velocidades indica la propagación de las propiedades en la grilla, donde la velocidad de grilla $\mathbf{e}_{i}$ posee $q$ componentes.
 
-Los modelos de grilla suelen denotarse como \textit{DdQq}, donde \textit{d} son las dimensiones del espacio euclídeo y \textit{q} la cantidad de componentes en que se discretiza en el espacio de fases. En el presente trabajo el modelo de grilla empleado es $D2Q9$, donde el esquema de velocidades de grilla para el nodo i-ésimo del D2Q9 es el presentado en la Figura \ref{fig:D1Q3_D2Q9}. La Ec. (\ref{eq:velgrilla}) detalla los valores de velocidad adoptados. 
+Los modelos de grilla suelen denotarse como \textit{DdQq}, donde \textit{d} son las dimensiones del espacio euclídeo y \textit{q} la cantidad de componentes en que se discretiza el espacio de fases. En el presente trabajo el modelo de grilla empleado es $D2Q9$, donde el esquema de velocidades de grilla para el nodo i-ésimo del D2Q9 es el presentado en la Figura \ref{fig:D1Q3_D2Q9}. La Ec. (\ref{eq:velgrilla}) detalla los valores de velocidad adoptados. 
 
 En el caso más simple se cuenta con una única función de distribucion \textit{f}, y sus primeros momentos discretos en el espacio de velocidades están asociados a propiedades macroscópicas del fluido, como la densidad y velocidad del fluido.
 
-En este modelo es necesario porporcionar un potencial que describa a las fuerzas de interacción entre los nodos y dicho potencial estará dado por una Ecuación de estado (\textit{Equation of state} o EOS). Es de importancia la elección de la EOS a utilizar, puesto que según ella se recupera el tensor de presión y las variables $\rho$, $U$, $T$ ; a una dada presión y temperatura quedan determinadas las densidades de coexistencia de líquido y gas así como el calor latente en entre otras propiedades intrínsecas del fluido.
+En este modelo es necesario porporcionar un potencial que describa a las fuerzas de interacción entre los nodos y dicho potencial estará dado por una Ecuación de estado (\textit{Equation of state} o EOS). Es de importancia la elección de la EOS a utilizar, puesto que según ella se recupera el tensor de presión y las variables $\rho$, $U$, $T$; a una dada presión y temperatura quedan determinadas las densidades de coexistencia de líquido y gas así como el calor latente en entre otras propiedades intrínsecas del fluido.
 
 \section{Ecuación de estado y fluido de Van der Waals}
 
-Al ser multifásicos los problemas a desarrollar, es de importancia conocer las leyes que describen la separación de fases. La ley de gases ideales Ec. (\ref{eq:gas_ideal}) es un ejemplo de EOS , donde \textit{p} es la presión (atm), V es el volúmen (L), \textit{n} número de moles, R constante universal de los gases y \textit{T} temperatura. La ley caracteriza el comportamiento para gases de baja densidad.
+Al ser multifásicos los problemas a desarrollar, es de importancia conocer las leyes que describen la separación de fases. La ley de gases ideales Ec. (\ref{eq:gas_ideal}) es un ejemplo de EOS , donde \textit{p} es la presión (atm), V es el volumen (L), \textit{n} número de moles, R constante universal de los gases y \textit{T} temperatura. La ley caracteriza el comportamiento para gases de baja densidad.
 
 \begin{align}
 p V = n R T
 \label{eq:gas_ideal}
 \end{align}
 
-La EOS de Van der Waals (VdW) Ec.(\ref{eq:VdW_P}) fue propuesta para caracterizar el comportamiento de los gases reales, siendo $V_m = \frac{V}{n}$ el volúmen molar. Las constantes \textit{a} y \textit{b} son características de cada fluido.
+La EOS de Van der Waals (VdW) Ec.(\ref{eq:VdW_P}) fue propuesta para caracterizar el comportamiento de los gases reales, siendo $V_m = \frac{V}{n}$ el volumen molar. Las constantes \textit{a} y \textit{b} son características de cada fluido.
 
 \begin{align}
 p = \frac{R T}{V_m - B} - A {\left(\frac{1}{V_m}\right)}^2
@@ -64,7 +64,7 @@ p = \frac{R T}{V_m - B} - A {\left(\frac{1}{V_m}\right)}^2
 
 El parámetro \textit{A}  ($\frac{atm L^2}{mol^2}$) caracteriza la interacción que poseen las moléculas del gas entre sí, y \textit{B} ($\frac{L}{mol}$) da una idea del volumen molar mínimo que posee una partícula del fluido (este parámetro define a la partícula del gas con un dado volumen en vez de ser puntual como en la Ley de gases ideales).
 
-La EOS de VdW es utilizada en el presente trabajo para modelar el potencial del modelo LBM \textit{pseudopotential} de interacción entre las partículas. Su elección es debido a que permite la coexistencia de diferentes densidades para una misma condición de presión y temperatura \cite{huang2015multiphase}. 
+La EOS de VdW es utilizada en el presente trabajo para modelar el potencial del modelo LBM \textit{pseudopotential} de interacción entre las partículas. Su elección permite la coexistencia de diferentes densidades para una misma condición de temperatura y presión \cite{huang2015multiphase}. 
 
 
 \section{Modelo pseudopotencial de dos ecuaciones con operador MRT}
@@ -75,17 +75,17 @@ En esta sección se describirá cuál es el LBM utilizado para resolver problema
 
 \subsection{Ecuación hidrodinámica}
 
-Por medio de la resolución de una LBE para la función de distribución \textit{f} (Ec.(\ref{eq:fieldmom})), se puede obtener la solución de las ecuaciones hidrodinámicas \cite{li2013lattice}:
+Por medio de la resolución de una LBE para la función de distribución \textbf{f} (Ec.(\ref{eq:fieldmom})), se puede obtener la solución de las ecuaciones hidrodinámicas \cite{li2013lattice}:
 
 \begin{equation}
     \mathbf{f}(\mathbf{x} + \mathbf{e} \> \delta_{t} , t + \delta_{t}) = \mathbf{M}^{-1} \left[ \mathbf{m} - \mathbf{\Lambda}(\mathbf{m} - \mathbf{m}^{eq}) + \delta_{t} \left( \mathbf{I} - 0,5 \mathbf{\Lambda} \right) \mathbf{\bar{S}}  \right]_{(\mathbf{x},t)} 
     \label{eq:fieldmom}
 \end{equation}\\
-donde $\mathbf{x}$ es la posición espacial, \textit{t} el tiempo, $\delta_{t}$ el paso de tiempo , \textit{\textbf{e}} la velocidad de grilla en sus direcciones $\alpha$ y $\textit{f}$ es la distribución de densidad en el espacio de poblaciones. La notación utilizada implica que la componente $\alpha$-ésima del miembro izquiero de la Ec. (\ref{eq:fieldmom}) esté dado por $f_{\alpha}(x + e_{\alpha} \delta_{t}  , t + \delta_{t} )$. El miembro derecho de la Ec. (\ref{eq:fieldmom}) corresponde a la etapa de post-colisión definida en el espacio de momentos, donde \textbf{I} es el tensor identidad, \textbf{M} una matriz de transformación ortogonal, $\mathbf{m} = \mathbf{M} \cdot \mathbf{f}$ , $\mathbf{m}^{eq} = \mathbf{M} \cdot \mathbf{f}^{eq}$ , $\mathbf{\bar{S}} = \mathbf{M} \mathbf{S}$ el término de fuente y $ \Lambda$ es una matriz diagonal. Este tipo de operador se conoce como MRT (\textit{Multiple Relaxation Times}).
+donde $\mathbf{x}$ es la posición espacial, \textit{t} el tiempo, $\delta_{t}$ el paso de tiempo , \textit{\textbf{e}} la velocidad de grilla en sus direcciones $\alpha$ y $\mathbf{f}$ es la distribución de densidad en el espacio de poblaciones. La notación utilizada implica que la componente $\alpha$-ésima del miembro izquiero de la Ec. (\ref{eq:fieldmom}) esté dado por $f_{\alpha}(x + e_{\alpha} \delta_{t}  , t + \delta_{t} )$. El miembro derecho de la Ec. (\ref{eq:fieldmom}) corresponde a la etapa de post-colisión definida en el espacio de momentos, donde \textbf{I} es el tensor identidad, \textbf{M} una matriz de transformación ortogonal, $\mathbf{m} = \mathbf{M} \cdot \mathbf{f}$ , $\mathbf{m}^{eq} = \mathbf{M} \cdot \mathbf{f}^{\>eq}$, $\mathbf{\bar{S}} = \mathbf{M} \mathbf{S}$ el término de fuente y $ \Lambda$ es una matriz diagonal. Este tipo de operador se conoce como MRT (\textit{Multiple Relaxation Times}).
 
 Para el modelo de grilla D2Q9 utilizado en el presente trabajo $\mathbf{m}^{eq}$, $ \Lambda$ y $\mathbf{M}$ están dados por:
 \begin{align}
-m_{eq} =  \rho  \left( 1, - 2 + 3 {|u|}^{2} , 1 - 3{|u|}^{2} , u_{x} , - u_{x} , u_{y} , - u_{y} , {u_{x}}^{2} - {u_{y}}^{2} , u_{x} u_{y} \right) 
+\mathbf{m^{eq}} =  \rho  \left( 1, - 2 + 3 {|u|}^{2} , 1 - 3{|u|}^{2} , u_{x} , - u_{x} , u_{y} , - u_{y} , {u_{x}}^{2} - {u_{y}}^{2} , u_{x} u_{y} \right) 
 \label{eq:m}
 \end{align}  
 \begin{align}
@@ -133,7 +133,7 @@ Para el modelo D2Q9 la fuerza total $\mathbf{F}$ posee sólo dos componentes $F_
 
 
 \begin{equation}
-{\mathbf{F}}_{int} = - G \> \psi(\mathbf{x}) \sum_{\alpha=1}^{N} w({|{\mathbf{e}}_{\alpha}|}^{2}) \> \psi (\mathbf{x} + {\mathbf{e}}_{\alpha} \> \delta_{t}) \> {\mathbf{e}}_{\alpha} 
+{\mathbf{F}}_{int} = - G \> \psi(\mathbf{x}) \sum_{\alpha}^{} w({|{\mathbf{e}}_{\alpha}|}^{2}) \> \psi (\mathbf{x} + {\mathbf{e}}_{\alpha} \> \delta_{t}) \> {\mathbf{e}}_{\alpha} 
 \label{eq:fint}
 \end{equation}
 
@@ -173,7 +173,7 @@ siendo \textit{a} y \textit{b} parámetros que determinan los valores críticos 
 \\
 donde $\sigma$ es un parámetro libre del modelo MRT, al igual que $\Lambda$, el cual se utiliza para ajustar las diferencias de fases obtenidas de la EOS y de la simulación realizada.
 
-Se pueden recuperar las ecuaciones de Navier - Stokes utilizando Ecs. [\ref{eq:rho} - \ref{eq:termino_fuente_s} ] mediante el análisas de Chapman-Enskog limitado para un número de Mach bajo \cite{li2013lattice}, donde las ecuaciones recuperadas son \cite{fogliatto2019simulation} \cite{li2013lattice}:
+Se pueden recuperar las ecuaciones de Navier - Stokes utilizando Ecs. [\ref{eq:rho} - \ref{eq:termino_fuente_s} ] mediante el análisis de Chapman-Enskog limitado para un número de Mach bajo \cite{li2013lattice}, donde las ecuaciones recuperadas son \cite{fogliatto2019simulation} \cite{li2013lattice}:
 
 \begin{equation}
 	\frac{\partial \rho }{\partial t}  + \nabla \cdot \left( \rho \mathbf{u} \right) = 0
@@ -197,7 +197,7 @@ siendo $\quad\nu = {c_{s}}^{2} (\tau_{\nu}- 0,5) \delta_{t}\quad$ la viscosidad 
 
 \subsection{Ecuación de energía}
 
-Para tener en cuenta la transferencia de calor en el modelo, es necesario adicionar otra ecuación de LB acoplándola con la Ec. (\ref{eq:fieldmom}) \cite{li2013lattice}. Para nuestro caso, se utiliza la distribución de poblaciones \textit{g} en la Ec. (\ref{eq:fieldenergy}), la cuál también posee un operador de colisión MRT, donde $\mathbf{n} = \mathbf{M} \mathbf{g}$ es una distribución de momentos y $\hat{\Gamma}$ es una fuente en el espacio de momentos.
+Para tener en cuenta la transferencia de calor en el modelo, es necesario adicionar otra ecuación de LB acoplándola con la Ec. (\ref{eq:fieldmom}) \cite{li2013lattice}. Para nuestro caso, se utiliza la distribución de poblaciones \textbf{g} en la Ec. (\ref{eq:fieldenergy}), la cuál también posee un operador de colisión MRT, donde $\mathbf{n} = \mathbf{M} \mathbf{g}$ es una distribución de momentos (no confundir con el número de moles definido anteriormente) y $\mathbf{\hat{\Gamma}}$ es una fuente en el espacio de momentos.
 
 
 \begin{equation}
@@ -240,7 +240,7 @@ donde el término fuente resulta :
 
 
 \begin{equation}
-    \hat{\Gamma} = {( s, 0, 0, 0, 0, 0, 0, 0, 0 )}^{T}
+    \mathbf{\hat{\Gamma}} = {( s, 0, 0, 0, 0, 0, 0, 0, 0 )}^{T}
 \end{equation}
 
 con 
@@ -278,7 +278,7 @@ La Figura (\ref{fig:CC_hidro}) ilustra las direcciones de las componentes de $\m
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=0.85\textwidth]{figs/cap2/CC_hidrodinamica.png}
-	\caption{Izquierda: Direcciones de las componentes de las funciones de distribución de poblaciones $\mathbf{f}$ y $\mathbf{g}$, para un nodo que se encuentra en la frontera. Derecha: método de \textit{bounceback} aplicado a la dirección 3.}
+	\caption{Izquierda: Direcciones de las componentes de las funciones de distribución de poblaciones $\mathbf{f}$ y $\mathbf{g}$, para un nodo que se encuentra en la frontera. Derecha: método de \textit{bounce-back} aplicado a la dirección 3.}
 	\label{fig:CC_hidro}
 \end{figure}
 
@@ -287,7 +287,7 @@ La Figura (\ref{fig:CC_hidro}) ilustra las direcciones de las componentes de $\m
 
 \subsubsection{Condición hidrodinámica}
 
-El desarrollo de Zou \cite{zou1997pressure} es el utilizado para la ecuación hidrodinámica. En primer lugar se aplica el método \textit{bounce-back} a la dirección 3, resultando $f_{3} = f_{1}$ como se observa en la Figura \ref{fig:CC_hidro}. Luego se analizan las Ec. (\ref{eq:rho}) y (\ref{eq:U}) que son puestas de la siguiente forma:
+El desarrollo de Zou \cite{zou1997pressure} es el utilizado para la ecuación hidrodinámica. En primer lugar se aplica el método \textit{bounce-back} a la dirección 3, resultando $f_{3} = f_{1}$ como se observa en el panel derecho de la Figura (\ref{fig:CC_hidro}). Luego se analizan las Ecs. (\ref{eq:rho}) y (\ref{eq:U}) que son puestas de la siguiente forma:
 
 \begin{equation}
 	\begin{array}{c}
@@ -315,8 +315,7 @@ Para obtener una resolución de problemas genéricos, se debe agregar la condici
 
 La condición de contorno a realizar en la ecuación de energía, consiste en mantener una temperatura fija en una de las aristas o en secciones de la misma. Para este caso se utiliza el desarrollo de Inamuro \cite{inamuro2002lattice}.
 
-Primero se calcula el valor de la distribución de equilibrio del nodo $i$-ésimo $\mathbf{g^{eq}}$ \\
-utilizando Ec. (\ref{eq:n_eq}) y $\mathbf{M}$ de la forma $\mathbf{g^{eq}} = \mathbf{M}^{-1} \mathbf{n^{eq}}$. Se prosigue a calcular el parámetro $\beta$:
+Primero se calcula el valor de la función de distribución de poblaciones de equilibrio del nodo $i$-ésimo $\mathbf{g^{eq}}$ utilizando Ec. (\ref{eq:n_eq}) y $\mathbf{M}$ de la forma $\mathbf{g^{eq}} = \mathbf{M}^{-1} \mathbf{n^{eq}}$. Se prosigue a calcular el parámetro $\beta$:
 
 \begin{equation}
 \beta = \frac{T_{cc} - \sum_{A} g_{A}}{\sum_{B} g_{B}}
