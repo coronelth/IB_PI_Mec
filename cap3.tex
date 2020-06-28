@@ -17,33 +17,32 @@ Se eligió la programación en \textsc{C} y \textsc{Cuda C} para comparar la efi
 
 Ambos códigos, en \textsc{C} y \textsc{Cuda C}, son compilados mediante \textsc{CMake} en bibliotecas tipo \textit{shared} y \textit{static} respectivamente. También se realizó la compilación en formato \textsc{ptx} de los \textit{kernels} de \textsc{Cuda C}, donde éste formato puede utilizarse en el lenguaje de programación interpretado \textsc{Python}. El módulo de \textsc{Python} necesario para adquirir los \textit{kernels} es \textsc{PyCuda}.
 
-La implementación en \textsc{Python} es debido a su facilidad de programación, el cual permite incorporar las bibliotecas compiladas en otros lenguajes y así obtener una mayor versatilidad de problemas a resolver. \textsc{Python} puede ser utilizado en distintos sistemas oparativos como \textit{Linux}, \textit{Windows} y \textit{Mac OS}. 
 
-Para visualizar los resultados del código se utiliza el programa \textsc{Paraview}, de modo que el formato que se eligió para la escritura de los campos es \textsc{Ensight Gold}. A través del lenguaje \textsc{C}, es que se hicieron las funciones de escritura de éste tipo de archivos y así observar gráficamente las variables de interés del problema que se desea resolver. El módulo \textsc{CTypes} de \textsc{Python} es la necesaria para adquirir las funciones de escritura de \textsc{Ensight} del código compilado en \textsc{C}.
+Se utilizó \textsc{Python} por la versatilidad que presenta para resolver problemas diversos. Esto se debe a que es un lenguaje simple, orientado a objetos y permite incorporar las bibliotecas compiladas en otros lenguajes. Además, \textsc{Python} puede ser utilizado en distintos sistemas oparativos como \textit{Linux}, \textit{Windows} y \textit{Mac OS}. 
+
+Para visualizar los resultados del código se utiliza el programa \textsc{Paraview}, de modo que el formato que se eligió para la escritura de los campos es \textsc{Ensight Gold}. A través del lenguaje \textsc{C}, es que se hicieron las funciones de escritura de este tipo de archivos y así observar gráficamente las variables de interés de los problemas que se desean resolver. El módulo \textsc{CTypes} de \textsc{Python} es el necesario para adquirir, de la biblioteca compilada en \textsc{C}, las funciones de escritura en formato \textsc{Ensight Gold}.
 
 
 
 \section{Programación en GPU}
 \label{sec_pc}
 
-Una computadora (\textit{Personal Computer} o PC) posee como procesador principal la CPU, cuyo diseño se encuentra optimizado para realizar tareas secuenciales. Comercialmente vienen de una amplia variedad de núcleos, en el rango de 8 a 64 núcleos como en el caso de los Procesadores AMD Ryzen™ Threadripper o 4 a 8 núcleos en los Procesador AMD FX™. En el caso de Intel se encuentra el Procesador Intel® Core™ serie X con 18 núcleos y  Intel® Core™ I7-3770 de 4 núcleos entre otros. \cite{edp:2020:amd} \cite{icp:2020:intel}
+Una computadora (\textit{Personal Computer} o PC) posee como procesador principal la CPU, cuyo diseño se encuentra optimizado para realizar tareas secuenciales. Comercialmente vienen de una amplia variedad de núcleos, en el rango de 8 a 64 núcleos como en el caso de los Procesadores AMD Ryzen™ Threadripper o 4 a 8 núcleos en los Procesador AMD FX™. En el caso de Intel se encuentra el Procesador Intel® Core™ serie X con 18 núcleos y  Intel® Core™ I7-3770 de 4 núcleos entre otros \cite{edp:2020:amd} \cite{icp:2020:intel}.
 
-Es posible realizar tareas y procesos en paralelo en la CPU proveyendo instrucciones a cada núcleo del procesador de forma independiente, siendo más eficiente en el tiempo de ejecución de los procesos realizados.
+Los procesadores multinúcleo  (hardware de multiprocesamiento), como los descriptos en el párrafo anterior, permiten ejecutar instrucciones en cada núcleo  de forma independiente mediante la programación de subprocesos (\textit{threads}) \cite{rajagopal1999introduction}. Esto permite obtener una mayor eficiencia en la ejecución de los procesos.
 
 A su vez una PC opcionalmente puede contener un coprocesador siendo una GPU. Dicha placa se encuentra diseñada para realizar operaciones en paralelo, realizándolas en varios hilos de ejecución (\textit{threads}).
 
 
+El procesador principal que tiene una PC es la CPU, por lo cual se denomina \textit{host}, la GPU es un coprocesador y se denomina \textit{device}. Las ejecuciones de los procesos en la CPU están diseñadas para que se efectúen de manera secuencial, en cuánto las de la GPU en paralelo; las últimas realizándose en varios hilos de ejecución (\textit{threads}). El nombre que recibe una función que ejecuta un proceso de forma paralela en la GPU se denomina \textit{kernel}. \textit{Host} y \textit{device} poseen su propia memoria RAM, llamadas \textit{host memory} y \textit{device memory} respectivamente \cite{rinaldi2011modelos}.
 
-
-El procesador principal que tiene una PC es la CPU, por lo cual se denomina \textit{host}, la GPU es un coprocesador y se denomina \textit{device}. Las ejecuciones de los procesos en la CPU están diseñadas para que se efectúen de manera secuencial, en cuánto las de la GPU en paralelo; las últimas realizándose en varios hilos de ejecución (\textit{threads}). El nombre que recibe una función que ejecuta un proceso de forma paralela en la GPU se denomina \textit{kernel}. \textit{Host} y \textit{device} poseen su propia memoria RAM, llamadas \textit{host memory} y \textit{device memory} respectivamente. \cite{rinaldi2011modelos}
-
-Los \textit{threads} que posee una GPU se pueden agrupar de dos formas, una de ellas es por bloques (\textit{thread block}) y la otra mediante grilla de bloques (\textit{grid}). Todos los \textit{threads} del mismo \textit{thread block} poseen un acceso rápido a una memoria compartida y permite sincronizar las ejecuciones que se les asigna. Debido a la posibilidad de sincronización de los mismos, se evita el riesgo de que varios \textit{threads} accedan de manera simultánea al mismo lugar de memoria. Un \textit{grid} es un conjunto de \textit{thread block}, en dónde las instrucciones del \textit{kernel} son paralelizadas, ésto vence la limitación de hardware del finito número de \textit{threads} por bloque. Puesto que la ejecución del proceso en los \textit{thread blocks} de un \textit{grid} pueden ser ejecutados en tiempos distintos, es necesario realizar un sincronización entre los mismos para que su comunicación sea segura y no haya conflictos\cite{tolke2010implementation}. La figura \ref{fig:block_grid_threads} muestra el concepto de \textit{grid} y \textit{thread block}.
+Los \textit{threads} que posee una GPU se pueden agrupar de dos formas, una de ellas es por bloques (\textit{thread block}) y la otra mediante grilla de bloques (\textit{grid}). Todos los \textit{threads} del mismo \textit{thread block} poseen un acceso rápido a una memoria compartida y permite sincronizar las ejecuciones que se les asigna. Debido a la posibilidad de sincronización de los mismos, se evita el riesgo de que varios \textit{threads} accedan de manera simultánea al mismo lugar de memoria. Una \textit{grid} es un conjunto de \textit{thread block}, en donde las instrucciones del \textit{kernel} son paralelizadas, esto permite agrupar más \textit{threads} de lo que está permitido por bloque. Puesto que la ejecución del proceso en los \textit{thread blocks} de una \textit{grid} pueden ser ejecutados en tiempos distintos, es necesario realizar un sincronización entre los mismos para que su comunicación sea segura y no haya conflictos \cite{tolke2010implementation}. La Figura (\ref{fig:block_grid_threads}) muestra el concepto de \textit{grid} y \textit{thread block}.
 
 \newpage
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=0.4\textwidth]{figs/cap3/threads_block_grid.jpg}
-	\caption{\textit{Thread blocks} organizados en un \textit{grid} \cite{rinaldi2011modelos}.}
+	\caption{\textit{Thread blocks} organizados en una \textit{grid} \cite{rinaldi2011modelos}.}
 	\label{fig:block_grid_threads}
 \end{figure}
 
@@ -82,7 +81,7 @@ Anteriormente se mencionó que el \textit{host} y \textit{device} poseen su prop
 
 Cuando el \textit{host} efectúa su rutina de ejecución y se encuentra con un lanzamiento de \textit{kernel}, éste será llevado a cabo en múltiples \textit{threads} del \textit{device}. Una representación de ello se muestra en la figura \ref{fig:schedule_architecture_cuda}. 
 
-Los procesos en el \textit{device} tienen almacenados los datos según una jerarquía de memoria, con su respectiva limitación de acceso que se observa en la figura \ref{fig:schedule_architecture_cuda}. Los \textit{threads} pueden acceder a datos de muchas memorias diferentes en distintos procesos, dichas memorias son las siguientes:
+Los procesos en el \textit{device} tienen almacenados los datos según una jerarquía de memoria, con su respectiva limitación de acceso que se observa en la figura \ref{fig:schedule_architecture_cuda}. Los \textit{threads} pueden acceder a datos de diversas memorias en distintos procesos. Estas memorias son las siguientes:
 
 \begin{itemize}
 	\item  \textit{register memory} es visible para un único \textit{thread}
@@ -100,7 +99,7 @@ Los procesos en el \textit{device} tienen almacenados los datos según una jerar
 
 \section{Programación en CUDA C}
 
-La programación de las GPU se lleva a cabo mediante el lenguaje \textsc{Cuda C}, el cual es una extención del lenguaje \textsc{C} debido su familiaridad y uso extendido; por lo que el lenguaje se denomina \textsc{Cuda C}. La versión 10.1 de CUDA fue la utilizada para el desarrollo del presente trabajo. La realización de procesos en paralelos es ejecutada mediante funciones llamadas \textit{kernel} y son del tipo \textit{void}.
+La programación de las GPU se lleva a cabo mediante el lenguaje \textsc{Cuda C}, el cual es una extención del lenguaje \textsc{C}. Debido su familiaridad y uso extendido; por lo que el lenguaje se denomina \textsc{Cuda C}. La versión 10.1 de CUDA fue la utilizada para el desarrollo del presente trabajo. La realización de procesos en paralelos es ejecutada mediante funciones llamadas \textit{kernel} y son del tipo \textit{void}.
 \\
 
 Existen tres tipos de funciones que se pueden efectuar en \textsc{Cuda C} y son:
@@ -205,7 +204,7 @@ extern "C" __global__ void cudaMomentoDensity(
 	\end{frame}
 }.
 \\
-en este caso se pasa de forma distinta los valores de la cantidad de nodos (\textit{np}) y de la cantidad de velocidades del modelo \textit{DdQq} (\textit{Q}). La distinción en los argumentos que se pasan en ambos códigos, es debido a la forma que \textsc{Cuda C} permite el manejo de las estructuras y también de las decisiones que se tomaron cuando se desarrollaba el código para uno u otro lenguaje.
+en este caso se pasa de forma distinta los valores de la cantidad de nodos (\textit{np}) y de la cantidad de velocidades del modelo \textit{DdQq} (\textit{Q}). La distinción en los argumentos que se pasan en ambos códigos, es debido a la forma que \textsc{Cuda C} permite el manejo de las estructuras y también de las decisiones que se tomaron durante el desarrollo del código.
 
 Se coloca \textcolor{blue}{extern} \textcolor{red}{''C''} para que el compilador detecte que es un \textit{kernel} de \textsc{Cuda C} y cuando se le indique pueda compilar los \textit{kernel} en formato \textsc{ptx}.
 
@@ -273,7 +272,9 @@ Es de importancia conocer la función que cumplen las siguientes líneas:
 		}
 		\begin{lstlisting}
 	int idx = threadIdx.x + blockIdx.x*blockDim.x;	
-	if( idx < np ) {	
+	if( idx < np ) {
+		... (bloque de codigo)
+	}	
 		\end{lstlisting}
 		
 	\end{frame}
@@ -282,8 +283,6 @@ Es de importancia conocer la función que cumplen las siguientes líneas:
 donde las tareas que se hallen en \textcolor{blue}{if} ( idx < np)\{...\} se realizarán de forma paralela y es necesario identificar los \textit{threads} en dónde se llevaran a cabo los procesos. El identificador de los \textit{threads} es \textit{idx} donde blockIdx.x  indica la cantidad de \textit{threads} por \textit{block} y blockDim.x el numero de \textit{block's}.
 
 Resta ver cómo es el llamado de las funciones realizadas en el \textit{main}, por lo que en \textsc{C} se observa:
-
-
 {\footnotesize
 	\begin{frame}{}
 		\lstset{language=C,
@@ -338,7 +337,7 @@ Debido a que los procesos en la GPU son asignados de una forma no determinístic
 
 Las funciones que son realizadas en \textsc{C} permiten retornar alguna variable mientras que en \textsc{Cuda C} los \textit{kernel} son del tipo \textit{void}, debido a ello es necesario almacenar memoria en el \textit{device} para una variable, y pasarla como argumento al \textit{kernel}. Lo mencionado permite que el \textit{kernel} modifique dicha variable y así obtener lo requerido. 
 
-La allocación de memoria en el \textit{host} es la misma que se utiliza en \textsc{C}  \textbf{malloc($\>$)} :
+La asignación de memoria en el \textit{host} es la misma que se utiliza en \textsc{C}  \textbf{malloc($\>$)} :
 {\footnotesize
 	\begin{frame}{}
 		\lstset{language=C,
@@ -375,7 +374,7 @@ siendo \textit{size\_t} la memoria en bytes a reservar. Mientras que en el \text
 \end{frame}
 }.
 \\
-donde \textit{devPtr} es un puntero para allocar la memoria del \textit{device} , \textit{size\_t} memoria en bytes a reservar. Se debe tener en cuenta que la memoria se reserva linealmente.
+donde \textit{devPtr} es un puntero para asignar la memoria del \textit{device} , \textit{size\_t} memoria en bytes a reservar. Se debe tener en cuenta que la memoria se reserva linealmente.
 
 La transferencia de datos entre los dos tipos de memoria se efectua mediante la función \textbf{cudaMemcpy($\>$)} :
 {\footnotesize
@@ -418,9 +417,9 @@ siendo \textit{dst} un puntero con la dirección de destino de los datos, \texti
 
 \section{Programación en Python}
 
-Habiéndose desarrollado el código en \textsc{Cuda C} y compilado cada \textit{kernel} del mismo en formato \textsc{ptx}, éstos pueden ser utilizados en el lenguaje \textsc{Python} mediante el módulo \textsc{PyCuda}. El código de la siguiente página es el implementado para la Ec. (\ref{eq:rho}).
+La compilación de cada kernel (en \textsc{Cuda C}) en formato \textsc{ptx} permite que puedan ser incorporados en un programa de \textsc{Python} mediante el módulo \textsc{PyCuda}. El código de la siguiente página es el implementado para la Ec. (\ref{eq:rho}).
 
-La función \textit{pycuda.driver.module\_from\_file()} nos permite importar el \textit{kernel} compilado previamente en \textsc{Cuda C}, siendo \textcolor{red}{\textbf{/PATH/}} la dirección del directorio donde se encuentra el archivo \textsc{ptx} compilado. Las variables \textit{deviceField} y \textit{deviceRho} son las respectivas a la función de distribución de poblaciones \textit{f} y la densidad $\rho$. Previamente se deben haber inicializado las variables en el \textit{host}, como por ejemplo:
+La función \textit{pycuda.driver.module\_from\_file()} nos permite importar el \textit{kernel} compilado previamente en \textsc{Cuda C}, siendo \textcolor{red}{\textbf{/PATH/}} la dirección del directorio donde se encuentra el archivo \textsc{ptx} compilado. Las variables \textit{deviceField} y \textit{deviceRho} son las funciones de distribución de poblaciones \textit{f} y la densidad $\rho$, resectivamente se deben haber inicializado las variables en el \textit{host}, como por ejemplo:
 {\footnotesize
 	\begin{frame}{}
 		\lstset{language=python,
@@ -439,7 +438,7 @@ La función \textit{pycuda.driver.module\_from\_file()} nos permite importar el 
 	\end{frame}
 }.
 \\
-y luego ser copiadas y allocadas en el  \textit{device} con la función \textit{gpuarray.to\_gpu()} :
+y luego ser copiadas y asignadas en el  \textit{device} con la función \textit{gpuarray.to\_gpu()} :
 {\footnotesize
 	\begin{frame}{}
 		\lstset{language=python,
@@ -501,7 +500,7 @@ pycuda.driver.Context.synchronize()
 
 \section{Arquitectura del código numérico y compilación}
 
-El código numérico fue desarrollado en el repositorio de la página web \textsc{Git Hub}, la cual permite realizar un control de versiones. En la Sec.(\ref{sec:git}) se explica conceptos básicos para utilizar la herramienta \textsc{Git}, las funciones más relevantes y buenas prácticas que se adquirieron en el transcurso del presente trabajo. El proyecto se encuentra disponible para ser descargado en \url{https://github.com/efogliatto/LBCUDA_Test}, siendo la carpeta LBCUDA\_Test la que contiene el proyecto. La versión 1.0 de la rama \textit{master} es la que se poseía al momento de finalizar el presente trabajo.
+El código numérico fue desarrollado en el repositorio de la página web \textsc{GitHub} de Microsoft Corporation, que provee un servicio de almacenamiento (\textit{hosting}) de proyectos que utilizan la herramienta \textsc{Git}, la cual permite realizar un control de versiones. En la Sec. (\ref{sec:git}) se explica conceptos básicos para utilizar la herramienta \textsc{Git}, las funciones más relevantes y buenas prácticas que se adquirieron en el transcurso del presente trabajo. El proyecto se encuentra disponible para ser descargado en \url{https://github.com/efogliatto/LBCUDA_Test}, siendo la carpeta LBCUDA\_Test la que contiene el proyecto. La versión 1.0 de la rama \textit{master} es la que se poseía al momento de finalizar el presente trabajo.
 
 Las subcarpetas (\textbf{en negrita}) y archivos (\underline{subrayados}) que posee nuestro proyecto en su directorio principal son los siguientes:
 
@@ -520,20 +519,16 @@ Las subcarpetas (\textbf{en negrita}) y archivos (\underline{subrayados}) que po
 	
 	\item \textbf{examples}: es el directorio el cual posee ejemplos de ejecución del código por medio de \textit{scripts} de bash.
 	
-	\item \textbf{validation\_speed\_up}: es un directorio que contiene dos tipos de \textit{scripts} de bash. Los del primer tipo al ser ejecutados, realizan la validación de los problemas tratados en el Cap. (\ref{cap4}). El otro tipo de \textit{scripts} realizan una toma de tiempo de cálculo de los mismos problemas, para obtener un índice (\textit{speed\_up}) que indique la mejora de tiempo de cálculo entre lenguajes utilizados. 
+	\item \textbf{validation\_speed\_up}: es un directorio que contiene dos tipos de \textit{scripts} de Bash\footnote{GNU Bash o simplemente Bash es una terminal para ejecutar comandos de un sistema operativo de Unix.}. Los del primer tipo al ser ejecutados, realizan la validación de los problemas tratados en el Cap. (\ref{cap4}). El otro tipo de \textit{scripts} realizan una toma de tiempo de cálculo de los mismos problemas, para obtener un índice (\textit{speed\_up}) que indique la mejora de tiempo de cálculo entre lenguajes utilizados. 
 	
 	\item \underline{CMakeLists.txt}: es el archivo de configuración de \textsc{CMake}, con la definición de las principales opciones de compilación y \textit{linkeo}.
 	
 \end{itemize}
 
 
-La herramienta de software \textsc{CMake} fue la utilizada para preparar la compilación del código desarrollado, en donde los compiladores utilizados son \textit{gcc} y \textit{nvcc}.  El archivo CMakeLists.txt principal tiene que encontrarse en la carpeta principal del proyecto \cite{cmake:2020:kitware}, y contiene todas las instrucciones de compilación que debe/puede tener un proyecto a trabajar. A continuación se detallan las instrucciones más relevantes.
+La herramienta de software \textsc{CMake}, versión 3.17.2, fue la utilizada para preparar la compilación del código desarrollado, en donde los compiladores utilizados son \textit{gcc} y \textit{nvcc}.  El archivo CMakeLists.txt principal tiene que encontrarse en la carpeta principal del proyecto \cite{cmake:2020:kitware}, y contiene todas las instrucciones de compilación que tiene el proyecto a trabajar. A continuación se detallan las instrucciones más relevantes.
 
 Para indicar las carpetas de construcción (\textit{build}), ejecutables (\textit{bin}), bibliotecas (\textit{lib}), \textit{headers} de las funciones y \textit{kernels} (\textit{include}) y código fuente (\textit{src}) se incorporan las siguientes instrucciones:
-
-%, algunas de ellas son los directorios en que se encuentran los binarios, ejecutables, bibliotecas, códigos fuente entre otros. Otra de las instrucciones son los lenguajes a compilar con sus respectivas opciones de compilación. A continuación se describe las instrucciones ed compilación que tuvo el proyecto.
-
-
 {\footnotesize
 	\begin{frame}{}
 		\lstset{language=c,
@@ -559,10 +554,12 @@ Para indicar las carpetas de construcción (\textit{build}), ejecutables (\texti
 		\end{lstlisting}
 		
 	\end{frame}
-}
+}.
+\\
+donde los comandos que empiezan con \textsc{CMAKE\_} son variables, que son la unidad básica de almacenamiento en el lenguaje CMake y la lista completa de las mismas se pueden encontrar en \url{https://cmake.org/cmake/help/v3.17/manual/cmake-variables.7.html}.
 
 
-Para asignar las bibliotecas en que se compilarán el código, se incorporan las instrucciones mostradas a continuación, donde se colocaron algunas bibliotecas utilizadas a modo de ejemplo.
+Para asignar las bibliotecas en que se compilarán en código, se incorporan las instrucciones mostradas a continuación, donde se colocaron algunas bibliotecas utilizadas a modo de ejemplo.
 \newpage
 {\footnotesize
 	\begin{frame}{}
