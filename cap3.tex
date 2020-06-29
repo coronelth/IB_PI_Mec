@@ -556,7 +556,7 @@ Para indicar las carpetas de construcción (\textit{build}), ejecutables (\texti
 	\end{frame}
 }.
 \\
-donde los comandos que empiezan con \textsc{CMAKE\_} son variables, que son la unidad básica de almacenamiento en el lenguaje CMake y la lista completa de las mismas se pueden encontrar en \url{https://cmake.org/cmake/help/v3.17/manual/cmake-variables.7.html}.
+donde los comandos que empiezan con \textsc{CMAKE\_} son variables, que son la unidad básica de almacenamiento en el lenguaje CMake, y la lista completa de las mismas se encuentra en \url{https://cmake.org/cmake/help/v3.17/manual/cmake-variables.7.html}.
 
 
 Para asignar las bibliotecas en que se compilarán en código, se incorporan las instrucciones mostradas a continuación, donde se colocaron algunas bibliotecas utilizadas a modo de ejemplo.
@@ -722,7 +722,7 @@ endif()
 		
 	\end{frame}
 }
-La segunda parte para asignar un tipo de variable a \textbf{scalar} y \textbf{cuscalar} es el archivo \textit{header} que aparece debajo. En él se busca las variables declaradas en el compilador (SP, DP, SP\_CUDA ó DP\_CUDA) y en base a ellas, define el tipo de variable para \textbf{scalar} y \textbf{cuscalar}. El \textit{header}, cuyo nombre de archivo es \textit{dataTypes.h} y se encuentra en el directorio \textit{include}, debe ser incluido en cada función o \textit{kernel} que posea una variable de tipo  \textbf{scalar} o \textbf{cuscalar}.
+La segunda parte para asignar un tipo de variable a \textbf{scalar} y \textbf{cuscalar} es el archivo \textit{header} que aparece debajo. En este se busca las variables declaradas en el compilador (SP, DP, SP\_CUDA ó DP\_CUDA) y en base a estas, define el tipo de variable para \textbf{scalar} y \textbf{cuscalar}. El \textit{header}, cuyo nombre de archivo es \textit{dataTypes.h} y se encuentra en el directorio \textit{include}, debe ser incluido en cada función o \textit{kernel} que posea una variable de tipo  \textbf{scalar} o \textbf{cuscalar}.
 
 {\footnotesize
 	\begin{frame}{}
@@ -757,7 +757,7 @@ La segunda parte para asignar un tipo de variable a \textbf{scalar} y \textbf{cu
 }
 \newpage
 
-Anteriormente se detalló cómo agregar la carpeta con el código fuente (\textit{src}), éste a su vez posee otras subcarpetas, las cuales se encuentran divididas en qué tipo de lenguaje se realizó el código. Para que \textsc{CMake} siga agregando éstas carpetas con código fuente, es que se debe crear otro archivo CMakeLists.txt en ésta subcarpeta y agregar la ruta de compilación para los mismos. Lo descripto se realiza mediante el siguiente archivo de configuración de \textsc{CMake} :
+Anteriormente se detalló cómo agregar la carpeta con el código fuente (\textit{src}), este a su vez posee otras subcarpetas, divididas por el tipo de lenguaje que posee el código. Para que \textsc{CMake} incorpore estas carpetas con código fuente, se crean archivos CMakeLists.txt en cada subcarpeta y se agrega la ruta de compilación a la misma mediante el método \textbf{add\_subdirectory()}. Lo descripto se realiza  con el siguiente archivo de configuración de \textsc{CMake} :
 
 {\footnotesize
 	\begin{frame}{}
@@ -783,10 +783,7 @@ Anteriormente se detalló cómo agregar la carpeta con el código fuente (\texti
 	\end{frame}
 }
 
-
-donde el metodo de utilizar \textbf{add\_subdirectory()} es la misma para las siguientes subcarpetas que posea el proyecto. 
-
-La Figura (\ref{fig:arq_proyecto}) muestra la arquitectura principal del proyecto a partir del directorio \textit{\textbf{src}}. En ella se encuentra desglosada las subcarpetas del lenguaje \textsc{C}, ya que la carpeta de \textsc{Cuda C} es similar. En cuanto a la parte de \textsc{Python}, sólo se desarrolló la obtención de uno de los \textit{kernels} compilados en \textsc{ptx}, por lo que no se posee una estructura como la del resto de los lenguajes.
+La Figura (\ref{fig:arq_proyecto}) muestra la arquitectura principal del proyecto a partir del directorio \textit{\textbf{src}}. Se encuentra desglosada las subcarpetas del lenguaje \textsc{C}, ya que la carpeta de \textsc{Cuda C} es similar. Para \textsc{Python} sólo se implementó el código con uno de los \textit{kernels} (compilados en \textsc{ptx}), por lo que no se posee una estructura como la del resto de los lenguajes.
 
 \begin{figure}[htbp]
 	\centering
@@ -797,9 +794,9 @@ La Figura (\ref{fig:arq_proyecto}) muestra la arquitectura principal del proyect
 
 \newpage
 
-Cada una de las carpetas finales que se encuentran detalladas poseen uno o varios archivos que son funciones/\textit{kernels} con sus respectivos \textit{headers} y cada uno de los \textit{headers} tiene un \textit{link} simbólico en el directorio \textit{include}.
+Cada una de las carpetas finales que se encuentran detalladas poseen uno o varios archivos que son funciones o \textit{kernels} con sus respectivos \textit{headers} y cada uno de los \textit{headers} tiene un \textit{link} simbólico en el directorio \textit{include}.
 
-Para agregar las funciones o \textit{kernels} a las bibliotecas que se configuraron en el CMakeLists.text principal, se debe indicar una instrucción \textbf{add\_library()}. Primero se ejemplifica en el código de \textsc{C} para la biblioteca \textit{lbequation.so} con algunas de las funciones que posee la misma. En el directorio de lbEquation, además de contar con sus subdirectorios, posee un CMakeLists.txt el cual contiene la forma del siguiente archivo de configuración de \textsc{CMake} :
+Para agregar las funciones o \textit{kernels} a las bibliotecas que se configuraron en el CMakeLists.text principal, se debe indicar una instrucción \textbf{add\_library()}. Primero se ejemplifica en el código de \textsc{C} para la biblioteca \textit{lbequation.so} con algunas de las funciones que posee la misma. En el directorio de lbEquation, además de contar con sus subdirectorios, posee el siguiente archivo de configuración de \textsc{CMake} :
 
 {\footnotesize
 	\begin{frame}{}
@@ -947,14 +944,15 @@ target_link_libraries(maxwellConstruction
 	\end{frame}
 }
 
-
+\iffalse
 Lo que se describió hasta la presente instancia es todo lo que se utilizó en cuanto a las instrucciones de compilación mediante la herramienta de software \textsc{CMake}. También se describió lo necesario para entender la estructuración del código y poder entender de forma clara, cómo es la aplicación de el método descripto en la Sec. (\ref{sec:LBM_2_ec_MRT}).
+\fi
 
 \newpage
-\section{Control de versiones y desarrollo del código \\ numérico utilizando Git}
+\section{Control de versiones utilizando \textsc{Git}}
 \label{sec:git}
 
-Git es un software que sirve para controlar versiones de archivos que se encuentran en un repositorio. El mismo fue desarrollado por Linus Torvalds cuando él empezo a desarrollar el \textit{kernel} de \textit{Linux}. El proyecto de éste trabajo se desarrollo con el sistema operativo \textit{Debian 10} y se encuentra en el repositorio de la página web de \textsc{Git Hub}. El proyecto puede ser descargado mediante las siguientes líneas de comando en la terminal:
+Git es un software que sirve para controlar versiones de archivos que se encuentran en un repositorio. El mismo fue desarrollado por Linus Torvalds cuando él empezo a desarrollar el \textit{kernel} de \textit{Linux}. El proyecto de éste trabajo se desarrollo con el sistema operativo \textit{Debian 10} y se encuentra en el repositorio de la página web de \textsc{GitHub}. El proyecto puede ser descargado mediante las siguientes líneas de comando en la terminal de \textit{Linux}:
 
 {\footnotesize
 	\begin{frame}{}
@@ -974,8 +972,8 @@ $ git clone https://github.com/efogliatto/LBCUDA_Test #Iniciar descarga
 		\end{lstlisting}
 		
 	\end{frame}
-}
-
+}.
+\\
 creándose un repositorio local del mismo.
 
 \subsection{Conceptos básicos}
@@ -989,37 +987,38 @@ El estado de un repositorio indica los archivos añadidos al mismo, eliminados �
 \newpage
 \subsection{Principales comandos}
 
-En el transcurso del desarrollo del presente proyecto se utilizaron algunos de los comandos de \textit{git}. A continuación se detallan los más utilizados acompañados de una breve explicación. Para más información remitirse al manual de usuario que se encuentra en la siguiente página web \url{https://git-scm.com/docs/user-manual} o en su defecto directamente al libro \url{https://git-scm.com/book/en/v2}.
+En el transcurso del desarrollo del presente proyecto se utilizaron algunos de los comandos de \textit{git}. A continuación se detallan los más utilizados\footnote{Para más información remitirse al manual de usuario que se encuentra en la siguiente página web \url{https://git-scm.com/docs/user-manual} o en su defecto directamente al libro \url{https://git-scm.com/book/en/v2}.}: 
 
 \begin{itemize}
-	\item \textbf{git init}: inicializa un repositorio, también se puede hacer mediante la página \url{https://github.com} , entre varias plataformas existentes.
-	\item \textbf{git add archivo}: se añade al repositorio el archivo de nombre \textit{archivo}
-	\item \textbf{git status}: indica el estado actual del repositorio y la rama en la que se encuentra
-	\item \textbf{git add *}: añade el estado actual de todos los archivos
-	\item \textbf{git commit -a}: se realiza commit
+	\item \textbf{git init}: inicializa un repositorio local.
+	\item \textbf{git clone \textsc{url}}: copia un repositorio que se encuentra en la dirección \textsc{url}.
+	\item \textbf{git add archivo}: se añade al \textit{staging index} el archivo de nombre \textit{archivo}.
+	\item \textbf{git status}: indica el estado actual del repositorio, la rama en la que se encuentra y los archivos que han sido creados en el proyecto (\textit{working directory}) y que no se ha trackeado.
+	\item \textbf{git add}: añade los archivos que se le indiquen. 
+	\item \textbf{git commit -a}: se realiza un \textit{commit}, donde el \textit{flag} \textit{a} realiza una preparación automática de todos los archivos trackeados, ahorrando el paso de \textbf{git add} \cite{fundamentos:2020:git}.  
 	\item \textbf{git log}: se muestra los comentarios de todos los \textit{commits} realizados con su nombre indicatorio. Si se coloca \textbf{-n} como opción, se mostrarán los últimos n \textit{commits}.
 	\item \textbf{git commit - -amend}: se utiliza cuando se realizo mal el comentario de un \textit{commit} o faltó agregar algún archivo.
-	\item \textbf{git push}: se añade al repositorio remoto todos los \textit{commits} realizados.
-	\item \textbf{git pull}: se bajan del repositorio remoto, los \textit{commits} que no se tienen en el local.
-	\item \textbf{git checkout name}: el repositorio local vuelve al estado del nombre identifiatorio del \textit{commit}, sin perder lo trabajado.
+	\item \textbf{git push}: se añade al repositorio remoto todos los \textit{commits} realizados de alguna rama.
+	\item \textbf{git pull}: se adquiere del repositorio remoto, los \textit{commits} que no se poseen en el local de alguna rama.
+	\item \textbf{git checkout name}: el repositorio local vuelve al estado del nombre identifiatorio sin perder lo trabajado y permite cambiar de rama.
 	\item \textbf{git branch name\_branch}: si se desea modificar desde un cierto \textit{commit} se debe crear una nueva rama y a partir de ahí seguir el desarrollo, luego de ello se debe realizar \textbf{git checkout name\_branch}.
 	\item \textbf{git diff}: posee varias opciones y nos muestra diferencias. Ellas pueden ser de un archivo de la rama actual, entre dos ramas, entre un archivo que se encuentra en dos ramas, entre otros.
-	\item \textbf{git merge}: se utiliza para fusionar dos ramas. Si no hay conflictos entre las dos ramas que se fusionan se realiza un \textit{fast foward} y no se debe realizar nada. Si hay conflictos y no se realiza el \textit{merge} de forma automática, se debe resolver dicho conflicto. Remitirse al manual de usuario para mayor información.
+	\item \textbf{git merge}: se utiliza para fusionar dos ramas. Si no hay conflictos entre las dos ramas que se fusionan se realiza un \textit{fast foward} y no se debe realizar nada. Si hay conflictos y no se realiza el \textit{merge} de forma automática, se debe resolver los conflictos. Remitirse al manual de usuario para mayor información.
 \end{itemize}
 
 \subsection{Buenas prácticas}
 
 En el transcurso del proyecto se adquirieron buenas prácticas de desarrollo de código mediante \textit{git}, dónde algunas de ellas son las que se desarrollan a continuación.
 
-\textbf{Commits}: al momento de realizar un commit, es recomendable no hacerlo sobre muchos archivos juntos, sino sobre algunos que reflejen un cambio en la misma línea de trabajo. El comentario que lleva el \textit{commit} debe ser corto y enfocado a un desarrollo o cambio puntual. Antes de hacer \textbf{push} al repositorio remoto verificar que todos los archivos que uno desea esten añadidos, caso contrario se los agrega y para no generar otro \textit{commit} es que se utiliza \textbf{git commit - -amend}.
+\textbf{Commit}: al momento de realizar un commit, es recomendable no hacerlo sobre muchos archivos juntos, sino sobre algunos que reflejen un cambio en la misma línea de trabajo. El comentario que lleva el \textit{commit} debe ser corto y enfocado a un desarrollo o cambio puntual. Antes de hacer \textbf{push} al repositorio remoto verificar que todos los archivos que se desea esten añadidos, caso contrario se los agrega y para no generar otro \textit{commit} es que se utiliza \textbf{git commit - -amend}.
 
-\textbf{branchs}: para desarrollar mejor el proyecto y tener diferenciado como es su avance, es que se estila trabajar con diferentes niveles de ramas. Los niveles recomendados son tres (3), el primero es de la rama \textit{master} que posee la última versión estable, la segunda es la rama \textit{develop} donde se harán los desarrollos
- siendo de buena práctica tener una rama \textit{master} donde está la verción estable del proyecto, una rama \textit{develop} para desarrollar las modificaciones y una o varias ramas tipo \textit{feature} que se enfoca en desarrollar algo específico. La idea es que cuando se tengan terminadas las versiones del \textit{feature}, se realice en \textit{merge} a la rama \textit{develop} y una vez que ésta posea todos los \textit{feature} hacer un \textsc{merge} a la rama \textit{master}. Lo que se explico queda ilustrado mediante la Figura (\ref{fig:ramas}).
+\textbf{Branch}: se utiliza para facilitar el seguimiento del grado de avance del proyecto. Es recomendable trabajar con tres (3) niveles de ramas, el primero es de la rama \textit{master} que posee la última versión estable\footnote{En el presente trabajo se considera una versión como estable si la misma fue validada.}, la segunda es la rama \textit{develop} donde se harán los desarrollos (que compila y contiene algunas funcionalidades incorporadas funcionado)
+y la tercera capa posee una o varias ramas tipo \textit{feature} que se enfocan en desarrollar algo específico. La idea es que cuando se tengan terminadas las versiones del \textit{feature}, se realice en \textit{merge} a la rama \textit{develop} y una vez que ésta posea todos los \textit{feature} hacer un \textsc{merge} a la rama \textit{master}. Lo que se explico queda ilustrado mediante la Figura (\ref{fig:ramas}).
  
  \begin{figure}[htbp]
  	\centering
- 	\includegraphics[width=0.85\textwidth]{figs/cap3/ejemplo_ramas}
- 	\caption{Ejemplo de una buena práctica de la diagramación del proyecto mediante el uso de ramas.}
+ 	\includegraphics[width=0.70\textwidth]{figs/cap3/ejemplo_ramas}
+ 	\caption{Ejemplo de un diagrama de la gestión y control de versiones del proyecto empleando ramas utilizado en el presente trabajo.}
  	\label{fig:ramas}	
  \end{figure}
  
