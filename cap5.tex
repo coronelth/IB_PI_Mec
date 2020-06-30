@@ -4,29 +4,29 @@
 
 En el presente trabajo se realizó un código numérico para resolver problemas de transferencia de calor en flujos multifásicos con cambio de fase, en donde el método utilizado es el de lattice Boltzmann de dos ecuaciones pseudo-pontencial y operador MRT desarrollado por Fogliatto et al. \cite{fogliatto2019transferencia}. El modelo desarrollado resuelve problemas con discretización espacial de dominio regular y el tipo de modelo de grilla es el denominado D2Q9.
 
-El código realizado utilizó el software \textsc{CMake} para preparar la compilación del código desarrollado, el cual permite desarrollar proyectos que posean una gran cantidad de directorios de forma simple. El código se encuentra implementado en tres lenguajes de programación, siendo ellos \textsc{C}, \textsc{Cuda C} y \textsc{Python}. La compilación correspondiente a \textsc{C} se hizo en bibliotecas del tipo \textit{shared} mientras que las bibliotecas de \textsc{Cuda C} eran del tipo \textit{static}. Además los \textit{kernels} realizados en \textit{Cuda C} son compilados en formato \textsc{ptx} para que \textsc{Python} los utilice mediante su módulo llamado \textsc{PyCuda}.
+El código realizado utilizó el software \textsc{CMake} para preparar la compilación del mismo, el cual permite desarrollar proyectos que posean una gran cantidad de directorios de forma simple. El código se encuentra implementado en tres lenguajes de programación, siendo ellos \textsc{C}, \textsc{Cuda C} y \textsc{Python}. La compilación correspondiente a \textsc{C} se hizo en bibliotecas del tipo \textit{shared} mientras que las bibliotecas de \textsc{Cuda C} eran del tipo \textit{static}. Además los \textit{kernels} realizados en \textsc{Cuda C} son compilados en formato \textsc{ptx} para que \textsc{Python} los utilice mediante su módulo llamado \textsc{PyCuda}.
 
-Las instrucciones de compilación de \textsc{CMake} se realizan por medio de un archivo de configuración principal llamado CMakeLists.txt. Se concretaron direferntes opciones de configuración para compilar el código, siendo ellas :
+Las instrucciones de compilación de \textsc{CMake} se realizan por medio de un archivo de configuración principal llamado CMakeLists.txt. Se concretaron las siguientes opciones de configuración para compilar el código:
 
 \begin{itemize}
-	\item seleccionar el tipo de variable del código en simple precisión o doble precisión. 
-	\item detección automática de la arquitectura de la GPU que cuenta la PC en donde se produce la compilación.
-	\item posibilidad de compilar únicamente en \textsc{C} o en su defecto \textsc{C} y \textsc{Cuda C}.
+	\item selección entre precisión simple o doble. 
+	\item detección automática de la arquitectura de la GPU en la PC que se compila el código.
+	\item compilación en \textsc{C} o en \textsc{C} y \textsc{Cuda C}.
 \end{itemize}
 
-El código numérico fue desarrollado mediante el software \textsc{Git}, donde el repositorio utilizado es el de la página web \textsc{Git Hub} y puede ser descargado en \url{https://github.com/efogliatto/LBCUDA_Test}. \textsc{Git} permite controlar las versiones de los archivos que se encuentran en un repositorio de forma fácil y eficiente. En el transcurso del proyecto se comprobó que una buena práctica para desarrollar código es mediante el uso de ramas, donde para éste proyecto en particular se trabajó mediante tres niveles: \textit{master}, \textit{develop} y \textit{feature}. La versión 1.0 es la que se encontraba en la rama \textit{master} al finalizar el presente trabajo.
+El código numérico fue administrado mediante el software \textsc{Git} que permite el control de versiones de forma fácil y eficiente. El repositorio utilizado es el de la página web \textsc{GitHub} y puede ser descargado en \url{https://github.com/efogliatto/LBCUDA_Test}. En el transcurso del proyecto se comprobó que una buena práctica para desarrollar código es mediante el uso de ramas. En este proyecto se trabajó sobre tres ramas: \textit{master}, \textit{develop} y \textit{feature}. La versión 1.0 es la que se encontraba en la rama \textit{master} al finalizar el presente trabajo.
 
-La validación del código fue realizado en dos PC diferentes, la primera contaba con una CPU Intel Core i7-3770 con una GPU NVIDIA GeForce GTX 760 y la segunda disponia de una CPU Intel Core i7-4770 con una GPU NVIDIA GeForce GTX 970. A su vez la validación se concretó en variables de simple precisión y doble precisión.
+La validación del código fue realizado en dos PC diferentes, la primera contaba con una CPU Intel Core i7-3770 con una GPU NVIDIA GeForce GTX 760 y la segunda disponía de una CPU Intel Core i7-4770 con una GPU NVIDIA GeForce GTX 970. A su vez la validación se concretó en variables de simple precisión y doble precisión.
 
 Los problemas físicos  que se utilizaron para realizar la validación del código son los siguientes:
 
 \begin{itemize}
     
-    \item construcción de Maxwell, el cual obtiene las densidades de coexistencia de fases de un fluido 
+    \item construcción de Maxwell, el cual permite obtener las densidades de coexistencia de fases de un fluido a partir de la selección de una ecuación de estado para una dada condición de  presión, temperatura y densidad iniciales.
 
-    \item estratificación de un fluido Van der Waals con temperatura no uniforme. Este problema es unidimensional con campo gravitatorio y temperaturas fijas en los extremos.
+    \item estratificación de un fluido Van der Waals con temperatura no uniforme (1D). Este problema posee campo gravitatorio y temperaturas fijas en los extremos.
 
-    \item generación de burbujas en una placa horizontal calefaccionada.
+    \item generación de burbujas en una placa horizontal calefaccionada (2D).
 
 \end{itemize}
 
@@ -38,11 +38,11 @@ Para la GPU NVIDIA Geforce GTX 760 en simple precisión se obtuvo una ganancia d
 
 En doble precisión, la ganancia de la GPU NVIDIA Geforce GTX 760 con 64 \textit{thread block} fue de 11.40 mientras que en GPU NVIDIA Geforce GTX 970 con 32 \textit{thread block} se obtuvo 10,96. Por el comportamiento que se observó en los resultados, la GPU NVIDIA Geforce GTX 760 llegó a una ganancia máxima, mientras que la GPU NVIDIA Geforce GTX 970 posee la tendencia de aumentar su ganancia a un número de elementos de malla mayor.
 
-Por otro lado, se comparó los resultados obtenidos en simple precisión y doble precisión en la validación de las curvas de coexistencia. Se obtuvo que la diferencia entre la distancia en simple precisión es de 0,003 \% mayor que doble precisión.  Como no existe un gran beneficio en el uso de doble precisión para este problema, y puesto que el tiempo que se demora en doble precesión con respecto a simple precisión es de 1,68 y 1,29 según se utilice GPU NVIDIA Geforce GTX 760 y GPU NVIDIA Geforce GTX 970 respectivamente, se recomienda la utilización de simple precisión.
+Por otro lado, se compararon los resultados obtenidos en simple y doble precisión en la validación de las curvas de coexistencia, siendo el error que causa reducir la precisión de 0,003 \%.  Debido a que el error que introduce la precisión simple es despreciable, y puesto que el tiempo que se demora en doble precesión con respecto a simple precisión es de 1,68 y 1,29 según se utilice GPU NVIDIA Geforce GTX 760 y GPU NVIDIA Geforce GTX 970 respectivamente, se recomienda la utilización de simple precisión.
 
-\section{Estratificación de un fluido VdW}
+\section{Estratificación de un fluido VdW (1D)}
 
-Para el problema unidimensional de la estratificación de un fluido VdW, se pudo verificar los perfiles de densidad $\rho_r$ y de temperatura $T_r$ a lo largo de la cavidad. 
+Para el problema unidimensional de la estratificación de un fluido VdW, se pudieron verificar los perfiles de densidad $\rho_r$ y de temperatura $T_r$ a lo largo de la cavidad. 
 
 La mayor ganancia que se obtuvo para la GPU NVIDIA Geforce GTX 760 y GPU NVIDIA Geforce GTX 970 en simple precisión fue de 13.26 y 15.95, siendo para doble precisión en 7.88 y 13.29, tomando como comparación el código de \textsc{Cuda C} con el código de \textsc{C}. En todos los casos con 64 \textit{thread block}.
 
@@ -50,19 +50,21 @@ Por otro lado, para una cantidad de 32 \textit{thread block} el código de \text
 
 Cabe destacar que en el problema de estratificación, que implica la resolución de dos ecuaciones, se observaron ganancias inferiores respecto a los problemas con una única ecuación.
 
-\section{Generación de burbujas en una superficie horizontal calefaccionada}
+\section{Generación de burbujas en una superficie horizontal calefaccionada (2D)}
 
 A partir del problema de la estratificación de un fluido VdW con temperatura no uniforme, el cual es unidimensional, se pudo realizar una pequeña modificación en el código, para agregar una condición de contorno de calefacción. En esencia el código es exactamente el mismo y puede reproducir el comportamiento de generación de una burbuja en el proceso de ebullición. Por lo tanto, esto demuestra que este fenómeno complejo puede ser resuelto mediante LBM como el utilizado en este trabajo.
 
 \section{Eficiencia en \textsc{Python}}
 
-En el presente trabajo no se implementó, por falta de tiempo, un código que resuelva los problemas de transferencia de calor mencionados. Lo que sí se realizó, fue implementar mediante el módulo \textsc{PyCuda} de \textsc{Python} uno de los \textit{kernels} del código de \textsc{Cuda C}. Luego se comparó el tiempo de cálculo de \textit{Python} para el \textit{kernel} obtenido respecto al tiempo de cálculo del mismo en \textsc{Cuda C}. Se obtuvo en simple precisión que el incremento porcentual de el código en \textsc{Python} con respecto al código de \textit{Cuda C} es de 15 \% y 10 \% para las GPU NVIDIA Geforce GTX 760 y GPU NVIDIA Geforce GTX 970 respectivamente.
+En el presente trabajo se implementó mediante el módulo \textsc{PyCuda} de \textsc{Python} uno de los \textit{kernels} del código de \textsc{Cuda C}, y así probar la performance del código con la utilización de dicho módulo. Se comparó el tiempo de cálculo de \textsc{Python} para el \textit{kernel} obtenido respecto al tiempo de cálculo del mismo en \textsc{Cuda C} en simple precisión. El resultado obtenido es que el incremento porcentual del tiempo de cálculo del código en \textsc{Python} con respecto al código de \textsc{Cuda C} es de 15 \% y 10 \% para las GPU NVIDIA Geforce GTX 760 y GPU NVIDIA Geforce GTX 970 respectivamente.
 
 \section{Trabajo futuro}
 
-$\bullet$ Una de las líneas de desarrollo para éste trabajo es la mejora en los \textit{kernel} del código de \textsc{Cuda C} para que la ganancia en los tiempos de cálculo con respecto al del código de \textsc{C} aumente. Una de las formas de realizar ésto puede ser mediante la utilización de \textit{shared memory} ó \textit{local memory} de los \textit{thread block}. 
+$\bullet$ Una de las líneas de desarrollo para este trabajo es la mejora en los \textit{kernel} del código de \textsc{Cuda C} para que la ganancia en los tiempos de cálculo con respecto al del código de \textsc{C} aumente. Una de las formas de mejorar el rendimiento puede ser mediante la utilización de \textit{shared memory} ó \textit{local memory} de los \textit{thread block}. 
 
 $\bullet$ El código fue realizado para que la implementación en un modelo de grilla D3Q15 pueda hacerse de manera sencilla, sin involucrar grandes modificaciones, en donde sólo se tiene que agregar en el directorio \textit{latticeModel} este tipo de modelo. 
+
+$\bullet$ Realizar 
 
 %Por otro lado se puede trabajar en el desarrollo de una forma distinta de almacenar la información de los nodos vecinos, debido a que cuando se accede al registro de la memoria para realizar el proceso de \textit{streaming}, no toda la información que toma al acceder sirve para el cálculo del \textit{streaming} de ése nodo. Por lo que 
 %
@@ -71,6 +73,8 @@ $\bullet$ El código fue realizado para que la implementación en un modelo de g
 
 %Una de las cosas que queda por investigar , es el almacenamiento de los valores de la función de distribución de poblaciones, debido a que en nuestro problema se poseen 3 matrices con la información. una de ellas es la matriz de vecinosy la siguiente es las de poblaciones. Puesto a que depende de cómo es la etiqueta que se realizan a los vecinos, éstos irán a ser buscados en la memoria de la maquina. Dependiendo de cómo estén almacenados los lugares de la memoria de los nodos vecinos, éstos pueden tardart más o menios. de ahí surge la posibilidad/idea de que se distribuya de una manera distinta la forma de almacenar la informacion de lkis nodos vecinos y así realizzar un al profiling que haga que el código tenga una mayor ganancia.
 
-$\bullet$ Por cuestión de tiempo no se llegó a implementar un código en \textsc{Python} utilizando la biblioteca \textsc{PyCuda}. Se mostró la implementacion para uno de los \textit{kernel}, pudiendo continuar el proyecto a partir de ahí. 
+$\bullet$ A partir de la implementación en el módulo \textsc{PyCuda} de \textsc{Python} de uno de los \textit{kernels} del código de \textsc{Cuda C}, se puede realizar la implementación completa del código en \textsc{Python}.
+
+%$\bullet$ Por cuestión de tiempo no se llegó a implementar un código en \textsc{Python} utilizando la biblioteca \textsc{PyCuda}. Se mostró la implementacion para uno de los \textit{kernel}, pudiendo continuar el proyecto a partir de ahí. 
 
 $\bullet$ También se puede realizar una interfaz gráfica mediante \textsc{Python} para que el usuario pueda operar el código sin necesidad de saber utilizar la terminal. La compilación del código puede realizarse de forma tal que pueda usarse en el sistema operativo \textit{Windows}, ya que actualmente se utiliza en \textit{Linux}. 
