@@ -85,7 +85,7 @@ Los procesos en el \textit{device} tienen almacenados los datos según una jerar
 
 \begin{itemize}
 	\item  \textit{register memory} es visible para un único \textit{thread}
-	\item \textit{local memory} tiene las mismas caracteísticas que \textit{register memory} pero con una performance menor.
+	\item \textit{local memory} tiene las mismas características que \textit{register memory} pero con una performance menor.
 	\item \textit{shared memory} es visible por todos los \textit{threads} de un mismo bloque, posee una baja latencia en su acceso.
 	\item \textit{global memory} es visible por todos los \textit{threads} de la grilla y también por el \textit{host}, posee una alta latencia de acceso.
 	
@@ -206,7 +206,7 @@ extern "C" __global__ void cudaMomentoDensity(
 \\
 en este caso se pasa de forma distinta los valores de la cantidad de nodos (\textit{np}) y de la cantidad de velocidades del modelo \textit{DdQq} (\textit{Q}). La distinción en los argumentos que se pasan en ambos códigos, es debido a la forma que \textsc{Cuda C} permite el manejo de las estructuras y también de las decisiones que se tomaron durante el desarrollo del código.
 
-Se coloca \textcolor{blue}{extern} \textcolor{red}{''C''} para que el compilador detecte que es un \textit{kernel} de \textsc{Cuda C} y cuando se le indique pueda compilar los \textit{kernel} en formato \textsc{ptx}.
+El empleo de \textcolor{blue}{extern} \textcolor{red}{''C''} es para que el compilador detecte que es un \textit{kernel} de \textsc{Cuda C} y cuando se le indique pueda compilar los \textit{kernel} en formato \textsc{ptx}.
 
 \newpage
 
@@ -559,7 +559,7 @@ Para indicar las carpetas de construcción (\textit{build}), ejecutables (\texti
 donde los comandos que empiezan con \textsc{CMAKE\_} son variables, que son la unidad básica de almacenamiento en el lenguaje CMake, y la lista completa de las mismas se encuentra en \url{https://cmake.org/cmake/help/v3.17/manual/cmake-variables.7.html}.
 
 
-Para asignar las bibliotecas en que se compilarán en código, se incorporan las instrucciones mostradas a continuación, donde se colocaron algunas bibliotecas utilizadas a modo de ejemplo.
+Para asignar las bibliotecas en donde el código será compilado, se incorporan las instrucciones mostradas a continuación, donde se colocaron algunas bibliotecas utilizadas a modo de ejemplo.
 \newpage
 {\footnotesize
 	\begin{frame}{}
@@ -603,7 +603,7 @@ La instrucción de asignar opciones de compilación en \textsc{C} y \textsc{Cuda
 \textcolor{blue}{\textbf{SET}}( CMAKE\_CUDA\_FLAGS  \textcolor{red}{''\$\{CMAKE\_CUDA\_FLAGS\} (opciones)''})
 \\
 \\
-donde es importante señalar que dependiendo de la aquitectura que posee la GPU, debe asignársele una distinta opción de compilación. A continuación su muestra una opción de compilación genérica, en donde xx se refiere a la arquitectura de la GPU.
+donde es importante señalar que dependiendo de la arquitectura que posee la GPU, debe asignársele una distinta opción de compilación. A continuación su muestra una opción de compilación genérica, en donde xx se refiere a la arquitectura de la GPU.
 \\
 \\
 \textcolor{blue}{\textbf{SET}}( CMAKE\_CUDA\_FLAGS \textcolor{red}{''\$\{CMAKE\_C\_FLAGS\}}\\
