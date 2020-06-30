@@ -952,8 +952,7 @@ Lo que se describió hasta la presente instancia es todo lo que se utilizó en c
 \section{Control de versiones utilizando \textsc{Git}}
 \label{sec:git}
 
-Git es un software que sirve para controlar versiones de archivos que se encuentran en un repositorio. El mismo fue desarrollado por Linus Torvalds cuando él empezo a desarrollar el \textit{kernel} de \textit{Linux}. El proyecto de éste trabajo se desarrollo con el sistema operativo \textit{Debian 10} y se encuentra en el repositorio de la página web de \textsc{GitHub}. El proyecto puede ser descargado mediante las siguientes líneas de comando en la terminal de \textit{Linux}:
-
+Git es un software que sirve para controlar versiones de archivos que se encuentran en un repositorio. El mismo fue desarrollado por Linus Torvalds cuando él empezo a desarrollar el \textit{kernel} de \textit{Linux}. El proyecto de éste trabajo se desarrollo con el sistema operativo \textit{Debian 10} y se encuentra en el repositorio de la página web de \textsc{GitHub}. El proyecto puede ser descargado mediante las siguientes líneas de comando en la terminal de \textit{Linux} que crean un repositorio local del mismo
 {\footnotesize
 	\begin{frame}{}
 		\lstset{language=bash,
@@ -972,30 +971,30 @@ $ git clone https://github.com/efogliatto/LBCUDA_Test #Iniciar descarga
 		\end{lstlisting}
 		
 	\end{frame}
-}.
-\\
-creándose un repositorio local del mismo.
-
+}
 \subsection{Conceptos básicos}
 
-Para comprender el funcionamiento de \textit{git} se definen algunos conceptos básicos \cite{user:2020:git}. 
+Para entender el funcionamiento de \textsc{Git} se definen algunos conceptos básicos \cite{user:2020:git}. 
 
-El estado de un repositorio indica los archivos añadidos al mismo, eliminados ó modificados. Añadir un archivo significa que \textit{git} realiza un seguimiento del mismo y su estado puede ser nuevo, modificado ó eliminado. Un \textit{commit} es indicarle a \textit{git} el estado actual que refleja el proyecto en todos sus archivos, por lo cual recibe una identificación, y al mismo se le asigna un comentario que debe reflejar las diferencias realizadas con respecto al estado anterior de los mismos. Una rama (\textit{branch}) es una línea de trabajo, donde se va realizando el proyecto añadiéndose \textit{commits}. Se pueden tener múltiples ramas para trabajar un proyecto y obtener un mejor desarrollo del mismo. Cuando es conveniente, una rama que terminó su desarrollo puede ser fusionada en otra, éste proceso se llama \textit{merge}.
+El directorio de trabajo en que se desarrolla el proyecto se llama \textit{working directory} y el estado de sus archivos pueden ser nuevo, modificado o eliminado. El seguimiento (\textit{tracked}) de un archivo permite almacenar toda la información del mismo, y se realiza al añadirlo (\textit{add}) al espacio llamado \textit{stage index}. Una vez que han sido añadido al \textit{stage index} los archivos con su estado deseable, es que se realiza un \textit{commit} para guardar los cambios realizados en el espacio denominado \textit{repository}.
 
-\textit{Git} fue pensado para hacer desarrollo entre colaboradores. Lo más usual es contar con un repositorio remoto principal, en donde se encuentra el último estado del proyecto a trabajar. Cada uno de los colaboradores posee su propio repositorio, dependiendo de si es el propio o de otro colaborador recibe el nombre de local y remoto. Debido al trabajo contínuo de los colaboradores, el repositorio remoto puede ir variando. El proceso de colocar \textit{commits} que uno desarrolla en el repositorio remoto se llama \textit{push} y el de adquirir los \textit{commits} de otros colaboradores \textit{pull}.
+Un \textit{commit} posee una identificación y se le asigna un comentario que debe reflejar las diferencias desarrolladas con respecto al \textit{working directory} del \textit{commit} anterior. Una rama (\textit{branch}) es una línea de trabajo, en donde se desarrolla el proyecto y se almacenan todos los cambios que permiten determinar alguna funcionalidad en particular. Se pueden tener múltiples ramas para trabajar un proyecto y obtener un mejor desarrollo del mismo. Cuando es conveniente, una rama que terminó su desarrollo puede ser fusionada en otra, éste proceso se llama \textit{merge}.
+
+\textsc{Git} fue pensado para hacer desarrollo entre colaboradores. Lo más usual es contar con un repositorio remoto principal, en donde se encuentra el último estado del proyecto a trabajar y eventualmente todas las ramas que se esten desarrollando. Cada uno de los colaboradores posee su propio repositorio, dependiendo de si es el propio o de otro colaborador recibe el nombre de local y remoto. Debido al trabajo continuo de los colaboradores, el repositorio remoto puede ir variando. El proceso de subir los cambios de alguna rama del repositorio local  al repositorio remoto  se llama \textit{push} y en el sentido opuesto se denomina \textit{pull}\footnote{\textit{pull} fusiona automáticamente el estado del repositorio remoto en el local, esto puedo ocasionar conflictos y por ello es que se suele utilizar \textit{fetch}. Para mayor información remitirse al manual de usuario \url{https://git-scm.com/docs/user-manual}.}. 
+
+%Se debe tener en cuenta que el comando \textit{pull} impone el estado que se posee en el repositorio remoto descartando algún cambio que se posee, para evitar ello es que se utiliza el comando \textit{fetch} y luego se debe proceder a utilizar \textit{merge} para fusionar ese estado en el repositorio local. Para mayor información remitirse 
 
 \newpage
 \subsection{Principales comandos}
 
-En el transcurso del desarrollo del presente proyecto se utilizaron algunos de los comandos de \textit{git}. A continuación se detallan los más utilizados\footnote{Para más información remitirse al manual de usuario que se encuentra en la siguiente página web \url{https://git-scm.com/docs/user-manual} o en su defecto directamente al libro \url{https://git-scm.com/book/en/v2}.}: 
+En el transcurso del desarrollo del presente proyecto se utilizaron algunos de los comandos de \textsc{git}. A continuación se detallan los más utilizados\footnote{\label{nota1}Para más información remitirse al manual de usuario \url{https://git-scm.com/docs/user-manual} o en su defecto directamente al libro \url{https://git-scm.com/book/en/v2}.}: 
 
 \begin{itemize}
 	\item \textbf{git init}: inicializa un repositorio local.
 	\item \textbf{git clone \textsc{url}}: copia un repositorio que se encuentra en la dirección \textsc{url}.
-	\item \textbf{git add archivo}: se añade al \textit{staging index} el archivo de nombre \textit{archivo}.
-	\item \textbf{git status}: indica el estado actual del repositorio, la rama en la que se encuentra y los archivos que han sido creados en el proyecto (\textit{working directory}) y que no se ha trackeado.
-	\item \textbf{git add}: añade los archivos que se le indiquen. 
-	\item \textbf{git commit -a}: se realiza un \textit{commit}, donde el \textit{flag} \textit{a} realiza una preparación automática de todos los archivos trackeados, ahorrando el paso de \textbf{git add} \cite{fundamentos:2020:git}.  
+	\item \textbf{git add}: añade los archivos que se le indiquen al \textit{stage index}. 
+	\item \textbf{git status}: indica el estado actual del \textit{repository}, la rama en la que se encuentra y los archivos que han sido creados en el \textit{working directory} y que no se ha realizado un \textit{tracked}.
+	\item \textbf{git commit -a}: se realiza un \textit{commit}, donde el \textit{flag} \textit{a} realiza una preparación automática de todos los archivos trackeados, ahorrando el paso de \textbf{git add} \cite{user:2020:git}.  
 	\item \textbf{git log}: se muestra los comentarios de todos los \textit{commits} realizados con su nombre indicatorio. Si se coloca \textbf{-n} como opción, se mostrarán los últimos n \textit{commits}.
 	\item \textbf{git commit - -amend}: se utiliza cuando se realizo mal el comentario de un \textit{commit} o faltó agregar algún archivo.
 	\item \textbf{git push}: se añade al repositorio remoto todos los \textit{commits} realizados de alguna rama.
@@ -1003,12 +1002,12 @@ En el transcurso del desarrollo del presente proyecto se utilizaron algunos de l
 	\item \textbf{git checkout name}: el repositorio local vuelve al estado del nombre identifiatorio sin perder lo trabajado y permite cambiar de rama.
 	\item \textbf{git branch name\_branch}: si se desea modificar desde un cierto \textit{commit} se debe crear una nueva rama y a partir de ahí seguir el desarrollo, luego de ello se debe realizar \textbf{git checkout name\_branch}.
 	\item \textbf{git diff}: posee varias opciones y nos muestra diferencias. Ellas pueden ser de un archivo de la rama actual, entre dos ramas, entre un archivo que se encuentra en dos ramas, entre otros.
-	\item \textbf{git merge}: se utiliza para fusionar dos ramas. Si no hay conflictos entre las dos ramas que se fusionan se realiza un \textit{fast foward} y no se debe realizar nada. Si hay conflictos y no se realiza el \textit{merge} de forma automática, se debe resolver los conflictos. Remitirse al manual de usuario para mayor información.
+	\item \textbf{git merge}: se utiliza para fusionar dos ramas. Si no hay conflictos entre las dos ramas que se fusionan se realiza un \textit{fast foward} y no se debe realizar nada. Si hay conflictos y no se realiza el \textit{merge} de forma automática, se debe resolver los conflictos\footnotemark[3].
 \end{itemize}
 
 \subsection{Buenas prácticas}
 
-En el transcurso del proyecto se adquirieron buenas prácticas de desarrollo de código mediante \textit{git}, dónde algunas de ellas son las que se desarrollan a continuación.
+En el transcurso del proyecto se adquirieron buenas prácticas de desarrollo de código mediante \textsc{Git}, dónde algunas de ellas son las que se desarrollan a continuación.
 
 \textbf{Commit}: al momento de realizar un commit, es recomendable no hacerlo sobre muchos archivos juntos, sino sobre algunos que reflejen un cambio en la misma línea de trabajo. El comentario que lleva el \textit{commit} debe ser corto y enfocado a un desarrollo o cambio puntual. Antes de hacer \textbf{push} al repositorio remoto verificar que todos los archivos que se desea esten añadidos, caso contrario se los agrega y para no generar otro \textit{commit} es que se utiliza \textbf{git commit - -amend}.
 
@@ -1017,7 +1016,7 @@ y la tercera capa posee una o varias ramas tipo \textit{feature} que se enfocan 
  
  \begin{figure}[htbp]
  	\centering
- 	\includegraphics[width=0.70\textwidth]{figs/cap3/ejemplo_ramas}
+ 	\includegraphics[width=0.85\textwidth]{figs/cap3/ejemplo_ramas}
  	\caption{Ejemplo de un diagrama de la gestión y control de versiones del proyecto empleando ramas utilizado en el presente trabajo.}
  	\label{fig:ramas}	
  \end{figure}
