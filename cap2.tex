@@ -7,12 +7,12 @@
 
 En este capítulo se presenta el modelo de lattice Boltzmann (LBM) que será utilizado en la resolución de problemas con flujo multifásico y transferencia de calor, mediante una implementación en unidades de procesamiento gráfico.
 
-Típicamente, las ecuaciones que describen la mecánica de fluidos suelen ser de difícil resolución y las soluciones analíticas de problemas que pueden ser halladas son escasas, como el caso de flujos \textit{Couette} o \textit{Poiseuille}. Es difícil encontrar la solución de las ecuaciones de la mecánica de fluidos en problemas con geometrías complejas u otras condiciones de contorno, si es que el problema la tiene. Debido a ello las soluciones se obtienen numéricamente \cite{kruger2017lattice}(Sec 3.1), por lo que es de importancia el desarrollo de métodos numéricos que resuelvan los problemas de forma paralela y por medio de este proceso, reducir el tiempo de cálculo.
+Típicamente, las ecuaciones que describen la mecánica de fluidos suelen ser de difícil resolución y las soluciones analíticas de problemas que pueden ser halladas son escasas, como el caso de flujos \textit{Couette} o \textit{Poiseuille}. Es difícil encontrar la solución de las ecuaciones de la mecánica de fluidos en problemas con geometrías complejas u otras condiciones de contorno, si es que el problema la tiene. Debido a ello las soluciones se obtienen numéricamente \cite{kruger2017lattice}, por lo que es de importancia el desarrollo de métodos numéricos que resuelvan los problemas de forma paralela y por medio de este proceso, reducir el tiempo de cálculo.
 
 Los problemas que se plantean resolver en el presente trabajo son de transferencia de calor en flujos multifásicos con cambio de fase y la escala de fluido adoptada es la mesoscópica. Considerando la escala y siendo un problema multifásico, se opta por resolver numéricamente mediante LBM. 
 
 
-La mayoría de los modelos LBM para resolver los flujos multifásicos son clasificados en cuatro categorias generales : \textit{color gradient}, \textit{Shan Chen model} o \textit{pseudopotential}, \textit{Free-energy} y  \textit{phase-field}. 
+La mayoría de los modelos LBM para resolver los flujos multifásicos son clasificados en cuatro categorias generales: \textit{color gradient}, \textit{Shan Chen model} o \textit{pseudopotential}, \textit{Free-energy} y  \textit{phase-field}. 
 
 
 \begin{itemize}
@@ -40,7 +40,7 @@ El modelo pseudopotencial es el adoptado en el presente trabajo, donde dicho mod
 
 La obtención de la ecuación de lattice Boltzmann (LBE) a través de la ecuación de Boltzmann se encuentra descripta con detalle en \cite{kruger2017lattice}, de modo que sólo se incluirá una breve descripción. El problema físico a resolver cuenta con una región a la que se le realizará un mallado regular para discretizar el espacio. El nodo i - ésimo de la malla posee las coordenadas ${\bar{X}}_{i} = (x,y,z)$, a su vez densidad $\rho_{i}$ y temperatura $T_{i}$. La velocidad del fluido en el nodo tiene las componentes ${\bar{U}}_{i} = ({U}_{ix},{U}_{iy},{U}_{iz})$. El espacio de velocidades indica la propagación de las propiedades en la grilla, donde la velocidad de grilla $\mathbf{e}_{i}$ posee $q$ componentes.
 
-Los modelos de grilla suelen denotarse como \textit{DdQq}, donde \textit{d} son las dimensiones del espacio euclídeo y \textit{q} la cantidad de componentes en que se discretiza el espacio de fases. En el presente trabajo el modelo de grilla empleado es $D2Q9$, donde el esquema de velocidades de grilla para el nodo i-ésimo del D2Q9 es el presentado en la Figura \ref{fig:D1Q3_D2Q9}. La Ec. (\ref{eq:velgrilla}) detalla los valores de velocidad adoptados. 
+Los modelos de grilla suelen denotarse como \textit{DdQq}, donde \textit{d} son las dimensiones del espacio euclídeo y \textit{q} la cantidad de componentes en que se discretiza el espacio de fases. En el presente trabajo el modelo de grilla empleado es D2Q9, donde el esquema de velocidades de grilla para el nodo i-ésimo del D2Q9 es el presentado en la Figura \ref{fig:D1Q3_D2Q9}. La Ec. (\ref{eq:velgrilla}) detalla los valores de velocidad adoptados. 
 
 En el caso más simple se cuenta con una única función de distribucion \textit{f}, y sus primeros momentos discretos en el espacio de velocidades están asociados a propiedades macroscópicas del fluido, como la densidad y velocidad del fluido.
 
@@ -75,26 +75,22 @@ En esta sección se describirá cuál es el LBM utilizado para resolver problema
 
 \subsection{Ecuación hidrodinámica}
 
-Por medio de la resolución de una LBE para la función de distribución \textbf{f} (Ec.(\ref{eq:fieldmom})), se puede obtener la solución de las ecuaciones hidrodinámicas \cite{li2013lattice}:
+Por medio de la resolución de una LBE para la función de distribución \textbf{f} (Ec.(\ref{eq:fieldmom})) definida en el espacio de poblaciones (\textit{distribution function in population space}), se puede obtener la solución de las ecuaciones hidrodinámicas \cite{li2013lattice}:
 
 \begin{equation}
     \mathbf{f}(\mathbf{x} + \mathbf{e} \> \delta_{t} , t + \delta_{t}) = \mathbf{M}^{-1} \left[ \mathbf{m} - \mathbf{\Lambda}(\mathbf{m} - \mathbf{m}^{eq}) + \delta_{t} \left( \mathbf{I} - \frac{1}{2} \mathbf{\Lambda} \right) \mathbf{\bar{S}}  \right]_{(\mathbf{x},t)} 
     \label{eq:fieldmom}
 \end{equation}\\
-donde $\mathbf{x}$ es la posición espacial, \textit{t} el tiempo, $\delta_{t}$ el paso de tiempo , \textit{\textbf{e}} la velocidad de grilla en sus direcciones $\alpha$ y $\mathbf{f}$ es la distribución de densidad en el espacio de poblaciones. La notación utilizada implica que la componente $\alpha$-ésima del miembro izquiero de la Ec. (\ref{eq:fieldmom}) esté dado por $f_{\alpha}(x + e_{\alpha} \delta_{t}  , t + \delta_{t} )$. El miembro derecho de la Ec. (\ref{eq:fieldmom}) corresponde a la etapa de post-colisión definida en el espacio de momentos, donde \textbf{I} es el tensor identidad, \textbf{M} una matriz de transformación ortogonal, $\mathbf{m} = \mathbf{M} \cdot \mathbf{f}$ , $\mathbf{m}^{eq} = \mathbf{M} \cdot \mathbf{f}^{\>eq}$, $\mathbf{\bar{S}} = \mathbf{M} \mathbf{S}$ el término de fuente y $ \Lambda$ es una matriz diagonal. Este tipo de operador se conoce como MRT (\textit{Multiple Relaxation Times}).
+donde $\mathbf{x}$ es la posición espacial, \textit{t} el tiempo, $\delta_{t}$ el paso de tiempo, \textit{\textbf{e}} la velocidad de grilla en sus direcciones $\alpha$ y $\mathbf{f}$ es la función de distribución de densidad definida en el espacio de poblaciones. La notación utilizada implica que la componente $\alpha$-ésima del miembro izquiero de la Ec. (\ref{eq:fieldmom}) esté dado por $f_{\alpha}(x + e_{\alpha} \delta_{t}  , t + \delta_{t} )$. El miembro derecho de la Ec. (\ref{eq:fieldmom}) corresponde a la etapa de post-colisión definida en el espacio de momentos, donde \textbf{I} es el tensor identidad, cada modelo \textit{DdQq} tiene asociado una matriz de transformación ortogonal \textbf{M}, $\mathbf{m} = \mathbf{M} \cdot \mathbf{f}$, $\mathbf{m}^{eq} = \mathbf{M} \cdot \mathbf{f}^{\>eq}$, $\mathbf{\bar{S}} = \mathbf{M} \mathbf{S}$ el término de fuente y $ \mathbf{\Lambda}$ es una matriz diagonal que depende del modelo \textit{DdQq}, $\mathbf{f}$, y coeficientes como la viscocidad y difusividad térmica \cite{succi2018lattice}. Este tipo de operador se conoce como MRT (\textit{Multiple Relaxation Times}).
 
-Para el modelo de grilla D2Q9 utilizado en el presente trabajo $\mathbf{m}^{eq}$, $ \Lambda$ y $\mathbf{M}$ están dados por:
-\begin{align}
-\mathbf{m^{eq}} =  \rho  \left( 1, - 2 + 3 {|u|}^{2} , 1 - 3{|u|}^{2} , u_{x} , - u_{x} , u_{y} , - u_{y} , {u_{x}}^{2} - {u_{y}}^{2} , u_{x} u_{y} \right) 
-\label{eq:m}
-\end{align}  
-\begin{align}
-    \mathbf{\Lambda}  = diag ( {\tau_{\rho }}^{-1},{\tau_{e}}^{-1},{\tau_{\zeta }}^{-1},{\tau_{j}}^{-1},{\tau_{q}}^{-1},{\tau_{j}}^{-1},{\tau_{q}}^{-1},{\tau_{\nu }}^{-1},{\tau_{\nu}}^{-1}) 
-    \label{eq:lambda}
-\end{align}
+Para el modelo de grilla D2Q9 utilizado en el presente trabajo $\mathbf{m}^{eq}$, $ \mathbf{\Lambda}$ y $\mathbf{M}$ están dados por \cite{kruger2017lattice}:
 {\footnotesize
-\begin{equation}
-\mathbf{M} =
+\begin{align}
+\mathbf{m^{eq}} & =  \rho  \left( 1, - 2 + 3 {|\mathbf{u}|}^{2} , 1 - 3{|\mathbf{u}|}^{2} , u_{x} , -\> u_{x} , u_{y} , -\> u_{y} , {u_{x}}^{2} -\> {u_{y}}^{2} , u_{x} \> u_{y} \right) \label{eq:m}\\
+%
+    \mathbf{\Lambda}  & = diag ( {\tau_{\rho }}^{-1},{\tau_{e}}^{-1},{\tau_{\zeta }}^{-1},{\tau_{j}}^{-1},{\tau_{q}}^{-1},{\tau_{j}}^{-1},{\tau_{q}}^{-1},{\tau_{\nu }}^{-1},{\tau_{\nu}}^{-1}) \\
+%    \label{eq:lambda}
+\mathbf{M} & =
 \begin{bmatrix}
 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 \\
 -4 &-1 &-1 &-1 &-1 & 2 & 2 & 2 & 2 \\
@@ -107,9 +103,8 @@ Para el modelo de grilla D2Q9 utilizado en el presente trabajo $\mathbf{m}^{eq}$
 0 & 0 & 0 & 0 & 0 & 1 &-1 & 1 &-1 \\        
 \end{bmatrix}
 \label{eq:matriz_m}
-\end{equation}
+\end{align}
 }
-
 La densidad macroscópica es obtenida mediante :
 
 \begin{equation}
@@ -152,8 +147,6 @@ donde $c_{s}$ es la velocidad del sonido en el medio. La EOS adoptada en el pres
 \end{equation}
 
 siendo \textit{a} y \textit{b} parámetros que determinan los valores críticos de temperatura, presión y densidad. Finalmente, la fuerza de interacción se incorpora en la etapa de colisión mediante un término de fuente apropiado:
-
-
 \begin{equation}
     \bar{S} = 
     \left[ \begin{array}{c} 
@@ -315,7 +308,7 @@ Para obtener una resolución de problemas genéricos, se debe agregar la condici
 
 La condición de contorno a realizar en la ecuación de energía, consiste en mantener una temperatura fija en una de las aristas o en secciones de la misma. Para este caso se utiliza el desarrollo de Inamuro \cite{inamuro2002lattice}.
 
-Primero se calcula el valor de la función de distribución de poblaciones de equilibrio del nodo $i$-ésimo $\mathbf{g^{eq}}$ utilizando Ec. (\ref{eq:n_eq}) y $\mathbf{M}$ de la forma $\mathbf{g^{eq}} = \mathbf{M}^{-1} \mathbf{n^{eq}}$. Se prosigue a calcular el parámetro $\beta$:
+Primero se calcula el valor de la función de distribución definida en el espacio de poblaciones en equilibrio del nodo $i$-ésimo $\mathbf{g^{eq}}$ utilizando Ec. (\ref{eq:n_eq}) y $\mathbf{M}$ de la forma $\mathbf{g^{eq}} = \mathbf{M}^{-1} \mathbf{n^{eq}}$. Se prosigue a calcular el parámetro $\beta$:
 
 \begin{equation}
 \beta = \frac{T_{cc} - \sum_{A} g_{A}}{\sum_{B} g_{B}}

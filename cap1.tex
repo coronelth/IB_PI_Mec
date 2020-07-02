@@ -158,10 +158,11 @@ El esquema de la Figura (\ref{fig:cpu_gpu_transis}) muestra cualitativamente la 
 	\label{fig:cpu_gpu_transis}
 \end{figure}
 
-Las GPUs estan acondicionadas para llevar a cabo los cálculos que presentan los métodos numéricos de LB. Los LBM consisten en que a cada uno de los nodos de la grilla discretizada se le realicen operaciones elementales como los de la Ec. (\ref{eq:field_intro}). Las GPU se encuentran optimizadas para ejecutar cálculos sobre los píxeles de un monitor, los cuales pueden considerarse como una grilla de nodos. A través de la paralelización la performance de las GPUs es alta, siendo capaces de procesar múltiples vértices y píxeles simultáneamente. Las simulaciones numéricas se producen en un menor tiempo en las GPU que sobre las CPU debido al alto paralelismo alcanzado por la GPU \cite{rinaldi2011modelos}.
+Las GPUs por como es su arquitectura de diseño estan preparadas para ejecutar cálculos en paralelo, como los que presentan los métodos numéricos de LB. Los LBM consisten en que a cada uno de los nodos de la grilla discretizada se le realicen operaciones elementales como los de la Ec. (\ref{eq:field_intro}). Las GPU se encuentran optimizadas para ejecutar cálculos sobre los píxeles de un monitor, los cuales pueden considerarse como una grilla de nodos. A través de la paralelización la performance de las GPUs es alta, siendo capaces de procesar múltiples vértices y píxeles simultáneamente. Las simulaciones numéricas se producen en un menor tiempo en las GPU que sobre las CPU debido al alto paralelismo alcanzado por la GPU \cite{rinaldi2011modelos}.
 
 
-El lenguaje de programación que se utilizó para trabajar con placas gráficas es \textsc{Cuda C} y fue desarrollado por la empresea NVIDIA. Se basa en el lenguaje de programación \textsc{C} con ciertas modificaciones para que los procesos sean en paralelo. Dichos procesos se especifican para que puedan ser lanzados en un número de \textit{blocks} y \textit{threads} de ejecución.
+El lenguaje de programación usado para trabajar con placas gráficas fue 
+\textsc{Cuda C} y lo desarrolló la empresea NVIDIA. Se basa en el lenguaje de programación \textsc{C} con ciertas modificaciones para que los procesos sean en paralelo. Dichos procesos se especifican para que puedan ser lanzados en un número de \textit{blocks} y \textit{threads} de ejecución.
 
 \newpage
 

@@ -206,7 +206,7 @@ extern "C" __global__ void cudaMomentoDensity(
 \\
 en este caso se pasa de forma distinta los valores de la cantidad de nodos (\textit{np}) y de la cantidad de velocidades del modelo \textit{DdQq} (\textit{Q}). La distinción en los argumentos que se pasan en ambos códigos, es debido a la forma que \textsc{Cuda C} permite el manejo de las estructuras y también de las decisiones que se tomaron durante el desarrollo del código.
 
-El empleo de \textcolor{blue}{extern} \textcolor{red}{''C''} es para que el compilador detecte que es un \textit{kernel} de \textsc{Cuda C} y cuando se le indique pueda compilar los \textit{kernel} en formato \textsc{ptx}.
+Para que un \textit{kernel} compilado en formato \textsc{ptx} sea adquirido por el módulo \textsc{PyCuda} de \textsc{Python} con éxito, es que se indica como variable externa con el uso de \textcolor{blue}{extern} \textcolor{red}{''C''}.
 
 \newpage
 
@@ -1018,7 +1018,7 @@ y la tercera capa posee una o varias ramas tipo \textit{feature} que se enfocan 
  	\centering
  	\includegraphics[width=0.85\textwidth]{figs/cap3/ejemplo_ramas}
  	\caption{Ejemplo de un diagrama de la gestión y control de versiones del proyecto empleando ramas utilizado en el presente trabajo.}
- 	\label{fig:ramas}	
++-6 	\label{fig:ramas}	
  \end{figure}
  
  
