@@ -9,25 +9,24 @@ En el presente capítulo se realiza la descripción de los problemas con transfe
 En esta sección se explica el procedimiento por el que a partir de una EOS, se puede obtener las densidades de coexistencia de un fluido para un dado valor de presión y temperatura. Dicho procedimiento se llama Construcción de Maxwell, donde necesariamente la EOS con la que se modela el fluido debe permitir la coexistencia de densidades para sus variables de estado. Para la resolución de éste problema solo se utiliza la ecuación hidrodinámica del LBM.
 
 En el desarrollo del Cap. (\ref{cap2}) se adoptó como EOS del presente trabajo, la ecuación de VdW Ec. (\ref{eq:p_eos_4}) que describe el comportamiento de un gas real y permite la coexistencia de diferentes densidades para igual presión y temperatura:
-
 \begin{align}
 	p = \frac{R T}{V_m - B} - A {\left(\frac{1}{V_m}\right)}^2
 	\label{eq:p_eos_4}
 \end{align}
 
-La Ec. (\ref{eq:p_eos_4}) puede ser representada gráficamente en un diagrama $P - V_m$. A modo de ejemplo se presenta el diagrama para el caso del dióxido de carbono ($CO_2$) a tres temperaturas distintas ver Figura (\ref{fig:P_V_CO2}).  La temperatura de interés es la de $T = 270 \> K$, donde se vislumbra que en $p = 44,08 \> atm$ la gráfica se intersecta en tres valores de $V_m$, siendo dos de ellos estables; por lo que se observa que hay dos volúmenes molares de coexistencia, indicando las fases líquido y gaseosa \cite{huang2015multiphase}. 
+La Ec. (\ref{eq:p_eos_4}) puede ser representada gráficamente en un diagrama $P - V_m$. A modo de ejemplo se presenta el diagrama para el caso del dióxido de carbono ($CO_2$) a tres temperaturas distintas ver Figura (\ref{fig:P_V_CO2}).  La temperatura de interés es la de $T = 270 \> K$, donde se vislumbra que en $p = 44,08 \> atm$ la gráfica se intersecta en tres valores de $V_m$, siendo dos de ellos estables; por lo que se observa que hay dos volúmenes molares de coexistencia, indicando las fases líquido y gaseosa \cite{huang2015multiphase}. Además se forman las áreas \textbf{A1} y \textbf{A2} delimitadas por la curva $P - V_m$ y la línea de presión constante a $p = 44,08 \> atm$. 
 
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[width=.8\textwidth]{figs/cap4/Diagrama_P_V_del_CO2_Multiphase_LBM}
-	\caption{Diagrama $P - V_m$ de la EOS de VdW del $CO_2$ con las constantes $A = 3,592$ y $B = 0,04267$, representando par a $T = 270 \> K$ los volúmenes molares del líquido y gas. \cite{huang2015multiphase}}
+	\caption{Diagrama $P - V_m$ de la EOS de VdW del $CO_2$ con las constantes $A = 3,592$ y $B = 0,04267$, representando para $T = 270 \> K$ los volúmenes molares del líquido y gas. \textbf{A1} y \textbf{A2} son el área encerrada entre la curva $P - V_m$ a $T = 270 \> K$ y la línea de presión constante a  $p = 44,08 \> atm$ \cite{huang2015multiphase}.}
 	\label{fig:P_V_CO2}	
 \end{figure}
 
 La construcción de Maxwell, también llamada regla de igualdad de áreas, indicada en la Ec. (\ref{eq:maxwell_Construction}), es un procedimiento analítico para encontrar las densidades de coexistencia del líquido y gas. Al realizar la integral propuesta surge que las áreas \textbf{A1} y \textbf{A2} de la Figura (\ref{fig:P_V_CO2}) deben ser iguales.
 
 \begin{equation}
-\int_{V_{m,l}}^{V_{m,g}} P d V_m = p_0 (V_{m,l} -  V_{m,g})
+\int_{V_{m,l}}^{V_{m,g}} P \> d V_m = p_0 (V_{m,l} -  V_{m,g})
 \label{eq:maxwell_Construction}
 \end{equation}
 
@@ -40,9 +39,9 @@ La Ec. (\ref{eq:p_eos_4}) puede reescribirse como:
 	\label{eq:p_VdW_rho}
 \end{equation}
 
-donde $\rho = \frac{1}{v}$, siendo $v = \frac{V_m}{M}$ el volúmen másico. De esta forma reescribiendo la integral de la Ec. (\ref{eq:maxwell_Construction}) usando la presión de Ec. (\ref{eq:p_VdW_rho}), pueden obtenerse los valores de coexistencia $\rho_l$ y $\rho_g$ para las fases líquida y gaseosa respectivamente. 
+donde $\rho = \frac{1}{v}$, siendo $v = \frac{V_m}{M}$ el volumen másico. De esta forma reescribiendo la integral de la Ec. (\ref{eq:maxwell_Construction}) usando la presión de Ec. (\ref{eq:p_VdW_rho}), pueden obtenerse los valores de coexistencia $\rho_l$ y $\rho_g$ para las fases líquida y gaseosa, respectivamente. 
 
-La coexistencia de fases tiene lugar a temperaturas inferiores a la llamada temperatura crítica ($T_c$). En el ejemplo mostrado de la Figura (\ref{fig:P_V_CO2}) $T_c = 304 \> K$. Analíticamente $T_c$ surge de aplicar el criterio de la primera y segunda derivada a la Ec.(\ref{eq:rho}) como se indica en Ec.(\ref{eq:criterio_1_2_deriv}) y se deben conocer los parámetros \textit{a} y \textit{b}.
+La coexistencia de fases tiene lugar a temperaturas inferiores a una temperatura crítica ($T_c$). En el ejemplo mostrado de la Figura (\ref{fig:P_V_CO2}) $T_c = 304 \> K$. Analíticamente $T_c$ surge de aplicar el criterio de la primera y segunda derivada a la Ec.(\ref{eq:rho}) como se indica en Ec.(\ref{eq:criterio_1_2_deriv}) y se deben conocer los parámetros \textit{a} y \textit{b}.
 
 \begin{equation}
 	\frac{\partial\> p}{\partial\> V_{m}} = 0 \qquad \qquad \frac{\partial^{2} \> p}{\partial\> {V_{m}}^{2}} = 0
@@ -51,13 +50,13 @@ La coexistencia de fases tiene lugar a temperaturas inferiores a la llamada temp
 
 Realizando adecuadamente la adimensionalización  de la Ec.(\ref{eq:p_VdW_rho}) se puede graficar una curva de coexistencia $T_r - \rho_r$, donde $T_r = \frac{T}{T_c}$, $\rho_r = \frac{\rho}{\rho_c}$ y $T_c$ es calculado a partir de los parámetros \textit{a} y \textit{b} asignados al fluido de estudio. Es de importancia destacar que las curvas de coexistencia dependen de la EOS que se esté utilizando para describir el comportamiento del fluido. En el caso de estudio analizado, la EOS es de VdW y la curva de coexistencia es universal, independientemente de los parámetros \textit{a} y \textit{b}, debido a que se encuentra normalizada por unidades críticas.
 
-Para un fluido con una EOS de VdW con su respectivos parámetros \textit{a} y \textit{b}, se puede calcular los valores de $T_c$ y $\rho_c$. Para  el fluido mencionadado en una cavidad bidimensional a una dada temperatura e inicializando la densidad del mismo aleatoriamente alrededor de  $\rho_c$, cuando se deje evolucionar en el tiempo se producirá la separación de las fases del mismo, produciéndose una coexistencia de fases. Por medio de la obtención de las densidades de coexistencia para distintas temperaturas iniciales, se puede reconstruir la curva de coexistencia analítica. De esta forma, el problema de construcción de Maxwell puede emplearse para validar la implementación de las ecuaciones LBM hidrodinámicas.
+Para un fluido con una EOS de VdW con sus respectivos parámetros \textit{a} y \textit{b}, se puede calcular los valores de $T_c$ y $\rho_c$. Se inicializa aleatoriamente la densidad del fluido mencionado alrededor de $\rho_c$, en una cavidad bidimensional que se encuentra a una dada temperatura. A consecuencia de la evolución temporal se producirá la separación de las fases del mismo, produciéndose una coexistencia de fases. Por medio de la obtención de las densidades de coexistencia para distintas temperaturas iniciales, se puede reconstruir la curva de coexistencia analítica. De esta forma, el problema de construcción de Maxwell puede emplearse para validar la implementación de las ecuaciones LBM hidrodinámicas.
 
 En este problema, se valida la curva de coexistencia $T_r - \rho_r$ calculada analíticamente para un fluido con una EOS de VdW, como la observada en la Figura (\ref{fig:v_760_MxC_c_simple}). 
 
 \subsection{Validación}
 
-La validación de éste problema se hizo utilizando los parámetros $a =0,5$ y $b = 4,0$; para un tamaño de malla de 201 x 201 nodos y $T_r$ variando con un paso de $0,025$ en el rango de $[0,6 - 0,975]$.  El valor de los parámetros utilizados de LBM son los siguientes:
+La validación de este problema se hizo utilizando los parámetros $a =0,5$ y $b = 4,0$; para un tamaño de malla de 201 x 201 nodos y $T_r$ variando con un paso de $0,025$ en el rango de $[0,6 - 0,975]$.  El valor de los parámetros utilizados de LBM son los siguientes:
 
 \begin{align*}
 diag(\mathbf{\Lambda}) = 
@@ -70,21 +69,21 @@ G = -1.0 \quad c = 1.0 \quad \sigma = 0.125 \quad a = 0.5 \quad b = 4.0 \\
 
 La Figura(\ref{fig:v_760_MxC_c_simple}) muestra la validación del código realizado en \textsc{C} para simple precisión en una CPU Intel Core i7-3770; con distintos parámetros $\sigma$ del modelo MRT, donde se observa que el valor de $\sigma = 0,125$ es el que mejor ajusta a la curva de coexistencia como se discute en \cite{fogliatto2018modelado}. Por otro lado, en la Figura (\ref{fig:v_760_MxC_cuda_simple}) se muestran los resultados obtenidos con el código realizado en \textsc{Cuda C}, y ejecutado en la GPU correspondiente
 
-Los resultados de las Figuras (\ref{fig:v_760_MxC_c_simple}) y (\ref{fig:v_760_MxC_cuda_simple}) se realizaron en 50000 pasos de tiempo en cada uno de los valores de $T_r$. Puede observarse que los valores obtenidos de las densidades de coexistencia de fases entre los códigos de \textsc{C} y \textsc{Cuda C} resultan similares.
+Los resultados, que se muestran en las Figuras (\ref{fig:v_760_MxC_c_simple}) y (\ref{fig:v_760_MxC_cuda_simple}), se realizaron en 50000 pasos de tiempo en cada uno de los valores de $T_r$. Puede observarse que los valores obtenidos de las densidades de coexistencia de fases entre los códigos de \textsc{C} y \textsc{Cuda C} resultan similares.
 
-El resultado que se obtuvo de realizar la validación en doble precisión es que los dos códigos desarrollados obtienen el mismo valor en las densidades de fase.
+Al comparar los resultados luego de la validación de las densidades de fase entre \textsc{C} y \textsc{Cuda C} para doble precisión, se obtuvo que poseen el mismo valor numérico. 
 
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=\textwidth]{figs/cap4/v_760_MxC_c_simple}
-	\caption{Curva de coexistencia de fases para un fluido de VdW con los parámetros $a = 0,5 $ y $b = 4,0 $, obtenida en simple precisión en la CPU Intel Core i7-3770 en el código desarrollado en \textsc{C}. $\sigma = 0.075[\bigtriangleup]$	 $\sigma = 0.125[\bigcirc]$ y $\sigma = 0.200[\diamondsuit]$ }
+	\caption{Curva de coexistencia de fases para un fluido de VdW con los parámetros $a = 0,5 $ y $b = 4,0 $, obtenida en simple precisión en la CPU Intel Core i7-3770 en el código desarrollado en \textsc{C}. Los puntos corresponden a valores del parámetro libre del modelo MRT de $\sigma = 0.075[\bigtriangleup]$	 $\sigma = 0.125[\bigcirc]$ y $\sigma = 0.200[\diamondsuit]$ }
  	\label{fig:v_760_MxC_c_simple}	
 \end{figure}
 
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=\textwidth]{figs/cap4/v_760_MxC_cuda_simple}
-	\caption{Curva de coexistencia de fases para un fluido de VdW con los parámetros $a = 0,5 $ y $b = 4,0 $, obtenida en simple precisión en la GPU NVIDIA GeForce GTX 760 en el código desarrollado en \textsc{Cuda C}. $\sigma = 0.075[\bigtriangleup]$	 $\sigma = 0.125[\bigcirc]$ y $\sigma = 0.200[\diamondsuit]$ }
+	\caption{Curva de coexistencia de fases para un fluido de VdW con los parámetros $a = 0,5 $ y $b = 4,0 $, obtenida en simple precisión en la GPU NVIDIA GeForce GTX 760 en el código desarrollado en \textsc{Cuda C}. Los puntos corresponden a valores del parámetro libre del modelo MRT de $\sigma = 0.075[\bigtriangleup]$	 $\sigma = 0.125[\bigcirc]$ y $\sigma = 0.200[\diamondsuit]$ }
 	\label{fig:v_760_MxC_cuda_simple}	
 \end{figure}
 
@@ -98,14 +97,14 @@ La Figura (\ref{fig:v_760_MxC_c_comparacion}) muestra los resultados de las dens
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[width=\textwidth]{figs/cap4/v_760_MxC_c_comparacion}
-	\caption{Curva de coexistencia de fases para un fluido de VdW con los parámetros $a = 0,5 $ y $b = 4,0 $, obtenida en simple precisión[$\bigcirc$] y doble precisión [$\diamondsuit$] en la GPU NVIDIA GeForce GTX 760 en el código desarrollado en \textsc{C}.} 
+	\caption{Curva de coexistencia de fases para un fluido de VdW con los parámetros: $a = 0,5 $ y $b = 4,0 $. Los puntos corresponden a los valores obtenidos en simple precisión [$\bigcirc$] y doble precisión [$\diamondsuit$] en la GPU NVIDIA GeForce GTX 760 en el código desarrollado en \textsc{C}.} 
 	\label{fig:v_760_MxC_c_comparacion}	
 \end{figure}
 
 
 %La Tabla (\ref{tab:comp_MxC_precisiones_10}) contiene los valores de las densidades de coexistencia: analítico, y los obtenidos mediante el código en simple precisión y doble precisión. De la Figura (\ref{fig:v_760_MxC_c_comparacion}) se observa que se ajusta mejor al resultado analítico la fase líquida que la fase gaseosa, por ello la Tabla (\ref{tab:comp_MxC_precisiones_10}) presenta esta diferenciación.
 
-Para dar una idea de proximidad a la solución analítica se adoptó como parámetro la distancia entre los vectores de densidad de fase obtenido y el analítico. La distancia se calculó por medio de la Norma Euclídea, siendo calculada la distancia entre dos vectores \textbf{\textit{A}} y \textbf{\textit{B}} con \textit{i} elementos como indica la Ec.(\ref{eq:norma_euclidea}):
+El error en la aproximación a la solución analítica se mide como la distancia entre los vectores de densidad de fase obtenido y el analítico. La distancia se calculó por medio de la Norma Euclídea, siendo calculada la distancia entre dos vectores \textbf{\textit{A}} y \textbf{\textit{B}} con \textit{i} elementos como indica la Ec.(\ref{eq:norma_euclidea}):
 
 \begin{align}
 dist(\mathbf{A},\mathbf{B}) = \sqrt{\sum_i {\left( a_i - b_i \right)}^2  }
@@ -125,7 +124,7 @@ La mayor diferencia porcentual hallada para la distancia en la fase gaseosa, es 
 
 En la presente sección se muestran las mejoras en el tiempo de cálculo realizados para el código de \textsc{C} y \textsc{Cuda C}. El índice \textit{Speed Up} (SU) calcula la mejora en el tiempo de cálculo entre códigos y se obtiene mediante la Ec.(\ref{eq:speedup}), siendo \textit{t} el tiempo de cálculo y \textit{p} significa comparación entre precisiones. La comparación se realizó en simple y doble precisión para las dos (2) PC detalladas en la Sec. (\ref{sec_pc}).
 \begin{align}
-	SU = \frac{t_{\>C}}{t_{\>Cuda \> C}} \qquad 	{SU}_p = \frac{t_{\>doble \> precisión}}{t_{\>simple \> precisión}} 
+	SU = \frac{t_{\>C}}{t_{\>Cuda \> C}} & & 	{SU}_p = \frac{t_{\>doble \> precision}}{t_{\>simple \> precision}} 
 	\label{eq:speedup}
 \end{align}
 Para calcular el \textsc{SU} de éste problema, se tomó una $T_r$ fija y se varió el tamaño de la grilla, de manera que ésta siempre fuese cuadrada, respetando un número de nodos de potencia de 2 en los lados del cuadrado. La cantidad de \textit{thread blocks} que se utilizó para realizar la comparación en el código de \textsc{CUDA} fueron de potencia de 2.
@@ -201,18 +200,18 @@ Se puede concluir después de haber realizado un SU y $SU_p$ a las dos PC que se
 
 \newpage
 
-\section{Estratificación de un fluido VdW con temperatura no uniforme}
+\section{Estratificación de un fluido VdW con temperatura no uniforme (1D)}
 
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[width=0.3\textwidth]{figs/cap4/esquema_problema_VdW}
-	\caption{Esquema del problema de la estratificación de un fluido VdW. Se muestra el alto (H) de la cavidad y el ancho (L).} 
+	\includegraphics[width=0.7\textwidth]{figs/cap4/esquema_problema_VdW}
+	\caption{Izquierda: Cavidad bidimensional de alto (H) y ancho (L), la linea vertical indica el problema unidimensional. Derecha: Cavidad unidimensional de alto (H). Ambas cavidades bajo la acción de la gravedad (g) y temperaturas fijas en los extremos de H.} 
 	\label{fig:esquema_VdW}	
 \end{figure}
 
 Se quiere resolver el problema de una cavidad unidimensional en presencia de un fluido cuya EOS es la de Van der Waals; con temperatura  no uniforme y fuerza de gravedad no nula. Éste problema fue desarrollado por Berberan-Santos et al. \cite{berberan2002liquid} y extendido por Fogliatto et al. \cite{fogliatto2019simulation}. En este caso se resuelven las dos ecuaciones pseudo-potencial del LBM, la ecuación hidrodinámica y la ecuación de energía.
 
-Se toma como coordenada del problema \textit{y}, teniéndose una temperatura fija $T_{0}$ en $y = 0$ y $T_{1}$ en $y = H$ como se observa en la Figura (\ref{fig:esquema_VdW}) en presencia de la gravedad.
+Se toma como coordenada del problema \textit{y}, teniéndose una temperatura fija $T_{0}$ en $y = 0$ y $T_{1}$ en $y = H$ como se observa en el panel derecho de la Figura (\ref{fig:esquema_VdW}) en presencia de la gravedad.
 
 El gradiente de presión surge de realizar el balance de momento en un volumen diferencial, obteniéndose:
 
@@ -241,17 +240,18 @@ En éste problema a validar, se toma como temperatura fija $T_1 = 0.99 \> T_c$, 
 
 La validación de este problema se hizo utilizando los parámetros $a =0,5$ y $b = 4,0$; para un tamaño de malla de 3 x 300 nodos y $T_0 = T_r$, con $T_r = 0,6 ; 0,7 ; 0,8 \> y \> 0,9$.  Los parámetros de LBM son los que se detallan a continuación:
 \begin{align*}
-diag(\mathbf{\Lambda}) = 
+\centering
+diag(\mathbf{\Lambda}) & = 
 \begin{bmatrix}
 1.0 & 0.8 & 1.1 & 1.0 & 1.1 & 1.0 & 1.1 & 0.8 & 0.8 \\
 \end{bmatrix}\\
-diag(\mathbf{Q}) = 
+diag(\mathbf{Q}) & = 
 \begin{bmatrix}
 1.0 & 1.0 & 1.0 & 0.8 & 1.0 & 0.8 & 1.0 & 1.0 & 1.0 \\
 \end{bmatrix}\\
-\alpha_{1} = 1.0 \qquad 	\alpha_{2} = 1.0 \qquad C_{v} = 1.0\\
-G = -1.0 \quad c = 1.0 \quad \sigma = 0.125 \quad a = 0.5 \quad b = 4.0 \\
-\mathbf{g} = (0.0 \quad-1.234567e^{-7}\quad 0.0 ) \qquad \rho_c = \frac{1}{12} \qquad T_c = 0.037037037
+\alpha_{1} & = 1.0 \qquad 	\alpha_{2} = 1.0 \qquad C_{v} = 1.0\\
+G & = -1.0 \quad c = 1.0 \quad \sigma = 0.125 \quad a = 0.5 \quad b = 4.0 \\
+\mathbf{g} & = (0.0 \quad-1.234567e^{-7}\quad 0.0 ) \qquad \rho_c = \frac{1}{12} \qquad T_c = 0.037037037
 \end{align*}
 Las Figuras (\ref{fig:v_760_VdW_c_simple_rho_y}) y (\ref{fig:v_760_VdW_c_simple_T_y})  muestran la validación del código realizado en \textsc{C} para simple precisión en una GPU NVIDIA GeForce GTX 760 con distintos valores de $T_0$. 
 
@@ -350,29 +350,29 @@ Como se mecionó anteriormente, en este problema de estratficación de fluido Vd
 
 \newpage
 \newpage
-\section{Generación de burbujas sobre una superficie horizontal calefaccionada}
+\section{Generación de burbujas sobre una superficie horizontal calefaccionada (2D)}
 
 Mediante este problema se busca reproducir la fenomenología asociada a los procesos de transferencia de calor en ebullición, demostrando la potencialidad del método. 
 
 La diferencia del problema de la estratificación de VdW con el de la generación de burbujas, radica en que el primero es unidimensional y el segundo es bidimensional. A su vez, la aplicación del código cambia únicamente en realizar una función que imponga como condición de contorno un área de la superficie calefaccionada.
 
-A partir de las mismas bibliotecas utilizadas anteriormente y cambiando una única función, se obtuvo como resultado el fenómeno de formación, crecimiento y desprendimiento de una burbuja. Para realizar lo mencionado, se utilizaron los siguientes parámetros de LBM :
+A partir de las mismas bibliotecas utilizadas anteriormente y cambiando una única función, se obtuvo como resultado el fenómeno de formación, crecimiento y desprendimiento de una burbuja. Para ello se utilizaron los siguientes parámetros de LBM:
 {\footnotesize \begin{align*}
-diag(\mathbf{\Lambda}) = 
+diag(\mathbf{\Lambda}) & = 
 \begin{bmatrix}
 1.0 & 1.25 & 1.0 & 1.0 & 1.1 & 1.0 & 1.1 & 1.3 & 1.3 \\
 \end{bmatrix}\\
-diag(\mathbf{Q}) = 
+diag(\mathbf{Q}) & = 
 \begin{bmatrix}
 1.0 & 1.0 & 1.0 & 1.55 & 1.0 & 1.55 & 1.0 & 1.0 & 1.0 \\
 \end{bmatrix}\\
-\alpha_{1} = -2.0 \qquad 	\alpha_{2} = 2.0 \qquad C_{v} = 5.0\\
-G = -1.0 \quad c = 1.0 \quad \sigma = 0.125 \quad a = 1.0 \quad b = 4.0 \\
-\mathbf{g} = (0.0 \quad -8.0^{-6} \quad 0.0 ) \qquad \rho_c = \frac{1}{12} \qquad T_c = 0.074074074
+\alpha_{1} & = -2.0 \qquad 	\alpha_{2} = 2.0 \qquad C_{v} = 5.0\\
+G & = -1.0 \quad c = 1.0 \quad \sigma = 0.125 \quad a = 1.0 \quad b = 4.0 \\
+\mathbf{g} & = (0.0 \quad -8.0^{-6} \quad 0.0 ) \qquad \rho_c = \frac{1}{12} \qquad T_c = 0.074074074
 \end{align*}}
-El tamaño de grilla utilizado fue de L = 300 y H = 500 basándose en el esquema de la Figura(\ref{fig:esquema_VdW}), donde la superficie calefaccionada se encuentra en el centro del lado L y posee un tamaño de 12 elementos de malla. La temperatura de calefacción $T_{heat} = T_c$  y el resto de la superficie se encuentra a $T = 0.8 T_c$ con la parte superior de la cavidad está a $T = 0.99 T_c$. La separación inicial de las dos fases se encuentra en $y = 350$, donde $\rho = 0.1610588 \> si \> y \in [0,350]$ y $\rho = 0.0199722$ $y$ para $(350,500]$.
+El tamaño de grilla utilizado fue de L = 300 y H = 500 basándose en el esquema del panel izquierdo de la Figura (\ref{fig:esquema_VdW}), donde la superficie calefaccionada se encuentra en el centro del lado L y posee un tamaño de 12 elementos de malla. La temperatura de calefacción $T_{heat} = T_c$  y el resto de la superficie se encuentra a $T = 0.8 T_c$ con la parte superior de la cavidad está a $T = 0.99 T_c$. La separación inicial de las dos fases se encuentra en $y = 350$, donde $\rho = 0.1610588 \> si \> y \in [0,350]$ y $\rho = 0.0199722$ $y$ para $(350,500]$.
 
-El resultado que se obtuvo para 5000, 10000, 20000, 25000, 30000, 35000, 40000, 45000 y 50000 pasos de tiempo se encuentran en las Figuras (\ref{fig:burbujas_760_simple}) y (\ref{fig:burbujas_760_doble}), realizas en la CPU Intel Core i7-3770 en simple y doble  respectivamente, en donde se aprecia la formación, creación y desprendimiento mencionado anteriormente. Adicionalmente, se encuentra el resultado para los mismos pasos de realizados por medio de la GPU NVIDIA GeForce GTX 760 en las Figuras (\ref{fig:burbujas_760_simple_cuda}) y (\ref{fig:burbujas_760_doble_cuda}) para simple y doble precisión respectivamente. Al analizar los resultados de la CPU y GPU con sus precisiones, y comparándolas entre todos los casos realizados, resultan similares en primera instancia.
+El resultado que se obtuvo para 5000, 10000, 20000, 25000, 30000, 35000, 40000, 45000 y 50000 pasos de tiempo se encuentra en la Figura (\ref{fig:burbujas_760_doble_cuda}), realizada en la GPU NVIDIA GeForce GTX 760 para doble precisión. Adicionalmente en la Figura (\ref{fig:bb_simple_doble_760}) se encuentra para 25000 pasos de tiempo la comparación entre simple y doble precisión realizado en la GPU NVIDIA GeForce GTX 760. También se realizó la comparación entre el resultado obtenido para 45000 pasos de tiempo entre la CPU Intel Core i7-3770 y la GPU NVIDIA GeForce GTX 760 en simple precisión  en la Figura (\ref{fig:bb_CPU_GPU_simple}). Al analizar los resultados de la CPU y GPU con sus precisiones, y comparándolas entre todos los casos realizados, resultan similares en primera instancia.
 
 Con ésto se demuestra que la reproducción de un fenómeno complejo como la ebullición, puede ser resuelta mediante un LBM de sencilla aplicación y a su vez con un costo computacional bajo, comparando con métodos de elementos finitos o diferencias finitas \cite{guo2013lattice}.
 
@@ -381,9 +381,7 @@ Con ésto se demuestra que la reproducción de un fenómeno complejo como la ebu
 
 
 
-
-
-
+\iffalse
 
 \begin{figure}[H]
 	\centering
@@ -560,6 +558,8 @@ Con ésto se demuestra que la reproducción de un fenómeno complejo como la ebu
 
 \newpage
 
+\fi
+
 \newpage
 
 \begin{figure}[H]
@@ -618,7 +618,42 @@ Con ésto se demuestra que la reproducción de un fenómeno complejo como la ebu
 \end{figure}
 
 \newpage
-una CPU Intel Core i7-4770 y GPU NVIDIA GeForce GTX 970
+
+\begin{figure}[H]
+\centering
+	\begin{subfigure}{0.35\textwidth}
+		\includegraphics[width=\linewidth]{figs/cap4/cuda_bb_760_s25}
+		\caption{Simple precisión}
+		\label{fig:bb_sp_760}\hfil
+	\end{subfigure}
+	\begin{subfigure}{0.35\textwidth}
+	\includegraphics[width=\linewidth]{figs/cap4/cuda_bb_760_d25}
+	\caption{Doble precisión}
+	\label{fig:bb_dp_760}\hfil
+	\end{subfigure}
+
+\caption{Creación y desarrollo de una burbuja para 25000 pasos de tiempo realizado en la GPU NVIDIA GeForce GTX 760. Izquierda: Simple precisión. Derecha: Doble precesión.}
+\label{fig:bb_simple_doble_760}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{0.35\textwidth}
+		\includegraphics[width=\linewidth]{figs/cap4/bb_760_s45}
+		\caption{Intel Core i7 - 3770}
+		\label{fig:b_sp_760}\hfil
+	\end{subfigure}
+	\begin{subfigure}{0.35\textwidth}
+		\includegraphics[width=\linewidth]{figs/cap4/cuda_bb_760_s45}
+		\caption{NVIDIA GeForce GTX 760}
+		\label{fig:b_dp_760}\hfil
+	\end{subfigure}
+	
+	\caption{Creación y desarrollo de una burbuja para 45000 pasos de tiempo en simple precisión. Izquierda: Realizado por medio de la CPU Intel Core i7-3770. Derecha: Realizado por medio de la GPU NVIDIA GeForce GTX 760.}
+	\label{fig:bb_CPU_GPU_simple}
+\end{figure}
+\newpage
+
 \section{Uso de \textsc{PyCuda}}
 
 La realización de los códigos numéricos mediante \textsc{C} y \textsc{Cuda C} tenían como primera finalidad conocer cuál es la ganancia en tiempo de cálculo realizando la implementación en GPU, por otro lado desarrollar código en \textsc{Cuda C}, para luego compilarlo en formato \textsc{ptx} y ser utilizado en \textsc{Python} por medio del módulo \textsc{PyCuda} del mismo.
@@ -647,7 +682,7 @@ La Figura (\ref{fig:s_cuda_760_test_simple_10}) muestra el SU para la GPU NVIDIA
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=\textwidth]{figs/cap4/s_cuda_760_test_simple_10}
-	\caption{SU entre \textsc{C} y \textsc{Cuda C} para la función de obtensión de la densidad con la GPU NVIDIA GeForce GTX 760 en simple precisión.} 
+	\caption{SU entre \textsc{C} y \textsc{Cuda C} para la función de obtención de la densidad con la GPU NVIDIA GeForce GTX 760 en simple precisión.} 
 	\label{fig:s_cuda_760_test_simple_10}	
 \end{figure}
 
@@ -664,7 +699,7 @@ La Figura (\ref{fig:s_cuda_760_test_simple_10}) muestra el SU para la GPU NVIDIA
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=\textwidth]{figs/cap4/s_py_760_test_simple_10}
-	\caption{SD realizado entre \textsc{PyCuda} y \textsc{Cuda} para la función de obtensión de la densidad con la GPU NVIDIA GeForce GTX 760 en simple precisión.} 
+	\caption{SD realizado entre \textsc{PyCuda} y \textsc{Cuda} para la función de obtención de la densidad con la GPU NVIDIA GeForce GTX 760 en simple precisión.} 
 	\label{fig:s_py_760_test_simple_10}	
 \end{figure}
 
@@ -679,14 +714,14 @@ La Figura (\ref{fig:s_cuda_970_test_simple_10}) muestra el SU para la GPU NVIDIA
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=\textwidth]{figs/cap4/s_cuda_970_test_simple_10}
-	\caption{SU realizado entre \textsc{C} y \textsc{Cuda C} para la función de obtensión de la densidad con la GPU NVIDIA GeForce GTX 970 en simple precisión.} 
+	\caption{SU realizado entre \textsc{C} y \textsc{Cuda C} para la función de obtención de la densidad con la GPU NVIDIA GeForce GTX 970 en simple precisión.} 
 	\label{fig:s_cuda_970_test_simple_10}	
 \end{figure}
 
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=\textwidth]{figs/cap4/s_py_970_test_simple_10}
-	\caption{SD para la función de obtensión de la densidad con la GPU NVIDIA GeForce GTX 970 en simple precisión.} 
+	\caption{SD para la función de obtención de la densidad con la GPU NVIDIA GeForce GTX 970 en simple precisión.} 
 	\label{fig:s_py_970_test_simple_10}	
 \end{figure}
 
@@ -697,7 +732,7 @@ Luego de haber realizado la implementación de un \textit{kernel} de \textsc{Cud
 
 Debido a que se pretende utilizar con la mayor eficiencia posible los \textit{kernels} en \textit{Python}, debe ejecutarse con la cantidad de \textit{thread blocks} que minimicen SD. De las pruebas realizadasse obtuvo que para la GPU NVIDIA GeForce GTX 760 con 128 y 512  \textit{thread blocks} el valor de SD se encuentra cercano al 15 \% , mientras que en la GPU NVIDIA GeForce GTX 970 ese valor esta cercano al 10 \%.
 
-Es de importancia el desarrollo de códigos numéricos para que sean eficientes en el tiempo de cálculo, y que el desarrollo del mismo no implique un gran insumo de tiempo. Por lo último mencionado realizar códigos en \textsc{Python} es eficiente al ser un lenguaje interpretado y no tener que reservar memoria, liberar memoria o declarar variables entre otros. Los módulos de \textsc{Python} tienen sus bibliotecas realizadas mayormente en \textsc{C} y \textsc{Cuda C} para que sean eficientes y debido a ello es conveniente la utilización de sus módulos, que ya poseen las funciones que uno necesita, además siendo eficientes. 
+Es de importancia el desarrollo de códigos numéricos para que sean eficientes en el tiempo de cálculo, y que el desarrollo del mismo no implique un gran insumo de tiempo. Por lo último mencionado realizar códigos en \textsc{Python} es eficiente al ser un lenguaje interpretado y no tener que reservar memoria, liberar memoria o declarar variables entre otros. Los módulos de \textsc{Python} tienen sus bibliotecas realizadas mayormente en \textsc{C} y \textsc{Cuda C} para que sean eficientes y debido a ello es conveniente la utilización de sus módulos, que ya poseen las funciones que se necesita, además siendo eficientes. 
 
 De esta forma, se observó que resulta posible continuar con la extensión y generalización de herramientas de cálculo eficientes utilizando una combinación adecuada de los lenguajes mencionados.
 
