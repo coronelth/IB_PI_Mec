@@ -32,7 +32,7 @@ Los problemas físicos  que se utilizaron para realizar la validación del códi
 
 \section{Construcción de Maxwell}
 
-Para el problema de la Construcción de Maxwell, se reprodujo el resultado que obtuvo Fogliatto et al. \cite{fogliatto2019simulation}, para el cual el valor del parámetro $\sigma = 0,125$ del operador MRT es el que ajusta mejor la curva de coexistencia de fases para un fluido con la Ecuación de estado de VdW de parámetros $ a = 0,5 $ y $ b = 4,0 $. 
+Para el problema de la Construcción de Maxwell, se reprodujo el resultado que obtuvo Fogliatto et al. \cite{fogliatto2019simulation}, para el cual el valor del parámetro $\sigma = 0,125$ del operador MRT es el que ajusta mejor la curva de coexistencia de fases para un fluido con la Ecuación de estado de VdW de parámetros $ a = 0,5 $ y $ b = 4,0 $. El tiempo de cálculo que lleva obtener  cada una de las densidades de coexistencia de fase, fue alrededor de 1724 segundos.
 
 Para la GPU NVIDIA Geforce GTX 760 en simple precisión se obtuvo una ganancia del código realizado en \textsc{CUDA C} de 18.67 veces con respecto al código de \textbf{C} para un número de 64 \textit{thread block} y la cantidad de 4194304 ($2^{22}$) elementos de malla. Mientras que en la  GPU NVIDIA Geforce GTX 970 en las mismas condiciones se obtuvo una ganancia de 23.39 utilizando 32 \textit{thread block} .
 
@@ -42,7 +42,7 @@ Por otro lado, se compararon los resultados obtenidos en simple y doble precisi�
 
 \section{Estratificación de un fluido VdW (1D)}
 
-Para el problema unidimensional de la estratificación de un fluido VdW, se pudieron verificar los perfiles de densidad $\rho_r$ y de temperatura $T_r$ a lo largo de la cavidad. 
+Para el problema unidimensional de la estratificación de un fluido VdW, se pudieron verificar los perfiles de densidad $\rho_r$ y de temperatura $T_r$ a lo largo de la cavidad. En donde el tiempo de cálculo que lleva realizar cada perfil es cercano a 776 segundos.
 
 La mayor ganancia que se obtuvo para la GPU NVIDIA Geforce GTX 760 y GPU NVIDIA Geforce GTX 970 en simple precisión fue de 13.26 y 15.95, siendo para doble precisión en 7.88 y 13.29, tomando como comparación el código de \textsc{Cuda C} con el código de \textsc{C}. En todos los casos con 64 \textit{thread block}.
 
@@ -64,7 +64,7 @@ $\bullet$ Una de las líneas de desarrollo para este trabajo es la mejora en los
 
 $\bullet$ El código fue realizado para que la implementación en un modelo de grilla D3Q15 pueda hacerse de manera sencilla, sin involucrar grandes modificaciones, en donde sólo se tiene que agregar en el directorio \textit{latticeModel} este tipo de modelo. 
 
-$\bullet$ Realizar 
+%$\bullet$ Realizar 
 
 %Por otro lado se puede trabajar en el desarrollo de una forma distinta de almacenar la información de los nodos vecinos, debido a que cuando se accede al registro de la memoria para realizar el proceso de \textit{streaming}, no toda la información que toma al acceder sirve para el cálculo del \textit{streaming} de ése nodo. Por lo que 
 %
