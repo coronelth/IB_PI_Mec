@@ -190,9 +190,9 @@ Los tamaños de grilla que se utilizaron para realizar las pruebas de tiempo de 
 \fi
 %\newpage
 
-En el Apéndice (\ref{ap:970}) se encuentran los resultados obtenidos del SU en simple y doble precisión en las Figuras (\ref{fig:s_970_MxC_simple_10}) y (\ref{fig:s_970_MxC_double_10}), respectivamente. El mejor resultado en ambos casos se obtuvo para un número de \textit{thread block} igual a 32, donde la mejora fue de 23.39 y 10.96 en simple y doble precisión respectivamente, para el mayor número de elementos de malla.
+En este caso el mejor resultado obtenido de SU para simple y doble precisión fue para un número de  de \textit{thread block} igual a 32. Las mejoras fueron de 23.39 y 10.96 en simple y doble precisión respectivamente, para el mayor número de elementos de malla. 
 
-En la Figura (\ref{fig:c_970_MxC_cuda_10}) del Apéndice (\ref{ap:970}), se  muestra el ${SU}_p$ del código de \textsc{Cuda C} en la GPU NVIDIA GeForce GTX 970. Para un número de \textit{thread block} igual a 32, el tiempo de cálculo en doble precisión es 1,29 veces mayor que en simple precisión en el mayor número de elementos de malla calculado. Se reporta únicamente el resultado para esa cantidad de \textit{thread block}, debido a que los resultados de las Figuras (\ref{fig:s_970_MxC_simple_10}) y (\ref{fig:s_970_MxC_double_10}) indican que es el que tiene un mayor SU.
+En cuanto al $SU_p$ del código de \textsc{Cuda C} en la GPU NVIDIA GeForce GTX 970, se obtuvo que para un número de \textit{thread block} igual a 32, el tiempo de cálculo en doble precisión es 1,29 veces mayor que en simple precisión en el mayor número de elementos de malla calculado. 
 
 \iffalse
 \begin{figure}[htbp]
@@ -217,6 +217,31 @@ En la Tabla (\ref{tab:resumen_MXC}) se encuentran los mejores resultados obtenid
 	\caption{Mejores resultados de SU y $SU_p$ obtenidos para el problema de la Construcción de Maxwell con las PC utilizadas.}
 	\label{tab:resumen_MXC}
 \end{table}
+
+A continuación se presenta la Tabla (\ref{tab:MXC_tiempos}) para dar una noción de cuánto es que se demora el código en realizar la ejecución del problema de la Construcción de Maxwell. Allí se encuentran los tiempos de cálculo para distintos pasos de tiempo y cantidad de elementos de la malla. En dicha tabla se encuentran los tiempos de cálculo en simple precisión realizados para cada CPU y GPU utilizadas, en donde la GPU utiliza un número de \textit{thread block} igual a 64. 
+
+
+\begin{table}[H]
+	\centering
+	\resizebox{15cm}{!}{
+		
+		\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+			\hline
+			Número de elementos de malla & $2^{8}$ & $2^{10}$& $2^{12}$& $2^{14}$& $2^{16}$& $2^{18}$& $2^{20}$& $2^{22}$& $2^{24}$\\ \hline
+			CPU Intel Core i7-3770       & 20.4   & 81.2   & 324.6  & 26.6 & 106.2 & 429.2 & 212.1 & 847.9 & -     \\ \hline
+			GPU NVIDIA Geforce GTX 760   & 17.4   & 18.7   & 31.3   & 2.0  & 6.4   & 23.3  & 11.4  & 45.4  & -     \\ \hline
+			CPU Intel Core i7-4770       & 18.6   & 74.7   & 302.3  & 24.5 & 99.5  & 401.3 & 197.1 & 797.5 & 635.5 \\ \hline
+			GPU NVIDIA Geforce GTX 970   & 7.1    & 8.1    & 13.4   & 15.7 & 14.5  & 30.9  & 21.6  & 59.1  & 30.1  \\ \hline
+			Número de pasos de tiempo    & $10^{5}$ & $10^{5}$ & $10^{5}$ & $2\cdot10^{3}$ & $2\cdot10^{3}$  & $2\cdot10^{3}$  & $2.5\cdot10^{2}$   & $2.5\cdot10^{2}$   & $5\cdot10^{}$    \\ \hline
+	\end{tabular}}
+	\caption{Tiempo de cálculo (segundos)  para el problema de la Construcción de Maxwell en simple precisión, según las CPU y GPU utilizadas. El tiempo de cálculo se encuentra para un número de elementos de malla y cantidad de pasos de tiempo determinado. La cantida de threads per block utilizados fue de 64 en las GPU.}
+	\label{tab:MXC_tiempos}
+\end{table}
+
+
+
+
+
 Se puede concluir después de haber realizado un SU y $SU_p$ a las dos PC que se tuvo acceso para realizar el presente trabajo, de que la utilización de simple precisión en el código de \textsc{Cuda C} es más conveniente que doble precisión. Una de las razones es que no hay demasiada diferencia entre los valores que se pueden obtener, según los resultados obtenidos no difirieren más del 0,003 \%. Otra de las razones es que debido a las mejoras obtenidas en los tiempos de cálculo en las placas NVIDIA GeForce GTX 760 y NVIDIA GeForce GTX 970 en el código de \textsc{Cuda C} de 18.67 y 23.39 respectivamente en simple precisión que el código de \textsc{C}. Las mejoras en doble precisión de las ganancias son de 11.40 y 10.96 respectivamente en las placas mencionadas. Por lo que el resultado obtenido en simple precisión difiere apenas un 0.003 \% que en doble precisión, además siendo 1.68 y 1.29 veces más rapido según la GPU utilizada.
 
 \newpage
@@ -274,21 +299,21 @@ diag(\mathbf{Q}) & =
 G & = -1.0 \quad c = 1.0 \quad \sigma = 0.125 \quad a = 0.5 \quad b = 4.0 \\
 \mathbf{g} & = (0.0 \quad-1.234567e^{-7}\quad 0.0 ) \qquad \rho_c = \frac{1}{12} \qquad T_c = 0.037037037
 \end{align*}
-Las Figuras (\ref{fig:v_760_VdW_c_simple_rho_y}) y (\ref{fig:v_760_VdW_c_simple_T_y})  muestran la validación del código realizado en \textsc{C} para simple precisión en una GPU NVIDIA GeForce GTX 760 con distintos valores de $T_0$. 
+Las Figuras (\ref{fig:v_760_VdW_c_simple_rho_y}) y (\ref{fig:v_760_VdW_c_simple_T_y})  muestran la validación del código realizado en \textsc{C} para simple precisión en una CPU Intel Core i7-3770 con distintos valores de $T_0$. 
 
 El quiebre abrupto y discontinuo de la densidad a lo largo de la columna en la Figura (\ref{fig:v_760_VdW_c_simple_rho_y}) muestra la coexistencia de las dos fases, para la solución analítica. Debido a que se tiene una solución continua y difusa porque el modelo toma una cierta cantidad de nodos como separación entre ambas fases, se presenta una mayor diferencia en el ajuste de la curva obtenida con la analítica en el cambio de fase. Lo mismo sucede en la Figura (\ref{fig:v_760_VdW_c_simple_T_y}). En todos los casos se simularon 750000 pasos de tiempo hasta alcanzar una solución estacionaria. El resultado obtenido para ambas curvas validades es similar en primer orden en el código de \textsc{C} y \textsc{Cuda C}.
 
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=\textwidth]{figs/cap4/v_760_VdW_c_simple_rho_y}
-	\caption{Perfil de densidad adimensional a lo largo de la cavidad, para valores de $T_0 = T_r$, siendo $T_r = 0,6\> ;\> 0,7\> ;\> 0,8\>\> y\>\> 0,9$, para un fluido de VdW con los parámetros $a = 0,5 $ y $b = 4,0 $, obtenida en simple precisión en la GPU NVIDIA GeForce GTX 760 en el código desarrollado en \textsc{C}.}
+	\caption{Perfil de densidad adimensional a lo largo de la cavidad, para valores de $T_0 = T_r$, siendo $T_r = 0,6\> ;\> 0,7\> ;\> 0,8\>\> y\>\> 0,9$, para un fluido de VdW con los parámetros $a = 0,5 $ y $b = 4,0 $, obtenida en simple precisión en la CPU Intel Core i7-3770 en el código desarrollado en \textsc{C}.}
 	\label{fig:v_760_VdW_c_simple_rho_y}	
 \end{figure}
 
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=\textwidth]{figs/cap4/v_760_VdW_c_simple_T_y}
-	\caption{Perfil de temperatura adimensional a lo largo de la cavidad de la pared, para valores de $T_0 = T_r$, siendo $T_r = 0,6\> ;\> 0,7\> ;\> 0,8\>\> y\>\> 0,9$, para un fluido de VdW con los parámetros $a = 0,5 $ y $b = 4,0 $, obtenida en simple precisión en la GPU NVIDIA GeForce GTX 760 en el código desarrollado en \textsc{C}.}
+	\caption{Perfil de temperatura adimensional a lo largo de la cavidad de la pared, para valores de $T_0 = T_r$, siendo $T_r = 0,6\> ;\> 0,7\> ;\> 0,8\>\> y\>\> 0,9$, para un fluido de VdW con los parámetros $a = 0,5 $ y $b = 4,0 $, obtenida en simple precisión en la CPU Intel Core i7-3770 en el código desarrollado en \textsc{C}.}
 	\label{fig:v_760_VdW_c_simple_T_y}	
 \end{figure}
 
@@ -356,9 +381,11 @@ Los tamaños de grilla que se utilizaron para realizar las pruebas de tiempo de 
 \fi
 %\newpage
 
-En el Apéndice (\ref{ap:970}) se encuentran los resultados obtenidos del SU en simple y doble precisión en las Figuras (\ref{fig:s_970_VdW_simple_10}) y (\ref{fig:s_970_VdW_double_10}), respectivamente. El mejor resultado en ambos casos se obtuvo para un número de \textit{thread block} igual a 32, donde la mejora fue de 15.95 y 13.29 en simple y doble precisión respectivamente, para el mayor número de elementos de malla.
+En este caso el mejor resultado obtenido de SU para simple y doble precisión fue para un número de  de \textit{thread block} igual a 32. Las mejoras fueron de 15.95 y 13.29 en simple y doble precisión respectivamente, para el mayor número de elementos de malla. 
 
-En la Figura (\ref{fig:c_970_VdW_cuda_10}) del Apéndice (\ref{ap:970}), se muestra el ${SU}_p$ del código de \textsc{Cuda C} en la GPU NVIDIA GeForce GTX 970. Para un número de \textit{thread block} igual a 32, el tiempo de cálculo en doble precisión es 1,25 veces mayor que en simple precisión en el mayor número de elementos de malla calculado. Se reporta únicamente el resultado para esa cantidad de \textit{thread block}, debido a que los resultados de las Figuras (\ref{fig:s_760_VdW_simple_10}) y (\ref{fig:s_760_VdW_double_10}) indican que es el que tiene un mayor SU.
+En cuanto al $SU_p$ del código de \textsc{Cuda C} en la GPU NVIDIA GeForce GTX 970, se obtuvo que para un número de \textit{thread block} igual a 32, el tiempo de cálculo en doble precisión es 1,25 veces mayor que en simple precisión en el mayor número de elementos de malla calculado. 
+
+
 
 \iffalse
 \begin{figure}[h!]
@@ -382,6 +409,34 @@ En la Tabla (\ref{tab:resumen_VDW}) se encuentran los mejores resultados obtenid
 	\caption{Mejores resultados de SU y $SU_p$ obtenidos para el problema de la Estratificación de un fluido VdW con las PC utilizadas.}
 	\label{tab:resumen_VDW}
 \end{table}
+
+A continuación se presenta la Tabla (\ref{tab:VDW_tiempos}) para dar una noción de cuánto es que se demora el código en realizar la ejecución del problema de la Estratificación de un fluido VdW. Allí se encuentran los tiempos de cálculo para distintos pasos de tiempo y cantidad de elementos de la malla. En dicha tabla se encuentran los tiempos de cálculo en simple precisión realizados para cada CPU y GPU utilizadas, en donde la GPU utiliza un número de \textit{thread block} igual a 64. 
+
+
+\begin{table}[H]
+		\centering
+	\resizebox{15cm}{!}{
+	\begin{tabular}{c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+		\cline{2-15}
+		& \multicolumn{14}{c|}{Número de elementos de malla}                                                                     \\ \cline{2-15} 
+		& $9\cdot10^{2}$   & $1.2\cdot10^{3}$  & $2.4\cdot10^{3}$  & $4.8\cdot10^{3}$  & $9.6\cdot10^{3}$  & $1.9\cdot10^{4}$ & $3.8\cdot10^{4}$ & $7.6\cdot10^{4}$ & $1.5\cdot10^{5}$ & $3\cdot10^{5}$ & $6.1\cdot10^{5}$ & $1.2\cdot10^{6}$ & $2.4\cdot10^{6}$ & $4.9\cdot10^{6}$ \\ \hline
+		\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}c@{}}CPU Intel\\  Core i7-3770\end{tabular}}     & 16.8  & 22.4  & 44.8  & 89.7  & 179.3 & 361.2 & 180.7 & 364.9 & 146.7  & 293.8  & 117.3  & 234.7   & 234.6   & 469.2   \\ \hline
+		\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}c@{}}GPU NVIDIA\\  Geforce GTX 760\end{tabular}} & 7.7   & 7.9   & 9.4   & 13.2  & 23.7  & 40.5  & 17.2  & 31.1  & 11.6   & 22.4   & 8.8    & 17.6    & 17.8    & 35.4    \\ \hline
+		\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}c@{}}CPU Intel\\  Core i7-4770\end{tabular}}     & 14.6  & 19.4  & 38.9  & 80.9  & 155.5 & 315.4 & 155.9 & 324.4 & 126.1  & 255.1  & 101.4  & 203.8   & 205.2   & 408.8   \\ \hline
+		\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}c@{}}GPU NVIDIA\\  Geforce GTX 970\end{tabular}} & 3.1  & 3.2  & 3.8  & 36.7  & 97.1  & 62.1  & 23.1  & 124.1 & 20.3   & 53.9   & 18.5   & 28.2    & 32.9    & 26.9    \\ \hline
+		& $2\cdot10^{4}$ & $2\cdot10^{4}$ & $2\cdot10^{4}$ & $2\cdot10^{4}$ & $2\cdot10^{4}$ & $2\cdot10^{4}$ & $5\cdot10^{3}$  & $5\cdot10^{3}$  & $5\cdot10^{3}$   & $10^{3}$   & $10^{3}$   & $2\cdot10^{2}$     & $2\cdot10^{2}$     & $10^{2}$    \\ \cline{2-15} 
+		& \multicolumn{14}{c|}{Número de pasos de tiempo}                                                                        \\ \cline{2-15} 
+	\end{tabular}}
+\caption{Tiempos de cálculo (segundos)  para el problema de la Estratificación de un fluido VdW en simple precisión, según las CPU y GPU utilizadas. El tiempo de cálculo se encuentra para un número de elementos de malla y cantidad de pasos de tiempo determinado. La cantida de threads per block utilizados fue de 64 en las GPU.}
+\label{tab:VDW_tiempos}
+\end{table}
+
+
+
+
+
+
+
 
 En este problema las mejoras de implementación del código en \textsc{Cuda C} con respecto a \textsc{C} son considerables, y se puede observar en el índice SU. En el caso de la GPU NVIDIA GeForce GTX 760 se obtuvo un SU de 13,26 y 7,88 para simple y doble precisión respectivamente. Por otro lado en la GPU NVIDIA GeForce GTX 970 se obtuvo un SU de15,95 y 13,29 en simple y doble precisión respectivamente.
 
