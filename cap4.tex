@@ -219,7 +219,7 @@ En la Tabla (\ref{tab:resumen_MXC}) se encuentran los mejores resultados obtenid
 	\label{tab:resumen_MXC}
 \end{table}
 
-A continuación se presenta la Tabla (\ref{tab:MXC_tiempos}) con los tiempos de ejecución por paso temporal del algoritmo LB para el problema de la Construcción de Maxwell. Allí se encuentran los tiempos de cálculo para distintos pasos de tiempo y cantidad de elementos de la malla. En dicha tabla se encuentran los tiempos de cálculo en simple precisión realizados para cada CPU y GPU utilizadas, en donde la GPU utiliza un número de \textit{thread block} igual a 64. 
+A continuación se presenta la Tabla (\ref{tab:MXC_tiempos}) con los tiempos de ejecución por paso temporal del algoritmo LB para el problema de la Construcción de Maxwell, para distinta cantidad de elementos de la malla. En dicha tabla se encuentran los tiempos de ejecución realizados en simple precisión para cada CPU y GPU utilizadas, en donde la GPU emplea un número de \textit{thread block} igual a 64.
 
 \begin{table}[H]
 		\resizebox{15cm}{!}{
@@ -405,27 +405,8 @@ En la Tabla (\ref{tab:resumen_VDW}) se encuentran los mejores resultados obtenid
 	\label{tab:resumen_VDW}
 \end{table}
 
-A continuación se presenta la Tabla (\ref{tab:VDW_tiempos}) con los tiempos de ejecución por paso temporal del algoritmo LB para el problema de la Estratificación de un fluido VdW. Allí se encuentran los tiempos de cálculo para distintos pasos de tiempo y cantidad de elementos de la malla. En dicha tabla se encuentran los tiempos de cálculo en simple precisión realizados para cada CPU y GPU utilizadas, en donde la GPU utiliza un número de \textit{thread block} igual a 64. 
+A continuación se presenta la Tabla (\ref{tab:VDW_tiempos}) con los tiempos de ejecución por paso temporal del algoritmo LB para el problema de la Estratificación de un fluido VdW, para distinta cantidad de elementos de la malla. En dicha tabla se encuentran los tiempos de ejecución realizados en simple precisión para cada CPU y GPU utilizadas, en donde la GPU emplea un número de \textit{thread block} igual a 64.
 
-\iffalse
-\begin{table}[H]
-		\centering
-	\resizebox{15cm}{!}{
-	\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
-		\cline{2-15}
-		& \multicolumn{14}{c|}{Número de elementos de malla}                                                                     \\ \cline{2-15} 
-		& $9\cdot10^{2}$   & $1.2\cdot10^{3}$  & $2.4\cdot10^{3}$  & $4.8\cdot10^{3}$  & $9.6\cdot10^{3}$  & $1.9\cdot10^{4}$ & $3.8\cdot10^{4}$ & $7.6\cdot10^{4}$ & $1.5\cdot10^{5}$ & $3\cdot10^{5}$ & $6.1\cdot10^{5}$ & $1.2\cdot10^{6}$ & $2.4\cdot10^{6}$ & $4.9\cdot10^{6}$ \\ \hline
-		\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}c@{}}CPU Intel\\  Core i7-3770\end{tabular}}     & 16.8  & 22.4  & 44.8  & 89.7  & 179.3 & 361.2 & 180.7 & 364.9 & 146.7  & 293.8  & 117.3  & 234.7   & 234.6   & 469.2   \\ \hline
-		\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}c@{}}GPU NVIDIA\\  Geforce GTX 760\end{tabular}} & 7.7   & 7.9   & 9.4   & 13.2  & 23.7  & 40.5  & 17.2  & 31.1  & 11.6   & 22.4   & 8.8    & 17.6    & 17.8    & 35.4    \\ \hline
-		\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}c@{}}CPU Intel\\  Core i7-4770\end{tabular}}     & 14.6  & 19.4  & 38.9  & 80.9  & 155.5 & 315.4 & 155.9 & 324.4 & 126.1  & 255.1  & 101.4  & 203.8   & 205.2   & 408.8   \\ \hline
-		\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}c@{}}GPU NVIDIA\\  Geforce GTX 970\end{tabular}} & 3.1  & 3.2  & 3.8  & 36.7  & 97.1  & 62.1  & 23.1  & 124.1 & 20.3   & 53.9   & 18.5   & 28.2    & 32.9    & 26.9    \\ \hline
-		& $2\cdot10^{4}$ & $2\cdot10^{4}$ & $2\cdot10^{4}$ & $2\cdot10^{4}$ & $2\cdot10^{4}$ & $2\cdot10^{4}$ & $5\cdot10^{3}$  & $5\cdot10^{3}$  & $5\cdot10^{3}$   & $10^{3}$   & $10^{3}$   & $2\cdot10^{2}$     & $2\cdot10^{2}$     & $10^{2}$    \\ \cline{2-15} 
-		& \multicolumn{14}{c|}{Número de pasos de tiempo}                                                                        \\ \cline{2-15} 
-	\end{tabular}}
-\caption{Tiempo de ejecución (segundos) por paso temporal del algoritmo de LB  para el problema de la Estratificación de un fluido VdW en simple precisión, según las CPU y GPU utilizadas. El tiempo de ejecución se encuentra para un número de elementos de malla y la cantida de \textit{threads per block} utilizados fue de 64 en las GPU.}
-\label{tab:VDW_tiempos}
-\end{table}
-\fi
 
 \begin{table}[H]
 		\resizebox{15cm}{!}{
@@ -480,185 +461,6 @@ Con ésto se demuestra que la reproducción de un fenómeno complejo como la ebu
 %Por lo tanto no se halla ninguna diferencia en primera instancia en utilizar las GPU en lugar de la CPU en cuanto al resultado esperado, como así también, tampoco se encontró una diferencia notable en cuanto a utilizar distintas precesiones. 
 
 
-
-\iffalse
-
-\begin{figure}[H]
-	\centering
-	\begin{subfigure}{0.25\textwidth}
-		\includegraphics[width=\linewidth]{figs/cap4/bb_760_s5}
-		\caption{t = 5000}
-		\label{fig:1}
-	\end{subfigure}\hfil 
-	\begin{subfigure}{0.25\textwidth}
-		\includegraphics[width=\linewidth]{figs/cap4/bb_760_s10}
-		\caption{t = 10000}
-		\label{fig:2}
-	\end{subfigure}\hfil 
-	\begin{subfigure}{0.25\textwidth}
-		\includegraphics[width=\linewidth]{figs/cap4/bb_760_s20}
-		\caption{t = 20000}
-		\label{fig:3}
-	\end{subfigure}
-	
-	\medskip
-	\begin{subfigure}{0.25\textwidth}
-		\includegraphics[width=\linewidth]{figs/cap4/bb_760_s25}
-		\caption{t = 25000}
-		\label{fig:4}
-	\end{subfigure}\hfil  
-	\begin{subfigure}{0.25\textwidth}
-		\includegraphics[width=\linewidth]{figs/cap4/bb_760_s30}
-		\caption{t = 30000}
-		\label{fig:5}
-	\end{subfigure}\hfil 
-	\begin{subfigure}{0.25\textwidth}
-		\includegraphics[width=\linewidth]{figs/cap4/bb_760_s35}
-		\caption{t = 35000}
-		\label{fig:6}
-	\end{subfigure}
-	
-	\medskip
-	\begin{subfigure}{0.25\textwidth}
-		\includegraphics[width=\linewidth]{figs/cap4/bb_760_s40}
-		\caption{t = 40000}
-		\label{fig:7}
-	\end{subfigure}\hfil
-	\begin{subfigure}{0.25\textwidth}
-		\includegraphics[width=\linewidth]{figs/cap4/bb_760_s45}
-		\caption{t = 45000}
-		\label{fig:8}
-	\end{subfigure}\hfil 
-	\begin{subfigure}{0.25\textwidth}
-		\includegraphics[width=\linewidth]{figs/cap4/bb_760_s50}
-		\caption{t = 50000}
-		\label{fig:9}
-	\end{subfigure}
-	\caption{Creación y desarrollo de una burbuja a partir de una superficie horizontal calefaccionada. Realizado por medio de la CPU Intel Core i7-3770 en simple precisión. }
-	\label{fig:burbujas_760_simple}
-\end{figure}
-
-\newpage
-
-\newpage
-
-\begin{figure}[H]
-	\centering
-	\begin{subfigure}{0.25\textwidth}
-		\includegraphics[width=\linewidth]{figs/cap4/bb_760_d5}
-		\caption{t = 5000}
-		\label{fig:1}
-	\end{subfigure}\hfil 
-	\begin{subfigure}{0.25\textwidth}
-		\includegraphics[width=\linewidth]{figs/cap4/bb_760_d10}
-		\caption{t = 10000}
-		\label{fig:2}
-	\end{subfigure}\hfil 
-	\begin{subfigure}{0.25\textwidth}
-		\includegraphics[width=\linewidth]{figs/cap4/bb_760_d20}
-		\caption{t = 20000}
-		\label{fig:3}
-	\end{subfigure}
-	
-	\medskip
-	\begin{subfigure}{0.25\textwidth}
-		\includegraphics[width=\linewidth]{figs/cap4/bb_760_d25}
-		\caption{t = 25000}
-		\label{fig:4}
-	\end{subfigure}\hfil  
-	\begin{subfigure}{0.25\textwidth}
-		\includegraphics[width=\linewidth]{figs/cap4/bb_760_d30}
-		\caption{t = 30000}
-		\label{fig:5}
-	\end{subfigure}\hfil 
-	\begin{subfigure}{0.25\textwidth}
-		\includegraphics[width=\linewidth]{figs/cap4/bb_760_d35}
-		\caption{t = 35000}
-		\label{fig:6}
-	\end{subfigure}
-	
-	\medskip
-	\begin{subfigure}{0.25\textwidth}
-		\includegraphics[width=\linewidth]{figs/cap4/bb_760_d40}
-		\caption{t = 40000}
-		\label{fig:7}
-	\end{subfigure}\hfil
-	\begin{subfigure}{0.25\textwidth}
-		\includegraphics[width=\linewidth]{figs/cap4/bb_760_d45}
-		\caption{t = 45000}
-		\label{fig:8}
-	\end{subfigure}\hfil 
-	\begin{subfigure}{0.25\textwidth}
-		\includegraphics[width=\linewidth]{figs/cap4/bb_760_d50}
-		\caption{t = 50000}
-		\label{fig:9}
-	\end{subfigure}
-	\caption{Creación y desarrollo de una burbuja a partir de una superficie horizontal calefaccionada. Realizado por medio de la CPU Intel Core i7-3770 en doble precisión.}
-	\label{fig:burbujas_760_doble}
-\end{figure}
-
-\newpage
-
-\newpage
-
-\begin{figure}[H]
-	\centering
-	\begin{subfigure}{0.25\textwidth}
-		\includegraphics[width=\linewidth]{figs/cap4/cuda_bb_760_s5}
-		\caption{t = 5000}
-		\label{fig:1}
-	\end{subfigure}\hfil 
-	\begin{subfigure}{0.25\textwidth}
-		\includegraphics[width=\linewidth]{figs/cap4/cuda_bb_760_s10}
-		\caption{t = 10000}
-		\label{fig:2}
-	\end{subfigure}\hfil 
-	\begin{subfigure}{0.25\textwidth}
-		\includegraphics[width=\linewidth]{figs/cap4/cuda_bb_760_s20}
-		\caption{t = 20000}
-		\label{fig:3}
-	\end{subfigure}
-	
-	\medskip
-	\begin{subfigure}{0.25\textwidth}
-		\includegraphics[width=\linewidth]{figs/cap4/cuda_bb_760_s25}
-		\caption{t = 25000}
-		\label{fig:4}
-	\end{subfigure}\hfil  
-	\begin{subfigure}{0.25\textwidth}
-		\includegraphics[width=\linewidth]{figs/cap4/cuda_bb_760_s30}
-		\caption{t = 30000}
-		\label{fig:5}
-	\end{subfigure}\hfil 
-	\begin{subfigure}{0.25\textwidth}
-		\includegraphics[width=\linewidth]{figs/cap4/cuda_bb_760_s35}
-		\caption{t = 35000}
-		\label{fig:6}
-	\end{subfigure}
-	
-	\medskip
-	\begin{subfigure}{0.25\textwidth}
-		\includegraphics[width=\linewidth]{figs/cap4/cuda_bb_760_s40}
-		\caption{t = 40000}
-		\label{fig:7}
-	\end{subfigure}\hfil
-	\begin{subfigure}{0.25\textwidth}
-		\includegraphics[width=\linewidth]{figs/cap4/cuda_bb_760_s45}
-		\caption{t = 45000}
-		\label{fig:8}
-	\end{subfigure}\hfil 
-	\begin{subfigure}{0.25\textwidth}
-		\includegraphics[width=\linewidth]{figs/cap4/cuda_bb_760_s50}
-		\caption{t = 50000}
-		\label{fig:9}
-	\end{subfigure}
-	\caption{Creación y desarrollo de una burbuja a partir de una superficie horizontal calefaccionada. Realizado por medio de la GPU NVIDIA GeForce GTX 760 en simple precisión. }
-	\label{fig:burbujas_760_simple_cuda}
-\end{figure}
-
-\newpage
-
-\fi
 
 \newpage
 
