@@ -221,25 +221,19 @@ En la Tabla (\ref{tab:resumen_MXC}) se encuentran los mejores resultados obtenid
 
 A continuación se presenta la Tabla (\ref{tab:MXC_tiempos}) con los tiempos de ejecución por paso temporal del algoritmo LB para el problema de la Construcción de Maxwell. Allí se encuentran los tiempos de cálculo para distintos pasos de tiempo y cantidad de elementos de la malla. En dicha tabla se encuentran los tiempos de cálculo en simple precisión realizados para cada CPU y GPU utilizadas, en donde la GPU utiliza un número de \textit{thread block} igual a 64. 
 
-
 \begin{table}[H]
-	\centering
-	\resizebox{15cm}{!}{
-		
-		\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
-			\hline
-			Número de elementos de malla & $2^{8}$ & $2^{10}$& $2^{12}$& $2^{14}$& $2^{16}$& $2^{18}$& $2^{20}$& $2^{22}$& $2^{24}$\\ \hline
-			CPU Intel Core i7-3770       & 20.4   & 81.2   & 324.6  & 26.6 & 106.2 & 429.2 & 212.1 & 847.9 & -     \\ \hline
-			GPU NVIDIA Geforce GTX 760   & 17.4   & 18.7   & 31.3   & 2.0  & 6.4   & 23.3  & 11.4  & 45.4  & -     \\ \hline
-			CPU Intel Core i7-4770       & 18.6   & 74.7   & 302.3  & 24.5 & 99.5  & 401.3 & 197.1 & 797.5 & 635.5 \\ \hline
-			GPU NVIDIA Geforce GTX 970   & 7.1    & 8.1    & 13.4   & 15.7 & 14.5  & 30.9  & 21.6  & 59.1  & 30.1  \\ \hline
-			Número de pasos de tiempo    & $10^{5}$ & $10^{5}$ & $10^{5}$ & $2\cdot10^{3}$ & $2\cdot10^{3}$  & $2\cdot10^{3}$  & $2.5\cdot10^{2}$   & $2.5\cdot10^{2}$   & $5\cdot10^{}$    \\ \hline
+		\resizebox{15cm}{!}{
+	\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+		\hline
+		\begin{tabular}[c]{@{}c@{}}Número de \\ elementos de malla\end{tabular} &$2^{8}$ & $2^{10}$& $2^{12}$& $2^{14}$& $2^{16}$& $2^{18}$& $2^{20}$& $2^{22}$& $2^{24}$\\ \hline
+		\begin{tabular}[c]{@{}c@{}}CPU Intel\\  Core i7-3770\end{tabular}       &  $2.04\cdot10^{-4}$   & $8.12\cdot10^{-4}$   & $3.25\cdot10^{-3}$  & $1.33\cdot10^{-2}$ & $5.31\cdot10^{-2}$ & $2.15\cdot10^{-1}$ & $8.48\cdot10^{-1}$ & $3.39$ & -     \\ \hline
+		\begin{tabular}[c]{@{}c@{}}GPU NVIDIA\\  Geforce GTX 760\end{tabular}   &  $1.74\cdot10^{-4}$   & $1.87\cdot10^{-4}$   & $3.13\cdot10^{-4}$   & $9.77\cdot10^{-4}$  & $3.18\cdot10^{-3}$   & $1.16\cdot10^{-2}$  & $4.57\cdot10^{-2}$  & $1.82\cdot10^{-1}$  & -     \\ \hline
+		\begin{tabular}[c]{@{}c@{}}CPU Intel\\  Core i7-4770\end{tabular}       &   $1.86\cdot10^{-4}$   & $7.47\cdot10^{-4}$   & $3.02\cdot10^{-3}$  & $1.22\cdot10^{-2}$ & $4.97\cdot10^{-2}$  & $2.00\cdot10^{-1}$ & $7.88\cdot10^{-1}$ & $3.19$ & $1.27\cdot10^{1}$ \\ \hline
+		\begin{tabular}[c]{@{}c@{}}GPU NVIDIA\\  Geforce GTX 970\end{tabular}   & $7.14\cdot10^{-5}$    & $8.04\cdot10^{-5}$    & $1.34\cdot10^{-4}$   & $5.35\cdot10^{-3}$ & $7.24\cdot10^{-3}$  & $1.54\cdot10^{-2}$  & $8.64\cdot10^{-2}$  & $2.36\cdot10^{-1}$  & $6.02\cdot10^{-1}$  \\ \hline			
 	\end{tabular}}
-	\caption{Tiempo de ejecución (segundos) por paso temporal del algoritmo de LB  para el problema de la Construcción de Maxwell en simple precisión, según las CPU y GPU utilizadas. El tiempo de ejecución se encuentra para un número de elementos de malla y la cantida de \textit{threads per block} utilizados fue de 64 en las GPU.}
-	\label{tab:MXC_tiempos}
+\caption{Tiempo de ejecución (segundos) por paso temporal del algoritmo de LB  para el problema de la Construcción de Maxwell en simple precisión, según las CPU y GPU utilizadas. El tiempo de ejecución se encuentra para un número de elementos de malla y la cantida de \textit{threads per block} utilizados fue de 64 en las GPU.}
+\label{tab:MXC_tiempos}
 \end{table}
-
-
 
 
 
@@ -413,11 +407,11 @@ En la Tabla (\ref{tab:resumen_VDW}) se encuentran los mejores resultados obtenid
 
 A continuación se presenta la Tabla (\ref{tab:VDW_tiempos}) con los tiempos de ejecución por paso temporal del algoritmo LB para el problema de la Estratificación de un fluido VdW. Allí se encuentran los tiempos de cálculo para distintos pasos de tiempo y cantidad de elementos de la malla. En dicha tabla se encuentran los tiempos de cálculo en simple precisión realizados para cada CPU y GPU utilizadas, en donde la GPU utiliza un número de \textit{thread block} igual a 64. 
 
-
+\iffalse
 \begin{table}[H]
 		\centering
 	\resizebox{15cm}{!}{
-	\begin{tabular}{c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+	\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
 		\cline{2-15}
 		& \multicolumn{14}{c|}{Número de elementos de malla}                                                                     \\ \cline{2-15} 
 		& $9\cdot10^{2}$   & $1.2\cdot10^{3}$  & $2.4\cdot10^{3}$  & $4.8\cdot10^{3}$  & $9.6\cdot10^{3}$  & $1.9\cdot10^{4}$ & $3.8\cdot10^{4}$ & $7.6\cdot10^{4}$ & $1.5\cdot10^{5}$ & $3\cdot10^{5}$ & $6.1\cdot10^{5}$ & $1.2\cdot10^{6}$ & $2.4\cdot10^{6}$ & $4.9\cdot10^{6}$ \\ \hline
@@ -431,7 +425,23 @@ A continuación se presenta la Tabla (\ref{tab:VDW_tiempos}) con los tiempos de 
 \caption{Tiempo de ejecución (segundos) por paso temporal del algoritmo de LB  para el problema de la Estratificación de un fluido VdW en simple precisión, según las CPU y GPU utilizadas. El tiempo de ejecución se encuentra para un número de elementos de malla y la cantida de \textit{threads per block} utilizados fue de 64 en las GPU.}
 \label{tab:VDW_tiempos}
 \end{table}
+\fi
 
+\begin{table}[H]
+		\resizebox{15cm}{!}{
+	\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+		\hline
+		\begin{tabular}[c]{@{}c@{}}Número de \\ elementos de malla\end{tabular} &$9\cdot10^{2}$   & $1.2\cdot10^{3}$  & $2.4\cdot10^{3}$  & $4.8\cdot10^{3}$  & $9.6\cdot10^{3}$  & $1.9\cdot10^{4}$ & $3.8\cdot10^{4}$ & $7.6\cdot10^{4}$ & $1.5\cdot10^{5}$ & $3\cdot10^{5}$ & $6.1\cdot10^{5}$ & $1.2\cdot10^{6}$ & $2.4\cdot10^{6}$ & $4.9\cdot10^{6}$ \\ \hline
+		\begin{tabular}[c]{@{}c@{}}CPU Intel\\  Core i7-3770\end{tabular}       &$8.39\cdot10^{-4}$  &$1.12\cdot10^{-3}$  &$2.24\cdot10^{-3}$  &$4.48\cdot10^{-3}$  &$8.96\cdot10^{-3}$  &$1.81\cdot10^{-2}$  &$3.61\cdot10^{-2}$  &$7.30\cdot10^{-2}$  &$2.93\cdot10^{-2}$  &$2.94\cdot10^{-1}$  &$1.17\cdot10^{-1}$  &$1.17$  &$1.17$  &$4.92$  \\ \hline
+		\begin{tabular}[c]{@{}c@{}}GPU NVIDIA\\  Geforce GTX 760\end{tabular}   &$3.85\cdot10^{-4}$  &$3.92\cdot10^{-4}$  &$4.70\cdot10^{-4}$  &$6.60\cdot10^{-4}$  &$1.83\cdot10^{-3}$  &$2.02\cdot10^{-3}$  &$3.45\cdot10^{-3}$  &$6.22\cdot10^{-3}$  &$2.33\cdot10^{-3}$  &$2.24\cdot10^{-2}$  &$8.82\cdot10^{-3}$ & $8.82\cdot10^{-2}$ &$8.90\cdot10^{-2}$  &$3.54\cdot10^{-1}$    \\ \hline
+		\begin{tabular}[c]{@{}c@{}}CPU Intel\\  Core i7-4770\end{tabular}       &$7.29\cdot10^{-4}$  &$9.71\cdot10^{-4}$  &$1.94\cdot10^{-3}$  &$4.05\cdot10^{-3}$  &$7.78\cdot10^{-3}$  &$1.58\cdot10^{-2}$  &$3.12\cdot10^{-2}$  &$6.49\cdot10^{-2}$  &$2.52\cdot10^{-2}$  &$2.55\cdot10^{-1}$  &$1.01\cdot10^{-1}$  &$1.02$  &$1.03$  &$4.09$  \\ \hline
+		\begin{tabular}[c]{@{}c@{}}GPU NVIDIA\\  Geforce GTX 970\end{tabular}   &$1.59\cdot10^{-4}$  &$1.62\cdot10^{-4}$  &$1.94\cdot10^{-4}$  &$1.83\cdot10^{-3}$  &$4.85\cdot10^{-3}$  &$3.11\cdot10^{-3}$  &$4.61\cdot10^{-3}$  &$2.48\cdot10^{-2}$  &$4.05\cdot10^{-2}$  &$5.39\cdot10^{-2}$  &$1.85\cdot10^{-1}$  &$1.41\cdot10^{-1}$  &$1.64\cdot10^{-1}$  &$2.69\cdot10^{-1}$  \\ \hline
+	\end{tabular}}
+	\caption{Tiempo de ejecución (segundos) por paso temporal del algoritmo de LB  para el problema de la Estratificación de un fluido VdW en simple precisión, según las CPU y GPU utilizadas. El tiempo de ejecución se encuentra para un número de elementos de malla y la cantida de \textit{threads per block} utilizados fue de 64 en las GPU.}
+	\label{tab:VDW_tiempos}
+\end{table}
+
+\newpage
 
 
 En este problema las mejoras de implementación del código en \textsc{Cuda C} con respecto a \textsc{C} son considerables, y se puede observar en el índice SU. En el caso de la GPU NVIDIA GeForce GTX 760 se obtuvo un SU de 13,26 y 7,88 para simple y doble precisión respectivamente. Por otro lado en la GPU NVIDIA GeForce GTX 970 se obtuvo un SU de15,95 y 13,29 en simple y doble precisión respectivamente.
