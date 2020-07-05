@@ -38,6 +38,8 @@ Para la GPU NVIDIA Geforce GTX 760 en simple precisión se obtuvo una ganancia d
 
 En doble precisión, la ganancia de la GPU NVIDIA Geforce GTX 760 con 64 \textit{thread block} fue de 11.40 mientras que en GPU NVIDIA Geforce GTX 970 con 32 \textit{thread block} se obtuvo 10,96. Por el comportamiento que se observó en los resultados, la GPU NVIDIA Geforce GTX 760 llegó a una ganancia máxima, mientras que la GPU NVIDIA Geforce GTX 970 posee la tendencia de aumentar su ganancia a un número de elementos de malla mayor.
 
+\newpage
+
 Por otro lado, se compararon los resultados obtenidos en simple y doble precisión en la validación de las curvas de coexistencia, siendo el error que causa reducir la precisión de 0,003 \%.  Debido a que el error que introduce la precisión simple es despreciable, y puesto que el tiempo que se demora en doble precesión con respecto a simple precisión es de 1,68 y 1,29 según se utilice GPU NVIDIA Geforce GTX 760 y GPU NVIDIA Geforce GTX 970 respectivamente, se recomienda la utilización de simple precisión.
 
 \section{Estratificación de un fluido VdW (1D)}
@@ -53,6 +55,8 @@ Cabe destacar que en el problema de estratificación, que implica la resolución
 \section{Generación de burbujas en una superficie horizontal calefaccionada (2D)}
 
 A partir del problema de la estratificación de un fluido VdW con temperatura no uniforme, el cual es unidimensional, se pudo realizar una pequeña modificación en el código, para agregar una condición de contorno de calefacción. En esencia el código es exactamente el mismo y puede reproducir el comportamiento de generación de una burbuja en el proceso de ebullición. Por lo tanto, esto demuestra que este fenómeno complejo puede ser resuelto mediante LBM como el utilizado en este trabajo.
+
+\newpage
 
 \section{Eficiencia en \textsc{Python}}
 

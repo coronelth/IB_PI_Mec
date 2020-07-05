@@ -27,9 +27,9 @@ Para visualizar los resultados del código se utiliza el programa \textsc{Paravi
 \section{Programación en GPU}
 \label{sec_pc}
 
-Una computadora (\textit{Personal Computer} o PC) posee como procesador principal la CPU, cuyo diseño se encuentra optimizado para realizar tareas secuenciales. Comercialmente vienen de una amplia variedad de núcleos, en el rango de 8 a 64 núcleos como en el caso de los Procesadores AMD Ryzen™ Threadripper o 4 a 8 núcleos en los Procesador AMD FX™. En el caso de Intel se encuentra el Procesador Intel® Core™ serie X con 18 núcleos y  Intel® Core™ I7-3770 de 4 núcleos entre otros \cite{edp:2020:amd} \cite{icp:2020:intel}.
+Una computadora (\textit{Personal Computer} o PC) posee como procesador principal la CPU, cuyo diseño se encuentra optimizado para realizar tareas secuenciales. Comercial- mente vienen de una amplia variedad de núcleos, en el rango de 8 a 64 núcleos como en el caso de los Procesadores AMD Ryzen™ Threadripper o 4 a 8 núcleos en los Procesador AMD FX™. En el caso de Intel se encuentra el Procesador Intel® Core™ serie X con 18 núcleos y  Intel® Core™ I7-3770 de 4 núcleos entre otros \cite{edp:2020:amd} \cite{icp:2020:intel}.
 
-Los procesadores multinúcleo  (hardware de multiprocesamiento), como los descriptos en el párrafo anterior, permiten ejecutar instrucciones en cada núcleo  de forma independiente mediante la programación de subprocesos (\textit{threads}) \cite{rajagopal1999introduction}. Esto permite obtener una mayor eficiencia en la ejecución de los procesos.
+Los procesadores multinúcleo  (hardware de multiprocesamiento), como los descriptos en el párrafo anterior, permiten ejecutar instrucciones en cada núcleo  de forma indepen- diente mediante la programación de subprocesos (\textit{threads}) \cite{rajagopal1999introduction}. Esto permite obtener una mayor eficiencia en la ejecución de los procesos.
 
 A su vez una PC opcionalmente puede contener un coprocesador siendo una GPU. Dicha placa se encuentra diseñada para realizar operaciones en paralelo, realizándolas en varios hilos de ejecución (\textit{threads}).
 
@@ -330,7 +330,7 @@ en donde < < <, > > > indica la cantidad de \textit{thread blocks} en que se rea
 
 \subsection{Sincronización}
 
-Debido a que los procesos en la GPU son asignados de una forma no determinística, es necesario que exista un procedimiento para sincronizar los \textit{threads}. Por ejemplo, un conflicto puede ser que el Thread idx = 1 quiera acceder a un lugar de la memoria al mismo tiempo que el Thread idx = 2. Otro caso es que el Thread idx = 1 escriba un valor en la \textit{global memory} y se requiera que el Thread idx = 2 realice alguna operación con dicho valor. El método utilizado para resolver éstos problemas es \textbf{cudaDeviceSynchronize()}, el cual sincroniza los \textit{thread blocks} de una \textit{grid}.
+Debido a que los procesos en la GPU son asignados de una forma no determinística, es necesario que exista un procedimiento para sincronizar los \textit{threads}. Por ejemplo, un conflicto puede ser que el Thread idx = 1 quiera acceder a un lugar de la memoria al mismo tiempo que el Thread idx = 2. Otro caso es que el Thread idx = 1 escriba un valor en la \textit{global memory} y se requiera que el Thread idx = 2 realice alguna operación con dicho valor. El método \textbf{cudaDeviceSynchronize()} fue el utilizado para resolver estos problemas, el cual sincroniza los \textit{thread blocks} de una \textit{grid}.
 
 \subsection{Utilización de la memoria de \textit{host} y \textit{device}}
 
@@ -529,6 +529,7 @@ Las subcarpetas (\textbf{en negrita}) y archivos (\underline{subrayados}) que po
 La herramienta de software \textsc{CMake}, versión 3.17.2, fue la utilizada para preparar la compilación del código desarrollado, en donde los compiladores utilizados son \textit{gcc} y \textit{nvcc}.  El archivo CMakeLists.txt principal tiene que encontrarse en la carpeta principal del proyecto \cite{cmake:2020:kitware}, y contiene todas las instrucciones de compilación que tiene el proyecto a trabajar. A continuación se detallan las instrucciones más relevantes.
 
 Para indicar las carpetas de construcción (\textit{build}), ejecutables (\textit{bin}), bibliotecas (\textit{lib}), \textit{headers} de las funciones y \textit{kernels} (\textit{include}) y código fuente (\textit{src}) se incorporan las siguientes instrucciones:
+
 {\footnotesize
 	\begin{frame}{}
 		\lstset{language=c,
@@ -559,8 +560,7 @@ Para indicar las carpetas de construcción (\textit{build}), ejecutables (\texti
 donde los comandos que empiezan con \textsc{CMAKE\_} son variables, que son la unidad básica de almacenamiento en el lenguaje CMake, y la lista completa de las mismas se encuentra en \url{https://cmake.org/cmake/help/v3.17/manual/cmake-variables.7.html}.
 
 
-Para asignar las bibliotecas en donde el código será compilado, se incorporan las instrucciones mostradas a continuación, donde se colocaron algunas bibliotecas utilizadas a modo de ejemplo.
-\newpage
+Para asignar las bibliotecas en donde el código será compilado, se incorporan las instrucciones mostradas a continuación, donde se colocaron algunas bibliotecas utilizadas a modo de ejemplo
 {\footnotesize
 	\begin{frame}{}
 		\lstset{language=c,
@@ -610,12 +610,17 @@ donde es importante señalar que dependiendo de la arquitectura que posee la GPU
                  $.\qquad \qquad \qquad $\textcolor{red}{ -gencode arch=compute\_xx,code=sm\_xx -rdc=true''})
 \\
 
-
 Otras de las instrucciones que se le asignó al compilador, es que tenga la opción de que el proyecto se  compile únicamente en \textsc{C} ó, en su defecto  \textsc{C} y \textsc{Cuda C}. A su vez como se trabajó con distintas GPU, se implementó que el compilador detecte de forma automática la arquitectura que poseía la GPU de la PC, en dónde se está realizando la compilación. 
 
 El siguiente archivo de configuración de \textsc{CMake} muestra la implementación de las instrucciones descriptas arriba:
 \newpage
 
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{figs/cap3/cmake_1.png}
+\end{figure}
+
+\iffalse
 {\scriptsize
 	\begin{frame}{}
 		\lstset{language=c,
@@ -671,13 +676,19 @@ endif()
 		\end{lstlisting}
 		
 	\end{frame}
-}
+}\fi
 
 Por último el código numérico se realizó para que sus variables estén en simple precisión o doble precisión. Por lo cual en el código de \textsc{C}, la declaración de variables que tomarán la asignación de \textcolor{blue}{float} ó \textcolor{blue}{double} será \textbf{scalar}, mientras que en el código de \textsc{Cuda C} será \textbf{cuscalar}. 
 
 La forma de concretar lo mencionado se realizó en dos partes. La primera de ellas es que en el CMakeLists.txt principal se declararon las variables SP, DP, SP\_CUDA y DP\_CUDA, correspondiendo a simple precisión, doble precisión en \textsc{C} y \textsc{Cuda C} respectivamente. Por lo que dependiendo de que variable es la adoptada en el compilador, será la que se utilice luego en el código. El archivo de configuración de \textsc{CMake} que ejecuta lo propuesto es el siguiente:
 
 \newpage
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{figs/cap3/cmake_2.png}
+\end{figure}
+\iffalse
 {\scriptsize
 	\begin{frame}{}
 		\lstset{language=c,
@@ -721,7 +732,7 @@ endif()
 		\end{lstlisting}
 		
 	\end{frame}
-}
+}\fi
 La segunda parte para asignar un tipo de variable a \textbf{scalar} y \textbf{cuscalar} es el archivo \textit{header} que aparece debajo. En este se busca las variables declaradas en el compilador (SP, DP, SP\_CUDA ó DP\_CUDA) y en base a estas, define el tipo de variable para \textbf{scalar} y \textbf{cuscalar}. El \textit{header}, cuyo nombre de archivo es \textit{dataTypes.h} y se encuentra en el directorio \textit{include}, debe ser incluido en cada función o \textit{kernel} que posea una variable de tipo  \textbf{scalar} o \textbf{cuscalar}.
 
 {\footnotesize

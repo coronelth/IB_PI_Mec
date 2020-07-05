@@ -128,7 +128,8 @@ En la presente sección se muestran las mejoras en el tiempo de cálculo realiza
 	\label{eq:speedup}
 \end{align}
 
-Es de importancia resaltar que el tiempo de cálculo de la validación del problema de la Construcción de Maxwell en los 50000 pasos de tiempo con una malla de 201x201 nodos es de alrededor de 1724 segundos en el código de \textsc{C}. Para lo cual se utilizó la CPU Intel Core i7-3770 en simple precisión. Por ello conocer cuánto es el SU es de gran relevancia.
+Es de importancia resaltar que el tiempo de cálculo de la validación del problema de la Construcción de Maxwell en los 50000 pasos de tiempo con una malla de 201x201 nodos es de alrededor de 1724 segundos en el código de \textsc{C}, para lo que se utilizó la CPU Intel Core i7-3770 en simple precisión. 
+Para las mismas condiciones del problema, el tiempo de cálculo de la CPU Intel Core i7-4770 es de alrededor de 1616 segundos. Por ello conocer cuánto es el SU es de gran relevancia.
 
 Para calcular el \textsc{SU} de éste problema, se tomó una $T_r$ fija y se varió el tamaño de la grilla, de manera que ésta siempre fuese cuadrada, respetando un número de nodos de potencia de 2 en los lados del cuadrado. La cantidad de \textit{thread blocks} que se utilizó para realizar la comparación en el código de \textsc{CUDA} fueron de potencia de 2.
 
@@ -190,7 +191,7 @@ Los tamaños de grilla que se utilizaron para realizar las pruebas de tiempo de 
 \fi
 %\newpage
 
-En este caso el mejor resultado obtenido de SU para simple y doble precisión fue para un número de  de \textit{thread block} igual a 32. Las mejoras fueron de 23.39 y 10.96 en simple y doble precisión respectivamente, para el mayor número de elementos de malla. 
+En este caso el mejor resultado obtenido de SU para simple y doble precisión fue para un número de  \textit{thread block} igual a 32. Las mejoras fueron de 23.39 y 10.96 en simple y doble precisión respectivamente, para el mayor número de elementos de malla. 
 
 En cuanto al $SU_p$ del código de \textsc{Cuda C} en la GPU NVIDIA GeForce GTX 970, se obtuvo que para un número de \textit{thread block} igual a 32, el tiempo de cálculo en doble precisión es 1,29 veces mayor que en simple precisión en el mayor número de elementos de malla calculado. 
 
@@ -218,7 +219,7 @@ En la Tabla (\ref{tab:resumen_MXC}) se encuentran los mejores resultados obtenid
 	\label{tab:resumen_MXC}
 \end{table}
 
-A continuación se presenta la Tabla (\ref{tab:MXC_tiempos}) para dar una noción de cuánto es que se demora el código en realizar la ejecución del problema de la Construcción de Maxwell. Allí se encuentran los tiempos de cálculo para distintos pasos de tiempo y cantidad de elementos de la malla. En dicha tabla se encuentran los tiempos de cálculo en simple precisión realizados para cada CPU y GPU utilizadas, en donde la GPU utiliza un número de \textit{thread block} igual a 64. 
+A continuación se presenta la Tabla (\ref{tab:MXC_tiempos}) con los tiempos de ejecución por paso temporal del algoritmo LB para el problema de la Construcción de Maxwell. Allí se encuentran los tiempos de cálculo para distintos pasos de tiempo y cantidad de elementos de la malla. En dicha tabla se encuentran los tiempos de cálculo en simple precisión realizados para cada CPU y GPU utilizadas, en donde la GPU utiliza un número de \textit{thread block} igual a 64. 
 
 
 \begin{table}[H]
@@ -234,7 +235,7 @@ A continuación se presenta la Tabla (\ref{tab:MXC_tiempos}) para dar una noció
 			GPU NVIDIA Geforce GTX 970   & 7.1    & 8.1    & 13.4   & 15.7 & 14.5  & 30.9  & 21.6  & 59.1  & 30.1  \\ \hline
 			Número de pasos de tiempo    & $10^{5}$ & $10^{5}$ & $10^{5}$ & $2\cdot10^{3}$ & $2\cdot10^{3}$  & $2\cdot10^{3}$  & $2.5\cdot10^{2}$   & $2.5\cdot10^{2}$   & $5\cdot10^{}$    \\ \hline
 	\end{tabular}}
-	\caption{Tiempo de cálculo (segundos)  para el problema de la Construcción de Maxwell en simple precisión, según las CPU y GPU utilizadas. El tiempo de cálculo se encuentra para un número de elementos de malla y cantidad de pasos de tiempo determinado. La cantida de threads per block utilizados fue de 64 en las GPU.}
+	\caption{Tiempo de ejecución (segundos) por paso temporal del algoritmo de LB  para el problema de la Construcción de Maxwell en simple precisión, según las CPU y GPU utilizadas. El tiempo de ejecución se encuentra para un número de elementos de malla y la cantida de \textit{threads per block} utilizados fue de 64 en las GPU.}
 	\label{tab:MXC_tiempos}
 \end{table}
 
@@ -323,7 +324,7 @@ El quiebre abrupto y discontinuo de la densidad a lo largo de la columna en la F
 
 En la presente sección se muestran las mejoras en el tiempo de cálculo realizados para el código de \textsc{C} y \textsc{Cuda C}. El índice que se utiliza es el SU y $SU_p$ como indica la Ec. (\ref{eq:speedup}). Se tomó una $T_r$ fija y se varió el tamaño de la grilla, de manera que ésta siempre tuviese una altura constante de 300 nodos y variando la dimensión en el eje \textsc{X} respetando un número de nodos de potencia de 2 (exceptuando el primer valor que es 3) . La cantidad de \textit{thread blocks} que se utilizó para realizar la comnparación en el código de \textsc{CUDA} fueron de potencia de 2.
 
-El tiempo de cálculo de la validación del presente problema en los 750000 pasos de tiempo con una malla de 3x300 nodos, fue de 776 segundos. Utilizando  el código de \textsc{C} para la CPU Intel Core i7-3770 en simple precisión.
+El tiempo de cálculo de la validación del presente problema en los 750000 pasos de tiempo con una malla de 3x300 nodos, fue de 776 segundos. Utilizando  el código de \textsc{C} para la CPU Intel Core i7-3770 en simple precisión. Para las mismas condiciones del problema, el tiempo de cálculo de la CPU Intel Core i7-4770 es de alrededor de 675 segundos.
 
 \subsubsection{NVIDIA GeForce GTX 760}
 
@@ -410,7 +411,7 @@ En la Tabla (\ref{tab:resumen_VDW}) se encuentran los mejores resultados obtenid
 	\label{tab:resumen_VDW}
 \end{table}
 
-A continuación se presenta la Tabla (\ref{tab:VDW_tiempos}) para dar una noción de cuánto es que se demora el código en realizar la ejecución del problema de la Estratificación de un fluido VdW. Allí se encuentran los tiempos de cálculo para distintos pasos de tiempo y cantidad de elementos de la malla. En dicha tabla se encuentran los tiempos de cálculo en simple precisión realizados para cada CPU y GPU utilizadas, en donde la GPU utiliza un número de \textit{thread block} igual a 64. 
+A continuación se presenta la Tabla (\ref{tab:VDW_tiempos}) con los tiempos de ejecución por paso temporal del algoritmo LB para el problema de la Estratificación de un fluido VdW. Allí se encuentran los tiempos de cálculo para distintos pasos de tiempo y cantidad de elementos de la malla. En dicha tabla se encuentran los tiempos de cálculo en simple precisión realizados para cada CPU y GPU utilizadas, en donde la GPU utiliza un número de \textit{thread block} igual a 64. 
 
 
 \begin{table}[H]
@@ -427,14 +428,9 @@ A continuación se presenta la Tabla (\ref{tab:VDW_tiempos}) para dar una noció
 		& $2\cdot10^{4}$ & $2\cdot10^{4}$ & $2\cdot10^{4}$ & $2\cdot10^{4}$ & $2\cdot10^{4}$ & $2\cdot10^{4}$ & $5\cdot10^{3}$  & $5\cdot10^{3}$  & $5\cdot10^{3}$   & $10^{3}$   & $10^{3}$   & $2\cdot10^{2}$     & $2\cdot10^{2}$     & $10^{2}$    \\ \cline{2-15} 
 		& \multicolumn{14}{c|}{Número de pasos de tiempo}                                                                        \\ \cline{2-15} 
 	\end{tabular}}
-\caption{Tiempos de cálculo (segundos)  para el problema de la Estratificación de un fluido VdW en simple precisión, según las CPU y GPU utilizadas. El tiempo de cálculo se encuentra para un número de elementos de malla y cantidad de pasos de tiempo determinado. La cantida de threads per block utilizados fue de 64 en las GPU.}
+\caption{Tiempo de ejecución (segundos) por paso temporal del algoritmo de LB  para el problema de la Estratificación de un fluido VdW en simple precisión, según las CPU y GPU utilizadas. El tiempo de ejecución se encuentra para un número de elementos de malla y la cantida de \textit{threads per block} utilizados fue de 64 en las GPU.}
 \label{tab:VDW_tiempos}
 \end{table}
-
-
-
-
-
 
 
 
@@ -767,6 +763,7 @@ Al  realizar la implementación de un \textit{kernel} de \textsc{Cuda C} en \tex
 SD = \frac{t_{\>PyCuda}}{t_{\>Cuda \> C}} 
 \end{align} 
 
+\newpage
 
 \title{\textbf{NVIDIA GeForce GTX 760}}
 \newline
