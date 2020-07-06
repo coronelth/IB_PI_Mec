@@ -2,7 +2,7 @@
 \graphicspath{{figs/cap4/}}
 \label{cap4}
 
-En el presente capítulo se realiza la descripción de los problemas con transferencia de calor para fluidos multifásicos con cambio de fase llevados a cabo para validar los códigos numéricos desarrollados, siendo éstos la \textit{Construcción de Maxwell}, la \textit{Estratificación de un fluido Van der Waals con temperatura no uniforme} y la \textit{Generación de burbujas en una superficie horizontal calefaccionada}.
+En el presente capítulo se realiza la descripción de los problemas con transferencia de calor para fluidos multifásicos con cambio de fase llevados a cabo para validar los códigos numéricos desarrollados, siendo éstos la \textit{Construcción de Maxwell}, la \textit{Estratifica- ción de un fluido Van der Waals con temperatura no uniforme} y la \textit{Generación de burbujas en una superficie horizontal calefaccionada}.
 
 \section{Construcción de Maxwell (2D)}
 
@@ -23,7 +23,7 @@ La Ec. (\ref{eq:p_eos_4}) puede ser representada gráficamente en un diagrama $P
 	\label{fig:P_V_CO2}	
 \end{figure}
 
-La construcción de Maxwell, también llamada regla de igualdad de áreas, indicada en la Ec. (\ref{eq:maxwell_Construction}), es un procedimiento analítico para encontrar las densidades de coexistencia del líquido y gas. Al realizar la integral propuesta surge que las áreas \textbf{A1} y \textbf{A2} de la Figura (\ref{fig:P_V_CO2}) deben ser iguales.
+La construcción de Maxwell, también llamada regla de igualdad de áreas, indicada en la Ec. (\ref{eq:maxwell_Construction}), es un procedimiento analítico para encontrar las densidades de coexisten- cia del líquido y gas. Al realizar la integral propuesta surge que las áreas \textbf{A1} y \textbf{A2} de la Figura (\ref{fig:P_V_CO2}) deben ser iguales.
 
 \begin{equation}
 \int_{V_{m,l}}^{V_{m,g}} P \> d V_m = p_0 (V_{m,l} -  V_{m,g})
@@ -37,18 +37,17 @@ La Ec. (\ref{eq:p_eos_4}) puede reescribirse como:
 \begin{equation}
 	p_{EOS} = \frac{\rho R T}{1- \rho b} - a {\rho}^{2} 
 	\label{eq:p_VdW_rho}
-\end{equation}
-
+\end{equation}\\
 donde $\rho = \frac{1}{v}$, siendo $v = \frac{V_m}{M}$ el volumen másico. De esta forma reescribiendo la integral de la Ec. (\ref{eq:maxwell_Construction}) usando la presión de Ec. (\ref{eq:p_VdW_rho}), pueden obtenerse los valores de coexistencia $\rho_l$ y $\rho_g$ para las fases líquida y gaseosa, respectivamente. 
 
-La coexistencia de fases tiene lugar a temperaturas inferiores a una temperatura crítica ($T_c$). En el ejemplo mostrado de la Figura (\ref{fig:P_V_CO2}) $T_c = 304 \> K$. Analíticamente $T_c$ surge de aplicar el criterio de la primera y segunda derivada a la Ec.(\ref{eq:rho}) como se indica en Ec.(\ref{eq:criterio_1_2_deriv}) y se deben conocer los parámetros \textit{a} y \textit{b}.
+La coexistencia de fases tiene lugar a temperaturas inferiores a una temperatura crítica ($T_c$). En el ejemplo mostrado de la Figura (\ref{fig:P_V_CO2}) $T_c = 304 \> K$. Analíticamente $T_c$ surge de aplicar el criterio de la primera y segunda derivada a la Ec. (\ref{eq:rho}) como se indica en Ec. (\ref{eq:criterio_1_2_deriv}) y se deben conocer los parámetros \textit{a} y \textit{b}.
 
 \begin{equation}
 	\frac{\partial\> p}{\partial\> V_{m}} = 0 \qquad \qquad \frac{\partial^{2} \> p}{\partial\> {V_{m}}^{2}} = 0
 	\label{eq:criterio_1_2_deriv}
 \end{equation}
 
-Realizando adecuadamente la adimensionalización  de la Ec.(\ref{eq:p_VdW_rho}) se puede graficar una curva de coexistencia $T_r - \rho_r$, donde $T_r = \frac{T}{T_c}$, $\rho_r = \frac{\rho}{\rho_c}$ y $T_c$ es calculado a partir de los parámetros \textit{a} y \textit{b} asignados al fluido de estudio. Es de importancia destacar que las curvas de coexistencia dependen de la EOS que se esté utilizando para describir el comportamiento del fluido. En el caso de estudio analizado, la EOS es de VdW y la curva de coexistencia es universal, independientemente de los parámetros \textit{a} y \textit{b}, debido a que se encuentra normalizada por unidades críticas.
+Realizando adecuadamente la adimensionalización  de la Ec. (\ref{eq:p_VdW_rho}) se puede graficar una curva de coexistencia $T_r - \rho_r$, donde $T_r = \frac{T}{T_c}$, $\rho_r = \frac{\rho}{\rho_c}$ y $T_c$ es calculado a partir de los parámetros \textit{a} y \textit{b} asignados al fluido de estudio. Es de importancia destacar que las curvas de coexistencia dependen de la EOS que se esté utilizando para describir el comportamiento del fluido. En el caso de estudio analizado, la EOS es de VdW y la curva de coexistencia es universal, independientemente de los parámetros \textit{a} y \textit{b}, debido a que se encuentra normalizada por unidades críticas.
 
 Para un fluido con una EOS de VdW con sus respectivos parámetros \textit{a} y \textit{b}, se puede calcular los valores de $T_c$ y $\rho_c$. Se inicializa aleatoriamente la densidad del fluido mencionado alrededor de $\rho_c$, en una cavidad bidimensional que se encuentra a una dada temperatura. A consecuencia de la evolución temporal se producirá la separación de las fases del mismo, produciéndose una coexistencia de fases. Por medio de la obtención de las densidades de coexistencia para distintas temperaturas iniciales, se puede reconstruir la curva de coexistencia analítica. De esta forma, el problema de construcción de Maxwell puede emplearse para validar la implementación de las ecuaciones LBM hidrodinámicas.
 
@@ -104,7 +103,7 @@ La Figura (\ref{fig:v_760_MxC_c_comparacion}) muestra los resultados de las dens
 
 %La Tabla (\ref{tab:comp_MxC_precisiones_10}) contiene los valores de las densidades de coexistencia: analítico, y los obtenidos mediante el código en simple precisión y doble precisión. De la Figura (\ref{fig:v_760_MxC_c_comparacion}) se observa que se ajusta mejor al resultado analítico la fase líquida que la fase gaseosa, por ello la Tabla (\ref{tab:comp_MxC_precisiones_10}) presenta esta diferenciación.
 
-El error en la aproximación a la solución analítica se mide como la distancia entre los vectores de densidad de fase obtenido y el analítico. La distancia se calculó por medio de la Norma Euclídea, siendo calculada la distancia entre dos vectores \textbf{\textit{A}} y \textbf{\textit{B}} con \textit{i} elementos como indica la Ec.(\ref{eq:norma_euclidea}):
+El error en la aproximación a la solución analítica se mide como la distancia entre los vectores de densidad de fase obtenido y el analítico. La distancia se calculó por medio de la Norma Euclídea, siendo calculada la distancia entre dos vectores \textbf{\textit{A}} y \textbf{\textit{B}} con \textit{i} elementos como indica la Ec. (\ref{eq:norma_euclidea}):
 
 \begin{align}
 dist(\mathbf{A},\mathbf{B}) = \sqrt{\sum_i {\left( a_i - b_i \right)}^2  }
@@ -122,7 +121,7 @@ La mayor diferencia porcentual hallada para la distancia en la fase gaseosa, es 
 
 \subsection{Speed Up}
 
-En la presente sección se muestran las mejoras en el tiempo de cálculo realizados para el código de \textsc{C} y \textsc{Cuda C}. El índice \textit{Speed Up} (SU) calcula la mejora en el tiempo de cálculo entre códigos y se obtiene mediante la Ec.(\ref{eq:speedup}), siendo \textit{t} el tiempo de cálculo y \textit{p} significa comparación entre precisiones. La comparación se realizó en simple y doble precisión para las dos (2) PC detalladas en la Sec. (\ref{sec_pc}).
+En la presente sección se muestran las mejoras en el tiempo de cálculo realizados para el código de \textsc{C} y \textsc{Cuda C}. El índice \textit{Speed Up} (SU) calcula la mejora en el tiempo de cálculo entre códigos y se obtiene mediante la Ec. (\ref{eq:speedup}), siendo \textit{t} el tiempo de cálculo y \textit{p} significa comparación entre precisiones. La comparación se realizó en simple y doble precisión para las dos (2) PC detalladas en la Sec. (\ref{sec_pc}).
 \begin{align}
 	SU = \frac{t_{\>C}}{t_{\>Cuda \> C}} & & 	{SU}_p = \frac{t_{\>doble \> precision}}{t_{\>simple \> precision}} 
 	\label{eq:speedup}
@@ -250,7 +249,7 @@ Se puede concluir después de haber realizado un SU y $SU_p$ a las dos PC que se
 	\label{fig:esquema_VdW}	
 \end{figure}
 
-Se quiere resolver el problema de una cavidad unidimensional en presencia de un fluido cuya EOS es la de Van der Waals; con temperatura  no uniforme y fuerza de gravedad no nula. Éste problema fue desarrollado por Berberan-Santos et al. \cite{berberan2002liquid} y extendido por Fogliatto et al. \cite{fogliatto2019simulation}. En este caso se resuelven las dos ecuaciones pseudo-potencial del LBM, la ecuación hidrodinámica y la ecuación de energía.
+Se quiere resolver el problema de una cavidad unidimensional en presencia de un fluido cuya EOS es la de Van der Waals; con temperatura  no uniforme y fuerza de gravedad no nula. Este problema fue desarrollado por Berberan-Santos et al. \cite{berberan2002liquid} y extendido por Fogliatto et al. \cite{fogliatto2019simulation}. En este caso se resuelven las dos ecuaciones pseudo-potencial del LBM, la ecuación hidrodinámica y la ecuación de energía.
 
 Se toma como coordenada del problema \textit{y}, teniéndose una temperatura fija $T_{0}$ en $y = 0$ y $T_{1}$ en $y = H$ como se observa en el panel derecho de la Figura (\ref{fig:esquema_VdW}) en presencia de la gravedad.
 
@@ -258,11 +257,10 @@ El gradiente de presión surge de realizar el balance de momento en un volumen d
 
 \begin{align}
 	\frac{d P}{d y} = - g M C(y)
-\end{align}
-
+\end{align}\\
 siendo \textit{g} la gravedad, \textit{M} el peso molecular, $C = \frac{1}{v}$ la fracción molar, \textit{v} el volumen molar y \textit{P} la presión.
 
-Realizando la adimensionalización $ P_r = \frac{P}{P_c}$ , $ T_r = \frac{T}{T_c}$, $c = C v_c$ y $E_r = \frac{M g y}{R T_c}$; siendo \textit{c} el punto crítico en el cuál comienza la coexistencia de las dos fases, se pueden reemplazar en el gradiente de presión una ecuación de estado para obtener una ecuación adimensional con la concentración molar distribuida \cite{fogliatto2019simulation}.
+Realizando la adimensionalización $ P_r = \frac{P}{P_c}$ , $ T_r = \frac{T}{T_c}$, $c = C v_c$ y $E_r = \frac{M g y}{R T_c}$; siendo \textit{c} el punto crítico en el cuál comienza la coexistencia de las dos fases, se pueden reemplazar en el gradiente de presión una Ecuación de estado para obtener una ecuación adimensional con la concentración molar distribuida \cite{fogliatto2019simulation}.
 
 
 
@@ -271,8 +269,7 @@ En particular, para la EOS de VdW se obtiene:
 \begin{align}
 	\frac{d c}{d E_r} = - \left[ c + \frac{d T_r}{d E_r} \left( \frac{c}{1 - \frac{c}{3}}\right) \right] \left[	\frac{1}{\frac{T_r}{{\left(1- \frac{c}{3}\right)}^2} - \frac{9}{4} c}  \right] 
 	\label{eq:adim_dif}
-\end{align} 
-
+\end{align}\\ 
 donde la posición de la interface dentro de la cavidad se puede determinar utilizando la masa inicial, siendo la misma una condición inicial para realizar la integración de la Ec. (\ref{eq:adim_dif}). Si se elige  resolver iterativamente la Ec. (\ref{eq:adim_dif}) junto con la ecuación macroscópica Ec. (\ref{eq:calor_ecu}) (ecuación del calor) se puede obtener las distribuciones de densidad y temperatura de la cavidad \cite{fogliatto2019simulation}. A partir de la densidad y temperatura recuperadas, se obtienen dos curvas adimensionales correspondientes al perfil de temperatura y al de concentraciones. 
 
 En éste problema a validar, se toma como temperatura fija $T_1 = 0.99 \> T_c$, y se hace variar el valor de  $T_0$. Se asigna la siguiente nomenclatura $\rho_r = \frac{\rho}{\rho_c}$ y  $Y_r = \frac{y}{H}$, que en este caso coinciden con $c$ y $\frac{E_r}{E_{r_{max}}}$ respectivamente. En las Figuras (\ref{fig:v_760_VdW_c_simple_rho_y}) y (\ref{fig:v_760_VdW_c_simple_T_y}) se muestran las curvas adimensionales de $ \rho_r - Y_r $ y $ T_r - Y_r $ respectivamente.
@@ -425,7 +422,7 @@ A continuación se presenta la Tabla (\ref{tab:VDW_tiempos}) con los tiempos de 
 \newpage
 
 
-En este problema las mejoras de implementación del código en \textsc{Cuda C} con respecto a \textsc{C} son considerables, y se puede observar en el índice SU. En el caso de la GPU NVIDIA GeForce GTX 760 se obtuvo un SU de 13,26 y 7,88 para simple y doble precisión respectivamente. Por otro lado en la GPU NVIDIA GeForce GTX 970 se obtuvo un SU de15,95 y 13,29 en simple y doble precisión respectivamente.
+En este problema las mejoras de implementación del código en \textsc{Cuda C} con respecto a \textsc{C} son considerables, y se puede observar en el índice SU. En el caso de la GPU NVIDIA GeForce GTX 760 se obtuvo un SU de 13,26 y 7,88 para simple y doble precisión respectivamente. Por otro lado en la GPU NVIDIA GeForce GTX 970 se obtuvo un SU de 15,95 y 13,29 en simple y doble precisión respectivamente.
 
 Como se mecionó anteriormente, en este problema de estratficación de fluido VdW pudo observarse que la implementación en \textsc{Cuda C} produce una mejora significativa en el tiempo de cálculo con respecto la la implementación equivalente en \textsc{C}. Para este caso, sin embargo, se observó que el SU máximo es inferior al alcanzado en el problema de la Construcción de Maxwell, es decir, con una única LBE.
 
@@ -435,9 +432,9 @@ Como se mecionó anteriormente, en este problema de estratficación de fluido Vd
 
 Mediante este problema se busca reproducir la fenomenología asociada a los procesos de transferencia de calor en ebullición, demostrando la potencialidad del método. 
 
-La diferencia del problema de la estratificación de VdW con el de la generación de burbujas, radica en que el primero es unidimensional y el segundo es bidimensional. A su vez, la aplicación del código cambia únicamente en realizar una función que imponga como condición de contorno un área de la superficie calefaccionada.
+La diferencia del problema de la Estratificación de VdW con el de la Generación de burbujas, radica en que el primero es unidimensional y el segundo es bidimensional. A su vez, la aplicación del código cambia únicamente en realizar una función que imponga como condición de contorno un área de la superficie calefaccionada.
 
-A partir de las mismas bibliotecas utilizadas anteriormente y cambiando una única función, se obtuvo como resultado el fenómeno de formación, crecimiento y desprendimiento de una burbuja. Para ello se utilizaron los siguientes parámetros de LBM:
+A partir de las mismas bibliotecas utilizadas anteriormente y cambiando una única función, se obtuvo como resultado el fenómeno de formación, crecimiento y desprendi- miento de una burbuja. Para ello se utilizaron los siguientes parámetros de LBM:
 {\footnotesize \begin{align*}
 diag(\mathbf{\Lambda}) & = 
 \begin{bmatrix}
@@ -451,7 +448,7 @@ diag(\mathbf{Q}) & =
 G & = -1.0 \quad c = 1.0 \quad \sigma = 0.125 \quad a = 1.0 \quad b = 4.0 \\
 \mathbf{g} & = (0.0 \quad -8.0^{-6} \quad 0.0 ) \qquad \rho_c = \frac{1}{12} \qquad T_c = 0.074074074
 \end{align*}}
-El tamaño de grilla utilizado fue de L = 300 y H = 500 basándose en el esquema del panel izquierdo de la Figura (\ref{fig:esquema_VdW}), donde la superficie calefaccionada se encuentra en el centro del lado L y posee un tamaño de 12 elementos de malla. La temperatura de calefacción $T_{heat} = T_c$  y el resto de la superficie se encuentra a $T = 0.8 T_c$ con la parte superior de la cavidad está a $T = 0.99 T_c$. La separación inicial de las dos fases se encuentra en $y = 350$, donde $\rho = 0.1610588 \> si \> y \in [0,350]$ y $\rho = 0.0199722$ $y$ para $(350,500]$.
+El tamaño de grilla utilizado fue de L = 300 y H = 500 basándose en el esquema del panel izquierdo de la Figura (\ref{fig:esquema_VdW}), donde la superficie calefaccionada se encuentra en el centro del lado L y posee un tamaño de 12 elementos de malla. La temperatura de calefacción $T_{heat} = T_c$  y el resto de la superficie se encuentra a $T = 0.8 \> T_c$ con la parte superior de la cavidad está a $T = 0.99 \> T_c$. La separación inicial de las dos fases se encuentra en $y = 350$, donde $\rho = 0.1610588 \> si \> y \in [0,350]$ y $\rho = 0.0199722$ $y$ para $(350,500]$.
 
 El resultado que se obtuvo para 5000, 10000, 20000, 25000, 30000, 35000, 40000, 45000 y 50000 pasos de tiempo se encuentra en la Figura (\ref{fig:burbujas_760_doble_cuda}), realizada en la GPU NVIDIA GeForce GTX 760 para doble precisión. Adicionalmente en la Figura (\ref{fig:bb_simple_doble_760}) se encuentra para 25000 pasos de tiempo la comparación entre simple y doble precisión realizado en la GPU NVIDIA GeForce GTX 760. También se realizó la comparación entre el resultado obtenido para 45000 pasos de tiempo entre la CPU Intel Core i7-3770 y la GPU NVIDIA GeForce GTX 760 en simple precisión  en la Figura (\ref{fig:bb_CPU_GPU_simple}). Al analizar los resultados de la CPU y GPU con sus precisiones, y comparándolas entre todos los casos realizados, resultan similares en primera instancia.
 
@@ -558,18 +555,18 @@ Con ésto se demuestra que la reproducción de un fenómeno complejo como la ebu
 
 \section{Uso de \textsc{PyCuda}}
 
-La realización de los códigos numéricos mediante \textsc{C} y \textsc{Cuda C} tenían como primera finalidad conocer cuál es la ganancia en tiempo de cálculo realizando la implementación en GPU, por otro lado desarrollar código en \textsc{Cuda C}, para luego compilarlo en formato \textsc{ptx} y ser utilizado en \textsc{Python} por medio del módulo \textsc{PyCuda} del mismo.
+La realización de los códigos numéricos mediante \textsc{C} y \textsc{Cuda C} tenían como primera finalidad conocer cual es la ganancia en tiempo de cálculo realizando la implementación en GPU, por otro lado desarrollar código en \textsc{Cuda C}, para luego compilarlo en formato \textsc{ptx} y ser utilizado en \textsc{Python} por medio del módulo \textsc{PyCuda} del mismo.
 
-Debido a la falta de tiempo en el desarrollo del Proyecto Integrador no se pudo completar el desarrollo de módulos de \textsc{Python} que implementen con \textsc{PyCuda} los \textit{kernels} compilados previemente, con el objetivo de resolver los problemas de construcción de Maxwell, estratificación de fluido VdW y generación de burbujas sobre una placa calefaccionada.  Sin embargo, pudo analizarse el uso de \textit{kernels} individuales, como el que realiza el cálculo de la densidad macroscópica (Ec.(\ref{eq:rho_py})) en todos los nodos de la grilla.
+Debido a la falta de tiempo en el desarrollo del Proyecto Integrador no se pudo completar el desarrollo de módulos de \textsc{Python} que implementen con \textsc{PyCuda} los \textit{kernels} compilados previemente, con el objetivo de resolver los problemas de construcción de Maxwell, estratificación de fluido VdW y generación de burbujas sobre una placa calefaccionada.  Sin embargo, pudo analizarse el uso de \textit{kernels} individuales, como el que realiza el cálculo de la densidad macroscópica (Ec. (\ref{eq:rho_py})) en todos los nodos de la grilla.
 
 \begin{equation}
 \rho = \sum_{\alpha} f_{\alpha}
 \label{eq:rho_py}
 \end{equation}
 
-Para éste análisis se inicializó a $f$ con valores aleatorios, haciendo una repetición de la ejecución de la función 100000 veces para realizar la toma de tiempo. Se varió el tamaño de la grilla, de manera que ésta siempre fuese cuadrada, respetando un número de nodos de potencia de 2 en los lados del cuadrado. La cantidad de \textit{thread blocks} que se utilizó para realizar la comparación en el código fue de potencia de 2. El tamaño de la grilla varió de 16x16 hasta 4096x4906 y la cantidad de \textit{thread blocks} utilizado es de 1 a 512.
+Para éste análisis se inicializó a $f$ con valores aleatorios, haciendo una repetición de la ejecución de la función 100000 veces para realizar la toma de tiempo. Se varió el tamaño de la grilla, de manera que ésta siempre fuese cuadrada, respetando un número de nodos de potencia de 2 en los lados del cuadrado. La cantidad de \textit{thread blocks} que se utilizó para realizar la comparación en el código fue de potencia de 2. El tamaño de la grilla varió de 16x16 hasta 4096x4906 y la cantidad de \textit{thread blocks} utilizado es de 16, 32, 64, 128 y 512.
 
-Al  realizar la implementación de un \textit{kernel} de \textsc{Cuda C} en \textsc{Python}, se espera que el tiempo de cálculo en \textsc{Python} sea más lento que en \textsc{Cuda C}, debido a que el primer lenguaje es interpretado. Debido a lo mencionado es que se define el índice \textit{Speed Down} (SD), donde \textit{t} es el tiempo de cálculo. SD es una medida de cuánto es la demora de un código respecto a otro y se calcula de la siguiente forma :
+Al  realizar la implementación de un \textit{kernel} de \textsc{Cuda C} en \textsc{Python}, se espera que el tiempo de cálculo en \textsc{Python} sea más lento que en \textsc{Cuda C}, debido a que el primer lenguaje es interpretado. Debido a lo mencionado es que se define el índice \textit{Speed Down} (SD), donde \textit{t} es el tiempo de cálculo. SD es una medida de cuánto es la demora de un código respecto a otro y se calcula de la siguiente forma:
 
 \begin{align}
 SD = \frac{t_{\>PyCuda}}{t_{\>Cuda \> C}} 
@@ -637,7 +634,7 @@ Debido a que se pretende utilizar con la mayor eficiencia posible los \textit{ke
 
 Es de importancia el desarrollo de códigos numéricos para que sean eficientes en el tiempo de cálculo, y que el desarrollo del mismo no implique un gran insumo de tiempo. Por lo último mencionado realizar códigos en \textsc{Python} es eficiente al ser un lenguaje interpretado y no tener que reservar memoria, liberar memoria o declarar variables entre otros. Los módulos de \textsc{Python} tienen sus bibliotecas realizadas mayormente en \textsc{C} y \textsc{Cuda C} para que sean eficientes y debido a ello es conveniente la utilización de sus módulos, que ya poseen las funciones que se necesita, además siendo eficientes. 
 
-De esta forma, se observó que resulta posible continuar con la extensión y generalización de herramientas de cálculo eficientes utilizando una combinación adecuada de los lenguajes mencionados.
+De esta forma, se observó que resulta posible continuar con la extensión y generaliza- ción de herramientas de cálculo eficientes utilizando una combinación adecuada de los lenguajes mencionados.
 
 
 % por medio de alguno de sus módulos utiliar la función creada. , debido a que no se incrementa mucho el tiempo de cálculo al utiliar \textit{kernels} previamente compilados. 

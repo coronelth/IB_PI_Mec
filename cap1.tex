@@ -7,7 +7,7 @@
 En el estudio de la Mecánica de los Fluidos, son de importancia los problemas de transferencia de calor de flujos multifásicos con cambios de fase. Una de las áreas más relevantes en que se tratan estos problemas es la generación de energía eléctrica, ya sea por medio de fisión o fusión nuclear, la combustión de combustibles fósiles, fuentes de energía geotérmica entre otros \cite{incropera2007fundamentals}. Actualmente se estan investigando formas de eficientizar la producción de energía debido a que se espera un incremento de la demanda por la población \cite{schiffer2018world}.
 
 % debido a que el Consejo Mundial de Energía (\textit{World Energy Council} o WEC) prevé que se debe realizar un aumento en la generación de energía\cite{schiffer2018world}, para satisfacer la creciente demanda eléctrica de la población. Por ello es que se investigan y desarrollan nuevos métodos para generar energía de una forma más eficiente. Entre las líneas de investigación que existen se encuentra la mejora de instalaciones existentes y para ello es necesario centrar los estudios de la física básica.
-Una de las ramas de investigación es en la industria nuclear, en donde se pretende mejorar la eficiencia en la remoción del calor de las barras del elemento combustible hacia el fluido del circuito de refrigeración primario. En particular, resulta de interés evaluar dicha transferencia de calor mediante procesos de ebullición en el fluido que entra en contacto con los elementos combustibles. Sin embargo, la realización de experimentos resulta costosa debido a los recaudos de seguridad y equipos necesarios. Estas limitaciones intrínsecas motivan el desarrollo de modelos numéricos capaces de predecir adecuadamente los fenómenos involucrados \cite{zhang2011numerical}. 
+Una de las ramas de investigación es en la industria nuclear, en donde se pretende mejorar la eficiencia en la remoción del calor de las barras del elemento combustible hacia el fluido del circuito de refrigeración primario. En particular, resulta de interés evaluar dicha transferencia de calor mediante procesos de ebullición en el fluido que entra en contacto con los elementos combustibles. Sin embargo, la realización de experi- mentos resulta costosa debido a los recaudos de seguridad y equipos necesarios. Estas limitaciones intrínsecas motivan el desarrollo de modelos numéricos capaces de predecir adecuadamente los fenómenos involucrados \cite{zhang2011numerical}. 
 
 
 %En la industria nuclear una de los problemas más complejos a resolver, es la transferencia de calor entre el fluido que circula en el circuito primario de refrigeración con las barras de elemento combustible, debido a que se produce el fenómeno de ebullición. Es de interés el estudio de dicho problema porque según la eficiencia con que se realice la remoción del calor queda determinada la potencia de trabajo del reactor nuclear.
@@ -22,10 +22,10 @@ Una de las ramas de investigación es en la industria nuclear, en donde se prete
 
 Actualmente la dificultad para reproducir numéricamente los tipos de problemas mencionados se debe a las escala de fluido involucrada (\textit{mesoscópica}), con las técnicas numéricas convencionales de Mecánica de Fluidos Computacional (\textit{Computational Fluid Mechanichs} o CFD) resulta difícil obtener resultados en un tiempo razonable y que también tengan en cuenta todas las interacciones físicas que ocurren \cite{guo2013lattice}. En parte es causado por los métodos tradicionales que resuelven ecuaciones diferenciales mediante técnicas de discretización que involucran la resolución numérica de grandes sistemas de ecuaciones, donde el tiempo de cálculo típicamente varía cuadráticamente con el número de elementos de malla utilizada para discretizar el problema físico.
 
-Uno de los métodos numéricos que se están desarrollando para que el costo computacional sea cada vez menor es el método de lattice Boltzmann (\textit{lattice Boltzmann 
+Uno de los métodos numéricos que se están desarrollando para que el costo computa- cional sea cada vez menor es el método de lattice Boltzmann (\textit{lattice Boltzmann 
 Method} o LBM). Estos métodos resuelven las ecuaciones diferenciales por medio de una ecuación lineal más sencilla, lo cuál reduce drásticamente el tiempo de cálculo, y las variables que se obtienen cumplen con la ecuación de interés. Debido a que están basados en realizar operaciones elementales en los elementos de la malla discretizada y a su vez no dependen del total de nodos de la misma, se convierten en algoritmos altamente paralelizables.
 
-Por lo mencionado anteriormente, el estudio de la transferencia de calor en flujos multifásicos con cambio de fase es difícil de modelar numéricamente y los métodos existentes son costosos computacionalmente. Esto implica que resulta necesario desarrollar e investigar nuevas técnicas numéricas junto con sus implementaciones, de modo que  sea posible resolver la fenomenología de interés con precisión y en tiempo razonable.
+Por lo mencionado anteriormente, el estudio de la transferencia de calor en flujos multifásicos con cambio de fase es difícil de modelar numéricamente y los métodos existentes son costosos computacionalmente. Esto implica que resulta necesario desarro- llar e investigar nuevas técnicas numéricas junto con sus implementaciones, de modo que  sea posible resolver la fenomenología de interés con precisión y en tiempo razonable.
 
 %\section{Descripción de las escalas de los fluidos}
 %
@@ -65,13 +65,13 @@ Por lo mencionado anteriormente, el estudio de la transferencia de calor en fluj
 
 \section{Descripción general de LBM}
 
-Tradicionalmente los problemas de mecánica de fluidos resueltos mediante la suposición del continuo son llevados a cabo mediante  ecuaciones como las de Navier-Stokes. Obtener la solución numérica de dichas ecuaciones implica resolver sistemas  algebraicos de ecuaciones, cuya cantidad está sujeta a la forma de realizar la discretización del espacio físico y según la cantidad de elementos de la malla. La resolución de este tipo de ecuaciones presenta la característica de que el tiempo de cálculo involucrado en su resolución depende típicamente de forma cuadrática con la cantidad de elementos discretizados \cite{kelley1995iterative}.
+Tradicionalmente los problemas de mecánica de fluidos resueltos mediante la suposi- ción del continuo son llevados a cabo mediante  ecuaciones como las de Navier-Stokes. Obtener la solución numérica de dichas ecuaciones implica resolver sistemas  algebraicos de ecuaciones, cuya cantidad está sujeta a la forma de realizar la discretización del espacio físico y según la cantidad de elementos de la malla. La resolución de este tipo de ecuaciones presenta la característica de que el tiempo de cálculo involucrado en su resolución depende típicamente de forma cuadrática con la cantidad de elementos discretizados \cite{kelley1995iterative}.
 
 El LBM resuelve de manera indirecta las ecuaciones diferenciales, a través de la discretización de una ecuación de Boltzmann, lineal y de resolución numérica más sencilla. En particular, dichas ecuaciones representan el transporte de funciones de distribución, cuyos momentos en el espacio de fases pueden asociarse con propiedades macroscópicas del fluido, como densidad, velocidad o temperatura.
 
-La discretización espacial que se suele utilizar es mediante un mallado regular \cite{guo2013lattice}, y  cada nodo de la malla tiene asignado un espacio de velocidades. Los modelos de grilla suelen denotarse como $DdQq$, donde \textit{d} son las dimensiones y \textit{q} la cantidad de componentes que se discretiza el espacio de velocidades. La figura \ref{fig:D1Q3_D2Q9} muestra cómo son los conjuntos de velocidades para los modelos D1Q3 y D1Q9.
+La discretización espacial que se suele utilizar es mediante un mallado regular \cite{guo2013lattice}, y  cada nodo de la malla tiene asignado un espacio de velocidades. Los modelos de grilla suelen denotarse como $DdQq$, donde \textit{d} son las dimensiones y \textit{q} la cantidad de componentes que se discretiza el espacio de velocidades. La Figura \ref{fig:D1Q3_D2Q9} muestra cómo son los conjuntos de velocidades para los modelos D1Q3 y D1Q9.
 
-El espacio de velocidades indica cómo es la propagación de las propiedades que poseen los nodos de la grilla. La velocidad de grilla del nodo i-ésimo se denota $\mathbf{e}_{i}$ y posee \textit{q} componentes. Para el modelo D2Q9 la figura \ref{fig:D1Q3_D2Q9} muestra un esquema de las velocidades de grilla del nodo i - ésimo y la Ec. (\ref{eq:velgrilla}) el valor adoptado. 
+El espacio de velocidades indica cómo es la propagación de las propiedades que poseen los nodos de la grilla. La velocidad de grilla del nodo i-ésimo se denota $\mathbf{e}_{i}$ y posee \textit{q} componentes. Para el modelo D2Q9 la Figura \ref{fig:D1Q3_D2Q9} muestra un esquema de las velocidades de grilla del nodo i-ésimo y la Ec. (\ref{eq:velgrilla}) el valor adoptado. 
 
 \begin{figure}[h!]
 	\centering
@@ -96,7 +96,7 @@ e_{6}\\ e_{7}\\ e_{8}\\
 \label{eq:velgrilla}
 \end{equation}
 
-Para la resolución de los problems de transferencia de calor con flujos multifásicos y cambio de fase que se propuso estudiar, es necesario contar con un LBM adecuado. En particular, existen cuatro (4) categorías generales para clasificar los modelos multifásicos: color gradient, free energy, phase field y pseudopotential.
+Para la resolución de los problems de transferencia de calor con flujos multifásicos y cambio de fase que se propuso estudiar, es necesario contar con un LBM adecuado. En particular, existen cuatro (4) categorías generales para clasificar los modelos multifásicos: \textit{color gradient}, \textit{free energy}, \textit{phase field} y \textit{pseudopotential}.
 
 En este trabajo se utilizará la familia pseudopotencial, la cual está basada en proponer un potencial de interacción entre las partículas del fluido. Dicho potencial se utiliza para calcular la fuerza de interacción entre las partículas del fluido y está dado según una Ecuación de estado (\textit{Equation of state o EOS}). 
 
@@ -118,9 +118,9 @@ A continuación se datallará un ejemplo sencillo de un modelo D2Q9. La Figura (
 	\label{eq:field_intro} 
 \end{align}
 
-El término derecho de la Ec. (\ref{eq:field_intro}) se conoce como \textit{colisión} y el izquierdo como \textit{streaming}; $\alpha$ corresponde al  $\alpha$-ésimo componente  ($\alpha = 0, 1, ... ,8$), $f^{eq}$ es la función de distribución en estado de equilibrio, $\tau$ es un parámetro de relajación del modelo que determina propiedades macroscópicas como la viscosidad.
+El término derecho de la Ec. (\ref{eq:field_intro}) se conoce como \textit{colisión} y el izquierdo como \textit{streaming}; $\alpha$ corresponde al  $\alpha$-ésimo componente  ($\alpha = 0, 1, ... ,8$), $\mathbf{f^{eq}}$ es la función de distribución en estado de equilibrio, $\tau$ es un parámetro de relajación del modelo que determina propiedades macroscópicas como la viscosidad.
 
-Por medio de la \textit{colisión} y luego del \textit{streaming} se obtienen los parámetros macroscópicos el problema. Para éste caso sencillo se obtiene $\rho$ y $\mathbf{u}$ de las Ec. (\ref{eq: rho.1}) y (\ref{eq: u.1}) respectivamente.
+Por medio de la \textit{colisión} y luego del \textit{streaming} se obtienen los parámetros macroscópicos del problema. Para este caso sencillo se obtiene $\rho$ y $\mathbf{u}$ de las Ec. (\ref{eq: rho.1}) y (\ref{eq: u.1}) respectivamente.
 \begin{align}
 	\rho = \sum_{\alpha} f_{\alpha}
 	\label{eq: rho.1}
@@ -137,7 +137,7 @@ Por medio de la \textit{colisión} y luego del \textit{streaming} se obtienen lo
 	\label{fig:esquema_lbm}
 \end{figure}
 
-La Figura (\ref{fig:esquema_lbm}) muestra el esquema de resolución para el LBM descripto, donde primero se realiza la colisión de los nodos para luego mediante el \textit{streaming} actualizar en todos los nodos el valor de \textit{f}. A partir de ahí se deben aplicar las condiciones de contorno que pueda tener el problema y calcular las variables macroscópicas del sistema. Una vez realizada la actualización de las variables macroscópicas se recupera la solución de la ecuación diferencial de interés. El proceso descripto debe aplicarse en cada paso de tiempo.
+La Figura (\ref{fig:esquema_lbm}) muestra el esquema de resolución para el LBM descripto, donde primero se realiza la colisión de los nodos para luego mediante el \textit{streaming} actualizar en todos los nodos el valor de \textbf{f}. A partir de ahí se deben aplicar las condiciones de contorno que pueda tener el problema y calcular las variables macroscópicas del sistema. Una vez realizada la actualización de las variables macroscópicas se recupera la solución de la ecuación diferencial de interés. El proceso descripto debe aplicarse en cada paso de tiempo.
 
 Debido a que cada nodo de la grilla debe realizar la misma operación de colisión de manera independiente del resto, el modelo es altamente paralelizable. Además, las operaciones matemáticas que deben ejecutarse en el operador de colisión son sencillas, no implicando un gran costo computacional.
 
@@ -183,14 +183,14 @@ En el trabajo realizado se empleó el software \textsc{CMake} para preparar la c
 La validación del código fue realizado en dos PC diferentes, la primera contaba con una CPU Intel Core i7-3770 con una GPU NVIDIA GeForce GTX 760 y la segunda con una CPU Intel Core i7-4770 con una GPU NVIDIA GeForce GTX 970. A su vez la validación se concretó en variables de simple y doble precisión, a través de la resolución de diferentes problemas numéricos (detallados en el Cap. (\ref{cap4})):
 
 \begin{itemize}
-	\item \textit{construcción de Maxwell}
-	\item \textit{estratificación de un fluido Van der Waals (VdW) con temperatura no uniforme}
-	\item \textit{generación de burbujas sobre una superficie horizontal calefaccionada}
+	\item \textit{Construcción de Maxwell}
+	\item \textit{Estratificación de un fluido Van der Waals (VdW) con temperatura no uniforme}
+	\item \textit{Generación de burbujas sobre una superficie horizontal calefaccionada}
 \end{itemize} 
 
 Se realizó una comparación de tiempos de cálculo entre los códigos de \textsc{C} y en \textsc{CUDA C} para ambas precisiones. Luego se realizó una comparación entre los tiempos de cálculo de simple precisión y doble precisión en el código de \textsc{Cuda C}.
 
-Además, se usaron \textit{kernels} compilados en formato \textsc{ptx} de \textsc{Cuda C} dentro de \textit{scripts} de \textsc{Python} usando \textsc{PyCuda}, y se realizó una comparación de tiempos entre \textsc{Cuda C} y \textsc{Python}.
+Además, se usaron \textit{kernels} compilados en formato \textsc{ptx} de \textsc{Cuda C} dentro de \textit{scripts} de \textsc{Python} usando \textsc{PyCuda}, y se realizó una comparación de tiempos de cálculo entre \textsc{Cuda C} y \textsc{Python}.
 
 
 %%% Local Variables: 
