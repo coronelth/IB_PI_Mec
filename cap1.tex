@@ -69,7 +69,7 @@ Tradicionalmente los problemas de mecánica de fluidos resueltos mediante la sup
 
 El LBM resuelve de manera indirecta las ecuaciones diferenciales, a través de la discretización de una ecuación de Boltzmann, lineal y de resolución numérica más sencilla. En particular, dichas ecuaciones representan el transporte de funciones de distribución, cuyos momentos en el espacio de fases pueden asociarse con propiedades macroscópicas del fluido, como densidad, velocidad o temperatura.
 
-La discretización espacial que se suele utilizar es mediante un mallado regular \cite{guo2013lattice}, y  cada nodo de la malla tiene asignado un espacio de velocidades. Los modelos de grilla suelen denotarse como $DdQq$, donde \textit{d} son las dimensiones y \textit{q} la cantidad de componentes que se discretiza el espacio de velocidades. La Figura \ref{fig:D1Q3_D2Q9} muestra cómo son los conjuntos de velocidades para los modelos D1Q3 y D1Q9.
+La discretización espacial que se suele utilizar es mediante un mallado regular \cite{guo2013lattice}, y  cada nodo de la malla tiene asignado un espacio de velocidades. Los modelos de grilla suelen denotarse como $DdQq$, donde \textit{d} son las dimensiones y \textit{q} la cantidad de componentes que se discretiza el espacio de velocidades. La Figura (\ref{fig:D1Q3_D2Q9}) muestra cómo son los conjuntos de velocidades para los modelos D1Q3 y D1Q9.
 
 El espacio de velocidades indica cómo es la propagación de las propiedades que poseen los nodos de la grilla. La velocidad de grilla del nodo i-ésimo se denota $\mathbf{e}_{i}$ y posee \textit{q} componentes. Para el modelo D2Q9 la Figura \ref{fig:D1Q3_D2Q9} muestra un esquema de las velocidades de grilla del nodo i-ésimo y la Ec. (\ref{eq:velgrilla}) el valor adoptado. 
 
